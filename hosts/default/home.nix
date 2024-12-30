@@ -33,11 +33,11 @@ in
         # user.signingkey = "~/.ssh/id_ed25519.pub";
 
         init.defaultBranch = "main";
-        
+
         color = {
           ui = "auto";
         };
-        
+
         push = {
           default = "simple";
         };

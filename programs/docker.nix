@@ -1,4 +1,5 @@
-{ config,
+{
+  config,
   pkgs,
   username,
   ...
@@ -6,16 +7,16 @@
 {
   virtualisation.docker.enable = true;
   # 如果使用 btrfs 文件系统，可以设置存储驱动
-  virtualisation.docker.storageDriver = "btrfs"; 
+  virtualisation.docker.storageDriver = "btrfs";
   virtualisation.docker.rootless = {
-    enable = true;               # 启用无根模式
-    setSocketVariable = true;    # 设置 DOCKER_HOST 变量
+    enable = true; # 启用无根模式
+    setSocketVariable = true; # 设置 DOCKER_HOST 变量
   };
   # 配置 Docker Daemon 的其他设置
   virtualisation.docker.daemon.settings = {
-    data-root = "/home/${username}/docker-data";  # 设置 Docker 数据存储路径
+    data-root = "/home/${username}/docker-data"; # 设置 Docker 数据存储路径
     #userland-proxy = false;          # 禁用 userland-proxy
-    experimental = true;             # 启用实验性功能
+    experimental = true; # 启用实验性功能
     #metrics-addr = "0.0.0.0:9323";   # 启用度量指标
     #ipv6 = true;                    # 启用 IPv6
     #fixed-cidr-v6 = "fd00::/80";    # 设置固定 IPv6 地址范围
@@ -38,10 +39,9 @@
   # };
 
   # 配置用户权限：将用户添加到 docker 组以便访问 Docker 套接字
-  users.users.${username}.extraGroups = [ "docker" ];  # 将用户添加到 docker 组
+  users.users.${username}.extraGroups = [ "docker" ]; # 将用户添加到 docker 组
   # 如果你希望为容器启用 GPU 直通，可以使用以下配置：
   hardware.nvidia-container-toolkit.enable = true;
   # 指定镜像加速器
   # virtualisation.docker.extraOptions = "--registry-mirror=https://your-mirror-url";
 }
-

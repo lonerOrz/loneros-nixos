@@ -1,9 +1,11 @@
-{ config,
+{
+  config,
   lib,
   username,
   pkgs,
   ...
-}: let
+}:
+let
   fcitx5-pinyin-zhwiki = pkgs.callPackage ../pkgs/fcitx5-pinyin-zhwiki { };
 in
 {
@@ -24,11 +26,11 @@ in
         addons = with pkgs; [
           fcitx5-chinese-addons
           fcitx5-mozc
-          fcitx5-gtk #  Fcitx5 gtk im module and glib based dbus client library
+          fcitx5-gtk # Fcitx5 gtk im module and glib based dbus client library
           fcitx5-material-color
           fcitx5-pinyin-zhwiki
         ];
-        #ignoreUserConfig = true; #启用不光个人设置无效，个人词库也会无法保存 
+        #ignoreUserConfig = true; #启用不光个人设置无效，个人词库也会无法保存
         settings = {
           addons = {
             classicui.globalSection.Theme = "macOS-dark";
@@ -59,4 +61,3 @@ in
   };
 
 }
-

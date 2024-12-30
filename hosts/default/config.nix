@@ -9,16 +9,17 @@
   inputs,
   system,
   ...
-}: let
+}:
+let
   inherit (import ./variables.nix) keyboardLayout;
   python-packages = pkgs.python3.withPackages (
-    ps:
-      with ps; [
-        requests
-        pyquery # needed for hyprland-dots Weather script
-      ]
+    ps: with ps; [
+      requests
+      pyquery # needed for hyprland-dots Weather script
+    ]
   );
-in {
+in
+{
   imports = [
     ./hardware.nix
     ./users.nix
@@ -34,22 +35,29 @@ in {
   boot = {
     #kernelPackages = pkgs.linuxPackages_latest; # Kernel
     kernelPackages = pkgs.linuxPackages_zen;
-    
+
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
-      "systemd.mask=dev-tpmrm0.device" #this is to mask that stupid 1.5 mins systemd bug
+      "systemd.mask=dev-tpmrm0.device" # this is to mask that stupid 1.5 mins systemd bug
       "nowatchdog"
-      "modprobe.blacklist=sp5100_tco" #watchdog for AMD
-      "modprobe.blacklist=iTCO_wdt" #watchdog for Intel
+      "modprobe.blacklist=sp5100_tco" # watchdog for AMD
+      "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
     ];
 
     # This is for OBS Virtual Cam Support
-    kernelModules = ["v4l2loopback"];
-    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
+    kernelModules = [ "v4l2loopback" ];
+    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
     initrd = {
-      availableKernelModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod"];
-      kernelModules = [];
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "nvme"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
+      kernelModules = [ ];
     };
 
     # Needed For Some Steam Games
@@ -62,7 +70,7 @@ in {
     loader.systemd-boot.enable = false;
 
     loader.efi = {
-      efiSysMountPoint = "/boot"; #this is if you have separate /efi partition
+      efiSysMountPoint = "/boot"; # this is if you have separate /efi partition
       canTouchEfiVariables = true;
     };
 
@@ -71,12 +79,12 @@ in {
     # Bootloader GRUB
     loader.grub = {
       enable = true;
-      devices = ["nodev"];
+      devices = [ "nodev" ];
       efiSupport = true;
       gfxmodeBios = "auto";
       memtest86.enable = true;
       useOSProber = true;
-      extraGrubInstallArgs = ["--bootloader-id=${host}"];
+      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
     };
 
@@ -125,7 +133,7 @@ in {
   networking.networkmanager.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
   networking.hostName = "${host}";
-  networking.timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
+  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
@@ -150,8 +158,9 @@ in {
   programs = {
     hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
+      portalPackage =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
       xwayland.enable = true;
     };
 
@@ -210,7 +219,8 @@ in {
     })
   ];
 
-  environment.systemPackages = ( with pkgs; [
+  environment.systemPackages =
+    (with pkgs; [
       # System Packages
       baobab
       btrfs-progs
@@ -220,21 +230,20 @@ in {
       duf
       eza
       ffmpeg
-      glib #for gsettings to work
+      glib # for gsettings to work
       gsettings-qt
       git
       killall
       libappindicator
       libnotify
-      openssl #required by Rainbow borders
+      openssl # required by Rainbow borders
       pciutils
       wget
       xdg-user-dirs
       xdg-utils
 
       fastfetch
-      (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-      #ranger
+      (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
 
       # Hyprland Stuff
       #ags
@@ -250,14 +259,14 @@ in {
       gnome-system-monitor
       file-roller
       grim
-      gtk-engine-murrine #for gtk themes
+      gtk-engine-murrine # for gtk themes
       hyprcursor # requires unstable channel
       hypridle # requires unstable channel
       imagemagick
       inxi
       jq
       kitty
-      libsForQt5.qtstyleplugin-kvantum #kvantum
+      libsForQt5.qtstyleplugin-kvantum # kvantum
       networkmanagerapplet
       nwg-look # requires unstable channel
       nvtopPackages.full
@@ -269,7 +278,7 @@ in {
       libsForQt5.qt5ct
       qt6ct
       qt6.qtwayland
-      qt6Packages.qtstyleplugin-kvantum #kvantum
+      qt6Packages.qtstyleplugin-kvantum # kvantum
       rofi-wayland
       slurp
       swappy
@@ -283,7 +292,9 @@ in {
       yt-dlp
 
       #waybar  # if wanted experimental next line
-      (pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+      (pkgs.waybar.overrideAttrs (oldAttrs: {
+        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+      }))
     ])
     ++ [
       python-packages
@@ -297,7 +308,6 @@ in {
     jetbrains-mono
     font-awesome
     terminus_font
-    #(nerdfonts.override {fonts = ["JetBrainsMono"];})
     nerd-fonts.jetbrains-mono
   ];
 
@@ -318,7 +328,7 @@ in {
   services = {
     # DNS 解析服务
     resolved.enable = true;
-    
+
     xserver = {
       enable = false;
       xkb = {
@@ -406,7 +416,7 @@ in {
   };
 
   systemd.services.flatpak-repo = {
-    path = [pkgs.flatpak];
+    path = [ pkgs.flatpak ];
     script = ''
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     '';
@@ -486,8 +496,8 @@ in {
         "nix-command"
         "flakes"
       ];
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      substituters = [ "https://hyprland.cachix.org" ];
+      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
     gc = {
       automatic = true;
@@ -528,4 +538,3 @@ in {
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 }
-

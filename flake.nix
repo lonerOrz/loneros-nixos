@@ -24,53 +24,58 @@
     };
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    nur,
-    home-manager,
-    flake-utils,
-    ...
-  }: let
-    system = "x86_64-linux";
-    host = "loneros";
-    username = "loner";
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nur,
+      home-manager,
+      flake-utils,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
+      host = "loneros";
+      username = "loner";
 
-    pkgs = import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
-      };
-    };
-
-  in {
-    nixosConfigurations = {
-      "${host}" = nixpkgs.lib.nixosSystem rec {
-        specialArgs = {
-          inherit system;
-          inherit inputs;
-          inherit username;
-          inherit host;
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
         };
-        modules = [
-          ./hosts/${host}/config.nix
-          inputs.distro-grub-themes.nixosModules.${system}.default
-          inputs.catppuccin.nixosModules.catppuccin
-          inputs.nur.modules.nixos.default
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {
-              inherit username;
-              inherit inputs;
-              inherit host;
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.${username} = import ./hosts/${host}/home.nix;
-          }
-        ];
       };
+
+    in
+    {
+      nixosConfigurations = {
+        "${host}" = nixpkgs.lib.nixosSystem rec {
+          specialArgs = {
+            inherit system;
+            inherit inputs;
+            inherit username;
+            inherit host;
+          };
+          modules = [
+            ./hosts/${host}/config.nix
+            inputs.distro-grub-themes.nixosModules.${system}.default
+            inputs.catppuccin.nixosModules.catppuccin
+            inputs.stylix.nixosModules.stylix
+            inputs.nur.modules.nixos.default
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = {
+                inherit username;
+                inherit inputs;
+                inherit host;
+              };
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
+              home-manager.users.${username} = import ./hosts/${host}/home.nix;
+            }
+          ];
+        };
+      };
+      formatter.${system} = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
     };
-  };
 }

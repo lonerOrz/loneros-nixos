@@ -13,13 +13,12 @@ in
   home.homeDirectory = "/home/${username}";
   home.stateVersion = "24.11";
   home.enableNixpkgsReleaseCheck = false;
+  programs.home-manager.enable = true;
 
   imports = [
   ];
 
   programs = {
-    home-manager.enable = true;
-
     # Install & Configure Git
     git = {
       enable = true;
@@ -33,11 +32,11 @@ in
         # user.signingkey = "~/.ssh/id_ed25519.pub";
 
         init.defaultBranch = "main";
-        
+
         color = {
           ui = "auto";
         };
-        
+
         push = {
           default = "simple";
         };

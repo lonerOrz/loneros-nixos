@@ -1,4 +1,5 @@
-{ config,
+{
+  config,
   pkgs,
   username,
   ...
@@ -7,7 +8,7 @@
   # 启用 MPD 服务
   services.mpd = {
     enable = true;
-    user = "${username}";  # MPD 运行的用户
+    user = "${username}"; # MPD 运行的用户
     #group = "${username}";  # MPD 运行的用户组
     musicDirectory = "/home/${username}/Music/localmusic";
 
@@ -39,4 +40,3 @@
     '';
   };
 }
-

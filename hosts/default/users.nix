@@ -2,9 +2,11 @@
   pkgs,
   username,
   ...
-}: let
+}:
+let
   inherit (import ./variables.nix) gitUsername;
-in {
+in
+{
   users = {
     users."${username}" = {
       homeMode = "755";
@@ -33,7 +35,7 @@ in {
     ../../programs/fcitx5.nix
   ];
 
-  environment.shells = with pkgs; [zsh];
+  environment.shells = with pkgs; [ zsh ];
   environment.systemPackages = with pkgs; [
     fzf
     yazi
@@ -54,7 +56,7 @@ in {
       enableCompletion = true;
       ohMyZsh = {
         enable = true;
-        plugins = ["git"];
+        plugins = [ "git" ];
         theme = "xiong-chiamiov-plus";
       };
 
@@ -76,4 +78,3 @@ in {
     };
   };
 }
-

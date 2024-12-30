@@ -1,10 +1,13 @@
-{ config,
+{
+  config,
   username,
   host,
   ...
-}: let
+}:
+let
   inherit (import ../hosts/${host}/variables.nix) autoGarbage;
-in{
+in
+{
   programs.nh = {
     enable = true;
     flake = "/home/${username}/NixOS-Hyprland";

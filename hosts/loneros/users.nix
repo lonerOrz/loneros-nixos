@@ -4,9 +4,11 @@
   system,
   username,
   ...
-}: let
+}:
+let
   inherit (import ./variables.nix) gitUsername;
-in {
+in
+{
   users = {
     users."${username}" = {
       homeMode = "755";
@@ -47,7 +49,7 @@ in {
     "electron-11.5.0"
   ];
 
-  environment.shells = with pkgs; [fish];
+  environment.shells = with pkgs; [ fish ];
   environment.systemPackages = with pkgs; [
     fzf
     chafa
@@ -84,4 +86,3 @@ in {
   };
 
 }
-

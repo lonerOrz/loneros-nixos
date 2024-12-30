@@ -1,17 +1,19 @@
 # Spicetify is a spotify client customizer
-{ pkgs,
+{
+  pkgs,
   lib,
   system,
   inputs,
   ...
-}: let
+}:
+let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${system};
-  # accent = "A594FD";
-in {
+in
+# accent = "A594FD";
+{
   imports = [ inputs.spicetify-nix.nixosModules.default ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "spotify" ];
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "spotify" ];
 
   programs.spicetify = {
     enable = true;
