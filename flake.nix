@@ -1,0 +1,76 @@
+{
+  description = "loner's NixOS-Hyprland";
+
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    #wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-utils.url = "github:numtide/flake-utils";
+    catppuccin.url = "github:catppuccin/nix";
+    hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+    stylix.url = "github:danth/stylix";
+    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nur,
+    home-manager,
+    flake-utils,
+    ...
+  }: let
+    system = "x86_64-linux";
+    host = "loneros";
+    username = "loner";
+
+    pkgs = import nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
+      };
+    };
+
+  in {
+    nixosConfigurations = {
+      "${host}" = nixpkgs.lib.nixosSystem rec {
+        specialArgs = {
+          inherit system;
+          inherit inputs;
+          inherit username;
+          inherit host;
+        };
+        modules = [
+          ./hosts/${host}/config.nix
+          inputs.distro-grub-themes.nixosModules.${system}.default
+          inputs.catppuccin.nixosModules.catppuccin
+          inputs.nur.modules.nixos.default
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = {
+              inherit username;
+              inherit inputs;
+              inherit host;
+            };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.users.${username} = import ./hosts/${host}/home.nix;
+          }
+        ];
+      };
+    };
+  };
+}

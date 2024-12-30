@@ -1,0 +1,1 @@
+# Install loneros on NixOS!
