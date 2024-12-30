@@ -9,7 +9,7 @@
     };
     #wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/master";  # or release-24.11
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
@@ -61,6 +61,7 @@
             inputs.catppuccin.nixosModules.catppuccin
             inputs.stylix.nixosModules.stylix
             inputs.nur.modules.nixos.default
+            # nixos module intall home-manager
             home-manager.nixosModules.home-manager
             {
               home-manager.extraSpecialArgs = {
@@ -76,6 +77,21 @@
           ];
         };
       };
+      # Standalone installi home-manager
+      #homeConfigurations = {
+      #  "${username}" = home-manager.lib.homeManagerConfiguration {
+      #    extraSpecialArgs = {
+      #      inherit system;
+      #      inherit inputs;
+      #      inherit username;
+      #      inherit host;
+      #    };
+      #    pkgs = nixpkgs.legacyPackages.${system};
+      #    modules = [
+      #      ./hosts/${host}/home.nix
+      #    ];
+      #  };
+      #};
       formatter.${system} = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
     };
 }
