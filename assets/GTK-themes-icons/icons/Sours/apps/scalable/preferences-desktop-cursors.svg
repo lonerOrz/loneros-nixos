@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Gravit.io -->
+
+<svg
+   style="isolation:isolate"
+   viewBox="0 0 48 48"
+   width="48pt"
+   height="48pt"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="preferences-desktop-cursors.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="12.953125"
+     inkscape:cx="31.961399"
+     inkscape:cy="32"
+     inkscape:current-layer="svg2" />
+  <linearGradient
+     id="linearGradient6"
+     x1="-2.14699e-06"
+     y1="1.0000004"
+     x2="1.0000125"
+     y2="0.49999642"
+     gradientTransform="matrix(36.201,0,0,40.561,5.899,3.689)"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset="0"
+       stop-opacity="1"
+       style="stop-color:#b900ff;stop-opacity:1;"
+       id="stop1" />
+    <stop
+       offset="1"
+       stop-opacity="1"
+       style="stop-color:#6444ff;stop-opacity:1;"
+       id="stop2" />
+  </linearGradient>
+  <path
+     d="m 31.465,16.871 v 0 C 30.39,16.438 29.868,15.214 30.301,14.139 v 0 c 0.432,-1.075 1.656,-1.597 2.732,-1.165 v 0 l 7.756,3.128 c 1.615,0.652 1.758,1.978 0.32,2.959 l -11.066,7.554 5.929,8.686 c 1.309,1.917 0.815,4.537 -1.103,5.846 l -3.474,2.371 c -1.918,1.309 -4.537,0.815 -5.846,-1.103 L 19.62,33.729 8.485,41.33 C 7.046,42.312 5.888,41.695 5.899,39.954 L 6.121,6.001 C 6.132,4.26 7.483,3.293 9.135,3.843 l 12.81,4.266 v 0 c 1.087,0.397 1.645,1.604 1.248,2.694 v 0 c -0.398,1.091 -1.61,1.652 -2.704,1.254 v 0 L 11.323,9.172 C 10.77,8.998 10.317,9.327 10.313,9.908 L 10.15,34.053 c -0.003,0.58 0.383,0.786 0.862,0.459 l 7.974,-5.443 c 0.959,-0.654 2.268,-0.407 2.923,0.551 l 6.551,9.598 c 0.311,0.456 0.933,0.573 1.389,0.262 l 1.823,-1.244 c 0.456,-0.311 0.573,-0.934 0.262,-1.39 L 25.383,27.249 C 24.729,26.29 24.976,24.98 25.935,24.326 l 8.043,-5.49 c 0.479,-0.327 0.432,-0.77 -0.106,-0.988 z"
+     fill-rule="evenodd"
+     fill="url(#linearGradient6)"
+     id="path2"
+     sodipodi:nodetypes="cssssccccccccccccccsssscccccccccccccccc"
+     style="fill:url(#linearGradient6)" />
+</svg>

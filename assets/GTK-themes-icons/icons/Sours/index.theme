@@ -1,0 +1,148 @@
+[Icon Theme]
+Name=Sours
+Inherits=breeze-dark,adwaita-dark,breeze,ubuntu-mono,yaru,Mint-X,elementary,hicolor
+
+
+# Directory list
+Directories=actions/16,actions/monochrome,devices/monochrome,status/monochrome,status/arrows,status/22,apps/monochrome,actions/scalable,places/16,places/48,devices/scalable,status/22@2x,status/22@3x,apps/scalable,mimetypes/scalable
+Example=folder
+DisplayDepth=32
+
+FollowsColorScheme=true
+
+DesktopDefault=48
+DesktopSizes=16,22,32,48,64,128,256
+ToolbarDefault=22
+ToolbarSizes=16,22,32,48
+MainToolbarDefault=22
+MainToolbarSizes=16,22,32,48
+SmallDefault=16
+SmallSizes=16,22,32,48
+PanelDefault=48
+PanelSizes=16,22,32,48,64,128,256
+DialogDefault=32
+DialogSizes=16,22,32,48,64,128,256
+
+KDE-Extensions=.svg
+
+# Tray
+# Raise Maxsize to 32 for expanded tray to be monochrome
+[devices/monochrome]
+Context=Devices
+Size=22
+MinSize=16
+MaxSize=22
+Type=Scalable
+
+[devices/scalable]
+Context=Devices
+Size=64
+MinSize=8
+MaxSize=192
+Type=Scalable
+
+# Tray - Convert to Scalable (add MinSize=22 and MaxSize=32) for expanded tray to be monochrome
+[actions/monochrome]
+Context=Actions
+Size=22
+Type=Fixed
+
+[actions/scalable]
+Context=Actions
+Size=22
+MinSize=16
+MaxSize=192
+Type=Scalable
+
+#16x16 - Fixed size - Plasma theme - Monochrome volume badges in dock
+[actions/16]
+Size=16
+Context=Actions
+Type=Fixed
+
+# Tray - Fixed size - Monochrome at 32px - NOT IN DIRECTORY LIST!
+# For Plasmoids hidden in tray (Display Configuration) but not anywhere else
+# Symbolic icon for Display Configuration does not work
+[apps/32]
+Size=32
+MinSize=32
+MaxSize=48
+Context=Applications
+Type=Scalable
+
+# Tray
+# Raise Maxsize to 32 for expanded tray to be monochrome
+[apps/monochrome]
+Context=Applications
+Size=22
+MinSize=16
+MaxSize=22
+Type=Scalable
+
+[apps/scalable]
+Size=96
+Context=Applications
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[mimetypes/scalable]
+Context=MimeTypes
+Size=96
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[places/16]
+Size=16
+Context=Places
+MinSize=8
+MaxSize=48
+Type=Scalable
+
+
+[places/48]
+Size=48
+Context=Places
+MinSize=48
+MaxSize=512
+Type=Scalable
+
+# Tray
+# Raise Maxsize to 32 for expanded tray to be monochrome
+[status/monochrome]
+Context=Status
+Size=22
+MinSize=16
+MaxSize=22
+Type=Scalable
+
+# Tray Arrows
+[status/arrows]
+Context=Status
+Size=22
+MinSize=16
+MaxSize=512
+Type=Scalable
+
+#22x22 - Plasma theme/System Tray
+[status/22]
+Size=22
+MinSize=8
+MaxSize=512
+Context=Status
+Type=Scalable
+
+#22x22@2x - Fixed size - Plasma theme/System Tray - Monochrome
+[status/22@2x]
+Size=22
+Scale=2
+Context=Status
+Type=Fixed
+
+#22x22@3x - Fixed size - Plasma theme/System Tray - Monochrome
+[status/22@3x]
+Size=22
+Scale=3
+Context=Status
+Type=Fixed

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   version="1.1"
+   viewBox="0 0 512 512"
+   id="svg2"
+   sodipodi:docname="garuda-assistant.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.1697645"
+     inkscape:cx="205.59693"
+     inkscape:cy="226.11388"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient1201"
+       x1="158.24367"
+       x2="506.9783"
+       y1="384.87228"
+       y2="193.57845"
+       gradientTransform="matrix(1.01 0 0 1.01 -2.9161 52.796)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#fcff26"
+         offset="0"
+         id="stop1"
+         style="stop-color:#b900ff;stop-opacity:1;" />
+      <stop
+         stop-color="#e24329"
+         offset="1"
+         id="stop2"
+         style="stop-color:#6444ff;stop-opacity:1;" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="m218.55 69.437c-72.248 71.8-145.36 144.61-216.42 216.44 50.675 50.797 103.48 104.25 154.78 155.64l158.44 0.51885 133.76-133.37-290.41-0.25748-32.199 32.5 243.06 0.51907-67.516 67.512h-131.67l-122.14-122.14 184.54-184.53h132.69l101.67 101.64-158.38-0.19421v-44.745l-77.709 77.713h245.34v44.373l32.746-32.746-0.0712-48.671-130.12-130.18zm160.39 0.02161-0.0308-0.03078z"
+     fill="url(#linearGradient1201)"
+     id="path2"
+     style="fill:url(#linearGradient1201)" />
+</svg>

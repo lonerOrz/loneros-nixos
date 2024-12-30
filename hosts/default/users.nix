@@ -29,6 +29,10 @@ in {
     defaultUserShell = pkgs.zsh;
   };
 
+  import = [
+    ../../programs/fcitx5.nix
+  ];
+
   environment.shells = with pkgs; [zsh];
   environment.systemPackages = with pkgs; [
     fzf
@@ -36,6 +40,14 @@ in {
   ];
 
   programs = {
+    # 在此添加缺失的动态库（这些库会对未打包的程序生效）
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        glibc
+        icu
+      ];
+    };
     # Zsh configuration
     zsh = {
       enable = true;

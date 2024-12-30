@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="22"
+   height="22"
+   viewBox="0 0 22 22"
+   fill="none"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="dialog-cancel.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="24.170195"
+     inkscape:cx="6.0818707"
+     inkscape:cy="11.12941"
+     inkscape:current-layer="svg4" />
+  <g
+     clip-path="url(#clip0_451_3253)"
+     id="g1">
+    <path
+       d="M11 1.375C5.68426 1.375 1.375 5.68428 1.375 11C1.375 16.3157 5.68426 20.625 11 20.625C16.3157 20.625 20.625 16.3157 20.625 11C20.625 5.68428 16.3157 1.375 11 1.375ZM11 2.97917C15.4298 2.97917 19.0208 6.57022 19.0208 11C19.0208 12.9244 18.2957 14.6308 17.166 16.013L5.98698 4.83398C7.36916 3.7042 9.07559 2.97917 11 2.97917ZM4.83398 5.98698L16.013 17.166C14.6308 18.2957 12.9244 19.0208 11 19.0208C6.57022 19.0208 2.97917 15.4298 2.97917 11C2.97917 9.07559 3.7042 7.36916 4.83398 5.98698Z"
+       fill="url(#paint0_linear_451_3253)"
+       stroke="url(#paint1_linear_451_3253)"
+       id="path1"
+       style="stroke:url(#paint1_linear_451_3253);fill:url(#paint0_linear_451_3253)" />
+  </g>
+  <defs
+     id="defs4">
+    <linearGradient
+       id="paint0_linear_451_3253"
+       x1="4.5241251"
+       y1="21.125"
+       x2="21.125"
+       y2="11"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop1"
+         offset="0"
+         style="stop-color:#b900ff;stop-opacity:1;" />
+      <stop
+         offset="1"
+         id="stop2"
+         style="stop-color:#6444ff;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="paint1_linear_451_3253"
+       x1="4.5241251"
+       y1="21.125"
+       x2="21.125"
+       y2="11"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop3"
+         offset="0"
+         style="stop-color:#b900ff;stop-opacity:1;" />
+      <stop
+         offset="1"
+         id="stop4"
+         style="stop-color:#6444ff;stop-opacity:1;" />
+    </linearGradient>
+    <clipPath
+       id="clip0_451_3253">
+      <rect
+         width="22"
+         height="22"
+         fill="white"
+         id="rect4" />
+    </clipPath>
+  </defs>
+</svg>

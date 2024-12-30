@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   fill="none"
+   version="1.1"
+   id="svg11"
+   sodipodi:docname="edit-clear-history.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="true"
+     inkscape:zoom="34.117902"
+     inkscape:cx="8.4852814"
+     inkscape:cy="7.9723542"
+     inkscape:current-layer="svg11">
+    <inkscape:grid
+       id="grid13"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="0.5"
+       spacingy="0.5"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+  </sodipodi:namedview>
+  <path
+     d="M14.0324 1L10.0898 6.02897C9.31144 5.72933 8.33018 5.64619 6.93477 5.66667C5.37268 7.17526 4.34325 7.66073 1.17389 8C1.17389 8 0.782663 8.53465 1.17389 9.16667C1.56512 9.79868 5.17722 15 9.23912 15H10.3913C11.6287 13.3856 12.491 10.6842 12.6956 10.3333C12.9003 9.98242 12.8805 9.58664 12.6956 9.16667C12.5108 8.74669 11.7255 7.2237 11.1677 6.69206L15 1.77018L14.0324 1ZM7.54461 6.95182C9.96763 7.14317 11.3792 9.98242 11.3792 9.98242C11.3792 9.98242 10.8353 12.2033 9.55417 13.7969C5.93882 13.4774 4.69122 12.1306 2.70188 8.96842C4.77139 8.88287 5.90752 8.12207 7.54461 6.95182Z"
+     id="path1"
+     style="fill:url(#paint0_linear)" />
+  <path
+     d="M1.17383 1.58333C1.17383 1.26117 1.43175 1 1.74992 1C2.06808 1 2.326 1.26117 2.326 1.58333C2.326 1.9055 2.06808 2.16667 1.74992 2.16667C1.43175 2.16667 1.17383 1.9055 1.17383 1.58333Z"
+     fill="url(#paint1_linear)"
+     id="path2"
+     style="fill:url(#linearGradient17);fill-opacity:1" />
+  <path
+     d="M4.63035 1.58333C4.63035 1.26117 4.88828 1 5.20644 1C5.52461 1 5.78253 1.26117 5.78253 1.58333C5.78253 1.9055 5.52461 2.16667 5.20644 2.16667C4.88828 2.16667 4.63035 1.9055 4.63035 1.58333Z"
+     id="path3"
+     style="fill:url(#linearGradient15);fill-opacity:1" />
+  <path
+     d="M2.326 4.5C2.326 3.85567 2.84185 3.33333 3.47818 3.33333C4.11451 3.33333 4.63035 3.85567 4.63035 4.5C4.63035 5.14433 4.11451 5.66667 3.47818 5.66667C2.84185 5.66667 2.326 5.14433 2.326 4.5Z"
+     id="path4"
+     style="fill:url(#linearGradient13);fill-opacity:1" />
+  <defs
+     id="defs11">
+    <linearGradient
+       id="linearGradient11"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ff69ff;stop-opacity:1;"
+         offset="0"
+         id="stop12" />
+      <stop
+         style="stop-color:#9033dd;stop-opacity:1;"
+         offset="1"
+         id="stop13" />
+    </linearGradient>
+    <linearGradient
+       id="paint0_linear"
+       x1="8"
+       y1="15"
+       x2="15"
+       y2="8"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop4"
+         offset="0"
+         style="stop-color:#ff69ff;stop-opacity:1;" />
+      <stop
+         offset="1"
+         id="stop5"
+         style="stop-color:#9033dd;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient11"
+       id="linearGradient13"
+       x1="2"
+       y1="6"
+       x2="7.5"
+       y2="2.5"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient11"
+       id="linearGradient15"
+       x1="2"
+       y1="6"
+       x2="12.5"
+       y2="0"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient11"
+       id="linearGradient17"
+       x1="2"
+       y1="6"
+       x2="7.5"
+       y2="2.5"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+</svg>

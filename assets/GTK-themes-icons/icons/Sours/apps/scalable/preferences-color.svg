@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg13"
+   sodipodi:docname="preferences-color-2.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview13"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="24.424647"
+     inkscape:cx="12.466915"
+     inkscape:cy="16.438313"
+     inkscape:current-layer="svg13" />
+  <g
+     clip-path="url(#clip0_637_206)"
+     id="g4"
+     transform="translate(5e-5,4.2158046e-5)">
+    <path
+       d="M 17.912931,10.354753 C 20.453031,11.044753 21.9999,13.24 21.9999,16 c 0,3.3101 -2.6898,5.9999 -5.9999,5.9999 -1.4787,0.0034 -2.9053,-0.5458 -4,-1.5399"
+       stroke="url(#paint0_linear_637_206)"
+       stroke-width="3"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path1"
+       style="stroke:url(#paint0_linear_637_206);stroke-width:2;stroke-dasharray:none"
+       sodipodi:nodetypes="cscc" />
+    <g
+       filter="url(#filter0_d_637_206)"
+       id="g2">
+      <path
+         d="M 13.58,13.79 C 13.85,14.47 14,15.22 14,16 c 0,1.77 -0.77,3.3701 -2,4.46 -1.0947,0.9941 -2.4778742,1.521587 -4,1.5399 -3.30999,0 -6,-2.6898 -6,-5.9999 0,-2.76 1.88001,-5.1 4.41999,-5.79"
+         stroke="url(#paint1_linear_637_206)"
+         stroke-width="3"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         id="path2"
+         style="stroke:url(#paint1_linear_637_206);stroke-width:2;stroke-dasharray:none"
+         sodipodi:nodetypes="csccsc" />
+    </g>
+    <g
+       filter="url(#filter1_d_637_206)"
+       id="g3">
+      <path
+         d="m 12,14 c 3.3137,0 6,-2.6863 6,-6 C 18,4.68629 15.3137,2 12,2 8.68629,2 6,4.68629 6,8 c 0,3.3137 2.68629,6 6,6 z"
+         stroke="url(#paint2_linear_637_206)"
+         stroke-width="3"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         id="path3"
+         style="stroke:url(#paint2_linear_637_206);stroke-width:2;stroke-dasharray:none" />
+    </g>
+  </g>
+  <defs
+     id="defs13">
+    <linearGradient
+       id="paint0_linear_637_206"
+       x1="12.945475"
+       y1="22.999916"
+       x2="22.999901"
+       y2="16.104958"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop8"
+         offset="0"
+         style="stop-color:#e5f230;stop-opacity:1;" />
+      <stop
+         offset="1"
+         id="stop9"
+         style="stop-color:#24d864;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="paint1_linear_637_206"
+       x1="2.8991566"
+       y1="22.999916"
+       x2="15"
+       y2="16.104958"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop10"
+         offset="0"
+         style="stop-color:#00f1fa;stop-opacity:1;" />
+      <stop
+         offset="1"
+         id="stop11"
+         style="stop-color:#006cff;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       id="paint2_linear_637_206"
+       x1="7.1770759"
+       y1="15"
+       x2="19"
+       y2="8"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop12"
+         offset="0"
+         style="stop-color:#b900ff;stop-opacity:1;" />
+      <stop
+         offset="1"
+         id="stop13"
+         style="stop-color:#6444ff;stop-opacity:1;" />
+    </linearGradient>
+    <clipPath
+       id="clip0_637_206">
+      <rect
+         width="24"
+         height="24"
+         fill="white"
+         id="rect13" />
+    </clipPath>
+  </defs>
+</svg>

@@ -11,6 +11,7 @@ ORANGE=$(tput setaf 166)
 YELLOW=$(tput setaf 3)
 RESET=$(tput sgr0)
 
+# NixOS
 if [ -n "$(grep -i nixos </etc/os-release)" ]; then
   echo "Verified this is NixOS."
   echo "-----"
@@ -19,6 +20,7 @@ else
   exit 1
 fi
 
+# git
 if command -v git &>/dev/null; then
   echo "$OK Git is installed, continuing with installation."
   echo "-----"
@@ -50,16 +52,13 @@ printf "\n%.0s" {1..1}
 echo "$NOTE Default options are in brackets []"
 echo "$NOTE Just press enter to select the default"
 sleep 1
-
 echo "-----"
 
+# hostname
 read -rp "$CAT Enter Your New Hostname: [ default ] " hostName
 if [ -z "$hostName" ]; then
   hostName="default"
 fi
-
-echo "-----"
-
 # Create directory for the new hostname, unless the default is selected
 if [ "$hostName" != "default" ]; then
   mkdir -p hosts/"$hostName"
@@ -70,23 +69,23 @@ else
 fi
 echo "-----"
 
+# keyboard layout
 read -rp "$CAT Enter your keyboard layout: [ us ] " keyboardLayout
 if [ -z "$keyboardLayout" ]; then
   keyboardLayout="us"
 fi
-
 sed -i 's/keyboardLayout\s*=\s*"\([^"]*\)"/keyboardLayout = "'"$keyboardLayout"'"/' ./hosts/$hostName/variables.nix
-
 echo "-----"
 
+# username
 installusername=$(echo $USER)
 sed -i 's/username\s*=\s*"\([^"]*\)"/username = "'"$installusername"'"/' ./flake.nix
 
+# hardware(3times)
 echo "$NOTE Generating The Hardware Configuration"
 attempts=0
 max_attempts=3
 hardware_file="./hosts/$hostName/hardware.nix"
-
 while [ $attempts -lt $max_attempts ]; do
   sudo nixos-generate-config --show-hardware-config >"$hardware_file" 2>/dev/null
 
@@ -104,9 +103,9 @@ while [ $attempts -lt $max_attempts ]; do
     fi
   fi
 done
-
 echo "-----"
 
+# git config
 echo "$NOTE Setting Required Nix Settings Then Going To Install"
 git config --global user.name "installer"
 git config --global user.email "installer@gmail.com"
@@ -135,7 +134,6 @@ printf "\n%.0s" {1..2}
 if [ -f "$HOME/.zshrc" ]; then
   cp -b "$HOME/.zshrc" "$HOME/.zshrc-backup" || true
 fi
-
 # Copying the preconfigured zsh themes and profile
 cp -r 'assets/.zshrc' ~/
 
@@ -162,7 +160,6 @@ for theme in "$source_dir"/*; do
     cp "$theme" "$target_dir"
   fi
 done
-
 echo "copy fcitx5 themes complete!"
 
 # GTK Themes and Icons installation
@@ -183,13 +180,12 @@ if git clone --depth 1 https://github.com/JaKooLit/GTK-themes-icons.git; then
 else
   echo "$ERROR Download failed for GTK themes and Icons.."
 fi
-
 echo "$OK Extracted Bibata-Modern-Ice.tar.xz to ~/.icons folder."
 
 echo "-----"
 printf "\n%.0s" {1..2}
 
-# Check for existing configs and copy if does not exist
+# Setting gtk-3.0 Thunar xfce4 config
 for DIR1 in gtk-3.0 Thunar xfce4; do
   DIRPATH=~/.config/$DIR1
   if [ -d "$DIRPATH" ]; then
@@ -199,16 +195,6 @@ for DIR1 in gtk-3.0 Thunar xfce4; do
     cp -r assets/$DIR1 ~/.config/ && echo "Copy $DIR1 completed!" || echo "Error: Failed to copy $DIR1 config files."
   fi
 done
-
-echo "-----"
-printf "\n%.0s" {1..3}
-
-# Clean up
-# GTK Themes and Icons
-if [ -d "GTK-themes-icons" ]; then
-  echo "$NOTE GTK themes and Icons folder exist..deleting..."
-  rm -rf "GTK-themes-icons"
-fi
 
 echo "-----"
 printf "\n%.0s" {1..3}
@@ -236,10 +222,15 @@ fi
 #return to loneros-nixos
 cd ~/loneros-nixos
 
-# copy fastfetch config for NixOS
+# copy fastfetch config, gtk-theme and icons
+echo "$NOTE Cloning fastfetch config, GTK themes and Icons repository..."
 cp -r assets/fastfetch ~/.config/ || true
-
+cp -r assets/GTK-themes-icons/themes/* ~/.themes/ || true
+cp -r assets/GTK-themes-icons/icons/* ~/.icons/ || true
+echo "-----"
 printf "\n%.0s" {1..2}
+
+# Completed !
 if command -v Hyprland &>/dev/null; then
   printf "\n${OK} Yey! Installation Completed.${RESET}\n"
   sleep 2

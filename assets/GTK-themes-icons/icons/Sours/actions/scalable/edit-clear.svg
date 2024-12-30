@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   fill="none"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="edit-clear.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="48.5625"
+     inkscape:cx="8"
+     inkscape:cy="8"
+     inkscape:current-layer="svg2" />
+  <path
+     d="M6.20711 2C6.0745 2 5.94732 2.05268 5.85355 2.14645L0.707031 7.29297V7.29297C0.316549 7.68345 0.316549 8.31655 0.707031 8.70703V8.70703L5.85355 13.8536C5.94732 13.9473 6.0745 14 6.20711 14H15H15.5C15.7761 14 16 13.7761 16 13.5V2.5C16 2.22386 15.7761 2 15.5 2H15H6.20711ZM7.6484 5.35355C7.84366 5.15829 8.16024 5.15829 8.35551 5.35355L9.65817 6.65621C9.85343 6.85147 10.17 6.85147 10.3653 6.65621L11.6679 5.35355C11.8632 5.15829 12.1798 5.15829 12.375 5.35355L12.6582 5.63668C12.8534 5.83194 12.8534 6.14853 12.6582 6.34379L11.3555 7.64645C11.1602 7.84171 11.1602 8.15829 11.3555 8.35355L12.6582 9.65621C12.8534 9.85147 12.8534 10.1681 12.6582 10.3633L12.375 10.6464C12.1798 10.8417 11.8632 10.8417 11.6679 10.6464L10.3653 9.34379C10.17 9.14853 9.85343 9.14853 9.65817 9.34379L8.35551 10.6464C8.16024 10.8417 7.84366 10.8417 7.6484 10.6464L7.36527 10.3633C7.17001 10.1681 7.17001 9.85147 7.36527 9.65621L8.66793 8.35355C8.86319 8.15829 8.86319 7.84171 8.66793 7.64645L7.36527 6.34379C7.17001 6.14853 7.17001 5.83194 7.36527 5.63668L7.6484 5.35355Z"
+     fill="url(#paint0_linear)"
+     id="path1"
+     style="fill:url(#paint0_linear)" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="paint0_linear"
+       x1="10.603555"
+       y1="2"
+       x2="6.2071099"
+       y2="14"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#24d864"
+         id="stop1" />
+      <stop
+         offset="1"
+         stop-color="#e5f230"
+         id="stop2" />
+    </linearGradient>
+  </defs>
+</svg>

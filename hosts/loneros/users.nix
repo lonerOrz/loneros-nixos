@@ -32,13 +32,14 @@ in {
     defaultUserShell = pkgs.fish;
   };
 
+  # 自定义软件安装
   imports = [
     ../../programs/nh.nix
     ../../programs/docker.nix
     ../../programs/fcitx5.nix
     ../../programs/mpd.nix
     ../../programs/rclone.nix
-    ../../programs/spotify.nix
+    ../../programs/spicetify.nix
   ];
 
   # 允许过期不维护的包
@@ -69,16 +70,15 @@ in {
     telegram-desktop
   ];
 
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      # 在此添加缺失的动态库（这些库会对未打包的程序生效）
-      glibc
-      icu
-    ];
-  };
-
   programs = {
+    # 在此添加缺失的动态库（这些库会对未打包的程序生效）
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        glibc
+        icu
+      ];
+    };
     fish.enable = true;
     starship.enable = true;
   };

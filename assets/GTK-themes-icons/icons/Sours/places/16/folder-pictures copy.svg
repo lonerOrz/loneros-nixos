@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   fill="none"
+   version="1.1"
+   id="svg15791"
+   sodipodi:docname="folder-pictures.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview15793"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="29.5"
+     inkscape:cx="6.6949153"
+     inkscape:cy="9.1186441"
+     inkscape:current-layer="svg15791" />
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M9.79165 4.954C9.79165 4.262 10.3536 3.7 11.046 3.7C11.738 3.7 12.3 4.262 12.3 4.954C12.3 5.64633 11.738 6.20833 11.046 6.20833C10.3536 6.20833 9.79165 5.64633 9.79165 4.954ZM2.26665 9.39767L5.50898 6.693C6.11631 6.186 7.06365 6.22933 7.62265 6.789L9.04498 8.21333C9.32465 8.493 9.83031 8.561 10.1736 8.36467L13.4223 6.508C13.594 6.41 13.7333 6.16967 13.7333 5.972V3.87933C13.7333 3.286 13.2516 2.804 12.6583 2.804H3.34165C2.74831 2.804 2.26665 3.286 2.26665 3.87933V9.39767ZM13.7333 9.61267C13.7333 9.217 14.0543 8.896 14.45 8.896C14.8456 8.896 15.1666 9.217 15.1666 9.61267V12.8377C15.1666 13.8263 14.364 14.6293 13.375 14.6293H2.62498C1.63598 14.6293 0.833313 13.8263 0.833313 12.8377V3.16233C0.833313 2.17367 1.63598 1.37067 2.62498 1.37067H13.375C14.364 1.37067 15.1666 2.17367 15.1666 3.16233V6.44467C15.1666 6.84033 14.888 7.32067 14.5443 7.517L10.5596 9.79367C9.87265 10.186 8.86065 10.051 8.30098 9.492L7.03065 8.22333C6.75098 7.944 6.27698 7.92233 5.97298 8.17567L2.72531 10.881L2.26665 11.2607V12.121C2.26665 12.714 2.74831 13.196 3.34165 13.196H12.6583C13.2516 13.196 13.7333 12.714 13.7333 12.121V9.61267Z"
+     fill="url(#paint0_linear)"
+     id="path15782"
+     style="fill:url(#paint0_linear)" />
+  <defs
+     id="defs15789">
+    <linearGradient
+       id="paint0_linear"
+       x1="0.83331299"
+       y1="12.8377"
+       x2="15.1666"
+       y2="3.1623299"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#00ffff"
+         id="stop15784"
+         offset="0"
+         style="stop-color:#00f1fa;stop-opacity:1;" />
+      <stop
+         offset="1"
+         stop-color="#5558ff"
+         id="stop15786" />
+    </linearGradient>
+  </defs>
+</svg>

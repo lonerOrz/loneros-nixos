@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="22"
+   height="22"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="battery-missing.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="28.681818"
+     inkscape:cx="10.825674"
+     inkscape:cy="10.721078"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient4"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ff69ff;stop-opacity:1;"
+         offset="0"
+         id="stop4" />
+      <stop
+         style="stop-color:#9033dd;stop-opacity:1;"
+         offset="1"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ff69ff;stop-opacity:1;"
+         offset="0"
+         id="stop2" />
+      <stop
+         style="stop-color:#9033dd;stop-opacity:1;"
+         offset="1"
+         id="stop1" />
+    </linearGradient>
+    <style
+       id="current-color-scheme"
+       type="text/css">
+   .ColorScheme-Text { color:#dddddd; } .ColorScheme-Highlight { color:#4285f4; }
+  </style>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="1"
+       y1="18"
+       x2="10.5"
+       y2="6"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4"
+       id="linearGradient3"
+       x1="8.8369999"
+       y1="13.670377"
+       x2="12.162"
+       y2="12.000047"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     transform="translate(-1,-1)"
+     id="g2">
+    <path
+       d="m10.496 9c0.493 0 0.894 0.147 1.203 0.44 0.31 0.287 0.463 0.655 0.463 1.105 0 0.195-0.051 0.393-0.154 0.594s-0.194 0.343-0.276 0.43a6.467 6.467 0 0 1-0.326 0.318l-0.039 0.04c-0.33 0.299-0.496 0.595-0.496 0.893v0.327h-0.766v-0.383c0-0.244 0.052-0.452 0.155-0.625 0.103-0.18 0.285-0.389 0.545-0.627 0.146-0.136 0.249-0.236 0.308-0.301a1.22 1.22 0 0 0 0.188-0.283 0.82 0.82 0 0 0 0.097-0.383c0-0.25-0.081-0.45-0.244-0.602-0.157-0.151-0.376-0.228-0.658-0.228-0.466 0-0.785 0.26-0.959 0.781l-0.7-0.293a2.05 2.05 0 0 1 0.587-0.83c0.282-0.25 0.638-0.373 1.072-0.373zm-8e-3 4.894c0.157 0 0.288 0.054 0.39 0.163 0.11 0.108 0.163 0.238 0.163 0.39s-0.054 0.282-0.162 0.39c-0.103 0.11-0.234 0.163-0.39 0.163a0.543 0.543 0 0 1-0.553-0.553 0.541 0.541 0 0 1 0.553-0.553z"
+       class="ColorScheme-Text"
+       fill="currentColor"
+       id="path1"
+       style="fill:url(#linearGradient3)" />
+    <path
+       d="M 4,6 C 2.892,6 1,7.892 1,9 v 6 c 0,1.108 1.892,3 3,3 h 13 c 1.108,0 3,-1.892 3,-3 V 9 C 20,7.892 18.108,6 17,6 Z m 0,2 h 13 c 0.554,0 1,0.446 1,1 v 6 c 0,0.554 -0.446,1 -1,1 H 4 C 3.446,16 3,15.554 3,15 V 9 C 3,8.446 3.446,8 4,8 Z m 17,2 v 4 c 1.104569,0 2,-0.895431 2,-2 0,-1.104569 -0.895431,-2 -2,-2 z"
+       class="ColorScheme-Text"
+       fill="currentColor"
+       id="path2"
+       sodipodi:nodetypes="ssssssssssssssssssccsc"
+       style="fill:url(#linearGradient2)" />
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   fill="none"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="preferences-desktop-effects.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="16.125"
+     inkscape:cx="15.906977"
+     inkscape:cy="13.643411"
+     inkscape:current-layer="svg2" />
+  <path
+     d="M5.78571 3L4.79911 4.79911L3 5.78571L4.79911 6.77232L5.78571 8.57143L6.77232 6.77232L8.57143 5.78571L6.77232 4.79911L5.78571 3ZM13.2143 3L12.2277 4.79911L10.4286 5.78571L12.2277 6.77232L13.2143 8.57143L14.2009 6.77232L16 5.78571L14.2009 4.79911L13.2143 3ZM24.0687 3.35355C23.8734 3.15829 23.5568 3.15829 23.3616 3.35355L3.35355 23.3616C3.15829 23.5568 3.15829 23.8734 3.35355 24.0687L7.93132 28.6464C8.12659 28.8417 8.44317 28.8417 8.63843 28.6464L28.6464 8.63843C28.8417 8.44317 28.8417 8.12659 28.6464 7.93132L24.0687 3.35355ZM23.3613 5.99463C23.5567 5.79917 23.8735 5.79924 24.0688 5.99477L26.0029 7.93153C26.1978 8.12675 26.1978 8.44299 26.0029 8.63819L20.5321 14.1153C20.3369 14.3108 20.0202 14.3109 19.8248 14.1155L17.8878 12.1785C17.6925 11.9833 17.6925 11.6668 17.8877 11.4715L23.3613 5.99463ZM9.5 8.57143L8.51339 10.3705L6.71429 11.3571L8.51339 12.3438L9.5 14.1429L10.4866 12.3438L12.2857 11.3571L10.4866 10.3705L9.5 8.57143Z"
+     fill="url(#paint0_linear)"
+     id="path1"
+     style="fill:url(#paint0_linear)" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="paint0_linear"
+       x1="1.8604652"
+       y1="30.139534"
+       x2="25.444038"
+       y2="18.62512"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#b900ff"
+         id="stop1" />
+      <stop
+         offset="1"
+         stop-color="#6444ff"
+         id="stop2" />
+    </linearGradient>
+  </defs>
+</svg>

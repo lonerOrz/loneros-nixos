@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Capa_1"
+   enable-background="new 0 0 512 512"
+   height="512"
+   viewBox="0 0 512 512"
+   width="512"
+   version="1.1"
+   sodipodi:docname="camera-symbolic.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.6542969"
+     inkscape:cx="252.37308"
+     inkscape:cy="333.37426"
+     inkscape:current-layer="Capa_1" />
+  <style
+    type="text/css"
+    id="current-color-scheme">.ColorScheme-Text{color:#dddddd;}.ColorScheme-Background{color:#1a1a1a;}.ColorScheme-Highlight{color:#aaaaac30;}.ColorScheme-ViewText{color:#dddddd;}.ColorScheme-ViewBackground{color:#1a1a1a01;}.ColorScheme-ViewHover{color:#aaaaac30;}.ColorScheme-ViewFocus{color:#aaaaac30;}.ColorScheme-ButtonText{color:#bbbbbb;}.ColorScheme-ButtonBackground{color:#aaaaac20;}.ColorScheme-ButtonHover{color:#aaaaac30;}.ColorScheme-ButtonFocus{color:#aaaaac30;}.ColorScheme-NegativeText { color: #8500ff; } </style>
+  <linearGradient
+     id="SVGID_1_"
+     gradientUnits="userSpaceOnUse"
+     x1="83.315674"
+     x2="512"
+     y1="451"
+     y2="286">
+    <stop
+       offset="0"
+       stop-color="#b900ff"
+       id="stop1" />
+    <stop
+       offset="1"
+       stop-color="#6444ff"
+       id="stop2" />
+  </linearGradient>
+  <g
+     id="g3">
+    <g
+       id="g2">
+      <path
+        class="ColorScheme-Text"
+         d="M 497,121 H 415.258 L 389.418,69.291 C 386.869,64.208 381.684,61 376,61 H 256 c -5.684,0 -10.869,3.208 -13.418,8.291 L 216.742,121 H 90 V 106 C 90,97.709 83.291,91 75,91 66.709,91 60,97.709 60,106 v 15 H 15 c -8.291,0 -15,6.709 -15,15 v 300 c 0,8.291 6.709,15 15,15 h 482 c 8.291,0 15,-6.709 15,-15 V 136 c 0,-8.291 -6.709,-15 -15,-15 z M 30,211 h 75 c 8.262,0 15,6.724 15,15 v 120 c 0,8.276 -6.738,15 -15,15 H 30 Z M 482,421 H 316 30 v -30 h 75 c 24.814,0 45,-20.186 45,-45 V 226 c 0,-24.814 -20.186,-45 -45,-45 H 30 v -30 h 196 c 5.684,0 10.869,-3.208 13.418,-8.291 L 265.258,91 h 101.484 l 25.84,51.709 C 395.131,147.792 400.316,151 406,151 h 76 z M 451,281.1 c 0,-74.443 -60.557,-135 -135,-135 -74.443,0 -135,60.557 -135,135 0,74.443 60.557,135 135,135 74.443,0 135,-60.557 135,-135 z m -135,105 c -57.891,0 -105,-47.109 -105,-105 0,-57.891 47.109,-105 105,-105 57.891,0 105,47.109 105,105 0,57.891 -47.109,105 -105,105 z m 0,-180 c -41.367,0 -75,33.647 -75,75 0,41.353 33.633,75 75,75 41.367,0 75,-33.647 75,-75 0,-41.353 -33.633,-75 -75,-75 z m 0,120 c -24.814,0 -45,-20.186 -45,-45 0,-24.814 20.186,-45 45,-45 24.814,0 45,20.186 45,45 0,24.814 -20.186,45 -45,45 z"
+         id="path2"
+         style="fill:currentColor;fill-opacity:1"
+         sodipodi:nodetypes="sccsscccssscsssssssscssssccccccssssccsccccsccssssssssssssssssssss" />
+    </g>
+  </g>
+</svg>

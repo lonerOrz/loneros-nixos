@@ -22,7 +22,6 @@ in {
   imports = [
     ./hardware.nix
     ./users.nix
-    ../../programs/docker.nix
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
@@ -33,8 +32,9 @@ in {
 
   # BOOT related stuff
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest; # Kernel
-
+    #kernelPackages = pkgs.linuxPackages_latest; # Kernel
+    kernelPackages = pkgs.linuxPackages_zen;
+    
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
       "systemd.mask=dev-tpmrm0.device" #this is to mask that stupid 1.5 mins systemd bug
@@ -62,8 +62,8 @@ in {
     loader.systemd-boot.enable = false;
 
     loader.efi = {
-    efiSysMountPoint = "/boot"; #this is if you have separate /efi partition
-    canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot"; #this is if you have separate /efi partition
+      canTouchEfiVariables = true;
     };
 
     #loader.timeout = 1;
@@ -74,8 +74,8 @@ in {
       devices = ["nodev"];
       efiSupport = true;
       gfxmodeBios = "auto";
-      useOSProber = true;
       memtest86.enable = true;
+      useOSProber = true;
       extraGrubInstallArgs = ["--bootloader-id=${host}"];
       configurationName = "${host}";
     };
@@ -123,6 +123,7 @@ in {
 
   # networking
   networking.networkmanager.enable = true;
+  networking.networkmanager.dns = "systemd-resolved";
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
 
@@ -159,7 +160,7 @@ in {
     firefox.enable = true;
     git.enable = true;
     nm-applet.indicator = true;
-    #neovim.enable = true;
+    neovim.enable = true;
 
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
@@ -195,8 +196,21 @@ in {
     mutableUsers = true;
   };
 
-  environment.systemPackages =
-    (with pkgs; [
+  nixpkgs.overlays = [
+    # see https://github.com/NixOS/nixpkgs/pull/368470#pullrequestreview-2524454758
+    (final: prev: {
+      dmraid = prev.dmraid.overrideAttrs (oA: {
+        patches = oA.patches ++ [
+          (prev.fetchpatch2 {
+            url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f298cd74e67a841289fd0f10ef4ee85cfbbc4133/pkgs/os-specific/linux/dmraid/fix-dmevent_tool.patch";
+            hash = "sha256-MmAzpdM3UNRdOk66CnBxVGgbJTzJK43E8EVBfuCFppc=";
+          })
+        ];
+      });
+    })
+  ];
+
+  environment.systemPackages = ( with pkgs; [
       # System Packages
       baobab
       btrfs-progs
@@ -214,7 +228,6 @@ in {
       libnotify
       openssl #required by Rainbow borders
       pciutils
-      vim
       wget
       xdg-user-dirs
       xdg-utils
@@ -224,7 +237,11 @@ in {
       #ranger
 
       # Hyprland Stuff
-      ags
+      #ags
+      (ags.overrideAttrs (oldAttrs: {
+        inherit (oldAttrs) pname;
+        version = "1.8.2";
+      }))
       btop
       brightnessctl # for brightness control
       cava
@@ -266,7 +283,7 @@ in {
       yt-dlp
 
       #waybar  # if wanted experimental next line
-      #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+      (pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ])
     ++ [
       python-packages
@@ -299,6 +316,9 @@ in {
 
   # Services to start
   services = {
+    # DNS 解析服务
+    resolved.enable = true;
+    
     xserver = {
       enable = false;
       xkb = {

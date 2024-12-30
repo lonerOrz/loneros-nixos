@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   id="svg7384"
+   height="16"
+   width="16"
+   version="1.1"
+   sodipodi:docname="input-dialpad-symbolic.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ff69ff;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#9033dd;stop-opacity:0.94117647;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="247"
+       y1="462"
+       x2="255"
+       y2="454.5"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,0.5)" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="34.117902"
+     inkscape:cx="4.7922055"
+     inkscape:cy="6.3896074"
+     inkscape:current-layer="svg7384" />
+  <metadata
+     id="metadata90">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Gnome Symbolic Icon Theme</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <title
+     id="title9167">Gnome Symbolic Icon Theme</title>
+  <g
+     id="layer10"
+     transform="translate(-241,-447)">
+    <path
+       id="rect8806"
+       style="color:#000000;fill:url(#linearGradient2)"
+       d="m 244.5,447.5 c 0,0 -1.5,0 -1.5,1.5 v 9 c 0,1.5 1.5,1.5 1.5,1.5 h 1.5 v 2 c 0,0.554 0.446,1 1,1 h 4 c 0.554,0 1,-0.446 1,-1 v -2 h 1.5 c 1.5,0 1.5,-1.5 1.5,-1.5 v -9 c 0,-1.5 -1.5,-1.5 -1.5,-1.5 z m 0.5,2 h 2 v 2 h -2 z m 3,0 h 2 v 2 h -2 z m 3,0 h 2 v 2 h -2 z m -6,3 h 2 v 2 h -2 z m 3,0 h 2 v 2 h -2 z m 3,0 h 2 v 2 h -2 z m -6,3 h 2 v 2 h -2 z m 3,0 h 2 v 2 h -2 z m 3,0 h 2 v 2 h -2 z m -3,3 h 2 v 2 h -2 z" />
+  </g>
+</svg>
