@@ -17,7 +17,6 @@ in
       extraGroups = [
         "networkmanager"
         "wheel"
-        "libvirtd"
         "scanner"
         "lp"
         "video"
@@ -42,6 +41,8 @@ in
     ../../programs/mpd.nix
     ../../programs/rclone.nix
     ../../programs/spicetify.nix
+    ../../programs/virtualbox.nix
+    ../../programs/virt-manager.nix
   ];
 
   # 允许过期不维护的包

@@ -180,8 +180,6 @@ in
       tumbler
     ];
 
-    virt-manager.enable = false;
-
     #steam = {
     #  enable = true;
     #  gamescopeSession.enable = true;
@@ -509,7 +507,6 @@ in
   };
 
   # Virtualization / Containers
-  # virtualisation.libvirtd.enable = false;
   # virtualisation.podman = {
   #   enable = false;
   #   dockerCompat = false;

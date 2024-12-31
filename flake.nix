@@ -9,7 +9,7 @@
     };
     #wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
     home-manager = {
-      url = "github:nix-community/home-manager/master";  # or release-24.11
+      url = "github:nix-community/home-manager/master"; # or release-24.11
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
