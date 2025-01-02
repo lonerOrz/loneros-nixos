@@ -41,7 +41,7 @@ in
     ../../programs/mpd.nix
     ../../programs/rclone.nix
     ../../programs/spicetify.nix
-    ../../programs/virtualbox.nix
+    #../../programs/virtualbox.nix
     ../../programs/virt-manager.nix
   ];
 
@@ -71,6 +71,7 @@ in
     nur.repos.xddxdd.baidunetdisk
     translate-shell
     telegram-desktop
+    tlrc
   ];
 
   programs = {

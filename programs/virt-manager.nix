@@ -35,6 +35,15 @@
   
   services.spice-vdagentd.enable = true;
 
+  # 启用 UEFI 固件支持
+  systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
+
+  # 支持模拟的不同架构
+  #boot.binfmt.emulatedSystems = [
+  #  "aarch64-linux"
+  #  "riscv64-linux"
+  #];
+
   #dconf.settings = {
   #  "org/virt-manager/virt-manager/connections" = {
   #    autoconnect = [ "qemu:///system" ];
