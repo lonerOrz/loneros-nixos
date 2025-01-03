@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +29,7 @@
     inputs@{
       self,
       nixpkgs,
+      nixpkgs-stable,
       nur,
       home-manager,
       flake-utils,
@@ -45,10 +47,12 @@
         };
       };
 
+      lib = nixpkgs.lib;
+
     in
     {
       nixosConfigurations = {
-        "${host}" = nixpkgs.lib.nixosSystem rec {
+        "${host}" = lib.nixosSystem rec {
           specialArgs = {
             inherit system;
             inherit inputs;
