@@ -6,7 +6,7 @@
   ...
 }:
 let
-  fcitx5-pinyin-zhwiki = pkgs.callPackage ../pkgs/fcitx5-pinyin-zhwiki { };
+  fcitx5-pinyin-zhwiki = pkgs.callPackage ../pkgs/fcitx5-pinyin-zhwiki.nix { inherit lib; };
 in
 {
   i18n = {
@@ -16,7 +16,6 @@ in
       "zh_CN.UTF-8/UTF-8"
     ];
     inputMethod = {
-      #enabled = "fcitx5";
       type = "fcitx5";
       enable = true;
 

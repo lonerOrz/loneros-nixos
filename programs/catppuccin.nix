@@ -1,0 +1,4 @@
+{}:
+{
+  catppuccin.grub.eaable = true;
+}
