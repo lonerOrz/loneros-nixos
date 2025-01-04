@@ -8,6 +8,6 @@
     flavor = "mocha";
 
     tty.enable = true;
-    grub.enable = true;
+    grub.enable = false;
   };
 }
