@@ -88,8 +88,6 @@ in
       configurationName = "${host}";
     };
 
-    # Bootloader GRUB theme, configure below
-
     ## -end of BOOTLOADERS----- ##
 
     # Make /tmp a tmpfs

@@ -16,6 +16,7 @@ in
   programs.home-manager.enable = true;
 
   imports = [
+    #../../programs/home/catppuccin.nix
   ];
 
   programs = {

@@ -7,7 +7,6 @@
     #enable = true;
     flavor = "mocha";
 
-    tty.enable = true;
-    grub.enable = true;
+    obs.enable = true;
   };
 }

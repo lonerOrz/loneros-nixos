@@ -76,12 +76,17 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
-              home-manager.users.${username} = import ./hosts/${host}/home.nix;
+              home-manager.users.${username} ={
+                imports = [
+                  ./hosts/${host}/home.nix
+                  inputs.catppuccin.nixosModules.catppuccin
+                ];
+              }; 
             }
           ];
         };
       };
-      # Standalone installi home-manager
+      # Standalone install home-manager
       #homeConfigurations = {
       #  "${username}" = home-manager.lib.homeManagerConfiguration {
       #    extraSpecialArgs = {

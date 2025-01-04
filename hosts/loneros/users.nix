@@ -43,6 +43,7 @@ in
     ../../programs/spicetify.nix
     #../../programs/virtualbox.nix
     ../../programs/virt-manager.nix
+    ../../programs/catppuccin.nix
   ];
 
   # 允许过期不维护的包
