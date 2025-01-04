@@ -56,6 +56,9 @@ in
         "usb_storage"
         "usbhid"
         "sd_mod"
+        #"hid_cherry"
+        #"hid_logitech_hidpp"
+        #"hid_logitech_dj"
       ];
       kernelModules = [ ];
     };
@@ -86,6 +89,15 @@ in
       useOSProber = true;
       extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
+      extraConfig = ''
+        insmod kbd
+        set keymap=us
+      '';
+      extraEntries = ''
+        menuentry "UEFI Firmware Settings" {
+          fwsetup
+        }
+      '';
     };
 
     ## -end of BOOTLOADERS----- ##
@@ -111,7 +123,7 @@ in
 
   # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
   distro-grub-themes = {
-    enable = true;
+    enable = false;
     theme = "nixos";
   };
 
