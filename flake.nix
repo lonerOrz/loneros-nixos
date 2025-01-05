@@ -40,7 +40,7 @@
       host = "loneros";
       username = "loner";
 
-      pkgs = import nixpkgs {
+      stable = import nixpkgs-stable {
         inherit system;
         config = {
           allowUnfree = true;
@@ -58,6 +58,7 @@
             inherit inputs;
             inherit username;
             inherit host;
+            inherit stable;
           };
           modules = [
             ./hosts/${host}/config.nix
@@ -72,6 +73,7 @@
                 inherit username;
                 inherit inputs;
                 inherit host;
+                inherit stable;
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;

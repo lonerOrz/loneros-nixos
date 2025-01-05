@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  stable,
   username,
   host,
   ...
@@ -17,11 +18,11 @@ in
   programs.home-manager.enable = true;
 
   imports = [
-    ../../programs/home/catppuccin.nix
+    ../../programs/home/obs.nix
   ];
 
   programs = {
-    # Install & Configure Git
+    # Configure Git
     git = {
       enable = true;
       userName = "${gitUsername}";

@@ -1,5 +1,6 @@
 {
   pkgs,
+  stable,
   inputs,
   system,
   username,
@@ -62,7 +63,7 @@ in
     spotify
     qbittorrent
     discord
-    obs-studio
+    #obs-studio
     localsend
     starship
     go-musicfox
