@@ -7,6 +7,7 @@
 {
   #programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["${username}"];
+  users.groups.kvm.members = ["${username}"];
   
   environment.systemPackages = with pkgs; [
     qemu_kvm

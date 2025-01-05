@@ -74,6 +74,7 @@ in
     translate-shell
     telegram-desktop
     tlrc
+    thunderbird
   ];
 
   programs = {
