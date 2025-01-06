@@ -70,11 +70,11 @@ in
     inputs.zen-browser.packages."${system}".default
     dos2unix
     zed-editor
-    nur.repos.xddxdd.baidunetdisk
+    #nur.repos.xddxdd.baidunetdisk
+    motrix
     translate-shell
     telegram-desktop
     tlrc
-    thunderbird
   ];
 
   programs = {
