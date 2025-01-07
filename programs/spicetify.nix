@@ -17,22 +17,34 @@ in
 
   programs.spicetify = {
     enable = true;
-    theme = lib.mkForce spicePkgs.themes.text;
 
+    theme = lib.mkForce spicePkgs.themes.text;
     colorScheme = "Nord";
 
     enabledExtensions = with spicePkgs.extensions; [
+      autoSkipVideo # 自动跳过视频
       playlistIcons # 播放列表图标
       powerBar # 搜索栏
-      lastfm # last.fm
+      #lastfm # last.fm
       historyShortcut # 历史
       beautifulLyrics # 歌词
       volumePercentage # 音量百分比
       hidePodcasts # 隐藏播客
       adblock # 广告拦截
       fullAppDisplay # 全屏显示封面
-      popupLyrics # 弹出歌词
+      #popupLyrics # 弹出歌词
       shuffle # 随机播放
     ];
+
+    enabledCustomApps = with spicePkgs.apps; [
+      lyricsPlus
+      #reddit
+    ];
+
+    enabledSnippets = with spicePkgs.snippets; [
+      rotatingCoverart # 旋转艺术封面
+      pointer
+    ];
+
   };
 }
