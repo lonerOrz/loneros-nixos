@@ -45,6 +45,7 @@ in
     #../../programs/virtualbox.nix
     ../../programs/virt-manager.nix
     ../../programs/catppuccin.nix
+    ../../programs/flatpak.nix
   ];
 
   # 允许过期不维护的包
@@ -75,6 +76,7 @@ in
     translate-shell
     telegram-desktop
     tlrc
+    kdenlive
   ];
 
   programs = {

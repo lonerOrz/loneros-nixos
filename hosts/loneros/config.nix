@@ -85,7 +85,7 @@ in
       devices = [ "nodev" ];
       efiSupport = true;
       gfxmodeBios = "auto";
-      memtest86.enable = true;
+      #memtest86.enable = true;
       useOSProber = true;
       extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
@@ -390,7 +390,6 @@ in
     nfs.server.enable = false;
 
     openssh.enable = true;
-    flatpak.enable = false;
 
     blueman.enable = true;
 
@@ -424,13 +423,6 @@ in
     #  dataDir = "/home/${username}";
     #  configDir = "/home/${username}/.config/syncthing";
     #};
-  };
-
-  systemd.services.flatpak-repo = {
-    path = [ pkgs.flatpak ];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
   };
 
   # zram

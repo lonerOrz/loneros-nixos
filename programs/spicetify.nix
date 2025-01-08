@@ -18,13 +18,13 @@ in
   programs.spicetify = {
     enable = true;
 
-    theme = lib.mkForce spicePkgs.themes.text;
-    colorScheme = "Nord";
+    theme = lib.mkForce spicePkgs.themes.ziro;
+    colorScheme = "";
 
     enabledExtensions = with spicePkgs.extensions; [
       autoSkipVideo # 自动跳过视频
       playlistIcons # 播放列表图标
-      powerBar # 搜索栏
+      #powerBar # 搜索栏
       #lastfm # last.fm
       historyShortcut # 历史
       beautifulLyrics # 歌词
@@ -38,6 +38,7 @@ in
 
     enabledCustomApps = with spicePkgs.apps; [
       lyricsPlus
+      marketplace
       #reddit
     ];
 
