@@ -168,9 +168,9 @@ in
   programs = {
     hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+      #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
+      portalPackage = pkgs.xdg-desktop-portal-hyprland;
+        #inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
       xwayland.enable = true;
     };
 
@@ -279,16 +279,20 @@ in
       libsForQt5.qtstyleplugin-kvantum # kvantum
       networkmanagerapplet
       nwg-look # requires unstable channel
-      nvtopPackages.full
+      #nvtopPackages.full
+      nvtopPackages.panthor
       pamixer
       pavucontrol
       playerctl
       polkit_gnome
       pyprland
       libsForQt5.qt5ct
-      qt6ct
-      qt6.qtwayland
-      qt6Packages.qtstyleplugin-kvantum # kvantum
+      #qt6ct
+      #qt6.qtwayland
+      #qt6Packages.qtstyleplugin-kvantum # kvantum
+      kdePackages.qt6ct
+      kdePackages.qtwayland
+      kdePackages.qtstyleplugin-kvantum #kvantum
       rofi-wayland
       slurp
       swappy
@@ -298,6 +302,7 @@ in
       wallust
       wl-clipboard
       wlogout
+      xarchiver
       yad
       yt-dlp
 
@@ -318,8 +323,9 @@ in
     jetbrains-mono
     font-awesome
     terminus_font
-    #(nerdfonts.override {fonts = ["JetBrainsMono"];})
-    nerd-fonts.jetbrains-mono
+    #(nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
+    nerd-fonts.jetbrains-mono # unstable
+    nerd-fonts.fira-code # unstable
   ];
 
   # Extra Portal Configuration
@@ -367,6 +373,7 @@ in
     gvfs.enable = true;
     tumbler.enable = true;
 
+    pulseaudio.enable = false;
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -462,10 +469,6 @@ in
       };
     };
   };
-
-  # Enable sound with pipewire.
-  #hardware.pulseaudio.enable = false;
-  services.pulseaudio.enable = false;
 
   # Security / Polkit
   security.rtkit.enable = true;

@@ -15,7 +15,7 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     catppuccin.url = "github:catppuccin/nix";
-    hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+    #hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
