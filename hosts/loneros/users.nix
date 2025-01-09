@@ -62,7 +62,8 @@ in
     neovim
     yazi
     spotify
-    qbittorrent
+    #qbittorrent
+    qbittorrent-enhanced # qbee
     discord
     #obs-studio
     localsend
