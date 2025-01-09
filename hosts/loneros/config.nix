@@ -213,8 +213,8 @@ in
     mutableUsers = true;
   };
 
-  # dmraid 补丁
-  #nixpkgs.overlays = [
+  # 补丁
+  nixpkgs.overlays = [
   # see https://github.com/NixOS/nixpkgs/pull/368470#pullrequestreview-2524454758
   #  (final: prev: {
   #    dmraid = prev.dmraid.overrideAttrs (oA: {
@@ -226,7 +226,20 @@ in
   #      ];
   #    });
   #  })
-  #];
+  # xdg-desktop-portal-wlr
+  #  (final: prev: {
+  #    xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (oA: {
+  #      src = prev.fetchFromGitHub {
+  #        owner = "Enovale";
+  #        repo = "xdg-desktop-portal-wlr";
+  #        rev = "11817f9";  # 使用指定的修复版
+  #        sha256 = "0j8sf13c060l37cwvn4m55fdgm18lxjba4hcjqylrq5hgcxkjfsf";
+  #      };
+  #      nativeBuildInputs = [ pkgs.meson pkgs.ninja pkgs.cmake ];
+  #      buildInputs = [ pkgs.libxkbcommon pkgs.pkg-config pkgs.pipewire ];
+  #    });
+  #  })
+  ];
 
   environment.systemPackages =
     (with pkgs; [
@@ -331,7 +344,7 @@ in
   # Extra Portal Configuration
   xdg.portal = {
     enable = true;
-    wlr.enable = false;
+    wlr.enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
     ];

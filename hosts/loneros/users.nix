@@ -55,6 +55,7 @@ in
 
   environment.shells = with pkgs; [ fish ];
   environment.systemPackages = with pkgs; [
+    # software
     fzf
     chafa
     bat
@@ -78,6 +79,7 @@ in
     telegram-desktop
     tlrc
     kdenlive
+    rustdesk-flutter
   ];
 
   programs = {
