@@ -77,7 +77,6 @@ in
     motrix
     translate-shell
     telegram-desktop
-    tlrc
     kdenlive
     rustdesk-flutter
   ];
