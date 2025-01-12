@@ -168,9 +168,7 @@ in
   programs = {
     hyprland = {
       enable = true;
-      #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
-        #inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+      portalPackage = pkgs.xdg-desktop-portal-hyprland; # 指定门户实现
       xwayland.enable = true;
     };
 
@@ -215,30 +213,7 @@ in
 
   # 补丁
   nixpkgs.overlays = [
-  # see https://github.com/NixOS/nixpkgs/pull/368470#pullrequestreview-2524454758
-  #  (final: prev: {
-  #    dmraid = prev.dmraid.overrideAttrs (oA: {
-  #      patches = oA.patches ++ [
-  #        (prev.fetchpatch2 {
-  #          url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f298cd74e67a841289fd0f10ef4ee85cfbbc4133/pkgs/os-specific/linux/dmraid/fix-dmevent_tool.patch";
-  #          hash = "sha256-MmAzpdM3UNRdOk66CnBxVGgbJTzJK43E8EVBfuCFppc=";
-  #        })
-  #      ];
-  #    });
-  #  })
-  # xdg-desktop-portal-wlr
-  #  (final: prev: {
-  #    xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (oA: {
-  #      src = prev.fetchFromGitHub {
-  #        owner = "Enovale";
-  #        repo = "xdg-desktop-portal-wlr";
-  #        rev = "11817f9";  # 使用指定的修复版
-  #        sha256 = "0j8sf13c060l37cwvn4m55fdgm18lxjba4hcjqylrq5hgcxkjfsf";
-  #      };
-  #      nativeBuildInputs = [ pkgs.meson pkgs.ninja pkgs.cmake ];
-  #      buildInputs = [ pkgs.libxkbcommon pkgs.pkg-config pkgs.pipewire ];
-  #    });
-  #  })
+    (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
 
   environment.systemPackages =
