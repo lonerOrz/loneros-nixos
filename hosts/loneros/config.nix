@@ -64,9 +64,9 @@ in
     };
 
     # Needed For Some Steam Games
-    #kernel.sysctl = {
-    #  "vm.max_map_count" = 2147483642;
-    #};
+    kernel.sysctl = {
+      "vm.max_map_count" = 2147483642;
+    };
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
     # Bootloader SystemD
@@ -188,12 +188,12 @@ in
       tumbler
     ];
 
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
 
     xwayland.enable = true;
 
@@ -211,7 +211,7 @@ in
     mutableUsers = true;
   };
 
-  # 补丁
+  # 添加补丁
   nixpkgs.overlays = [
     (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
