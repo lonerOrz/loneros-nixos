@@ -18,7 +18,8 @@ in
   programs.home-manager.enable = true;
 
   imports = [
-    ../../programs/home/obs.nix
+    ../../home/obs.nix
+    ../../home/direnv.nix
   ];
 
   programs = {

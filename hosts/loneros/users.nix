@@ -46,6 +46,7 @@ in
     ../../programs/virt-manager.nix
     ../../programs/catppuccin.nix
     ../../programs/flatpak.nix
+    ../../programs/steam.nix
   ];
 
   # 允许过期不维护的包
@@ -79,6 +80,7 @@ in
     telegram-desktop
     kdenlive
     rustdesk-flutter
+    tigervnc
   ];
 
   programs = {

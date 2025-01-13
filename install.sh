@@ -146,7 +146,7 @@ if [ ! -d "$target_dir" ]; then
   if [ $? -eq 0 ]; then
     echo "$target_dir"
   else
-    echo "创建目标目录失败，退出脚本。"
+    echo "创建fcitx5主题目录失败，退出脚本。"
     exit 1
   fi
 else
@@ -225,8 +225,8 @@ cd ~/loneros-nixos
 # copy fastfetch config, gtk-theme and icons
 echo "$NOTE Cloning fastfetch config, GTK themes and Icons repository..."
 cp -r assets/fastfetch ~/.config/ || true
-cp -r assets/GTK-themes-icons/themes/* ~/.themes/ || true
-cp -r assets/GTK-themes-icons/icons/* ~/.icons/ || true
+# cp -r assets/GTK-themes-icons/themes/* ~/.themes/ || true
+# cp -r assets/GTK-themes-icons/icons/* ~/.icons/ || true
 echo "-----"
 printf "\n%.0s" {1..2}
 
