@@ -81,6 +81,7 @@ in
     kdenlive
     rustdesk-flutter
     tigervnc
+    devbox
   ];
 
   programs = {
