@@ -60,6 +60,7 @@ in
     fzf
     chafa
     bat
+    ripgrep
     file
     neovim
     yazi
