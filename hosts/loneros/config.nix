@@ -204,8 +204,7 @@ in
     (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
 
-  environment.systemPackages =
-    (with pkgs; [
+  environment.systemPackages =(with pkgs; [
       # System Packages
       baobab
       btrfs-progs
@@ -229,14 +228,13 @@ in
 
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
-      #ranger
 
       # Hyprland Stuff
-      #ags
-      (ags.overrideAttrs (oldAttrs: {
-        inherit (oldAttrs) pname;
-        version = "1.8.2";
-      }))
+      ags # note: defined at flake.nix to download and install ags v1
+      # (ags.overrideAttrs (oldAttrs: {
+      #   inherit (oldAttrs) pname;
+      #   version = "1.8.2";
+      # }))
       btop
       brightnessctl # for brightness control
       cava
@@ -282,7 +280,6 @@ in
       yad
       yt-dlp
 
-      #waybar  # if wanted experimental next line
       (pkgs.waybar.overrideAttrs (oldAttrs: {
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
       }))

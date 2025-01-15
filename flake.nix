@@ -8,7 +8,6 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
     home-manager = {
       url = "github:nix-community/home-manager/master"; # or release-24.11
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,6 +18,7 @@
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
+    ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,6 +39,13 @@
       system = "x86_64-linux";
       host = "loneros";
       username = "loner";
+
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+        allowUnfree = true;
+      };
+      };
 
       stable = import nixpkgs-stable {
         inherit system;
