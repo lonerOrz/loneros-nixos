@@ -131,11 +131,11 @@ printf "\n%.0s" {1..2}
 
 # for initial zsh
 # Check if ~/.zshrc and  exists, create a backup, and copy the new configuration
-if [ -f "$HOME/.zshrc" ]; then
-  cp -b "$HOME/.zshrc" "$HOME/.zshrc-backup" || true
-fi
+# if [ -f "$HOME/.zshrc" ]; then
+#   cp -b "$HOME/.zshrc" "$HOME/.zshrc-backup" || true
+# fi
 # Copying the preconfigured zsh themes and profile
-cp -r 'assets/.zshrc' ~/
+# cp -r 'assets/.zshrc' ~/
 
 # GTK Themes and Icons installation
 printf "Installing Themes and Icons..\n"
@@ -145,8 +145,8 @@ if [ -d "GTK-themes-icons" ]; then
   rm -rf "GTK-themes-icons"
 fi
 
-echo "$NOTE Cloning GTK themes and Icons repository..."
-if git clone --depth 1 https://github.com/JaKooLit/GTK-themes-icons.git; then
+echo "$NOTE Cloning themes repository..."
+if git clone --depth 1 https://github.com/lonerOrz/GTK-themes-icons.git; then
   cd GTK-themes-icons
   chmod +x auto-extract.sh
   ./auto-extract.sh
@@ -175,13 +175,12 @@ echo "-----"
 printf "\n%.0s" {1..3}
 
 # Cloning Hyprland-Dots repo to home folder
-# KooL's Dots installation
 printf "$NOTE Downloading Hyprland-Dots to HOME folder..\n"
 if [ -d ~/Hyprland-Dots ]; then
   cd ~/Hyprland-Dots
-  #git stash
-  #git pull
-  #git stash apply
+  git stash
+  git pull
+  git stash apply
   chmod +x copy.sh
   ./copy.sh
 else
@@ -197,8 +196,8 @@ fi
 #return to loneros-nixos
 cd ~/loneros-nixos
 
-# copy fastfetch config, gtk-theme and icons
-echo "$NOTE Cloning fastfetch config, GTK themes and Icons repository..."
+# copy fastfetch config
+echo "$NOTE Cloning fastfetch config ..."
 cp -r assets/fastfetch ~/.config/ || true
 echo "-----"
 printf "\n%.0s" {1..2}
