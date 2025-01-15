@@ -129,14 +129,6 @@ sudo nixos-rebuild switch --flake ~/loneros-nixos/#"${hostName}"
 echo "-----"
 printf "\n%.0s" {1..2}
 
-# for initial zsh
-# Check if ~/.zshrc and  exists, create a backup, and copy the new configuration
-# if [ -f "$HOME/.zshrc" ]; then
-#   cp -b "$HOME/.zshrc" "$HOME/.zshrc-backup" || true
-# fi
-# Copying the preconfigured zsh themes and profile
-# cp -r 'assets/.zshrc' ~/
-
 # GTK Themes and Icons installation
 printf "Installing Themes and Icons..\n"
 
@@ -174,29 +166,32 @@ done
 echo "-----"
 printf "\n%.0s" {1..3}
 
-# Cloning Hyprland-Dots repo to home folder
-printf "$NOTE Downloading Hyprland-Dots to HOME folder..\n"
-if [ -d ~/Hyprland-Dots ]; then
-  cd ~/Hyprland-Dots
-  git stash
-  git pull
-  git stash apply
-  chmod +x copy.sh
-  ./copy.sh
+# Cloning loneros-dots repo to home folder
+printf "$NOTE Downloading loneros-dots to HOME folder..\n"
+if [ -d ~/loneros-dots ]; then
+  cd ~/loneros-dots
+  git remote add upstream https://github.com/JaKooLit/Hyprland-Dots.git
+  git fetch upstream
+  git merge upstream/main
+  #git stash
+  #git pull
+  #git stash apply
+  chmod +x loneros.sh
+  ./loneros.sh
 else
-  if git clone --depth 1 https://github.com/JaKooLit/Hyprland-Dots ~/Hyprland-Dots; then
-    cd ~/Hyprland-Dots || exit 1
-    chmod +x copy.sh
-    ./copy.sh
+  if git clone --depth 1 https://github.com/lonerOrz/loneros-dots.git ~/loneros-dots; then
+    cd ~/loneros-dots || exit 1
+    chmod +x loneros.sh
+    ./loneros.sh
   else
-    echo -e "$ERROR Can't download Hyprland-Dots"
+    echo -e "$ERROR Can't download loneros-dots"
   fi
 fi
 
 #return to loneros-nixos
 cd ~/loneros-nixos
 
-# copy fastfetch config
+# copy NixOS fastfetch config
 echo "$NOTE Cloning fastfetch config ..."
 cp -r assets/fastfetch ~/.config/ || true
 echo "-----"
