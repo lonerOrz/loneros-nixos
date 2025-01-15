@@ -137,33 +137,8 @@ fi
 # Copying the preconfigured zsh themes and profile
 cp -r 'assets/.zshrc' ~/
 
-# fcitx5 theme
-source_dir="assets/fcitxtheme"
-target_dir="$HOME/.local/share/fcitx5/themes/"
-
-if [ ! -d "$target_dir" ]; then
-  mkdir -p "$target_dir"
-  if [ $? -eq 0 ]; then
-    echo "$target_dir"
-  else
-    echo "创建fcitx5主题目录失败，退出脚本。"
-    exit 1
-  fi
-else
-  echo "$target_dir"
-fi
-
-for theme in "$source_dir"/*; do
-  if [ -d "$theme" ]; then
-    cp -r "$theme" "$target_dir"
-  elif [ -f "$theme" ]; then
-    cp "$theme" "$target_dir"
-  fi
-done
-echo "copy fcitx5 themes complete!"
-
 # GTK Themes and Icons installation
-printf "Installing GTK-Themes and Icons..\n"
+printf "Installing Themes and Icons..\n"
 
 if [ -d "GTK-themes-icons" ]; then
   echo "$NOTE GTK themes and Icons folder exist..deleting..."
@@ -225,8 +200,6 @@ cd ~/loneros-nixos
 # copy fastfetch config, gtk-theme and icons
 echo "$NOTE Cloning fastfetch config, GTK themes and Icons repository..."
 cp -r assets/fastfetch ~/.config/ || true
-# cp -r assets/GTK-themes-icons/themes/* ~/.themes/ || true
-# cp -r assets/GTK-themes-icons/icons/* ~/.icons/ || true
 echo "-----"
 printf "\n%.0s" {1..2}
 
