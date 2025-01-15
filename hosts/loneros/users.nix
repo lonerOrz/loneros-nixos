@@ -26,7 +26,7 @@ in
       ];
 
       # define user packages here
-      packages = with pkgs; [
+      packages = with stable; [
         tree
       ];
     };
@@ -65,17 +65,14 @@ in
     neovim
     yazi
     spotify
-    #qbittorrent
     qbittorrent-enhanced # qbee
     discord
-    #obs-studio
     localsend
     starship
     go-musicfox
     inputs.zen-browser.packages."${system}".default
     dos2unix
     zed-editor
-    #nur.repos.xddxdd.baidunetdisk
     motrix
     translate-shell
     telegram-desktop
