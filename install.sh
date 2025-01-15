@@ -170,12 +170,26 @@ printf "\n%.0s" {1..3}
 printf "$NOTE Downloading loneros-dots to HOME folder..\n"
 if [ -d ~/loneros-dots ]; then
   cd ~/loneros-dots
-  git remote add upstream https://github.com/JaKooLit/Hyprland-Dots.git
+  # Check if upstream is already set
+  if ! git remote | grep -q "upstream"; then
+    echo -e "${INFO} - Adding upstream remote repository."
+    git remote add upstream https://github.com/JaKooLit/Hyprland-Dots.git
+  fi
   git fetch upstream
-  git merge upstream/main
-  #git stash
-  #git pull
-  #git stash apply
+  #git merge upstream/main
+  echo -e "${INFO} - Rebasing local changes onto upstream/main."
+  git rebase upstream/main
+
+  # Stash and apply only if there are local changes
+  if ! git diff-index --quiet HEAD --; then
+    echo -e "${INFO} - Stashing local changes."
+    git stash
+    echo -e "${INFO} - Pulling latest changes."
+    git pull
+    echo -e "${INFO} - Applying stashed changes."
+    git stash apply
+  fi
+
   chmod +x loneros.sh
   ./loneros.sh
 else
