@@ -317,7 +317,16 @@ in
   # Services to start
   services = {
     # DNS 解析服务
-    resolved.enable = true;
+    resolved = {
+      enable = true;
+      dnssec = "false";
+      dnsovertls = "opportunistic";
+      extraConfig = ''
+        DNS=8.8.4.4
+        DNS=114.114.114.114
+      '';
+    };
+
 
     xserver = {
       enable = false;
