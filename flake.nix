@@ -59,7 +59,7 @@
     in
     {
       nixosConfigurations = {
-        "${host}" = lib.nixosSystem rec {
+        "${host}" = lib.nixosSystem {
           specialArgs = {
             inherit system;
             inherit inputs;
