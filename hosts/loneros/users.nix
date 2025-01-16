@@ -7,7 +7,7 @@
   ...
 }:
 let
-  inherit (import ./variables.nix) gitUsername;
+  inherit (import ./variables.nix) gitUsername shell;
 in
 {
   users = {
@@ -24,14 +24,12 @@ in
         "input"
         "audio"
       ];
-
       # define user packages here
       packages = with stable; [
         tree
       ];
     };
-
-    defaultUserShell = pkgs.fish;
+    defaultUserShell = pkgs.${shell};
   };
 
   # 自定义软件安装
@@ -47,14 +45,14 @@ in
     ../../programs/catppuccin.nix
     ../../programs/flatpak.nix
     ../../programs/steam.nix
+    ../../programs/wayvnc.nix
   ];
 
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
     "electron-11.5.0"
   ];
-
-  environment.shells = with pkgs; [ fish ];
+  # 安装的软件
   environment.systemPackages = with pkgs; [
     # software
     fzf
@@ -78,7 +76,6 @@ in
     telegram-desktop
     kdenlive
     rustdesk-flutter
-    tigervnc
     devbox
   ];
 
@@ -91,7 +88,7 @@ in
         icu
       ];
     };
-    fish.enable = true;
+    ${shell}.enable = true;
     starship.enable = true;
   };
 

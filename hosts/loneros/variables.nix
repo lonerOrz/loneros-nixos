@@ -7,9 +7,10 @@
   clock24h = true;
 
   # Program Options
-  browser = "firefox"; # Set Default Browser
+  browser = "ZenBrowser"; # Set Default Browser
   terminal = "kitty"; # Set Default System Terminal
   keyboardLayout = "us";
+  shell = "fish"; # fish or zsh 
 
   autoGarbage = false;
 }
