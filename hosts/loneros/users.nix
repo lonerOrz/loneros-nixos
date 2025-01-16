@@ -46,6 +46,7 @@ in
     ../../programs/flatpak.nix
     ../../programs/steam.nix
     ../../programs/wayvnc.nix
+    ../../programs/ollama.nix
   ];
 
   # 允许过期不维护的包
@@ -77,6 +78,7 @@ in
     kdenlive
     rustdesk-flutter
     devbox
+    lazygit
   ];
 
   programs = {
