@@ -20,6 +20,7 @@ in
   imports = [
     ../../home/obs.nix
     ../../home/direnv.nix
+    ../../home/scripts
   ];
 
   programs = {
