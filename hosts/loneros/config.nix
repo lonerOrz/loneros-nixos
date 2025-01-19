@@ -56,6 +56,7 @@ in
         "usb_storage"
         "usbhid"
         "sd_mod"
+        "btrfs"
         #"hid_cherry"
         #"hid_logitech_hidpp"
         #"hid_logitech_dj"
