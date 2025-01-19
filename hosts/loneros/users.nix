@@ -43,7 +43,7 @@ in
     #../../programs/virtualbox.nix
     ../../programs/virt-manager.nix
     ../../programs/catppuccin.nix
-    ../../programs/flatpak.nix
+    #../../programs/flatpak.nix
     ../../programs/steam.nix
     ../../programs/wayvnc.nix
     ../../programs/ollama.nix
