@@ -56,10 +56,10 @@
   systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
 
   # 支持模拟的不同架构
-  # boot.binfmt.emulatedSystems = [
-  #   "aarch64-linux"
-  #   "riscv64-linux"
-  # ];
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    # "riscv64-linux"
+  ];
 
   # dconf.settings = {
   #   "org/virt-manager/virt-manager/connections" = {
