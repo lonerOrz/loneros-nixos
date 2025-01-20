@@ -41,7 +41,11 @@
   virtualisation = {
     libvirtd = {
       enable = true;
+      allowedBridges = [
+        "virbr0"
+      ];
       qemu = {
+        # runAsRoot = true;
         swtpm.enable = true;
         ovmf.enable = true;
         ovmf.packages = [ pkgs.OVMFFull.fd ];
