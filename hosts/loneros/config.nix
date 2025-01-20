@@ -73,8 +73,6 @@ in
       canTouchEfiVariables = true;
     };
 
-    #loader.timeout = 1;
-
     # Bootloader GRUB
     loader.grub = {
       enable = true;

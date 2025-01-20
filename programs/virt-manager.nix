@@ -15,8 +15,9 @@
       "iommu=pt" # 指定 IOMMU 使用 "passthrough" 模式
       # "vfio-pci.ids=10de:1f06,10de:10f9" # 指定要直通的 PCI 设备 ID.利用lspci -nn | grep -i nvidia 查看显卡和音频
     ];
-    # VFIO 允许虚拟机直接访问物理设备
-    kernelModules = [ 
+    kernelModules = [
+      "kvm-intel"
+      # VFIO 允许虚拟机直接访问物理设备
       "vfio_pci" 
       "vfio" 
       "vfio_iommu_type1"
