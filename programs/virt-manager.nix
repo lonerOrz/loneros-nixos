@@ -5,7 +5,6 @@
   ...
 }:
 {
-  #programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["${username}"];
   users.groups.kvm.members = ["${username}"];
 
@@ -16,7 +15,7 @@
       # "vfio-pci.ids=10de:1f06,10de:10f9" # 指定要直通的 PCI 设备 ID.利用lspci -nn | grep -i nvidia 查看显卡和音频
     ];
     kernelModules = [
-      "kvm-intel"
+      "kvm-intel" # AMD: kvm-amd
       # VFIO 允许虚拟机直接访问物理设备
       "vfio_pci" 
       "vfio" 
@@ -36,6 +35,7 @@
     win-spice
     #gnome.adwaita-icon-theme
     quickemu
+    # quickgui # quickemu GUI
   ];
   
   virtualisation = {
