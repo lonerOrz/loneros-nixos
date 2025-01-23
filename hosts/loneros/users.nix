@@ -79,6 +79,8 @@ in
     rustdesk-flutter
     devbox
     lazygit
+    inputs.hyprpanel
+    tuckr
   ];
 
   programs = {
