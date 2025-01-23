@@ -1,9 +1,7 @@
 {
-  config,
   pkgs,
   stable,
   username,
-  host,
   ...
 }:
 let
@@ -36,17 +34,15 @@ in
         commit.gpgsign = true;
         gpg.format = "ssh";
         user.signingkey = "~/.ssh/id_rsa.pub";
-
         init.defaultBranch = "main";
-
         color = {
           ui = "auto";
         };
-
         push = {
           default = "simple";
         };
       };
     };
+
   };
 }

@@ -62,6 +62,9 @@
           };
           modules = [
             ./hosts/${host}/config.nix
+            {nixpkgs.overlays = [
+              inputs.hyprpanel.overlay
+            ];}
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
             inputs.stylix.nixosModules.stylix

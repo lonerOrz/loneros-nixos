@@ -53,6 +53,7 @@ in
   nixpkgs.config.permittedInsecurePackages = [
     "electron-11.5.0"
   ];
+
   # 安装的软件
   environment.systemPackages = with pkgs; [
     # software
@@ -79,7 +80,6 @@ in
     rustdesk-flutter
     devbox
     lazygit
-    inputs.hyprpanel
     tuckr
   ];
 
