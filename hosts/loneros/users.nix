@@ -80,7 +80,7 @@ in
     rustdesk-flutter
     devbox
     lazygit
-    tuckr
+    stow
   ];
 
   programs = {
