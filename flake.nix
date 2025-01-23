@@ -15,6 +15,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     catppuccin.url = "github:catppuccin/nix";
     #hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
@@ -30,7 +31,6 @@
       self,
       nixpkgs,
       nixpkgs-stable,
-      nur,
       home-manager,
       flake-utils,
       ...
@@ -39,13 +39,6 @@
       system = "x86_64-linux";
       host = "loneros";
       username = "loner";
-
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-        allowUnfree = true;
-      };
-      };
 
       stable = import nixpkgs-stable {
         inherit system;

@@ -197,7 +197,7 @@ in
     mutableUsers = true;
   };
 
-  # 添加补丁
+  # Overlays
   nixpkgs.overlays = [
     (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
