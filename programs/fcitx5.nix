@@ -1,13 +1,7 @@
 {
-  config,
-  lib,
-  username,
   pkgs,
   ...
 }:
-let
-  fcitx5-pinyin-zhwiki = pkgs.callPackage ../pkgs/fcitx5-pinyin-zhwiki.nix { inherit lib; };
-in
 {
   i18n = {
     defaultLocale = "en_US.UTF-8";
