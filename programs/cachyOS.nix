@@ -11,5 +11,4 @@
     scheduler = "scx_rusty";
     package = pkgs.scx_git.full;  # 获取github上最新的调度规则
   };
-
 }
