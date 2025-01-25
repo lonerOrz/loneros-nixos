@@ -16,6 +16,7 @@
     catppuccin.url = "github:catppuccin/nix";
     #hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
@@ -69,6 +70,7 @@
             inputs.catppuccin.nixosModules.catppuccin
             inputs.stylix.nixosModules.stylix
             inputs.nur.modules.nixos.default
+            inputs.chaotic.nixosModules.default
             # nixos module intall home-manager
             home-manager.nixosModules.home-manager
             {
@@ -85,6 +87,7 @@
                 imports = [
                   ./hosts/${host}/home.nix
                   inputs.catppuccin.homeManagerModules.catppuccin
+                  inputs.chaotic.homeManagerModules.default
                 ];
               }; 
             }

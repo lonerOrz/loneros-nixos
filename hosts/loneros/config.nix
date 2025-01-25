@@ -29,12 +29,13 @@ in
     ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
+    ../../programs/cachyOS.nix  # cachyOS kernel
   ];
 
   # BOOT related stuff
   boot = {
-    #kernelPackages = pkgs.linuxPackages_latest; # Kernel
-    kernelPackages = pkgs.linuxPackages_zen;
+    # kernelPackages = pkgs.linuxPackages_latest; # Kernel
+    # kernelPackages = pkgs.linuxPackages_zen;
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
@@ -252,8 +253,9 @@ in
       libsForQt5.qtstyleplugin-kvantum # kvantum
       networkmanagerapplet
       nwg-look # requires unstable channel
-      #nvtopPackages.full
-      nvtopPackages.panthor
+      # nvtopPackages.full
+      # nvtopPackages.panthor
+      nvtopPackages.intel
       pamixer
       pavucontrol
       playerctl
