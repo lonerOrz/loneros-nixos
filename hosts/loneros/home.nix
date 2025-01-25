@@ -20,6 +20,7 @@ in
     ../../home/direnv.nix
     ../../home/fuzzel.nix # shutdown script needed
     ../../home/scripts
+    # ../../home/ghostty.nix
   ];
 
   programs = {

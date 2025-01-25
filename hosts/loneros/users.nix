@@ -71,6 +71,7 @@ in
     starship
     go-musicfox
     inputs.zen-browser.packages."${system}".default
+    inputs.ghostty.packages."${system}".default
     dos2unix
     zed-editor
     motrix
