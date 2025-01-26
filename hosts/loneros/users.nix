@@ -47,6 +47,7 @@ in
     ../../programs/steam.nix
     ../../programs/wayvnc.nix
     ../../programs/ollama.nix
+    ../../programs/wshowkeys.nix
   ];
 
   # 允许过期不维护的包
@@ -82,6 +83,7 @@ in
     devbox
     lazygit
     stow
+    hyprsunset
   ];
 
   programs = {
