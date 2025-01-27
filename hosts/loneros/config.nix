@@ -8,6 +8,7 @@
   lib,
   inputs,
   system,
+  stable,
   ...
 }:
 let
@@ -253,8 +254,6 @@ in
       libsForQt5.qtstyleplugin-kvantum # kvantum
       networkmanagerapplet
       nwg-look # requires unstable channel
-      # nvtopPackages.full
-      # nvtopPackages.panthor
       nvtopPackages.intel
       pamixer
       pavucontrol
@@ -262,9 +261,6 @@ in
       polkit_gnome
       pyprland
       libsForQt5.qt5ct
-      #qt6ct
-      #qt6.qtwayland
-      #qt6Packages.qtstyleplugin-kvantum # kvantum
       kdePackages.qt6ct
       kdePackages.qtwayland
       kdePackages.qtstyleplugin-kvantum #kvantum
@@ -327,7 +323,6 @@ in
         "114.114.114.114"
       ];
     };
-
 
     xserver = {
       enable = false;

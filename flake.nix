@@ -72,6 +72,7 @@
             inputs.stylix.nixosModules.stylix
             inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
+            inputs.spicetify-nix.nixosModules.default
             # nixos module intall home-manager
             home-manager.nixosModules.home-manager
             {
@@ -89,6 +90,7 @@
                   ./hosts/${host}/home.nix
                   inputs.catppuccin.homeManagerModules.catppuccin
                   inputs.chaotic.homeManagerModules.default
+                  inputs.spicetify-nix.homeManagerModules.default
                 ];
               }; 
             }

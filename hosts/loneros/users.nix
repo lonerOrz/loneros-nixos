@@ -39,7 +39,7 @@ in
     ../../programs/fcitx5.nix
     ../../programs/mpd.nix
     ../../programs/rclone.nix
-    ../../programs/spicetify.nix
+    # ../../programs/spicetify.nix
     #../../programs/virtualbox.nix
     ../../programs/virt-manager.nix
     ../../programs/catppuccin.nix
