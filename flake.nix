@@ -22,10 +22,7 @@
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
     ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
     ghostty.url = "github:ghostty-org/ghostty";
-    spicetify-nix = {
-      url = "github:Gerg-L/spicetify-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
   };
 
   outputs =
@@ -72,7 +69,6 @@
             inputs.stylix.nixosModules.stylix
             inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
-            inputs.spicetify-nix.nixosModules.default
             # nixos module intall home-manager
             home-manager.nixosModules.home-manager
             {
@@ -90,7 +86,6 @@
                   ./hosts/${host}/home.nix
                   inputs.catppuccin.homeManagerModules.catppuccin
                   inputs.chaotic.homeManagerModules.default
-                  inputs.spicetify-nix.homeManagerModules.default
                 ];
               }; 
             }
