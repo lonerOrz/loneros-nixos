@@ -9,7 +9,7 @@
     wayvnc
     (pkgs.writeShellScriptBin "vnc" ''
       #!/usr/bin/env bash
-      
+
       if pgrep -x "wayvnc" >/dev/null; then
         echo "正在运行的 wayvnc 实例已找到，正在停止..."
         pkill wayvnc

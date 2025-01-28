@@ -5,8 +5,8 @@
   ...
 }:
 {
-  users.groups.libvirtd.members = ["${username}"];
-  users.groups.kvm.members = ["${username}"];
+  users.groups.libvirtd.members = [ "${username}" ];
+  users.groups.kvm.members = [ "${username}" ];
 
   boot = {
     kernelParams = [
@@ -17,18 +17,18 @@
     kernelModules = [
       "kvm-intel" # AMD: kvm-amd
       # VFIO 允许虚拟机直接访问物理设备
-      "vfio_pci" 
-      "vfio" 
+      "vfio_pci"
+      "vfio"
       "vfio_iommu_type1"
     ];
   };
-  
+
   environment.systemPackages = with pkgs; [
     qemu_kvm
     virt-manager
     virt-viewer
     libvirt
-    spice 
+    spice
     spice-gtk
     spice-protocol
     win-virtio
@@ -37,7 +37,7 @@
     quickemu
     # quickgui # quickemu GUI
   ];
-  
+
   virtualisation = {
     libvirtd = {
       enable = true;
@@ -53,7 +53,7 @@
     };
     spiceUSBRedirection.enable = true;
   };
-  
+
   services.spice-vdagentd.enable = true;
 
   # 启用 UEFI 固件支持

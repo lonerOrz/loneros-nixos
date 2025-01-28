@@ -1,7 +1,7 @@
 self: super: {
   xdg-desktop-portal-wlr = super.stdenv.mkDerivation rec {
     pname = "xdg-desktop-portal-wlr";
-    version = "0.7.1";  # 保持版本号不变，可以作为标识
+    version = "0.7.1"; # 保持版本号不变，可以作为标识
 
     # 修改 src，指定为 Enovale/xdg-desktop-portal-wlr@11817f9
     src = super.fetchFromGitHub {
@@ -35,7 +35,7 @@ self: super: {
 
     mesonFlags = [
       "-Dsd-bus-provider=libsystemd"
-      "-Dwerror=false"  # 禁用警告作为错误
+      "-Dwerror=false" # 禁用警告作为错误
     ];
 
     postInstall = ''
@@ -57,4 +57,3 @@ self: super: {
     };
   };
 }
-

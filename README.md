@@ -37,6 +37,7 @@ _预览图 1 - 示例描述_
 _预览图 2 - 示例描述_
 
 ---
+
 ## 🛠️ 安装
 
 按照以下步骤安装和使用这个项目：
@@ -47,17 +48,18 @@ cd loneros-nixos
 chmod +x install.sh
 ./install.sh
 ```
+
 ## ⚙️ 配置
 
 可以按照如下方式进行自定义配置：
 
 1. 编辑配置文件：
 
-  xxxxxxx
+xxxxxxx
 
 2. 更新 NixOS 配置：
 
-  nh os switch --flake .#${HOSTNAME}
+nh os switch --flake .#${HOSTNAME}
 
 ## 📝 TODO
 

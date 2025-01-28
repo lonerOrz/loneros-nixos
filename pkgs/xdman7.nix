@@ -1,11 +1,12 @@
-{ lib
-, stdenv
-, fetchurl
-, makeWrapper
-, jdk11
-, ffmpeg
-, python3
-, yt-dlp
+{
+  lib,
+  stdenv,
+  fetchurl,
+  makeWrapper,
+  jdk11,
+  ffmpeg,
+  python3,
+  yt-dlp,
 }:
 
 stdenv.mkDerivation rec {
@@ -18,12 +19,12 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ makeWrapper ];
-  
-  buildInputs = [ 
+
+  buildInputs = [
     jdk11
-    ffmpeg 
+    ffmpeg
     python3
-    yt-dlp 
+    yt-dlp
   ];
 
   dontBuild = true;
@@ -34,14 +35,19 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-    
+
     mkdir -p $out/{bin,share/java/xdman}
     cp $src $out/share/java/xdman/xdman.jar
 
     makeWrapper ${jdk11}/bin/java $out/bin/xdman \
-      --prefix PATH : ${lib.makeBinPath [ ffmpeg yt-dlp ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          ffmpeg
+          yt-dlp
+        ]
+      } \
       --add-flags "-jar $out/share/java/xdman/xdman.jar"
-    
+
     runHook postInstall
   '';
 

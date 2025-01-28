@@ -16,16 +16,16 @@
   virtualisation.docker.daemon.settings = {
     data-root = "/home/${username}/docker-data"; # 设置 Docker 数据存储路径
     registry-mirrors = [
-        "https://registry.cn-hangzhou.aliyuncs.com"
-        "https://docker-0.unsee.tech"
-      ];
+      "https://registry.cn-hangzhou.aliyuncs.com"
+      "https://docker-0.unsee.tech"
+    ];
     #userland-proxy = false;          # 禁用 userland-proxy
     experimental = true; # 启用实验性功能
     dns = [
       "8.8.8.8"
       "8.8.4.4"
       "114.114.114.114"
-    ];  # 设置 Docker 使用的 DNS
+    ]; # 设置 Docker 使用的 DNS
     #metrics-addr = "0.0.0.0:9323";   # 启用度量指标
     #ipv6 = true;                    # 启用 IPv6
     #fixed-cidr-v6 = "fd00::/80";    # 设置固定 IPv6 地址范围

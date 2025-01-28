@@ -97,7 +97,8 @@ in
     (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
 
-  environment.systemPackages =(with pkgs; [
+  environment.systemPackages =
+    (with pkgs; [
       # System Packages
       baobab
       btrfs-progs
@@ -155,7 +156,7 @@ in
       libsForQt5.qt5ct
       kdePackages.qt6ct
       kdePackages.qtwayland
-      kdePackages.qtstyleplugin-kvantum #kvantum
+      kdePackages.qtstyleplugin-kvantum # kvantum
       rofi-wayland
       slurp
       swappy
@@ -214,7 +215,6 @@ in
 
     blueman.enable = true;
 
-
     fwupd.enable = true;
 
     upower.enable = true;
@@ -244,8 +244,6 @@ in
     #};
 
   };
-
-
 
   # zram
   zramSwap = {

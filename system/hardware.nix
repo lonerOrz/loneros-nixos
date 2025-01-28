@@ -16,7 +16,7 @@
   #};
 
   # 系统启动时控制 RGB 灯光效果
-  services ={
+  services = {
     #hardware.openrgb.enable = true;
     #hardware.openrgb.motherboard = "amd";
   };

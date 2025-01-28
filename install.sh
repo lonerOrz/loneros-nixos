@@ -93,8 +93,8 @@ while [ $attempts -lt $max_attempts ]; do
     echo "${OK} Hardware configuration successfully generated."
     break
   else
-    echo "${WARN} Failed to generate hardware configuration. Attempt $(($attempts + 1)) of $max_attempts."
-    attempts=$(($attempts + 1))
+    echo "${WARN} Failed to generate hardware configuration. Attempt $((attempts + 1)) of $max_attempts."
+    attempts=$((attempts + 1))
 
     # Exit if this was the last attempt
     if [ $attempts -eq $max_attempts ]; then
@@ -221,7 +221,7 @@ if command -v Hyprland &>/dev/null; then
   # Prompt user to reboot
   read -rp "${CAT} Would you like to reboot now? (y/n): ${RESET}" HYP
 
-  if [[ "$HYP" =~ ^[Yy]$ ]]; then
+  if [[ $HYP =~ ^[Yy]$ ]]; then
     # If user confirms, reboot the system
     systemctl reboot
   else

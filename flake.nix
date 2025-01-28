@@ -23,6 +23,7 @@
     ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
     ghostty.url = "github:ghostty-org/ghostty";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs =
@@ -32,12 +33,20 @@
       nixpkgs-stable,
       home-manager,
       flake-utils,
+      systems,
       ...
     }:
     let
       system = "x86_64-linux";
       host = "loneros";
       username = "loner";
+
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
 
       stable = import nixpkgs-stable {
         inherit system;
@@ -47,6 +56,9 @@
       };
 
       lib = nixpkgs.lib;
+
+      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
+                        treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
     in
     {
@@ -61,9 +73,11 @@
           };
           modules = [
             ./hosts/${host}/config.nix
-            {nixpkgs.overlays = [
-              inputs.hyprpanel.overlay
-            ];}
+            {
+              nixpkgs.overlays = [
+                inputs.hyprpanel.overlay
+              ];
+            }
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
             inputs.stylix.nixosModules.stylix
@@ -81,13 +95,13 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
-              home-manager.users.${username} ={
+              home-manager.users.${username} = {
                 imports = [
                   ./hosts/${host}/home.nix
                   inputs.catppuccin.homeManagerModules.catppuccin
                   inputs.chaotic.homeManagerModules.default
                 ];
-              }; 
+              };
             }
           ];
         };
@@ -107,6 +121,10 @@
       #    ];
       #  };
       #};
-      formatter.${system} = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      # formatter.${system} = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+      checks = eachSystem (pkgs: {
+        formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      });
     };
 }

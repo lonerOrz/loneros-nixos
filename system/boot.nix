@@ -9,7 +9,7 @@
   boot = {
     # Kernel
     # kernelPackages = pkgs.linuxPackages_latest;
-    # kernelPackages = pkgs.linuxPackages_zen;  
+    # kernelPackages = pkgs.linuxPackages_zen;
     kernelPackages = pkgs.linuxPackages_cachyos;
 
     kernelParams = [
@@ -91,7 +91,7 @@
     # 启动动画
     plymouth.enable = true;
   };
-    # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
+  # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
   distro-grub-themes = {
     enable = false;
     theme = "nixos";
@@ -100,6 +100,6 @@
   services.scx = {
     enable = true;
     scheduler = "scx_rusty";
-    package = pkgs.scx_git.full;  # 获取github上最新的调度规则
+    package = pkgs.scx_git.full; # 获取github上最新的调度规则
   };
 }

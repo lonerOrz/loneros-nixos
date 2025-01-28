@@ -3,7 +3,12 @@
   ...
 }:
 let
-  inherit (import ../hosts/${host}/variables.nix) timeZone keyboardLayout defaultLocale extraLocale;
+  inherit (import ../hosts/${host}/variables.nix)
+    timeZone
+    keyboardLayout
+    defaultLocale
+    extraLocale
+    ;
 in
 {
   # Set your time zone.

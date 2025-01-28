@@ -2,7 +2,7 @@
 { inputs, ... }:
 {
   imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
-  
+
   programs.hyprpanel = {
 
     # Enable the module.
@@ -42,9 +42,16 @@
     layout = {
       "bar.layouts" = {
         "0" = {
-          left = [ "dashboard" "workspaces" ];
+          left = [
+            "dashboard"
+            "workspaces"
+          ];
           middle = [ "media" ];
-          right = [ "volume" "systray" "notifications" ];
+          right = [
+            "volume"
+            "systray"
+            "notifications"
+          ];
         };
       };
     };

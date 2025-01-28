@@ -11,7 +11,7 @@
 
   programs.steam = {
     enable = true;
-    extraCompatPackages = [ 
+    extraCompatPackages = [
       pkgs.proton-ge-bin
     ];
     gamescopeSession.enable = true;
