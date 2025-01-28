@@ -24,104 +24,27 @@ in
   imports = [
     ./hardware.nix
     ./users.nix
+
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
-    ../../programs/cachyOS.nix  # cachyOS kernel
+
+    ../../system/bluetooth.nix
+    ../../system/nix.nix
+    ../../system/boot.nix
+    ../../system/networking.nix
+    ../../system/xdg-portal.nix
+    ../../system/pipewire.nix
+    ../../system/security.nix
+    ../../system/greet.nix
+    ../../system/hardware.nix
+    ../../system/timezone.nix
+    ../../system/fonts.nix
+
   ];
-
-  # BOOT related stuff
-  boot = {
-    # kernelPackages = pkgs.linuxPackages_latest; # Kernel
-    # kernelPackages = pkgs.linuxPackages_zen;
-
-    kernelParams = [
-      "systemd.mask=systemd-vconsole-setup.service"
-      "systemd.mask=dev-tpmrm0.device" # this is to mask that stupid 1.5 mins systemd bug
-      "nowatchdog"
-      "modprobe.blacklist=sp5100_tco" # watchdog for AMD
-      "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
-    ];
-
-    # This is for OBS Virtual Cam Support
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
-
-    initrd = {
-      availableKernelModules = [
-        "xhci_pci"
-        "ahci"
-        "nvme"
-        "usb_storage"
-        "usbhid"
-        "sd_mod"
-        "btrfs"
-        #"hid_cherry"
-        #"hid_logitech_hidpp"
-        #"hid_logitech_dj"
-      ];
-      kernelModules = [ ];
-    };
-
-    ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
-    # Bootloader SystemD
-    loader.systemd-boot.enable = false;
-
-    loader.efi = {
-      efiSysMountPoint = "/boot"; # this is if you have separate /efi partition
-      canTouchEfiVariables = true;
-    };
-
-    # Bootloader GRUB
-    loader.grub = {
-      enable = true;
-      devices = [ "nodev" ];
-      efiSupport = true;
-      gfxmodeBios = "auto";
-      #memtest86.enable = true;
-      useOSProber = true;
-      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
-      configurationName = "${host}";
-      extraConfig = ''
-        insmod kbd
-        set keymap=us
-      '';
-      extraEntries = ''
-        menuentry "UEFI Firmware Settings" {
-          fwsetup
-        }
-      '';
-    };
-
-    ## -end of BOOTLOADERS----- ##
-
-    # Make /tmp a tmpfs
-    tmp = {
-      useTmpfs = false;
-      tmpfsSize = "30%";
-    };
-
-    # Appimage Support
-    binfmt.registrations.appimage = {
-      wrapInterpreterInShell = false;
-      interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-      recognitionType = "magic";
-      offset = 0;
-      mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-      magicOrExtension = ''\x7fELF....AI\x02'';
-    };
-
-    plymouth.enable = true;
-  };
-
-  # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
-  distro-grub-themes = {
-    enable = false;
-    theme = "nixos";
-  };
 
   # Extra Module Options
   drivers.amdgpu.enable = false;
@@ -134,33 +57,6 @@ in
   };
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
-
-  # networking
-  networking.networkmanager.enable = true;
-  networking.networkmanager.dns = "systemd-resolved";
-  networking.hostName = "${host}";
-  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
-
-  # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
-  #services.automatic-timezoned.enable = true; #based on IP location
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-  nixpkgs.config.allowUnfree = true;
 
   programs = {
     hyprland = {
@@ -194,10 +90,6 @@ in
       enable = true;
       enableSSHSupport = true;
     };
-  };
-
-  users = {
-    mutableUsers = true;
   };
 
   # Overlays
@@ -285,61 +177,14 @@ in
       python-packages
     ];
 
-  # FONTS
-  fonts.packages = with pkgs; [
-    noto-fonts
-    fira-code
-    noto-fonts-cjk-sans
-    jetbrains-mono
-    font-awesome
-    terminus_font
-    #(nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
-    nerd-fonts.jetbrains-mono # unstable
-    nerd-fonts.fira-code # unstable
-  ];
-
-  # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
-
   # Services to start
   services = {
-    # DNS 解析服务
-    resolved = {
-      enable = true;
-      dnssec = "false";
-      dnsovertls = "opportunistic";
-      fallbackDns = [
-        "8.8.4.4"
-        "114.114.114.114"
-      ];
-    };
 
     xserver = {
       enable = false;
       xkb = {
         layout = "${keyboardLayout}";
         variant = "";
-      };
-    };
-
-    greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        default_session = {
-          user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd Hyprland -g 'Welcome to the loneros!' --user-menu --time --time-format '%A, %B %d, %Y - %I:%M:%S %p' --asterisks --greet-align center --theme border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red"; # start Hyprland with a TUI login manager
-        };
       };
     };
 
@@ -350,15 +195,6 @@ in
 
     gvfs.enable = true;
     tumbler.enable = true;
-
-    pulseaudio.enable = false;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-    };
 
     udev.enable = true;
     envfs.enable = true;
@@ -378,8 +214,6 @@ in
 
     blueman.enable = true;
 
-    #hardware.openrgb.enable = true;
-    #hardware.openrgb.motherboard = "amd";
 
     fwupd.enable = true;
 
@@ -408,7 +242,10 @@ in
     #  dataDir = "/home/${username}";
     #  configDir = "/home/${username}/.config/syncthing";
     #};
+
   };
+
+
 
   # zram
   zramSwap = {
@@ -424,87 +261,12 @@ in
     cpuFreqGovernor = "schedutil";
   };
 
-  #hardware.sane = {
-  #  enable = true;
-  #  extraBackends = [ pkgs.sane-airscan ];
-  #  disabledDefaultBackends = [ "escl" ];
-  #};
-
-  # Extra Logitech Support
-  hardware.logitech.wireless.enable = false;
-  hardware.logitech.wireless.enableGraphical = false;
-
-  # Bluetooth
-  hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
-  };
-
-  # Security / Polkit
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (
-        subject.isInGroup("users")
-          && (
-            action.id == "org.freedesktop.login1.reboot" ||
-            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-            action.id == "org.freedesktop.login1.power-off" ||
-            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
-          )
-        )
-      {
-        return polkit.Result.YES;
-      }
-    })
-  '';
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
-
-  # Cachix, Optimization settings and garbage collection automation
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
-      trusted-users = [ "root" "${username}" ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-  };
-
   # Virtualization / Containers
   # virtualisation.podman = {
   #   enable = false;
   #   dockerCompat = false;
   #   defaultNetwork.settings.dns_enabled = false;
   # };
-
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
-  };
-
-  console.keyMap = "${keyboardLayout}";
 
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
