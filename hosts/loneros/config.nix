@@ -61,13 +61,18 @@ in
   programs = {
     hyprland = {
       enable = true;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland; # 指定门户实现
+      # portalPackage = pkgs.xdg-desktop-portal-hyprland; # 指定门户实现
+      # set the flake package
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
+      portalPackage =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };
 
     waybar.enable = true;
     hyprlock.enable = true;
-    firefox.enable = true;
+    # firefox.enable = true;
     nm-applet.indicator = true;
     neovim.enable = true;
 

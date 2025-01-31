@@ -49,11 +49,13 @@ in
     ../../programs/wayvnc.nix
     ../../programs/ollama.nix
     ../../programs/wshowkeys.nix
+    ../../programs/discord.nix
+    ../../programs/firefox.nix
   ];
 
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-11.5.0"
+    "electron-11.5.0" # baidunetdisk needed
   ];
 
   # 安装的软件
@@ -64,27 +66,28 @@ in
     bat
     ripgrep
     file
+    dos2unix
+    translate-shell
+    starship
+    devbox
+    stow
+    hyprsunset
+
+    go-musicfox
+    lazygit
+
     neovim
     yazi
     spotify
     qbittorrent-enhanced # qbee
-    discord
+    motrix
     localsend
-    starship
-    go-musicfox
     inputs.zen-browser.packages."${system}".default
     inputs.ghostty.packages."${system}".default
-    dos2unix
     zed-editor
-    motrix
-    translate-shell
     telegram-desktop
     kdenlive
     rustdesk-flutter
-    devbox
-    lazygit
-    stow
-    hyprsunset
   ];
 
   programs = {

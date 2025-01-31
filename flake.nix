@@ -14,7 +14,7 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     catppuccin.url = "github:catppuccin/nix";
-    #hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+    hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
