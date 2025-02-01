@@ -3,5 +3,8 @@
   ...
 }:
 {
-  environment.systemPackages = with pkgs; [ firefox_nightly ];
+  environment.systemPackages = with pkgs; [ 
+    # firefox_nightly
+    firefox
+  ];
 }

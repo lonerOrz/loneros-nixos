@@ -72,6 +72,7 @@ in
     devbox
     stow
     hyprsunset
+    nwg-dock-hyprland
 
     go-musicfox
     lazygit
