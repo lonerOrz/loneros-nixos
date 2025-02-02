@@ -61,24 +61,17 @@ in
   # 安装的软件
   environment.systemPackages = with pkgs; [
     # software
-    fzf
-    chafa
-    bat
-    ripgrep
-    file
-    dos2unix
     translate-shell
     starship
     devbox
     stow
-    hyprsunset
     nwg-dock-hyprland
 
     go-musicfox
     lazygit
-
     neovim
     yazi
+
     spotify
     qbittorrent-enhanced # qbee
     motrix
@@ -87,7 +80,6 @@ in
     inputs.ghostty.packages."${system}".default
     zed-editor
     telegram-desktop
-    kdenlive
     rustdesk-flutter
   ];
 

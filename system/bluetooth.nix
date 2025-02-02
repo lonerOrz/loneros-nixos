@@ -1,7 +1,10 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [ blueman ];
-  # Bluetooth
+  environment.systemPackages = with pkgs; [ 
+    bluez
+    bluez-utils
+    blueman
+  ];
   hardware = {
     bluetooth = {
       enable = true;
@@ -14,6 +17,5 @@
       };
     };
   };
-
   services.blueman.enable = true;
 }
