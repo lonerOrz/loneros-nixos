@@ -77,7 +77,6 @@ in
       tumbler # 生成文件缩略图的后台服务
     ];
 
-
     dconf.enable = true;
     seahorse.enable = true; # GNOME 密钥管理器
     fuse.userAllowOther = true; # 用户空间文件系统
@@ -184,7 +183,7 @@ in
       gnome-system-monitor # GNOME 风格监视器
       baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
       nvtopPackages.full # 显卡监控
-      rofi-wayland # 程序启动器 
+      rofi-wayland # 程序启动器
       swaynotificationcenter # swaync 用于通知
       (pkgs.waybar.overrideAttrs (oldAttrs: {
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
@@ -243,7 +242,7 @@ in
 
     # 启用 IPP-over-USB 服务，它允许打印机通过 USB 连接使用
     # ipp-usb.enable = true;
-    
+
     # 局域网内设备发现的服务
     # avahi = {
     #   enable = true;

@@ -1,8 +1,10 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [ 
-    bluez
-    bluez-utils
+  environment.systemPackages = with pkgs; [
+    # bluez
+    bluez-experimental
+    bluez-tools
+    bluez-alsa
     blueman
   ];
   hardware = {
