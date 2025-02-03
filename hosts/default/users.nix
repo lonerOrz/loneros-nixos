@@ -1,13 +1,17 @@
 {
   pkgs,
+  stable,
+  inputs,
+  system,
   username,
   ...
 }:
 let
-  inherit (import ./variables.nix) gitUsername;
+  inherit (import ./variables.nix) gitUsername shell;
 in
 {
   users = {
+    mutableUsers = true;
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
@@ -15,30 +19,43 @@ in
       extraGroups = [
         "networkmanager"
         "wheel"
-        "libvirtd"
         "scanner"
         "lp"
         "video"
         "input"
         "audio"
       ];
-
       # define user packages here
-      packages = with pkgs; [
+      packages = with stable; [
+        tree
       ];
     };
-
-    defaultUserShell = pkgs.zsh;
+    defaultUserShell = pkgs.${shell};
   };
 
-  import = [
+  # 自定义软件安装
+  imports = [
+    ../../programs/nh.nix
     ../../programs/fcitx5.nix
+    ../../programs/mpd.nix
+    ../../programs/spicetify.nix
+    ../../programs/catppuccin.nix
+    ../../programs/discord.nix
+    ../../programs/firefox.nix
   ];
 
-  environment.shells = with pkgs; [ zsh ];
+  # 安装的软件
   environment.systemPackages = with pkgs; [
-    fzf
+    # software
+    starship
+    devbox
+    stow
     yazi
+
+    spotify
+    qbittorrent-enhanced # qbee
+    inputs.zen-browser.packages."${system}".default
+    zed-editor
   ];
 
   programs = {
@@ -50,31 +67,8 @@ in
         icu
       ];
     };
-    # Zsh configuration
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = [ "git" ];
-        theme = "xiong-chiamiov-plus";
-      };
-
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-
-      promptInit = ''
-        fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
-
-        #pokemon colorscripts like. Make sure to install krabby package
-        #krabby random --no-mega --no-gmax --no-regional --no-title -s;
-
-        source <(fzf --zsh);
-        HISTFILE=~/.zsh_history;
-        HISTSIZE=10000;
-        SAVEHIST=10000;
-        setopt appendhistory;
-      '';
-    };
+    ${shell}.enable = true;
+    starship.enable = true;
   };
+
 }

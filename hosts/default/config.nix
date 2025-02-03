@@ -1,13 +1,7 @@
 # Main default config
 {
-  config,
   pkgs,
-  host,
-  username,
-  options,
-  lib,
   inputs,
-  system,
   ...
 }:
 let
@@ -23,99 +17,27 @@ in
   imports = [
     ./hardware.nix
     ./users.nix
+
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
+
+    ../../system/bluetooth.nix
+    ../../system/nix.nix
+    ../../system/boot.nix
+    ../../system/networking.nix
+    ../../system/xdg-portal.nix
+    ../../system/pipewire.nix
+    ../../system/security.nix
+    ../../system/greet.nix
+    ../../system/hardware.nix
+    ../../system/timezone.nix
+    ../../system/fonts.nix
+
   ];
-
-  # BOOT related stuff
-  boot = {
-    #kernelPackages = pkgs.linuxPackages_latest; # Kernel
-    kernelPackages = pkgs.linuxPackages_zen;
-
-    kernelParams = [
-      "systemd.mask=systemd-vconsole-setup.service"
-      "systemd.mask=dev-tpmrm0.device" # this is to mask that stupid 1.5 mins systemd bug
-      "nowatchdog"
-      "modprobe.blacklist=sp5100_tco" # watchdog for AMD
-      "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
-    ];
-
-    # This is for OBS Virtual Cam Support
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
-
-    initrd = {
-      availableKernelModules = [
-        "xhci_pci"
-        "ahci"
-        "nvme"
-        "usb_storage"
-        "usbhid"
-        "sd_mod"
-      ];
-      kernelModules = [ ];
-    };
-
-    # Needed For Some Steam Games
-    #kernel.sysctl = {
-    #  "vm.max_map_count" = 2147483642;
-    #};
-
-    ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
-    # Bootloader SystemD
-    loader.systemd-boot.enable = false;
-
-    loader.efi = {
-      efiSysMountPoint = "/boot"; # this is if you have separate /efi partition
-      canTouchEfiVariables = true;
-    };
-
-    #loader.timeout = 1;
-
-    # Bootloader GRUB
-    loader.grub = {
-      enable = true;
-      devices = [ "nodev" ];
-      efiSupport = true;
-      gfxmodeBios = "auto";
-      memtest86.enable = true;
-      useOSProber = true;
-      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
-      configurationName = "${host}";
-    };
-
-    # Bootloader GRUB theme, configure below
-
-    ## -end of BOOTLOADERS----- ##
-
-    # Make /tmp a tmpfs
-    tmp = {
-      useTmpfs = false;
-      tmpfsSize = "30%";
-    };
-
-    # Appimage Support
-    binfmt.registrations.appimage = {
-      wrapInterpreterInShell = false;
-      interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-      recognitionType = "magic";
-      offset = 0;
-      mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-      magicOrExtension = ''\x7fELF....AI\x02'';
-    };
-
-    plymouth.enable = true;
-  };
-
-  # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
-  distro-grub-themes = {
-    enable = true;
-    theme = "nixos";
-  };
 
   # Extra Module Options
   drivers.amdgpu.enable = false;
@@ -129,206 +51,153 @@ in
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
 
-  # networking
-  networking.networkmanager.enable = true;
-  networking.networkmanager.dns = "systemd-resolved";
-  networking.hostName = "${host}";
-  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
-
-  # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
-  nixpkgs.config.allowUnfree = true;
-
   programs = {
     hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
+      # set the flake package
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
       portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };
+    xwayland.enable = true; # 兼容层
 
     waybar.enable = true;
     hyprlock.enable = true;
-    firefox.enable = true;
-    git.enable = true;
-    nm-applet.indicator = true;
     neovim.enable = true;
 
+    # XFCE 桌面环境的默认文件管理器
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
-      exo
-      mousepad
-      thunar-archive-plugin
-      thunar-volman
-      tumbler
+      exo # XFCE 框架库
+      mousepad # 文本编辑器
+      thunar-archive-plugin # 管理压缩文件
+      thunar-volman # 挂载和卸载移动设备
+      tumbler # 生成文件缩略图的后台服务
     ];
 
-    virt-manager.enable = false;
-
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
-
-    xwayland.enable = true;
-
     dconf.enable = true;
-    seahorse.enable = true;
-    fuse.userAllowOther = true;
-    mtr.enable = true;
+    seahorse.enable = true; # GNOME 密钥管理器
+    fuse.userAllowOther = true; # 用户空间文件系统
+    mtr.enable = true; # 网络诊断工具
+    nm-applet.indicator = true; # NetworkManager 图形界面工具
+
+    # 管理 GPG 密钥
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
   };
 
-  users = {
-    mutableUsers = true;
-  };
-
+  # Overlays
   nixpkgs.overlays = [
-    # see https://github.com/NixOS/nixpkgs/pull/368470#pullrequestreview-2524454758
-    (final: prev: {
-      dmraid = prev.dmraid.overrideAttrs (oA: {
-        patches = oA.patches ++ [
-          (prev.fetchpatch2 {
-            url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f298cd74e67a841289fd0f10ef4ee85cfbbc4133/pkgs/os-specific/linux/dmraid/fix-dmevent_tool.patch";
-            hash = "sha256-MmAzpdM3UNRdOk66CnBxVGgbJTzJK43E8EVBfuCFppc=";
-          })
-        ];
-      });
-    })
+    (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
 
   environment.systemPackages =
     (with pkgs; [
       # System Packages
-      baobab
-      btrfs-progs
-      clang
+      clang # C,C++
       curl
-      cpufrequtils
-      duf
-      eza
-      ffmpeg
-      glib # for gsettings to work
-      gsettings-qt
-      git
-      killall
-      libappindicator
-      libnotify
-      openssl # required by Rainbow borders
-      pciutils
       wget
-      xdg-user-dirs
-      xdg-utils
+      duf # 查看系统磁盘的空间使用情况 better df
+      eza # better ls
+      killall # better kill
+      ffmpeg
+      yt-dlp
+      unzip
+      fzf
+      chafa
+      bat
+      ripgrep
+      file
+      dos2unix
+      git
 
-      fastfetch
-      (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
+      libappindicator # 创建桌面应用程序指示器（即系统托盘图标）的库
+      libnotify # 发送桌面通知的库
+      openssl # 用于支持 Rainbow borders 一种自定义窗口边框的工具
+      pciutils # 查看和操作 PCI（外设组件互联）设备的命令行工具
+      cpufrequtils # 控制和管理 Linux 系统中 CPU 频率的工具
+      btrfs-progs # 提供了创建、管理和修复 Btrfs 文件系统的命令行工具
+      xdg-user-dirs # 创建标准的用户目录结构
+      xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
+
+      glib # for gsettings to work
+      dconf # 存储应用程序的设置
+      gsettings-qt # 访问和修改应用程序设置的工具
 
       # Hyprland Stuff
-      #ags
-      (ags.overrideAttrs (oldAttrs: {
-        inherit (oldAttrs) pname;
-        version = "1.8.2";
-      }))
-      btop
-      brightnessctl # for brightness control
-      cava
-      #cliphist
-      eog
-      gnome-system-monitor
-      file-roller
-      grim
-      gtk-engine-murrine # for gtk themes
-      hyprcursor # requires unstable channel
-      hypridle # requires unstable channel
-      imagemagick
-      inxi
-      jq
-      kitty
-      libsForQt5.qtstyleplugin-kvantum # kvantum
-      networkmanagerapplet
-      nwg-look # requires unstable channel
-      nvtopPackages.full
-      pamixer
-      pavucontrol
-      playerctl
-      polkit_gnome
-      pyprland
-      libsForQt5.qt5ct
-      qt6ct
-      qt6.qtwayland
-      qt6Packages.qtstyleplugin-kvantum # kvantum
-      rofi-wayland
-      slurp
-      swappy
-      swaynotificationcenter
-      swww
-      unzip
-      wallust
-      wl-clipboard
-      wlogout
-      yad
-      yt-dlp
+      hyprcursor
+      hypridle
+      hyprlock
+      hyprpicker
+      hyprsunset
+      pyprland # plugins
 
-      #waybar  # if wanted experimental next line
+      # Qt
+      libsForQt5.qt5ct
+      libsForQt5.qtstyleplugin-kvantum # kvantum
+      kdePackages.qt6ct
+      kdePackages.qtstyleplugin-kvantum # kvantum
+      kdePackages.qtwayland
+
+      # GTK
+      nwg-look # GTK主题管理工具
+      gtk-engine-murrine # GTK+ 2.x 的一个 主题引擎
+
+      # grimblast # grim + slurp
+      grim # 截图
+      slurp # 选择
+      swappy # 截图注释
+
+      # audio
+      pamixer # 命令行音量控制工具
+      pavucontrol # 图形化音频控制工具
+      playerctl # 控制支持 MPRIS 协议的音频和视频播放器的播放行为
+
+      cliphist # 管理和查看剪贴板历史记录
+      wl-clipboard # 命令行工具，操作剪贴板
+
+      brightnessctl # 控制显示器亮度的命令行工具
+
+      swww # 设置和管理背景壁纸
+      wallust # 图片取色
+      imagemagick # 图像处理工具
+      inxi # 查看和展示系统硬件和软件信息的命令行工具
+      jq # 处理 JSON 数据
+      xarchiver # 文件归档管理器
+      yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
+      wlogout # Wayland 环境下的注销工具
+      ags # note: defined at flake.nix to download and install ags v1
+      fastfetch
+      (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
+      btop
+      cava # 音乐可视化
+      kitty # teminal
+      networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
+      polkit_gnome # GNOME 风格授权图形界面
+      file-roller # GNOME 风格的归档管理器
+      eog # GNOME 桌面环境中的一个图像查看器
+      gnome-system-monitor # GNOME 风格监视器
+      baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
+      nvtopPackages.full # 显卡监控
+      rofi-wayland # 程序启动器
+      swaynotificationcenter # swaync 用于通知
       (pkgs.waybar.overrideAttrs (oldAttrs: {
         mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      }))
+      })) # 启用了 Waybar 的实验性功能
+
     ])
     ++ [
       python-packages
     ];
 
-  # FONTS
-  fonts.packages = with pkgs; [
-    noto-fonts
-    fira-code
-    noto-fonts-cjk-sans
-    jetbrains-mono
-    font-awesome
-    terminus_font
-    nerd-fonts.jetbrains-mono
-  ];
-
-  # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
-
   # Services to start
   services = {
-    # DNS 解析服务
-    resolved.enable = true;
 
+    # 禁用 X Server
     xserver = {
       enable = false;
       xkb = {
@@ -337,92 +206,61 @@ in
       };
     };
 
-    greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        default_session = {
-          user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
-        };
-      };
-    };
-
+    # 监控硬盘健康的工具
     smartd = {
       enable = false;
       autodetect = true;
     };
 
-    gvfs.enable = true;
-    tumbler.enable = true;
+    gvfs.enable = true; # 提供虚拟文件系统，允许你通过统一的接口访问网络和远程文件系统
+    tumbler.enable = true; # 生成文件缩略图的后台服务
+    udev.enable = true; # 设备管理器
+    envfs.enable = true; # 许通过 /env 路径访问环境变量
+    dbus.enable = true; # 进程间通信（IPC）的系统总线
 
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-    };
-
-    udev.enable = true;
-    envfs.enable = true;
-    dbus.enable = true;
-
+    # 清理 SSD 上无用数据块的工具
     fstrim = {
       enable = true;
       interval = "weekly";
     };
 
-    libinput.enable = true;
+    libinput.enable = true; # 输入设备驱动
+    rpcbind.enable = false; # 基于 RPC（远程过程调用）的网络服务提供支持
+    nfs.server.enable = false; # 共享本地文件系统
+    openssh.enable = true; # SSH
+    fwupd.enable = true; # 管理和更新硬件固件
+    upower.enable = true; # 管理电池、能源和电源管理的守护进程
+    gnome.gnome-keyring.enable = true; # 用于存储和管理密码、密钥、证书等敏感数据的工具
 
-    rpcbind.enable = false;
-    nfs.server.enable = false;
+    # 打印机支持的配置
+    # printing = {
+    #   enable = false;
+    #   drivers = [
+    #  pkgs.hplipWithPlugin
+    #   ];
+    # };
 
-    openssh.enable = true;
-    flatpak.enable = false;
+    # 启用 IPP-over-USB 服务，它允许打印机通过 USB 连接使用
+    # ipp-usb.enable = true;
 
-    blueman.enable = true;
+    # 局域网内设备发现的服务
+    # avahi = {
+    #   enable = true;
+    #   nssmdns4 = true;
+    #   openFirewall = true;
+    # };
 
-    #hardware.openrgb.enable = true;
-    #hardware.openrgb.motherboard = "amd";
+    # 用于文件同步的工具
+    # syncthing = {
+    #   enable = false;
+    #   user = "${username}";
+    #   dataDir = "/home/${username}";
+    #   configDir = "/home/${username}/.config/syncthing";
+    # };
 
-    fwupd.enable = true;
-
-    upower.enable = true;
-
-    gnome.gnome-keyring.enable = true;
-
-    #printing = {
-    #  enable = false;
-    #  drivers = [
-    # pkgs.hplipWithPlugin
-    #  ];
-    #};
-
-    #avahi = {
-    #  enable = true;
-    #  nssmdns4 = true;
-    #  openFirewall = true;
-    #};
-
-    #ipp-usb.enable = true;
-
-    #syncthing = {
-    #  enable = false;
-    #  user = "${username}";
-    #  dataDir = "/home/${username}";
-    #  configDir = "/home/${username}/.config/syncthing";
-    #};
   };
 
-  systemd.services.flatpak-repo = {
-    path = [ pkgs.flatpak ];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
-  };
-
-  # zram
+  # zram 在内存中创建压缩交换空间的技术
   zramSwap = {
     enable = true;
     priority = 100;
@@ -431,95 +269,11 @@ in
     algorithm = "zstd";
   };
 
+  # 调整系统的电源管理设置
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "schedutil";
+    cpuFreqGovernor = "schedutil"; # 基于调度器的 CPU 频率调节器
   };
-
-  #hardware.sane = {
-  #  enable = true;
-  #  extraBackends = [ pkgs.sane-airscan ];
-  #  disabledDefaultBackends = [ "escl" ];
-  #};
-
-  # Extra Logitech Support
-  hardware.logitech.wireless.enable = false;
-  hardware.logitech.wireless.enableGraphical = false;
-
-  # Bluetooth
-  hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
-  };
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-
-  # Security / Polkit
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (
-        subject.isInGroup("users")
-          && (
-            action.id == "org.freedesktop.login1.reboot" ||
-            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-            action.id == "org.freedesktop.login1.power-off" ||
-            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
-          )
-        )
-      {
-        return polkit.Result.YES;
-      }
-    })
-  '';
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
-
-  # Cachix, Optimization settings and garbage collection automation
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-  };
-
-  # Virtualization / Containers
-  # virtualisation.libvirtd.enable = false;
-  # virtualisation.podman = {
-  #   enable = false;
-  #   dockerCompat = false;
-  #   defaultNetwork.settings.dns_enabled = false;
-  # };
-
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
-  };
-
-  console.keyMap = "${keyboardLayout}";
 
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

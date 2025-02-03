@@ -3,14 +3,19 @@
   gitUsername = "loner";
   gitEmail = "loner.games@gmail.com";
 
-  # Hyprland Settings
-  extraMonitorSettings = "";
-
   # Waybar Settings
   clock24h = true;
 
   # Program Options
-  browser = "firefox"; # Set Default Browser (google-chrome-stable for google-chrome)
+  browser = "ZenBrowser"; # Set Default Browser
   terminal = "kitty"; # Set Default System Terminal
   keyboardLayout = "us";
+  shell = "fish"; # fish or zsh
+
+  autoGarbage = false;
+
+  timeZone = "Asia/Shanghai";
+
+  defaultLocale = "en_US.UTF-8";
+  extraLocale = "en_US.UTF-8";
 }

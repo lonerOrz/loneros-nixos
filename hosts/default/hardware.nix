@@ -29,29 +29,19 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/3c9b1110-f9b1-4b1c-bd87-c6f8c1c55c42";
     fsType = "btrfs";
-    options = [
-      "subvol=@"
-      "compress=zstd"
-    ];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/3c9b1110-f9b1-4b1c-bd87-c6f8c1c55c42";
-    fsType = "btrfs";
-    options = [
-      "subvol=@home"
-      "compress=zstd"
-    ];
+    options = [ "subvol=@" ];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/3c9b1110-f9b1-4b1c-bd87-c6f8c1c55c42";
     fsType = "btrfs";
-    options = [
-      "subvol=@nix"
-      "noatime"
-      "compress=zstd"
-    ];
+    options = [ "subvol=@nix" ];
+  };
+
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/3c9b1110-f9b1-4b1c-bd87-c6f8c1c55c42";
+    fsType = "btrfs";
+    options = [ "subvol=@home" ];
   };
 
   fileSystems."/boot" = {
@@ -61,6 +51,12 @@
       "fmask=0022"
       "dmask=0022"
     ];
+  };
+
+  fileSystems."/bin" = {
+    device = "/usr/bin";
+    fsType = "none";
+    options = [ "bind" ];
   };
 
   swapDevices = [
