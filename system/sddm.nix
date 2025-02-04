@@ -8,19 +8,36 @@
     enable = true;
     wayland.enable = true;
     package = pkgs.kdePackages.sddm; # 确保使用 Qt 6 版本的 SDDM
-    # settings = {
-    #   Autologin = {
-    #     Session = "Hyprland";
-    #     User = "${username}";
-    #   };
-    # };
     enableHidpi = true;
     autoNumlock = true;
-    # 我直接在catppuccin统一设置程序风格，具体查看programs/catppuccin.nix
-    # theme = "sugar-dark";
+    theme = "astronaut";
+    extraPackages = with pkgs; [
+        kdePackages.qtsvg
+        kdePackages.qtmultimedia
+        kdePackages.qtvirtualkeyboard
+    ];
   };
-  environment.systemPackages = let themes = pkgs.callPackage ../pkgs/sddm-themes.nix {}; in [ 
+  environment.systemPackages =  [ 
     pkgs.elegant-sddm # Elegant
-    themes.sugar-dark # sugar-dark
+    (pkgs.callPackage ../pkgs/astronaut-sddm.nix {
+      theme = "hyprland_kath";
+      # themeConfig={
+      #   General = {
+      #     HeaderText ="Hi";
+      #     Background="/home/${username}/Desktop/wp.png";
+      #     FontSize="9.0";
+      #   };
+      # };
+    })
   ];
+  # 单独设置catppuccin主题
+  catppuccin.sddm = {
+    enable = false;
+    flavor = "mocha";
+    loginBackground = true;
+    # background = ""; # Background image to use for the login screen
+    font = "Fria Code";
+    fontSize = "8";
+  };
+
 }

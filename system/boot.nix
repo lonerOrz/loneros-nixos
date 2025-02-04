@@ -96,6 +96,11 @@
     enable = false;
     theme = "nixos";
   };
+  # catppuccin theme
+  catppuccin.grub = {
+    enable = true;
+    flavor = "mocha";
+  };
   # cachyOS kernel 调度规则
   services.scx = {
     enable = true;

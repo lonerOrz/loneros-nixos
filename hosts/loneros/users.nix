@@ -43,7 +43,7 @@ in
     ../../programs/spicetify.nix
     #../../programs/virtualbox.nix
     ../../programs/virt-manager.nix
-    ../../programs/catppuccin.nix
+    ../../programs/tty-theme.nix
     #../../programs/flatpak.nix
     ../../programs/steam.nix
     ../../programs/wayvnc.nix
