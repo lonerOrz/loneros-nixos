@@ -12,12 +12,12 @@
     autoNumlock = true;
     theme = "astronaut";
     extraPackages = with pkgs; [
-        kdePackages.qtsvg
-        kdePackages.qtmultimedia
-        kdePackages.qtvirtualkeyboard
+      kdePackages.qtsvg
+      kdePackages.qtmultimedia
+      kdePackages.qtvirtualkeyboard
     ];
   };
-  environment.systemPackages =  [ 
+  environment.systemPackages = [
     pkgs.elegant-sddm # Elegant
     (pkgs.callPackage ../pkgs/astronaut-sddm.nix {
       theme = "hyprland_kath";
