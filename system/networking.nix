@@ -9,6 +9,7 @@
   networking.networkmanager.dns = "systemd-resolved";
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+  networking.enableIPv6 = true;
 
   # DNS 解析服务
   services.resolved = {
