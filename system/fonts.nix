@@ -14,5 +14,6 @@
     #(nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     nerd-fonts.jetbrains-mono # unstable
     nerd-fonts.fira-code # unstable
+    lxgw-wenkai-screen
   ];
 }

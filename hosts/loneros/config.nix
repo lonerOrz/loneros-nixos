@@ -32,8 +32,8 @@ in
     ../../system/xdg-portal.nix
     ../../system/pipewire.nix
     ../../system/security.nix
-    ../../system/sddm.nix
-    # ../../system/greet.nix
+    # ../../system/sddm.nix
+    ../../system/greet.nix
     ../../system/hardware.nix
     ../../system/timezone.nix
     ../../system/fonts.nix

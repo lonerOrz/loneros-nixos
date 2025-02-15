@@ -9,7 +9,7 @@
   # Cachix, Optimization settings and garbage collection automation
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-    channel.enable = false;
+    channel.enable = true;
     extraOptions = ''
       warn-dirty = false
     '';
