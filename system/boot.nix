@@ -56,7 +56,7 @@
       efiSupport = true;
       gfxmodeBios = "auto";
       #memtest86.enable = true;
-      useOSProber = true;
+      # useOSProber = true;
       extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
       extraConfig = ''

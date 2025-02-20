@@ -10,7 +10,7 @@ in
 {
   programs.nh = {
     enable = true;
-    flake = "/home/${username}/NixOS-Hyprland";
+    flake = "/home/${username}/loneros-nixos";
     clean.enable = autoGarbage;
     clean.extraArgs = "--keep-since 4d --keep 3";
   };

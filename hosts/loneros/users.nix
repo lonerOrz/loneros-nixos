@@ -47,7 +47,7 @@ in
     #../../programs/flatpak.nix
     ../../programs/steam.nix
     ../../programs/wayvnc.nix
-    ../../programs/ollama.nix
+    #../../programs/ollama.nix
     ../../programs/wshowkeys.nix
     ../../programs/discord.nix
     ../../programs/firefox.nix
@@ -81,6 +81,10 @@ in
     zed-editor
     telegram-desktop
     rustdesk-flutter
+    obsidian
+    helix
+
+    nur.repos.xddxdd.baidunetdisk
   ];
 
   programs = {

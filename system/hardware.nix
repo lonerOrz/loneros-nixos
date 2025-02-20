@@ -17,8 +17,8 @@
 
   # 系统启动时控制 RGB 灯光效果
   services = {
-    #hardware.openrgb.enable = true;
-    #hardware.openrgb.motherboard = "amd";
+    hardware.openrgb.enable = true;
+    hardware.openrgb.motherboard = "intel";
   };
 
 }

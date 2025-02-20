@@ -33,8 +33,8 @@ in
       # alias = { co = "checkout"; };
       extraConfig = {
         # Sign all commits using ssh key
-        # commit.gpgsign = true;
-        # gpg.format = "ssh";
+        commit.gpgsign = true;
+        gpg.format = "ssh";
         user.signingkey = "~/.ssh/id_rsa.pub";
         init.defaultBranch = "main";
         color = {

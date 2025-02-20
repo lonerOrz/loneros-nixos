@@ -37,6 +37,7 @@ in
     ../../system/hardware.nix
     ../../system/timezone.nix
     ../../system/fonts.nix
+    ../../system/fancontrol.nix
 
   ];
 

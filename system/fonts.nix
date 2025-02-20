@@ -15,5 +15,6 @@
     nerd-fonts.jetbrains-mono # unstable
     nerd-fonts.fira-code # unstable
     lxgw-wenkai-screen
+    lxgw-wenkai
   ];
 }

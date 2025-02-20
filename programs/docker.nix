@@ -14,7 +14,7 @@
   };
   # 配置 Docker Daemon 的其他设置
   virtualisation.docker.daemon.settings = {
-    data-root = "/home/${username}/docker-data"; # 设置 Docker 数据存储路径
+    # data-root = "/home/${username}/docker-data"; # 设置 Docker 数据存储路径
     registry-mirrors = [
       "https://registry.cn-hangzhou.aliyuncs.com"
       "https://docker-0.unsee.tech"
