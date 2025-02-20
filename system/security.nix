@@ -18,10 +18,6 @@
       }
     })
   '';
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
+  security.pam.services.swaylock = { };
   security.pam.services.hyprlock = { };
 }

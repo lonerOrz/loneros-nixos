@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  username,
-  ...
+{ config
+, pkgs
+, username
+, ...
 }:
 {
   virtualisation.docker.enable = true;
@@ -51,6 +50,4 @@
   users.users.${username}.extraGroups = [ "docker" ]; # 将用户添加到 docker 组
   # 如果你希望为容器启用 GPU 直通，可以使用以下配置：
   hardware.nvidia-container-toolkit.enable = true;
-  # 指定镜像加速器
-  # virtualisation.docker.extraOptions = "--registry-mirror=https://your-mirror-url";
 }

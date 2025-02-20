@@ -1,50 +1,28 @@
-{
-  pkgs,
-  stable,
-  lib,
-  username,
-  ...
+{ inputs
+, username
+, host
+, stable
+, ...
 }:
-let
-  inherit (import ./variables.nix) gitUsername gitEmail;
-in
 {
-  # Home Manager Settings
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
-  home.stateVersion = "24.11";
-  home.enableNixpkgsReleaseCheck = false;
-  programs.home-manager.enable = true;
-
-  imports = [
-    ../../home/obs.nix
-    ../../home/direnv.nix
-    ../../home/fuzzel.nix # shutdown script needed
-    ../../home/scripts
-    # ../../home/hyprpanel.nix
-  ];
-
-  programs = {
-    # Configure Git
-    git = {
-      enable = true;
-      userName = "${gitUsername}";
-      userEmail = "${gitEmail}";
-      # alias = { co = "checkout"; };
-      extraConfig = {
-        # Sign all commits using ssh key
-        commit.gpgsign = true;
-        gpg.format = "ssh";
-        user.signingkey = "~/.ssh/id_rsa.pub";
-        init.defaultBranch = "main";
-        color = {
-          ui = "auto";
-        };
-        push = {
-          default = "simple";
-        };
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = false;
+    backupFileExtension = "backup";
+    extraSpecialArgs = { inherit inputs username host stable; };
+    users.${username} = {
+      home = {
+        username = "${username}";
+        homeDirectory = "/home/${username}";
+        stateVersion = "25.05";
+        enableNixpkgsReleaseCheck = false;
       };
+      programs.home-manager.enable = true;
+      imports = [
+        ../../home
+        inputs.catppuccin.homeManagerModules.catppuccin
+        inputs.chaotic.homeManagerModules.default
+      ];
     };
-
   };
 }

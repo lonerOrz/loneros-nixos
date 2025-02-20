@@ -1,6 +1,5 @@
-{
-  pkgs,
-  ...
+{ pkgs
+, ...
 }:
 {
   # FONTS
@@ -14,7 +13,7 @@
     #(nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     nerd-fonts.jetbrains-mono # unstable
     nerd-fonts.fira-code # unstable
-    lxgw-wenkai-screen
-    lxgw-wenkai
+    lxgw-wenkai-screen # 屏幕显示优化版
+    lxgw-wenkai # wenkai mono
   ];
 }

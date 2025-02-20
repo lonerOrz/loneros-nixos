@@ -1,9 +1,13 @@
-{
-  username,
-  pkgs,
-  ...
+{ username
+, pkgs
+, ...
 }:
 {
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "${username}";
+  };
+
   services.greetd = {
     enable = true;
     vt = 3;

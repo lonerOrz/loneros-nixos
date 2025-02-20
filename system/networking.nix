@@ -1,9 +1,13 @@
-{
-  options,
-  host,
-  ...
+{ options
+, host
+, stable
+, ...
 }:
 {
+  environment.systemPackages = with stable; [
+    networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
+  ];
+
   # networking
   networking.networkmanager.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
@@ -22,4 +26,9 @@
     ];
   };
 
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  networking.firewall.enable = false;
 }

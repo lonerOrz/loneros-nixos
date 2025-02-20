@@ -1,10 +1,9 @@
-{
-  pkgs,
-  stable,
-  inputs,
-  system,
-  username,
-  ...
+{ pkgs
+, stable
+, inputs
+, system
+, username
+, ...
 }:
 let
   inherit (import ./variables.nix) gitUsername shell;
@@ -83,8 +82,6 @@ in
     rustdesk-flutter
     obsidian
     helix
-
-    nur.repos.xddxdd.baidunetdisk
   ];
 
   programs = {

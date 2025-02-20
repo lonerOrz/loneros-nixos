@@ -15,10 +15,29 @@
   #  disabledDefaultBackends = [ "escl" ];
   #};
 
-  # 系统启动时控制 RGB 灯光效果
   services = {
-    hardware.openrgb.enable = true;
-    hardware.openrgb.motherboard = "intel";
-  };
+    # 系统启动时控制 RGB 灯光效果
+    hardware.openrgb = {
+      enable = true;
+      motherboard = "intel";
+    };
 
+    # 打印机支持的配置
+    # printing = {
+    #   enable = false;
+    #   drivers = [
+    #  pkgs.hplipWithPlugin
+    #   ];
+    # };
+
+    # 启用 IPP-over-USB 服务，它允许打印机通过 USB 连接使用
+    # ipp-usb.enable = true;
+
+    # 局域网内设备发现的服务
+    # avahi = {
+    #   enable = true;
+    #   nssmdns4 = true;
+    #   openFirewall = true;
+    # };
+  };
 }

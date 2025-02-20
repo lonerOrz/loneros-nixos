@@ -25,7 +25,7 @@
     };
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    stylix.url = "github:danth/stylix";
+    # stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
     ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
@@ -35,14 +35,11 @@
   };
 
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      nixpkgs-stable,
-      home-manager,
-      flake-utils,
-      systems,
-      ...
+    inputs@{ self
+    , nixpkgs
+    , nixpkgs-stable
+    , systems
+    , ...
     }:
     let
       system = "x86_64-linux";
@@ -88,48 +85,12 @@
             }
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
-            inputs.stylix.nixosModules.stylix
             inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
-            # nixos module intall home-manager
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                inherit username;
-                inherit inputs;
-                inherit host;
-                inherit stable;
-              };
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-              home-manager.users.${username} = {
-                imports = [
-                  ./hosts/${host}/home.nix
-                  inputs.catppuccin.homeManagerModules.catppuccin
-                  inputs.chaotic.homeManagerModules.default
-                ];
-              };
-            }
+            inputs.home-manager.nixosModules.home-manager
           ];
         };
       };
-      # Standalone install home-manager
-      #homeConfigurations = {
-      #  "${username}" = home-manager.lib.homeManagerConfiguration {
-      #    extraSpecialArgs = {
-      #      inherit system;
-      #      inherit inputs;
-      #      inherit username;
-      #      inherit host;
-      #    };
-      #    pkgs = nixpkgs.legacyPackages.${system};
-      #    modules = [
-      #      ./hosts/${host}/home.nix
-      #    ];
-      #  };
-      #};
-      # formatter.${system} = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
       formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
       checks = eachSystem (pkgs: {
         formatting = treefmtEval.${pkgs.system}.config.build.check self;

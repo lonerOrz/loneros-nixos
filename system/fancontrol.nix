@@ -1,11 +1,10 @@
-{
-  config,
-  stable,
-  ...
+{ config
+, stable
+, ...
 }:
 {
   environment.systemPackages = with stable; [
-    lm_sensors
+    # lm_sensors
     lenovo-legion
   ];
 }

@@ -1,8 +1,7 @@
-{
-  config,
-  host,
-  pkgs,
-  ...
+{ config
+, host
+, pkgs
+, ...
 }:
 {
   # BOOT related stuff
@@ -42,7 +41,7 @@
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
     # Bootloader SystemD
-    loader.systemd-boot.enable = false;
+    loader.systemd-boot.enable = true;
 
     loader.efi = {
       efiSysMountPoint = "/boot"; # this is if you have separate /efi partition
@@ -51,7 +50,7 @@
 
     # Bootloader GRUB
     loader.grub = {
-      enable = true;
+      enable = false;
       devices = [ "nodev" ];
       efiSupport = true;
       gfxmodeBios = "auto";
@@ -89,7 +88,7 @@
     };
 
     # 启动动画
-    plymouth.enable = true;
+    plymouth.enable = false;
   };
   # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
   distro-grub-themes = {
@@ -98,7 +97,7 @@
   };
   # catppuccin theme
   catppuccin.grub = {
-    enable = true;
+    enable = false;
     flavor = "mocha";
   };
   # cachyOS kernel 调度规则

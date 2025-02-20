@@ -1,8 +1,6 @@
-# Main default config
-{
-  pkgs,
-  inputs,
-  ...
+{ pkgs
+, inputs
+, ...
 }:
 let
   inherit (import ./variables.nix) keyboardLayout;
@@ -17,6 +15,9 @@ in
   imports = [
     ./hardware.nix
     ./users.nix
+    ./home.nix
+
+    ../../system
 
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
@@ -24,21 +25,6 @@ in
     ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
-
-    ../../system/bluetooth.nix
-    ../../system/nix.nix
-    ../../system/boot.nix
-    ../../system/networking.nix
-    ../../system/xdg-portal.nix
-    ../../system/pipewire.nix
-    ../../system/security.nix
-    # ../../system/sddm.nix
-    ../../system/greet.nix
-    ../../system/hardware.nix
-    ../../system/timezone.nix
-    ../../system/fonts.nix
-    ../../system/fancontrol.nix
-
   ];
 
   # Extra Module Options
@@ -112,6 +98,7 @@ in
       fzf
       chafa
       bat
+      bc
       ripgrep
       file
       dos2unix
@@ -172,13 +159,13 @@ in
       xarchiver # 文件归档管理器
       yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
       wlogout # Wayland 环境下的注销工具
-      ags # note: defined at flake.nix to download and install ags v1
+      ags # flake.nix ags v1
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
       btop
       cava # 音乐可视化
       kitty # teminal
-      networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
+      # networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
       polkit_gnome # GNOME 风格授权图形界面
       file-roller # GNOME 风格的归档管理器
       eog # GNOME 桌面环境中的一个图像查看器
@@ -187,10 +174,7 @@ in
       nvtopPackages.full # 显卡监控
       rofi-wayland # 程序启动器
       swaynotificationcenter # swaync 用于通知
-      (pkgs.waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      })) # 启用了 Waybar 的实验性功能
-
+      waybar # 任务栏
     ])
     ++ [
       python-packages
@@ -234,24 +218,6 @@ in
     upower.enable = true; # 管理电池、能源和电源管理的守护进程
     gnome.gnome-keyring.enable = true; # 用于存储和管理密码、密钥、证书等敏感数据的工具
 
-    # 打印机支持的配置
-    # printing = {
-    #   enable = false;
-    #   drivers = [
-    #  pkgs.hplipWithPlugin
-    #   ];
-    # };
-
-    # 启用 IPP-over-USB 服务，它允许打印机通过 USB 连接使用
-    # ipp-usb.enable = true;
-
-    # 局域网内设备发现的服务
-    # avahi = {
-    #   enable = true;
-    #   nssmdns4 = true;
-    #   openFirewall = true;
-    # };
-
     # 用于文件同步的工具
     # syncthing = {
     #   enable = false;
@@ -279,12 +245,6 @@ in
 
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

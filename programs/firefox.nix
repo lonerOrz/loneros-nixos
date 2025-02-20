@@ -1,10 +1,9 @@
-{
-  pkgs,
-  ...
+{ pkgs
+, ...
 }:
 {
   environment.systemPackages = with pkgs; [
-    # firefox_nightly
-    firefox
+    firefox_nightly
+    # firefox
   ];
 }
