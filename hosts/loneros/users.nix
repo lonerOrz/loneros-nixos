@@ -82,6 +82,8 @@ in
     rustdesk-flutter
     obsidian
     helix
+    nwg-displays
+    ntfs3g # mount U盘
   ];
 
   programs = {

@@ -41,7 +41,7 @@
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
     # Bootloader SystemD
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot.enable = false;
 
     loader.efi = {
       efiSysMountPoint = "/boot"; # this is if you have separate /efi partition
@@ -50,7 +50,7 @@
 
     # Bootloader GRUB
     loader.grub = {
-      enable = false;
+      enable = true;
       devices = [ "nodev" ];
       efiSupport = true;
       gfxmodeBios = "auto";
