@@ -41,8 +41,8 @@ in
     ../../programs/rclone.nix
     ../../programs/spicetify.nix
     #../../programs/virtualbox.nix
-    ../../programs/virt-manager.nix
-    ../../programs/tty-theme.nix
+    ../../programs/virt-manager.nix # kvm + qemu + virt-manager
+    ../../programs/tty-theme.nix # catppuccin-mocha
     #../../programs/flatpak.nix
     ../../programs/steam.nix
     ../../programs/wayvnc.nix
@@ -62,9 +62,8 @@ in
     # software
     translate-shell
     starship
-    devbox
-    stow
-    nwg-dock-hyprland
+    devbox # 配合 direnv
+    stow # dotfiles needed
 
     go-musicfox
     lazygit
@@ -81,9 +80,10 @@ in
     telegram-desktop
     rustdesk-flutter
     obsidian
-    helix
-    nwg-displays
-    ntfs3g # mount U盘
+    helix # 编辑器
+
+    # dev
+    waypaper
   ];
 
   programs = {

@@ -92,6 +92,10 @@ in
       duf # 查看系统磁盘的空间使用情况 better df
       eza # better ls
       killall # better kill
+      ntfs3g # mount ntfs 格式磁盘
+      openssl # SSL/TLS 安全通信、证书管理和加密。
+      inxi # 查看和展示系统硬件和软件信息的命令行工具
+      jq # 处理 JSON 数据
       ffmpeg
       yt-dlp
       unzip
@@ -106,24 +110,25 @@ in
 
       libappindicator # 创建桌面应用程序指示器（即系统托盘图标）的库
       libnotify # 发送桌面通知的库
-      openssl # 用于支持 Rainbow borders 一种自定义窗口边框的工具
       pciutils # 查看和操作 PCI（外设组件互联）设备的命令行工具
       cpufrequtils # 控制和管理 Linux 系统中 CPU 频率的工具
       btrfs-progs # 提供了创建、管理和修复 Btrfs 文件系统的命令行工具
       xdg-user-dirs # 创建标准的用户目录结构
       xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
 
-      glib # for gsettings to work
       dconf # 存储应用程序的设置
+      glib # for gsettings to work
       gsettings-qt # 访问和修改应用程序设置的工具
 
       # Hyprland Stuff
-      hyprcursor
-      hypridle
-      hyprlock
-      hyprpicker
-      hyprsunset
+      hyprcursor # 鼠标
+      hypridle # 休眠
+      hyprlock # 锁屏
+      hyprpicker # 提取色素
+      hyprsunset # 护眼
       pyprland # plugins
+      nwg-displays # 管理显示器
+      nwg-dock-hyprland # dock栏
 
       # Qt
       libsForQt5.qt5ct
@@ -154,24 +159,23 @@ in
       swww # 设置和管理背景壁纸
       wallust # 图片取色
       imagemagick # 图像处理工具
-      inxi # 查看和展示系统硬件和软件信息的命令行工具
-      jq # 处理 JSON 数据
+
       xarchiver # 文件归档管理器
       yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
+
       wlogout # Wayland 环境下的注销工具
       ags # flake.nix ags v1
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
       btop
+      nvtopPackages.full # 显卡监控
       cava # 音乐可视化
       kitty # teminal
-      # networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
       polkit_gnome # GNOME 风格授权图形界面
       file-roller # GNOME 风格的归档管理器
       eog # GNOME 桌面环境中的一个图像查看器
       gnome-system-monitor # GNOME 风格监视器
       baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
-      nvtopPackages.full # 显卡监控
       rofi-wayland # 程序启动器
       swaynotificationcenter # swaync 用于通知
       waybar # 任务栏
