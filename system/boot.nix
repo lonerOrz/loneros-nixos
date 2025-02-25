@@ -92,7 +92,7 @@
   };
   # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
   distro-grub-themes = {
-    enable = false;
+    enable = true;
     theme = "nixos";
   };
   # catppuccin theme

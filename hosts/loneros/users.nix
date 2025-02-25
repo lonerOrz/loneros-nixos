@@ -82,8 +82,8 @@ in
     obsidian
     helix # 编辑器
 
-    # dev
-    waypaper
+    # test
+    matugen
   ];
 
   programs = {
