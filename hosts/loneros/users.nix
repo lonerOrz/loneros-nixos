@@ -32,6 +32,14 @@ in
     defaultUserShell = pkgs.${shell};
   };
 
+  security.sudo.extraRules = [{
+    users = ["${username}"];
+    commands = [{
+      command = "ALL";
+      options = ["NOPASSWD"];
+    }];
+  }];
+
   # 自定义软件安装
   imports = [
     ../../programs/nh.nix
@@ -82,8 +90,6 @@ in
     obsidian
     helix # 编辑器
 
-    # test
-    matugen
   ];
 
   programs = {

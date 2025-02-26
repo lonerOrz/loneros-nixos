@@ -102,6 +102,7 @@ in
       fzf
       chafa
       bat
+      fd
       bc
       ripgrep
       file
