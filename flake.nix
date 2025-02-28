@@ -30,6 +30,7 @@
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
     ghostty.url = "github:ghostty-org/ghostty";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    nvf.url = "github:notashelf/nvf";
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
@@ -84,6 +85,7 @@
             }
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
+            # inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
             inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
             inputs.home-manager.nixosModules.home-manager

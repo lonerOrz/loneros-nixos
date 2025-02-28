@@ -7,5 +7,6 @@
     # ./hyprpanel.nix
     # ./hyprland.nix
     ./git.nix
+    # ./nvf.nix
   ];
 }
