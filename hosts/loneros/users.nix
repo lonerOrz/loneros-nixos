@@ -77,7 +77,6 @@ in
     lazygit
     neovim
     yazi
-    pipes
 
     spotify
     qbittorrent-enhanced # qbee
@@ -91,6 +90,17 @@ in
     obsidian
     helix # 编辑器
 
+    # cli tool
+    neo-cowsay
+    pipes
+    sl
+    figlet
+    fortune
+    nyancat
+    bb
+    cmatrix
+    hollywood
+    asciinema
   ];
 
   programs = {
