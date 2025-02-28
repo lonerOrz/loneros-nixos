@@ -77,6 +77,7 @@ in
     lazygit
     neovim
     yazi
+    pipes
 
     spotify
     qbittorrent-enhanced # qbee
