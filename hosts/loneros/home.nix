@@ -22,7 +22,6 @@
         ../../home
         inputs.catppuccin.homeManagerModules.catppuccin
         inputs.chaotic.homeManagerModules.default
-        # inputs.stylix.nixosModules.stylix
       ];
     };
   };

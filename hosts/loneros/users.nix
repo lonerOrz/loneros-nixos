@@ -1,14 +1,13 @@
-{ pkgs
-, stable
-, inputs
-, system
-, username
-, ...
-}:
-let
-  inherit (import ./variables.nix) gitUsername shell;
-in
 {
+  pkgs,
+  stable,
+  inputs,
+  system,
+  username,
+  ...
+}: let
+  inherit (import ./variables.nix) gitUsername shell;
+in {
   users = {
     mutableUsers = true;
     users."${username}" = {
@@ -32,33 +31,20 @@ in
     defaultUserShell = pkgs.${shell};
   };
 
-  security.sudo.extraRules = [{
-    users = ["${username}"];
-    commands = [{
-      command = "ALL";
-      options = ["NOPASSWD"];
-    }];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = ["${username}"];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
 
   # 自定义软件安装
-  imports = [
-    ../../programs/nh.nix
-    ../../programs/docker.nix
-    ../../programs/fcitx5.nix
-    ../../programs/mpd.nix
-    ../../programs/rclone.nix
-    ../../programs/spicetify.nix
-    #../../programs/virtualbox.nix
-    ../../programs/virt-manager.nix # kvm + qemu + virt-manager
-    ../../programs/tty-theme.nix # catppuccin-mocha
-    #../../programs/flatpak.nix
-    ../../programs/steam.nix
-    ../../programs/wayvnc.nix
-    #../../programs/ollama.nix
-    ../../programs/wshowkeys.nix
-    ../../programs/discord.nix
-    ../../programs/firefox.nix
-  ];
+  imports = [ ../../programs ]; # 直接在programs中的default.nix中添加
 
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
@@ -115,5 +101,4 @@ in
     ${shell}.enable = true;
     starship.enable = true;
   };
-
 }
