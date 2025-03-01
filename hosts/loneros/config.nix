@@ -234,21 +234,6 @@ in
 
   };
 
-  # zram 在内存中创建压缩交换空间的技术
-  zramSwap = {
-    enable = true;
-    priority = 100;
-    memoryPercent = 30;
-    swapDevices = 1;
-    algorithm = "zstd";
-  };
-
-  # 调整系统的电源管理设置
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "schedutil"; # 基于调度器的 CPU 频率调节器
-  };
-
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 

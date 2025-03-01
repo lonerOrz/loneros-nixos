@@ -12,6 +12,6 @@
     ./hardware.nix
     ./timezone.nix
     ./fonts.nix
-    ./fancontrol.nix
+    ./optimization.nix
   ];
 }
