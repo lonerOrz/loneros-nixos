@@ -1,4 +1,11 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
+let
+  accent = "#${config.lib.stylix.colors.base0D}";
+  accent-alt = "#${config.lib.stylix.colors.base03}";
+  background = "#${config.lib.stylix.colors.base00}";
+  background-alt = "#${config.lib.stylix.colors.base0B}";
+  foreground = "#${config.lib.stylix.colors.base05}";
+in 
 {
   imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
 
@@ -32,7 +39,7 @@
     # Useful for overriding colors in your selected theme.
     # Default: {}
     override = {
-      theme.bar.menus.text = "#123ABC";
+      theme.bar.menus.text = "${background-alt}";
     };
 
     # Configure bar layouts for monitors.

@@ -1,5 +1,6 @@
 { pkgs
 , inputs
+, stable
 , ...
 }:
 let
@@ -18,13 +19,9 @@ in
     ./home.nix
 
     ../../system
-
-    ../../modules/amd-drivers.nix
-    ../../modules/nvidia-drivers.nix
-    ../../modules/nvidia-prime-drivers.nix
-    ../../modules/intel-drivers.nix
-    ../../modules/vm-guest-services.nix
-    ../../modules/local-hardware-clock.nix
+    ../../programs
+    ../../modules
+    ../../themes
   ];
 
   # Extra Module Options
@@ -166,7 +163,7 @@ in
       yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
 
       wlogout # Wayland 环境下的注销工具
-      (ags.overrideAttrs (oldAttrs: { inherit (oldAttrs) pname; version = "1.9.0"; }))
+      stable.ags
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
       btop

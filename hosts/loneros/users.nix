@@ -43,15 +43,12 @@ in {
     }
   ];
 
-  # 自定义软件安装
-  imports = [ ../../programs ]; # 直接在programs中的default.nix中添加
-
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
     "electron-11.5.0" # baidunetdisk needed
   ];
 
-  # 安装的软件
+  # 我自己喜欢全局安装
   environment.systemPackages = with pkgs; [
     # software
     translate-shell

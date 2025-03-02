@@ -7,7 +7,7 @@
 {
   home-manager = {
     useUserPackages = true;
-    useGlobalPkgs = false;
+    useGlobalPkgs = true;
     backupFileExtension = "backup";
     extraSpecialArgs = { inherit inputs username host stable; };
     users.${username} = {
@@ -21,7 +21,6 @@
       imports = [
         ../../home
         inputs.catppuccin.homeManagerModules.catppuccin
-        inputs.chaotic.homeManagerModules.default
       ];
     };
   };

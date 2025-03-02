@@ -25,7 +25,11 @@
     };
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    # stylix.url = "github:danth/stylix";
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ags.url = "github:aylur/ags/v1";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
     ghostty.url = "github:ghostty-org/ghostty";
@@ -85,7 +89,7 @@
             }
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
-            # inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
+            inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
             inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
             inputs.home-manager.nixosModules.home-manager
