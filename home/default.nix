@@ -8,5 +8,6 @@
     # ./hyprland.nix
     ./git.nix
     # ./nvf.nix
+    ./qutebrowser
   ];
 }
