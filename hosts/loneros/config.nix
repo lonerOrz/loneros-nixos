@@ -65,8 +65,6 @@ in
     dconf.enable = true;
     seahorse.enable = true; # GNOME 密钥管理器
     fuse.userAllowOther = true; # 用户空间文件系统
-    mtr.enable = true; # 网络诊断工具
-    nm-applet.indicator = true; # NetworkManager 图形界面工具
 
     # 管理 GPG 密钥
     gnupg.agent = {
