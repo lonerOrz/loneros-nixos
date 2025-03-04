@@ -1,6 +1,7 @@
-{ inputs
-, pkgs
-, ...
+{
+  inputs,
+  pkgs,
+  ...
 }:
 {
   wayland.windowManager.hyprland = {
@@ -11,6 +12,5 @@
     # withUWSM = true; # One day, but not today
     package = inputs.hyprland.packages."${pkgs.system}".hyprland;
   };
-  systemd.user.targets.hyprland-session.Unit.Wants =
-    [ "xdg-desktop-autostart.target" ];
+  systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
 }

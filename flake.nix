@@ -39,11 +39,12 @@
   };
 
   outputs =
-    inputs@{ self
-    , nixpkgs
-    , nixpkgs-stable
-    , systems
-    , ...
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-stable,
+      systems,
+      ...
     }:
     let
       system = "x86_64-linux";
@@ -92,7 +93,6 @@
             inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
             inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
-            inputs.home-manager.nixosModules.home-manager
           ];
         };
       };

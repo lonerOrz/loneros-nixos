@@ -12,7 +12,7 @@ let
       "config": {
         "title" : "Welcome Home",
         "openLinksInNewTab": false,
-        "locale": "fr-FR",
+        "locale": "zh-CN",
         "colors": {
           "primary": "${accent}",
           "background": "${background}",
@@ -31,7 +31,6 @@ let
               {"title": "Nixvim", "url": "https://nix-community.github.io/nixvim/", "icon": ""},
               {"title": "Hyprland Wiki", "url": "https://wiki.hyprland.org/", "icon": "󰖬"},
               {"title": "Youtube", "url": "https://youtube.com", "icon": "󰗃"},
-              {"title": "Figma", "url": "https://figma.com", "icon": ""},
               {"title": "Server", "url": "https://home.anotherhadi.com", "icon": ""}
             ]
           },
@@ -64,9 +63,7 @@ let
 
     buildPhase = ''
       npm install
-      cp ${
-        pkgs.writeText "src/routes/config.json" settings
-      } src/routes/config.json
+      cp ${pkgs.writeText "src/routes/config.json" settings} src/routes/config.json
       npm run build
       mkdir $out
       mv build $out
@@ -78,9 +75,13 @@ let
     };
   };
 
-in {
+in
+{
 
-  imports = [ ./duckduckgo-colorscheme.nix ];
+  imports = [ 
+    ./theme.nix
+    ./duckduckgo-colorscheme.nix
+  ];
 
   programs.qutebrowser = {
     enable = true;
@@ -91,7 +92,7 @@ in {
       "g" = "https://google.com/search?q={}";
       "y" = "https://youtube.com/results?search_query={}";
       "ya" = "https://yandex.com/search/?text={}";
-      "n" = "https://mynixos.com/search?q={}";
+      "nix" = "https://mynixos.com/search?q={}";
       "nixo" = "https://search.nixos.org/options?channel=unstable&query={}";
       "nixp" = "https://search.nixos.org/packages?channel=unstable&query={}";
       "gt" = "https://github.com/search?q={}&type=repositories";
@@ -106,7 +107,7 @@ in {
       outlook = "https://outlook.office.com/mail/";
       office = "https://www.office.com/?auth=2";
       teams = "https://teams.microsoft.com/_";
-      casa = "http://192.168.2.16:8081/#/";
+      openwrt = "http://192.168.100.1";
       proton = "https://mail.proton.me/u/0/inbox";
       cloudflare-one = "https://one.dash.cloudflare.com/";
       chatgpt = "https://chat.openai.com/";
@@ -124,15 +125,14 @@ in {
       };
 
       colors = {
-        webpage.preferred_color_scheme =
-          "dark"; # Enable dark mode for websites that support it
+        webpage.preferred_color_scheme = "dark"; # Enable dark mode for websites that support it
       };
 
       statusbar.show = "in-mode";
 
       completion = {
         height = "30%";
-        open_categories = [ "history" ];
+        open_categories = [ "history" "bookmarks" "quickmarks" ];
         scrollbar = {
           padding = 0;
           width = 0;
@@ -156,7 +156,10 @@ in {
         remove_finished = 0;
       };
 
-      hints = { radius = 1; };
+      # 配置提示模式（用于键盘导航链接）的样式
+      hints = {
+        radius = 1;
+      };
 
       scrolling = {
         bar = "never";
@@ -165,14 +168,17 @@ in {
 
       tabs = {
         show = "multiple";
+        position = "top";
+        width = "30%";
+        background = true;
         last_close = "close";
         mode_on_change = "restore";
         close_mouse_button = "right";
       };
 
-      zoom.default = "100%";
+      zoom.default = "90%";
 
-      qt.force_software_rendering = "chromium";
+      qt.force_software_rendering = "none"; # none, qt, software-opengl, chromium
     };
 
     keyBindings = {
@@ -252,6 +258,8 @@ in {
       c.statusbar.padding = {"bottom": 6, "left": 7, "right": 7, "top": 6}
 
       config.load_autoconfig(True)
+
+      config.source("theme.config.py")
     '';
   };
 }

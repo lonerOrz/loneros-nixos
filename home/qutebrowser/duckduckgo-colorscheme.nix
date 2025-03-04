@@ -6,8 +6,10 @@ let
   foreground = config.lib.stylix.colors.base05;
   background-alt = config.lib.stylix.colors.base01;
   foreground-alt = config.lib.stylix.colors.base06;
-in {
-  home.file.".duckduckgo-colorscheme.js".text =
+in
+{
+  # .config/qutebrowser/greasemonkey/duckduckgo-colorscheme.js
+  home.file.".config/qutebrowser/duckduckgo-colorscheme.js".text =
     # js
     ''
       // Go to DuckDuckGo settings page, open the console, paste the code and hit enter.

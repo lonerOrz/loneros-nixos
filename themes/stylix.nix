@@ -2,7 +2,7 @@
 let
   colorScheme = rec {
     custom = false;
-    name = "catppuccin-mocha";
+    name = "nord"; # catppuccin-mocha, tokyo-night-moon, solarized-dark, rose-pine-moon, nord, gruvbox-dark-hard
     path =
       if custom
       then ./colorschemes/${name}.yaml

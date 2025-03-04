@@ -5,7 +5,7 @@ let
   background = "#${config.lib.stylix.colors.base00}";
   background-alt = "#${config.lib.stylix.colors.base0B}";
   foreground = "#${config.lib.stylix.colors.base05}";
-in 
+in
 {
   imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
 

@@ -1,7 +1,8 @@
-{ pkgs
-, inputs
-, stable
-, ...
+{
+  pkgs,
+  inputs,
+  stable,
+  ...
 }:
 let
   inherit (import ./variables.nix) keyboardLayout;
