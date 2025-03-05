@@ -16,9 +16,8 @@ in
 
   programs.spicetify = {
     enable = true;
-
-    theme = lib.mkForce spicePkgs.themes.text;
-    colorScheme = "CatppuccinMacchiato";
+    # theme = lib.mkForce spicePkgs.themes.text;
+    # colorScheme = "CatppuccinMacchiato";
 
     enabledExtensions = with spicePkgs.extensions; [
       autoSkipVideo # 自动跳过视频
@@ -34,17 +33,16 @@ in
       #popupLyrics # 弹出歌词
       shuffle # 随机播放
     ];
-
     enabledCustomApps = with spicePkgs.apps; [
       lyricsPlus
       marketplace
       #reddit
     ];
-
     enabledSnippets = with spicePkgs.snippets; [
       rotatingCoverart # 旋转艺术封面
       pointer
     ];
-
   };
+
+  stylix.targets.spicetify.enable = true;
 }
