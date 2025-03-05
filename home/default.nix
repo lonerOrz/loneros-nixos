@@ -9,5 +9,6 @@
     ./git.nix
     # ./nvf.nix
     ./qutebrowser
+    ./zen
   ];
 }

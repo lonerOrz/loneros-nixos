@@ -11,7 +11,7 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     backupFileExtension = "backup";
-    extraSpecialArgs = { inherit inputs username host stable; };
+    extraSpecialArgs = { inherit inputs username system host stable; };
     users.${username} = {
       home = {
         username = "${username}";
