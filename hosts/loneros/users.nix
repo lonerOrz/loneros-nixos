@@ -72,6 +72,7 @@ in {
     rustdesk-flutter
     obsidian
     helix # 编辑器
+    element-desktop
 
     # cli tool
     neo-cowsay
