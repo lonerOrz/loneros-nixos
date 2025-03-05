@@ -1,5 +1,5 @@
 {
-  # Git Configuration ( For Pulling Software Repos )
+  # Git Configuration
   gitUsername = "loner";
   gitEmail = "loner.games@gmail.com";
 
@@ -12,10 +12,15 @@
   keyboardLayout = "us";
   shell = "fish"; # fish or zsh
 
-  autoGarbage = false;
+  autoGarbage = false; # nh autoUpgrade
 
   timeZone = "Asia/Shanghai";
 
   defaultLocale = "en_US.UTF-8";
   extraLocale = "en_US.UTF-8";
+
+  font_cn = "LXGW WenKai Mono Medium";
+  font_en = "FiraCode Nerd Font Mono Reg";
+
+  fetch = "maxfetch"; # fastfetch
 }
