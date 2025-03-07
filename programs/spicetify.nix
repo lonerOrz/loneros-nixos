@@ -16,8 +16,8 @@ in
 
   programs.spicetify = {
     enable = true;
-    # theme = lib.mkForce spicePkgs.themes.text;
-    # colorScheme = "CatppuccinMacchiato";
+    theme = lib.mkForce spicePkgs.themes.text;
+    colorScheme = "RosePineMoon"; # CatppuccinMacchiato
 
     enabledExtensions = with spicePkgs.extensions; [
       autoSkipVideo # 自动跳过视频
@@ -44,5 +44,5 @@ in
     ];
   };
 
-  stylix.targets.spicetify.enable = true;
+  # stylix.targets.spicetify.enable = true;
 }

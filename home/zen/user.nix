@@ -24,8 +24,8 @@
       user_pref("browser.download.dir", "/home/nate/dls"); // dls dir
       user_pref("browser.download.folderList", 2);
       user_pref("browser.download.lastDir", "/home/nate/dls");
-      user_pref("browser.urlbar.placeholderName", "Bing"); // urlbar search engine
-      user_pref("browser.urlbar.placeholderName.private", "Bing");
+      user_pref("browser.urlbar.placeholderName", "DuckDuckGo"); // urlbar search engine
+      user_pref("browser.urlbar.placeholderName.private", "DuckDuckGo");
       user_pref("browser.bookmarks.restore_default_bookmarks", false);
       user_pref("browser.toolbars.bookmarks.showOtherBookmarks", false);
       user_pref("browser.toolbars.bookmarks.visibility", "never");

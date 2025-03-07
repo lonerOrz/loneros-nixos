@@ -92,13 +92,12 @@
   };
   # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
   distro-grub-themes = {
-    enable = true;
-    theme = "nixos";
-  };
-  # catppuccin theme
-  catppuccin.grub = {
     enable = false;
-    flavor = "mocha";
+    theme = "nixos"; # arch-liunx debain deppin gentoo fedora ...
+  };
+  honkai-railway-grub-theme = {
+    enable = true;
+    theme = "Huohuo"; # Kafka Huohuo March7th-TheHunt
   };
   # cachyOS kernel 调度规则
   services.scx = {

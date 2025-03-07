@@ -31,6 +31,7 @@
     };
     ags.url = "github:aylur/ags/v1";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
     ghostty.url = "github:ghostty-org/ghostty";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
@@ -89,6 +90,7 @@
               ];
             }
             inputs.distro-grub-themes.nixosModules.${system}.default
+            inputs.honkai-railway-grub-theme.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
             inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
             inputs.nur.modules.nixos.default
