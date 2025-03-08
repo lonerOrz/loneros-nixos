@@ -98,10 +98,11 @@ in
       fzf
       chafa
       loupe # rust编译的图片查看器
-      bat
-      fd
+      bat # better cat
+      fd # better find
       bc
-      ripgrep
+      duf # better du
+      ripgrep # better grep
       file
       dos2unix
       git
