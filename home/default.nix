@@ -10,5 +10,6 @@
     # ./nvf.nix
     ./qutebrowser
     ./zen
+    ./cava.nix
   ];
 }
