@@ -66,15 +66,13 @@
         };
       };
 
-      lib = nixpkgs.lib;
-
       eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
     in
     {
       nixosConfigurations = {
-        "${host}" = lib.nixosSystem {
+        "${host}" = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit system;
             inherit inputs;
