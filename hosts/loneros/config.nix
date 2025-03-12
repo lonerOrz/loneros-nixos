@@ -128,6 +128,7 @@ in
       pyprland # plugins
       nwg-displays # 管理显示器
       nwg-dock-hyprland # dock栏
+      hyprpanel # a bar
 
       # Qt
       libsForQt5.qt5ct

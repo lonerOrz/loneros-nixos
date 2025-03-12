@@ -39,7 +39,7 @@ in
     # Useful for overriding colors in your selected theme.
     # Default: {}
     override = {
-      theme.bar.menus.text = "${background-alt}";
+      # theme.bar.menus.text = "${background-alt}";
     };
 
     # Configure bar layouts for monitors.
@@ -51,12 +51,20 @@ in
           left = [
             "dashboard"
             "workspaces"
+            "windowtitle"
+            "hypridle"
+            "hyprsunset"
+            "updates"
           ];
           middle = [ "media" ];
           right = [
-            "volume"
+            "netstat"
+            "cpu"
+            "cputemp"
             "systray"
-            "notifications"
+            "volume"
+            "battery"
+            "clock"
           ];
         };
       };
@@ -85,7 +93,7 @@ in
       theme.bar.transparent = true;
 
       theme.font = {
-        name = "CaskaydiaCove NF";
+        name = "FiraCode Nerd Font Mono Reg";
         size = "16px";
       };
     };
