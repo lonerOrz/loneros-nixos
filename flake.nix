@@ -12,23 +12,15 @@
       url = "github:nix-community/home-manager/master"; # or release-24.11
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
-    catppuccin.url = "github:catppuccin/nix";
     hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
-    Hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    stylix.url = "github:danth/stylix";
+    catppuccin.url = "github:catppuccin/nix";
     ags.url = "github:aylur/ags/v1";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
