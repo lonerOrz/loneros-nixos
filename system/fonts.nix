@@ -17,5 +17,6 @@
     lxgw-wenkai # wenkai mono
     victor-mono
     nerd-fonts.fantasque-sans-mono #unstable
+    nerd-fonts.iosevka # rofi
   ];
 }

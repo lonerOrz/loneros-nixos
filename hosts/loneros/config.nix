@@ -125,7 +125,7 @@ in
       hyprlock # 锁屏
       hyprpicker # 提取色素
       hyprsunset # 护眼
-      pyprland # plugins
+      hyprshot # 截图
       nwg-displays # 管理显示器
       nwg-dock-hyprland # dock栏
       hyprpanel # a bar

@@ -7,6 +7,15 @@ let
   background = "#${config.lib.stylix.colors.base00}";  # 背景颜色
   background-alt = "#${config.lib.stylix.colors.base01}";  # 替代背景颜色
   foreground = "#${config.lib.stylix.colors.base05}";  # 前景颜色
+  # base08: "#f38ba8" # red
+  # base09: "#fab387" # peach
+  # base0A: "#f9e2af" # yellow
+  # base0B: "#a6e3a1" # green
+  # base0C: "#94e2d5" # teal
+  # base0D: "#89b4fa" # blue
+  # base0E: "#cba6f7" # mauve
+  # base0F: "#f2cdcd" # flamingo
+
 
   font = "FiraCode Nerd Font Mono";  # 字体
   fontSize = "10";  # 字号
