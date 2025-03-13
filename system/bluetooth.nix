@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    # bluez
+    bluez
     bluez-experimental
     bluez-tools
     bluez-alsa

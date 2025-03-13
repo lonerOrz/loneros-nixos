@@ -52,7 +52,7 @@ in
 
       # 颜色设置 - 保留 Stylix 颜色
       color = {
-        background = "'${base00}'";
+        # background = "'${base00}'"; # 取消后背景透明
         gradient = 1;
         gradient_count = 8;
         gradient_color_1 = "'${base0B}'";

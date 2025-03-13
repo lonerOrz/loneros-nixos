@@ -9,7 +9,7 @@
   imports = [ inputs.home-manager.nixosModules.home-manager ];
   home-manager = {
     useUserPackages = true;
-    useGlobalPkgs = true;
+    useGlobalPkgs = false; # You have set either `nixpkgs.config` or `nixpkgs.overlays` while using `home-manager.useGlobalPkgs`. This will soon not be possible.
     backupFileExtension = "backup";
     extraSpecialArgs = { inherit inputs username system host stable; };
     users.${username} = {

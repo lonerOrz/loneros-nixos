@@ -1,5 +1,5 @@
 system: "base16"
-name: "Catppuccin Mocha"
+name: "catppuccin-mocha"
 author: "https://github.com/catppuccin/catppuccin"
 variant: "dark"
 palette:
