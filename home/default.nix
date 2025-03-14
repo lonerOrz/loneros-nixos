@@ -5,7 +5,7 @@
     ./fuzzel.nix
     ./scripts
     ./hyprpanel.nix
-    # ./hyprland.nix
+    ./hypr
     ./git.nix
     # ./nvf.nix
     ./qutebrowser

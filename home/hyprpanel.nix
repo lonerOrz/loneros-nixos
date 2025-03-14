@@ -139,7 +139,7 @@ in {
       "menus.dashboard.shortcuts.right.shortcut1.tooltip" = "Color Picker";
       "menus.dashboard.shortcuts.right.shortcut3.icon" = "󰄀";
       "menus.dashboard.shortcuts.right.shortcut3.command" =
-        "screenshot region swappy";
+        "screenshot --area";
       "menus.dashboard.shortcuts.right.shortcut3.tooltip" = "Screenshot";
 
       # 菜单样式设置

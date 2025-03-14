@@ -17,7 +17,7 @@ in
   programs.spicetify = {
     enable = true;
     theme = lib.mkForce spicePkgs.themes.text;
-    colorScheme = "RosePineMoon"; # CatppuccinMacchiato
+    colorScheme = "Nord"; # CatppuccinMacchiato
 
     enabledExtensions = with spicePkgs.extensions; [
       autoSkipVideo # 自动跳过视频
