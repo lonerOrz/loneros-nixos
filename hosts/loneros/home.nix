@@ -10,7 +10,7 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = false; # You have set either `nixpkgs.config` or `nixpkgs.overlays` while using `home-manager.useGlobalPkgs`. This will soon not be possible.
-    backupFileExtension = "backup";
+    backupFileExtension = "hm-backup";
     extraSpecialArgs = { inherit inputs username system host stable; };
     users.${username} = {
       home = {

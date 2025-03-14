@@ -4,7 +4,7 @@
     ./direnv.nix
     ./fuzzel.nix
     ./scripts
-    ./hyprpanel.nix
+    ./hyprpanel
     ./hypr
     ./git.nix
     # ./nvf.nix

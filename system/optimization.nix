@@ -18,8 +18,7 @@
 
   powerManagement = {
     enable = true;  # 启用电源管理
-
-    cpuFreqGovernor = "schedutil"; # - `schedutil`：基于 CPU 任务负载动态调整频率
+    cpuFreqGovernor = "powersave"; # - `schedutil`：基于 CPU 任务负载动态调整频率
     # - 通常比 `performance` 和 `powersave` 更智能，适合大多数场景
   };
 
