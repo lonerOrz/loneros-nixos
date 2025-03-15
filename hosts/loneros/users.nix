@@ -69,7 +69,7 @@ in {
     inputs.ghostty.packages."${system}".default
     zed-editor
     telegram-desktop
-    rustdesk-flutter
+    stable.rustdesk-flutter
     obsidian
     helix # 编辑器
     element-desktop
