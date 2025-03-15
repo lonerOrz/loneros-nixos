@@ -58,6 +58,7 @@ in {
 
     go-musicfox
     lazygit
+    bottom
     neovim
     yazi
 

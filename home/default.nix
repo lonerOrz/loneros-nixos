@@ -11,5 +11,6 @@
     ./qutebrowser
     ./zen
     ./cava.nix
+    ./btm.nix
   ];
 }
