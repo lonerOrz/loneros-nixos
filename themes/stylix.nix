@@ -4,7 +4,7 @@
 let
   colorScheme = rec {
     custom = false;
-    name = "nord";
+    name = "moonlight";
     # catppuccin-mocha
     # tokyo-night-moon
     # solarized-dark

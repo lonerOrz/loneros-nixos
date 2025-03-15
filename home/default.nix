@@ -12,5 +12,6 @@
     ./zen
     ./cava.nix
     ./btm.nix
+    ./btop.nix
   ];
 }

@@ -23,69 +23,58 @@ in
     enable = true;
     settings = {
       flags = {
-        battery = true; # 显示电池小组件
+        # battery = true; # 显示电池小组件
         process_memory_as_value = true; # 显示内存值为具体数值
-        tree = false; # 进程显示为树状模式
+        tree = true; # 进程显示为树状模式
         network_use_log = false; # 不使用对数刻度显示网络流量
         enable_gpu = true; # 显示 GPU 信息
         enable_cache_memory = true; # 显示缓存和缓冲区内存
       };
 
-      # 进程小组件设置
       processes = {
         columns = ["PID" "Name" "CPU%" "Mem%" "R/s" "W/s" "T.Read" "T.Write" "User" "State" "GMem%" "GPU%"];
       };
 
-      # CPU 小组件设置
-      cpu = {
-        all_entry_color = base08;
-        avg_entry_color = base09;
-        cpu_core_colors = [base0A base0B base0C base0D base0E base0F base07 base06];
-      };
+      styles = {
+        tables = {
+          headers = { color = base05; };
+        };
 
-      # 内存小组件设置
-      memory = {
-        ram_color = base0A;
-        cache_color = base0C;
-        swap_color = base0E;
-        arc_color = base0D;
-        gpu_colors = [base08 base09 base0A base0B base0C base0D];
-      };
+        cpu = {
+          all_entry_color = base05;
+          avg_entry_color = base09;
+          cpu_core_colors = [base0A base0B base0C base0D base0E base0F base07 base06];
+        };
 
-      # 网络小组件设置
-      network = {
-        rx_color = base0B;
-        tx_color = base0D;
-        rx_total_color = base0A;
-        tx_total_color = base0C;
-      };
+        memory = {
+          ram_color = base0A;
+          swap_color = base0E;
+          gpu_colors = [base08 base09 base0A base0B base0C base0D];
+          arc_color = base0D;
+        };
 
-      # 电池小组件设置
-      battery = {
-        high_battery_color = base0B;
-        medium_battery_color = base0A;
-        low_battery_color = base08;
-      };
+        network = {
+          rx_color = base0A;
+          tx_color = base0E;
+        };
 
-      # 表格样式设置
-      tables = {
-        headers = { color = base05; bold = true; };
-      };
+        widgets = {
+          widget_title = { color = base0A; };
+          border_color = base03;
+          selected_border_color = base0D;
+          text = { color = base05; };
+          selected_text = { color = base00; bg_color = base0D; };
+        };
 
-      # 图表样式设置
-      graphs = {
-        graph_color = base03;
-        legend_text = { color = base04; };
-      };
+        graphs = {
+          graph_color = base03;
+        };
 
-      # 小组件样式设置
-      widgets = {
-        border_color = base03;
-        selected_border_color = base0D;
-        widget_title = { color = base05; };
-        text = { color = base05; };
-        selected_text = { color = base00; bg_color = base0D; };
-        disabled_text = { color = base03; };
+        battery = {
+          high_battery_color = base0A;
+          medium_battery_color = base0B;
+          low_battery_color = base08;
+        };
       };
     };
   };
