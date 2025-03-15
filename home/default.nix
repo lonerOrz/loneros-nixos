@@ -13,5 +13,6 @@
     ./cava.nix
     ./btm.nix
     ./btop.nix
+    ./lazygit.nix
   ];
 }

@@ -1,4 +1,4 @@
-# 暂时我就只控制 zenbrowser qutebrowser spicetify cava hyprpanel bottom 的主题，像waybar,rofi之类的暂时没找到更换样式的方法，使用主题设置也就只能等 TODO
+# 暂时我就只控制 zenbrowser qutebrowser spicetify cava hyprpanel bottom btop lazygit 的主题，像waybar,rofi之类的暂时没找到更换样式的方法，使用主题设置也就只能等 TODO
 
 { pkgs, inputs, ... }:
 let
