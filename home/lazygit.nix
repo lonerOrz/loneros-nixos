@@ -25,7 +25,7 @@ in
       gui = {
         theme = {
           activeBorderColor = [base0D];
-          inactiveBorderColor = [base0A];
+          inactiveBorderColor = [base0B];
           optionsTextColor = [base0D];
           selectedLineBgColor = [base02];
           cherryPickedCommitBgColor = [base03];
@@ -35,7 +35,7 @@ in
           searchingActiveBorderColor = [base0A];
         };
         authorColors = {
-          "*" = base09;
+          "*" = base07;
         };
       };
     };
