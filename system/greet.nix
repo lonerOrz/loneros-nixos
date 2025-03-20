@@ -1,10 +1,11 @@
-{ username
-, pkgs
-, ...
+{
+  username,
+  pkgs,
+  ...
 }:
 let
   session = "${pkgs.hyprland}/bin/Hyprland";
-in 
+in
 {
   services.greetd = {
     enable = true;

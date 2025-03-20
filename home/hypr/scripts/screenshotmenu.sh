@@ -54,11 +54,11 @@ shotarea() {
 
 # Execute Command
 run_cmd() {
-  if [[ "$1" == '--opt1' ]]; then
+  if [[ $1 == '--opt1' ]]; then
     shotnow
-  elif [[ "$1" == '--opt2' ]]; then
+  elif [[ $1 == '--opt2' ]]; then
     shotarea
-  elif [[ "$1" == '--opt3' ]]; then
+  elif [[ $1 == '--opt3' ]]; then
     shotwin
   fi
 }

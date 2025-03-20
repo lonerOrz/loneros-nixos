@@ -20,7 +20,7 @@ let
   base0D = config.lib.stylix.colors.base0D;
   base0E = config.lib.stylix.colors.base0E;
   base0F = config.lib.stylix.colors.base0F;
-in 
+in
 {
   home.file.".zen/${path}/chrome/userContent.css" = {
     text = ''

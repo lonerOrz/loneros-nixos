@@ -11,23 +11,23 @@ muteScreenshots=false
 muteVolume=false
 
 # Exit if the system sounds are muted.
-if [[ "$mute" = true ]]; then
+if [[ $mute == true ]]; then
   exit 0
 fi
 
 # Choose the sound to play.
-if [[ "$1" == "--screenshot" ]]; then
-  if [[ "$muteScreenshots" = true ]]; then
+if [[ $1 == "--screenshot" ]]; then
+  if [[ $muteScreenshots == true ]]; then
     exit 0
   fi
   soundoption="screen-capture.*"
-elif [[ "$1" == "--volume" ]]; then
-  if [[ "$muteVolume" = true ]]; then
+elif [[ $1 == "--volume" ]]; then
+  if [[ $muteVolume == true ]]; then
     exit 0
   fi
   soundoption="audio-volume-change.*"
-elif [[ "$1" == "--error" ]]; then
-  if [[ "$muteScreenshots" = true ]]; then
+elif [[ $1 == "--error" ]]; then
+  if [[ $muteScreenshots == true ]]; then
     exit 0
   fi
   soundoption="dialog-error.*"
@@ -75,4 +75,3 @@ fi
 
 # pipewire priority, fallback pulseaudio
 pw-play "$sound_file" || pa-play "$sound_file"
-

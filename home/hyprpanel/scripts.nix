@@ -39,7 +39,12 @@ let
     [ $(pgrep "hyprpanel") ] && pkill hyprpanel
     hyprctl dispatch exec hyprpanel
   '';
-in {
-  home.packages =
-    [ hyprpanel-toggle hyprpanel-reload hyprpanel-hide hyprpanel-show ];
+in
+{
+  home.packages = [
+    hyprpanel-toggle
+    hyprpanel-reload
+    hyprpanel-hide
+    hyprpanel-show
+  ];
 }

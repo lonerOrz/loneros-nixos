@@ -14,12 +14,10 @@ let
     # gruvbox-dark-hard
     # moonlight
     path =
-      if custom
-      then ./colorschemes/${name}.yaml
-      else "${pkgs.base16-schemes}/share/themes/${name}.yaml";
+      if custom then ./colorschemes/${name}.yaml else "${pkgs.base16-schemes}/share/themes/${name}.yaml";
     polarity = "dark";
   };
-in 
+in
 {
   stylix = {
     enable = true;

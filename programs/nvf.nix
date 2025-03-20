@@ -2,9 +2,10 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   # 引入 `nvf` (Neovim Flake) 模块
-  imports = [inputs.nvf.nixosModules.default];
+  imports = [ inputs.nvf.nixosModules.default ];
   # 开启 Neovim
   programs.nvf = {
     enable = true;
@@ -106,7 +107,9 @@
         autocomplete.nvim-cmp.enable = true; # 启用智能自动补全插件
         snippets.luasnip.enable = true; # 启用代码片段插件
 
-        tabline = {nvimBufferline.enable = true;}; # 启用文件标签栏
+        tabline = {
+          nvimBufferline.enable = true;
+        }; # 启用文件标签栏
 
         treesitter.context.enable = true; # 启用代码上下文提示
 
@@ -153,7 +156,9 @@
             enable = false;
             navbuddy.enable = false;
           }; # 禁用导航面包屑插件
-          smartcolumn = {enable = false;}; # 禁用智能列宽插件
+          smartcolumn = {
+            enable = false;
+          }; # 禁用智能列宽插件
           fastaction.enable = true; # 启用快速操作插件
         };
 
@@ -169,14 +174,20 @@
             enable = true;
             setupOpts = {
               load = {
-                "core.defaults" = {};
-                "core.concealer" = {};
-                "core.completion" = {config.engine = "nvim-cmp";};
-                "core.export" = {};
-                "core.summary" = {};
-                "core.text-objects" = {};
+                "core.defaults" = { };
+                "core.concealer" = { };
+                "core.completion" = {
+                  config.engine = "nvim-cmp";
+                };
+                "core.export" = { };
+                "core.summary" = { };
+                "core.text-objects" = { };
                 "core.dirman" = {
-                  config = {workspaces = {notes = "~/Documents/neorg";};};
+                  config = {
+                    workspaces = {
+                      notes = "~/Documents/neorg";
+                    };
+                  };
                 };
               };
             };
@@ -191,7 +202,7 @@
         lazy.plugins = with pkgs.vimPlugins; {
           ${eyeliner-nvim.pname} = {
             package = eyeliner-nvim;
-            event = ["BufEnter"];
+            event = [ "BufEnter" ];
             after = ''print('hello')'';
           };
           ${lazygit-nvim.pname} = {
@@ -204,7 +215,9 @@
               "LazyGitFilterCurrentFile"
             ];
             package = lazygit-nvim;
-            setupOpts = {open_cmd = "zen %s";};
+            setupOpts = {
+              open_cmd = "zen %s";
+            };
             keys = [
               {
                 key = "<leader>lg";

@@ -11,7 +11,7 @@ fi
 
 # 提取目标语言（如果有的话）
 target_lang=""
-if [[ "$text" =~ -t\ ([a-zA-Z\-]+) ]]; then
+if [[ $text =~ -t\ ([a-zA-Z\-]+) ]]; then
   target_lang="${BASH_REMATCH[1]}"
   text="${text//-t $target_lang/}" # 从文本中移除目标语言参数
 fi

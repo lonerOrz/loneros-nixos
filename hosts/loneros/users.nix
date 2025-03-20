@@ -5,9 +5,11 @@
   system,
   username,
   ...
-}: let
+}:
+let
   inherit (import ./variables.nix) gitUsername shell;
-in {
+in
+{
   users = {
     mutableUsers = true;
     users."${username}" = {
@@ -23,7 +25,6 @@ in {
         "input"
         "audio"
       ];
-      # define user packages here
       packages = with stable; [
         tree
       ];
@@ -33,11 +34,11 @@ in {
 
   security.sudo.extraRules = [
     {
-      users = ["${username}"];
+      users = [ "${username}" ];
       commands = [
         {
           command = "ALL";
-          options = ["NOPASSWD"];
+          options = [ "NOPASSWD" ];
         }
       ];
     }

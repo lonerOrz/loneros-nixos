@@ -78,7 +78,7 @@ let
 in
 {
 
-  imports = [ 
+  imports = [
     ./theme.nix
     ./duckduckgo-colorscheme.nix
   ];
@@ -132,7 +132,11 @@ in
 
       completion = {
         height = "30%";
-        open_categories = [ "history" "bookmarks" "quickmarks" ];
+        open_categories = [
+          "history"
+          "bookmarks"
+          "quickmarks"
+        ];
         scrollbar = {
           padding = 0;
           width = 0;

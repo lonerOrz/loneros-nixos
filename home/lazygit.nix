@@ -24,15 +24,15 @@ in
     settings = {
       gui = {
         theme = {
-          activeBorderColor = [base0D];
-          inactiveBorderColor = [base0B];
-          optionsTextColor = [base0D];
-          selectedLineBgColor = [base02];
-          cherryPickedCommitBgColor = [base03];
-          cherryPickedCommitFgColor = [base0D];
-          unstagedChangesColor = [base08];
-          defaultFgColor = [base05];
-          searchingActiveBorderColor = [base0A];
+          activeBorderColor = [ base0D ];
+          inactiveBorderColor = [ base0B ];
+          optionsTextColor = [ base0D ];
+          selectedLineBgColor = [ base02 ];
+          cherryPickedCommitBgColor = [ base03 ];
+          cherryPickedCommitFgColor = [ base0D ];
+          unstagedChangesColor = [ base08 ];
+          defaultFgColor = [ base05 ];
+          searchingActiveBorderColor = [ base0A ];
         };
         authorColors = {
           "*" = base07;

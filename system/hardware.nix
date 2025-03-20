@@ -6,20 +6,20 @@
     enableGraphical = true;
   };
 
-    # OpenGL
-    hardware.graphics = {
-      enable = true;
-      enable32Bit = true;
-      # Mesa is general opengl drivers (I think)
-      extraPackages = with pkgs; [ 
-      mesa                # 提供 OpenGL 支持（Mesa 通用驱动）
+  # OpenGL
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    # Mesa is general opengl drivers (I think)
+    extraPackages = with pkgs; [
+      mesa # 提供 OpenGL 支持（Mesa 通用驱动）
       mesa-demos
-      intel-media-driver  # Intel GPU 视频解码驱动（VA-API，适用于 6 代 Skylake 及更新型号）
-      intel-ocl           # Intel OpenCL 驱动（用于 AI 计算、Blender 渲染等）
+      intel-media-driver # Intel GPU 视频解码驱动（VA-API，适用于 6 代 Skylake 及更新型号）
+      intel-ocl # Intel OpenCL 驱动（用于 AI 计算、Blender 渲染等）
     ];
 
-    extraPackages32 = with pkgs.pkgsi686Linux; [ 
-      mesa                # 32 位 OpenGL 支持（运行 32 位游戏、Wine 等）
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      mesa # 32 位 OpenGL 支持（运行 32 位游戏、Wine 等）
     ];
   };
 

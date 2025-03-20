@@ -1,7 +1,8 @@
-{ config
-, host
-, pkgs
-, ...
+{
+  config,
+  host,
+  pkgs,
+  ...
 }:
 {
   # BOOT related stuff

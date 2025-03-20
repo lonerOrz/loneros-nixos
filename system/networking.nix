@@ -1,7 +1,8 @@
-{ options
-, host
-, stable
-, ...
+{
+  options,
+  host,
+  stable,
+  ...
 }:
 {
   environment.systemPackages = with stable; [
@@ -24,7 +25,7 @@
   # DNS 解析服务
   services.resolved = {
     enable = true;
-    dnssec = "false"; #allow-downgrade
+    dnssec = "false"; # allow-downgrade
     dnsovertls = "opportunistic";
     fallbackDns = [
       "1.1.1.1"

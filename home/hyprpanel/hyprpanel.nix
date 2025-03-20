@@ -1,12 +1,17 @@
 # Hyprpanel is the bar on top of the screen
 # Display informations like workspaces, battery, wifi, ...
-{ inputs, config, pkgs, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 let
-  accent = "#${config.lib.stylix.colors.base0D}";  # 强调颜色
-  accent-alt = "#${config.lib.stylix.colors.base03}";  # 替代强调颜色
-  background = "#${config.lib.stylix.colors.base00}";  # 背景颜色
-  background-alt = "#${config.lib.stylix.colors.base01}";  # 替代背景颜色
-  foreground = "#${config.lib.stylix.colors.base05}";  # 前景颜色
+  accent = "#${config.lib.stylix.colors.base0D}"; # 强调颜色
+  accent-alt = "#${config.lib.stylix.colors.base03}"; # 替代强调颜色
+  background = "#${config.lib.stylix.colors.base00}"; # 背景颜色
+  background-alt = "#${config.lib.stylix.colors.base01}"; # 替代背景颜色
+  foreground = "#${config.lib.stylix.colors.base05}"; # 前景颜色
   # base08: "#f38ba8" # red
   # base09: "#fab387" # peach
   # base0A: "#f9e2af" # yellow
@@ -16,48 +21,55 @@ let
   # base0E: "#cba6f7" # mauve
   # base0F: "#f2cdcd" # flamingo
 
+  font = "FiraCode Nerd Font Mono"; # 字体
+  fontSize = "10"; # 字号
 
-  font = "FiraCode Nerd Font Mono";  # 字体
-  fontSize = "10";  # 字号
+  rounding = 10; # 圆角
+  border-size = 3; # 边框大小
 
-  rounding = 10;  # 圆角
-  border-size = 3;  # 边框大小
+  gaps-out = 1; # 外边距
+  gaps-in = 1; # 内边距
 
-  gaps-out = 1;  # 外边距
-  gaps-in = 1;  # 内边距
+  floating = true; # 浮动窗口
+  transparent = true; # 透明窗口
+  transparentButtons = false; # 透明按钮
+  position = "top"; # 位置（top 或 bottom）
 
-  floating = true;  # 浮动窗口
-  transparent = true;  # 透明窗口
-  transparentButtons = false;  # 透明按钮
-  position = "top";  # 位置（top 或 bottom）
+  location = "en"; # 地理位置（用于天气等）
+in
+{
 
-  location = "en";  # 地理位置（用于天气等）
-in {
+  imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ]; # 引入 hyprpanel 模块
 
-  imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];  # 引入 hyprpanel 模块
-
-  home.packages = with pkgs;[
-    adwaita-icon-theme  # GNOME 图标主题
+  home.packages = with pkgs; [
+    adwaita-icon-theme # GNOME 图标主题
   ];
 
   programs.hyprpanel = {
-    enable = true;  # 启用 hyprpanel
-    hyprland.enable = true;  # 启用 Hyprland
-    overwrite.enable = true;  # 启用覆盖功能
-    overlay.enable = true;  # 启用覆盖层
+    enable = true; # 启用 hyprpanel
+    hyprland.enable = true; # 启用 Hyprland
+    overwrite.enable = true; # 启用覆盖功能
+    overlay.enable = true; # 启用覆盖层
     layout = {
       "bar.layouts" = {
         "*" = {
-          "left" = [ "dashboard" "workspaces" "windowtitle" ];  # 左侧内容（仪表盘，工作区，窗口标题）
-          "middle" = [ "media" "cava" ];  # 中间内容（媒体，Cava）
+          "left" = [
+            "dashboard"
+            "workspaces"
+            "windowtitle"
+          ]; # 左侧内容（仪表盘，工作区，窗口标题）
+          "middle" = [
+            "media"
+            "cava"
+          ]; # 中间内容（媒体，Cava）
           "right" = [
-            "systray"  # 系统托盘
-            "volume"  # 音量
-            "bluetooth"  # 蓝牙
-            "battery"  # 电池
-            "network"  # 网络
-            "clock"  # 时钟
-            "notifications"  # 通知
+            "systray" # 系统托盘
+            "volume" # 音量
+            "bluetooth" # 蓝牙
+            "battery" # 电池
+            "network" # 网络
+            "clock" # 时钟
+            "notifications" # 通知
           ];
         };
       };
@@ -73,8 +85,8 @@ in {
       "theme.bar.buttons.y_margins" = "${if floating && transparent then "0" else "8"}px";
       "theme.bar.buttons.spacing" = "0.3em";
       "theme.bar.buttons.radius" = "${
-          if transparent then toString rounding else toString (rounding - 8)
-        }px";
+        if transparent then toString rounding else toString (rounding - 8)
+      }px";
       "theme.bar.floating" = "${if floating then "true" else "false"}";
       "theme.bar.buttons.padding_x" = "0.8rem";
       "theme.bar.buttons.padding_y" = "0.4rem";
@@ -84,42 +96,40 @@ in {
       "theme.bar.buttons.workspaces.occupied" = "${accent-alt}";
 
       # 顶部和底部边距
-      "theme.bar.margin_top" =
-        "${if position == "top" then toString (gaps-in * 2) else "0"}px";
-      "theme.bar.margin_bottom" =
-        "${if position == "top" then "0" else toString (gaps-in * 2)}px";
+      "theme.bar.margin_top" = "${if position == "top" then toString (gaps-in * 2) else "0"}px";
+      "theme.bar.margin_bottom" = "${if position == "top" then "0" else toString (gaps-in * 2)}px";
 
       # 侧边和圆角
       "theme.bar.margin_sides" = "${toString gaps-out}px";
       "theme.bar.border_radius" = "${toString rounding}px";
-      "bar.launcher.icon" = "";  # 启动器图标
+      "bar.launcher.icon" = ""; # 启动器图标
 
       # 是否透明
       "theme.bar.transparent" = "${if transparent then "true" else "false"}";
-      "bar.workspaces.show_numbered" = false;  # 不显示工作区编号
-      "bar.workspaces.workspaces" = 10;  # 显示 5 个工作区
-      "bar.workspaces.hideUnoccupied" = false;  # 不隐藏空闲工作区
-      "bar.windowtitle.label" = true;  # 显示窗口标题
-      "bar.volume.label" = false;  # 不显示音量标签
-      "bar.network.truncation_size" = 12;  # 网络标签截断长度
-      "bar.bluetooth.label" = false;  # 不显示蓝牙标签
-      "bar.clock.format" = "%a %b %d  %I:%M %p";  # 时钟格式
-      "bar.notifications.show_total" = true;  # 显示总通知数
+      "bar.workspaces.show_numbered" = false; # 不显示工作区编号
+      "bar.workspaces.workspaces" = 10; # 显示 5 个工作区
+      "bar.workspaces.hideUnoccupied" = false; # 不隐藏空闲工作区
+      "bar.windowtitle.label" = true; # 显示窗口标题
+      "bar.volume.label" = false; # 不显示音量标签
+      "bar.network.truncation_size" = 12; # 网络标签截断长度
+      "bar.bluetooth.label" = false; # 不显示蓝牙标签
+      "bar.clock.format" = "%a %b %d  %I:%M %p"; # 时钟格式
+      "bar.notifications.show_total" = true; # 显示总通知数
       "theme.notification.border_radius" = "${toString rounding}px";
 
       # OSD 设置（屏幕显示）
-      "theme.osd.enable" = true;  # 启用 OSD
-      "theme.osd.orientation" = "vertical";  # 垂直方向
-      "theme.osd.location" = "left";  # 位于左侧
+      "theme.osd.enable" = true; # 启用 OSD
+      "theme.osd.orientation" = "vertical"; # 垂直方向
+      "theme.osd.location" = "left"; # 位于左侧
       "theme.osd.radius" = "${toString rounding}px";
       "theme.osd.margins" = "0px 0px 0px 10px";
-      "theme.osd.muted_zero" = true;  # 静音时显示零
+      "theme.osd.muted_zero" = true; # 静音时显示零
 
       # 天气位置和单位设置
       "menus.clock.weather.location" = "${location}";
-      "menus.clock.weather.unit" = "metric";  # 温度单位：公制
-      "menus.dashboard.powermenu.confirmation" = false;  # 关闭电源菜单确认
-      "menus.dashboard.powermenu.avatar.image" = "~/.config/hyprpanel/avatar.png";  # 电源菜单头像
+      "menus.clock.weather.unit" = "metric"; # 温度单位：公制
+      "menus.dashboard.powermenu.confirmation" = false; # 关闭电源菜单确认
+      "menus.dashboard.powermenu.avatar.image" = "~/.config/hyprpanel/avatar.png"; # 电源菜单头像
 
       # 自定义快捷方式设置
       "menus.dashboard.shortcuts.left.shortcut1.icon" = "";
@@ -142,8 +152,8 @@ in {
       "menus.dashboard.shortcuts.right.shortcut3.tooltip" = "Screenshot";
 
       # 菜单样式设置
-      "theme.bar.menus.monochrome" = true;  # 单色模式
-      "wallpaper.enable" = false;  # 不启用壁纸
+      "theme.bar.menus.monochrome" = true; # 单色模式
+      "wallpaper.enable" = false; # 不启用壁纸
       "theme.bar.menus.background" = "${background}";
       "theme.bar.menus.cards" = "${background-alt}";
       "theme.bar.menus.card_radius" = "${toString rounding}px";
@@ -169,14 +179,13 @@ in {
       "theme.bar.menus.dropdownmenu.text" = "${foreground}";
 
       # 导航栏按钮背景色等设置
-      "theme.bar.background" = "${background
-        + (if transparentButtons && transparent then "00" else "")}";
+      "theme.bar.background" = "${background + (if transparentButtons && transparent then "00" else "")}";
       "theme.bar.buttons.style" = "default";
       "theme.bar.buttons.monochrome" = true;
       "theme.bar.buttons.text" = "${foreground}";
-      "theme.bar.buttons.background" =
-        "${(if transparent then background else background-alt)
-        + (if transparentButtons then "00" else "")}";
+      "theme.bar.buttons.background" = "${
+        (if transparent then background else background-alt) + (if transparentButtons then "00" else "")
+      }";
       "theme.bar.buttons.icon" = "${accent}";
       "theme.bar.buttons.notifications.background" = "${background-alt}";
       "theme.bar.buttons.hover" = "${background}";
