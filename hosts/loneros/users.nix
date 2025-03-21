@@ -75,6 +75,7 @@ in
     obsidian
     helix # 编辑器
     element-desktop
+    libreoffice-still # 长久支持版本
 
     # cli tool
     neo-cowsay

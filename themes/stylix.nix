@@ -4,7 +4,7 @@
 let
   colorScheme = rec {
     custom = false;
-    name = "moonlight";
+    name = "kanagawa";
     # catppuccin-mocha frappe latte macchiato
     # tokyo-night-moon
     # solarized-dark
@@ -14,6 +14,7 @@ let
     # gruvbox-dark-medium
     # monokai
     # moonlight
+    # kanagawa
     path =
       if custom then ./colorschemes/${name}.yaml else "${pkgs.base16-schemes}/share/themes/${name}.yaml";
     polarity = "dark";
