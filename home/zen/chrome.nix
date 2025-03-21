@@ -1,6 +1,7 @@
 {
   config,
   path,
+  highlightColor,
   ...
 }:
 let
@@ -27,53 +28,58 @@ in
       @media (prefers-color-scheme: dark) {
         :root {
           --zen-colors-primary: #${base02} !important;
-          --zen-primary-color: #${base0B} !important;
+          --zen-primary-color: #${highlightColor} !important;
           --zen-colors-secondary: #${base02} !important;
           --zen-colors-tertiary: #${base00} !important;
-          --zen-colors-border: #${base0B} !important;
-          --toolbarbutton-icon-fill: #${base0B} !important;
-          --lwt-text-color: #${base04} !important;
+          --zen-colors-border: #${highlightColor} !important;
+          --toolbarbutton-icon-fill: #${highlightColor} !important;
+          --lwt-text-color: #${base05} !important;
           --toolbar-field-color: #${base04} !important;
-          --tab-selected-textcolor: #${base0B} !important;
+          --tab-selected-textcolor: #${highlightColor} !important;
           --toolbar-field-focus-color: #${base04} !important;
           --toolbar-color: #${base04} !important;
           --newtab-text-primary-color: #${base04} !important;
           --arrowpanel-color: #${base04} !important;
           --arrowpanel-background: #${base01} !important;
-          --sidebar-text-color: #${base04} !important;
-          --lwt-sidebar-text-color: #${base04} !important;
+          --sidebar-text-color: #${base05} !important;
+          --lwt-sidebar-text-color: #${base05} !important;
           --lwt-sidebar-background-color: #${base00} !important;
           --toolbar-bgcolor: #${base02} !important;
           --newtab-background-color: #${base01} !important;
           --zen-themed-toolbar-bg: #${base00} !important;
           --zen-main-browser-background: #${base00} !important;
-        }
 
-        #permissions-granted-icon {
-          color: #${base00} !important;
-        }
+          /* 菜单和弹出窗口 */
+          --menu-background-color: #${base02} !important;
+          --menu-item-color: #${base05} !important;
+          --popup-menu-background-color: #${base02} !important;
+          --tooltip-background-color: #${base00} !important;
+          --tooltip-text-color: #${base05} !important;
 
-        .sidebar-placesTree,
-        #zen-workspaces-button,
-        #urlbar-background,
-        .content-shortcuts {
-          background-color: #${base01} !important;
-        }
+          /* 滚动条 */
+          --scrollbar-background-color: #${base02} !important;
+          --scrollbar-thumb-color: #${base04} !important;
 
-        #TabsToolbar {
-          background-color: #${base00} !important;
-        }
+          /* 输入框和表单控件 */
+          --input-background-color: #${base02} !important;
+          --input-text-color: #${base05} !important;
+          --select-background-color: #${base02} !important;
+          --select-text-color: #${base05} !important;
 
-        .content-shortcuts {
-          border-color: #${base0B} !important;
-        }
+          /* 焦点元素 */
+          --focus-color: #${highlightColor} !important;
+          --border-color: #${base04} !important;
 
-        .urlbarView-url {
-          color: #${base0B} !important;
-        }
+          /* 标签栏和选项卡 */
+          --tabs-toolbar-background-color: #${base00} !important;
+          --tab-selected-background-color: #${highlightColor} !important;
+          --tab-selected-text-color: #${base00} !important;
+          --tab-unselected-background-color: #${base02} !important;
+          --tab-unselected-text-color: #${base05} !important;
 
-        #zenEditBookmarkPanelFaviconContainer {
-          background: #${base00} !important;
+          /* 导航栏和书签栏 */
+          --navigation-bar-background-color: #${base00} !important;
+          --bookmarks-bar-background-color: #${base01} !important;
         }
 
         /* 强调色重定义 */

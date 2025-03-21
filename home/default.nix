@@ -3,6 +3,7 @@
     ./obs.nix
     ./direnv.nix
     ./fuzzel.nix
+    # ./ghostty.nix
     ./scripts
     # ./hyprpanel
     ./hypr

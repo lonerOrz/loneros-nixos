@@ -5,13 +5,14 @@ let
   colorScheme = rec {
     custom = false;
     name = "moonlight";
-    # catppuccin-mocha
+    # catppuccin-mocha frappe latte macchiato
     # tokyo-night-moon
     # solarized-dark
     # rose-pine-moon
     # nord
     # darcula
-    # gruvbox-dark-hard
+    # gruvbox-dark-medium
+    # monokai
     # moonlight
     path =
       if custom then ./colorschemes/${name}.yaml else "${pkgs.base16-schemes}/share/themes/${name}.yaml";
