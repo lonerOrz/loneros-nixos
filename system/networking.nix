@@ -20,7 +20,7 @@
   networking.networkmanager.dns = "systemd-resolved"; # one of "default", "dnsmasq", "systemd-resolved", "none"
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
-  networking.enableIPv6 = true;
+  networking.enableIPv6 = false;
 
   # DNS 解析服务
   services.resolved = {
@@ -35,7 +35,7 @@
       "61.139.2.69"
     ];
     extraConfig = ''
-      CacheTTLSec=300
+      CacheTTLSec=3600
       DNSStubListener=yes
     '';
   };
