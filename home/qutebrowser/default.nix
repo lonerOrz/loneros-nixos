@@ -1,86 +1,8 @@
-# Qutebrowser is a keyboard-focused browser with a minimal GUI.
-# My homepage is generated using https://github.com/anotherhadi/homepage
 { pkgs, config, ... }:
-let
-  accent = "#${config.lib.stylix.colors.base0D}";
-  background = "#${config.lib.stylix.colors.base00}";
-  foreground = "#${config.lib.stylix.colors.base05}";
-  muted = "#${config.lib.stylix.colors.base03}";
-
-  settings = ''
-    {
-      "config": {
-        "title" : "Welcome Home",
-        "openLinksInNewTab": false,
-        "locale": "zh-CN",
-        "colors": {
-          "primary": "${accent}",
-          "background": "${background}",
-          "foreground": "${foreground}",
-          "muted": "#${muted}"
-        },
-        "folders": [
-          {
-            "name": "Bookmarks",
-            "links": [
-              {"title": "MyNixOs", "url": "https://mynixos.com", "icon": "󱄅"},
-              {"title": "Github", "url": "https://github.com", "icon": ""},
-              {"title": "Proton", "url": "https://mail.proton.me/u/0/inbox", "icon": ""},
-              {"title": "Cloudflare One", "url": "https://one.dash.cloudflare.com/", "icon": ""},
-              {"title": "Chat GPT", "url": "https://chat.openai.com/", "icon": "󰭹"},
-              {"title": "Nixvim", "url": "https://nix-community.github.io/nixvim/", "icon": ""},
-              {"title": "Hyprland Wiki", "url": "https://wiki.hyprland.org/", "icon": "󰖬"},
-              {"title": "Youtube", "url": "https://youtube.com", "icon": "󰗃"},
-              {"title": "Server", "url": "https://home.anotherhadi.com", "icon": ""}
-            ]
-          },
-          {
-            "name": "Work",
-            "links": [
-              {"title": "Outlook", "url": "https://outlook.office.com/mail/", "icon": "󰴢"},
-              {"title": "Office", "url": "https://www.office.com/?auth=2", "icon": "󰏆"},
-              {"title": "Teams", "url": "https://teams.microsoft.com/_", "icon": "󰊻"}
-            ]
-          }
-        ]
-      }
-    }
-  '';
-
-  homepage = pkgs.buildNpmPackage {
-    pname = "homepage";
-    version = "0.0.0";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "anotherhadi";
-      repo = "homepage";
-      rev = "b77d35ed3596eb451bd2ec78063d7cc6e73c773d";
-      hash = "sha256-j/40922kfAh6zqJ4IRYpr66YXNNYsxuXwZ0aiJFJea0=";
-    };
-
-    # npmDepsHash = lib.fakeHash;
-    npmDepsHash = "sha256-bG+CHTq2Rst3JMxsjAC81KhK+G7WwsTVD1eyP87g0z4=";
-
-    buildPhase = ''
-      npm install
-      cp ${pkgs.writeText "src/routes/config.json" settings} src/routes/config.json
-      npm run build
-      mkdir $out
-      mv build $out
-    '';
-
-    meta = {
-      description = "homepage";
-      homepage = "https://github.com/anotherhadi/homepage";
-    };
-  };
-
-in
 {
 
   imports = [
     ./theme.nix
-    ./duckduckgo-colorscheme.nix
   ];
 
   programs.qutebrowser = {
@@ -88,48 +10,30 @@ in
 
     searchEngines = {
       "DEFAULT" = "https://duckduckgo.com/?q={}&ia=web";
-      "d" = "https://duckduckgo.com/?q={}&ia=web";
-      "g" = "https://google.com/search?q={}";
-      "y" = "https://youtube.com/results?search_query={}";
-      "ya" = "https://yandex.com/search/?text={}";
       "nix" = "https://mynixos.com/search?q={}";
-      "nixo" = "https://search.nixos.org/options?channel=unstable&query={}";
-      "nixp" = "https://search.nixos.org/packages?channel=unstable&query={}";
-      "gt" = "https://github.com/search?q={}&type=repositories";
     };
 
     quickmarks = {
-      home = "${homepage}/build/index.html";
-      server = "https://home.anotherhadi.com";
-      jack = "https://home.anotherhadi.com";
+      clash = "https://metacubex.github.io/metacubexd/#/setup?http=true&hostname=127.0.0.1&port=9097&secret=123456";
       mynixos = "https://mynixos.com";
       github = "https://github.com";
-      outlook = "https://outlook.office.com/mail/";
-      office = "https://www.office.com/?auth=2";
-      teams = "https://teams.microsoft.com/_";
       openwrt = "http://192.168.100.1";
-      proton = "https://mail.proton.me/u/0/inbox";
-      cloudflare-one = "https://one.dash.cloudflare.com/";
       chatgpt = "https://chat.openai.com/";
       nixvim = "https://nix-community.github.io/nixvim/";
       hyprland = "https://wiki.hyprland.org/";
       nerdfont = "https://www.nerdfonts.com/cheat-sheet";
       youtube = "https://youtube.com/";
-      cloudflare = "https://dash.cloudflare.com/";
     };
 
     settings = {
       url = {
-        default_page = "${homepage}/build/index.html";
-        start_pages = [ "${homepage}/build/index.html" ];
+        default_page = "https://duckduckgo.com";
+        start_pages = [ "https://duckduckgo.com" ];
       };
-
       colors = {
         webpage.preferred_color_scheme = "dark"; # Enable dark mode for websites that support it
       };
-
       statusbar.show = "in-mode";
-
       completion = {
         height = "30%";
         open_categories = [
@@ -146,7 +50,6 @@ in
         timestamp_format = "";
         web_history.max_items = 7;
       };
-
       content = {
         autoplay = false;
         javascript.clipboard = "access";
@@ -154,22 +57,18 @@ in
         webgl = true;
         pdfjs = true;
       };
-
       downloads = {
         position = "bottom";
         remove_finished = 0;
       };
-
       # 配置提示模式（用于键盘导航链接）的样式
       hints = {
         radius = 1;
       };
-
       scrolling = {
         bar = "never";
         smooth = true;
       };
-
       tabs = {
         show = "multiple";
         position = "top";
@@ -179,16 +78,13 @@ in
         mode_on_change = "restore";
         close_mouse_button = "right";
       };
-
       zoom.default = "90%";
-
       qt.force_software_rendering = "none"; # none, qt, software-opengl, chromium
     };
 
     keyBindings = {
       normal = {
-        "gh" = "open ${homepage}/build/index.html";
-        "gs" = "open https://home.anotherhadi.com";
+        "gh" = "open https://duckduckgo.com";
 
         " p" = "tab-move -";
         " n" = "tab-move +";

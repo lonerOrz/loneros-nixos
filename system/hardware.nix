@@ -16,6 +16,7 @@
       mesa-demos
       intel-media-driver # Intel GPU 视频解码驱动（VA-API，适用于 6 代 Skylake 及更新型号）
       intel-ocl # Intel OpenCL 驱动（用于 AI 计算、Blender 渲染等）
+      libGL
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [

@@ -17,5 +17,6 @@
     ./discord.nix
     # ./firefox.nix
     # ./nvf.nix
+    ./clash.nix
   ];
 }
