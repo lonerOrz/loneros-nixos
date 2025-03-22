@@ -1,17 +1,13 @@
 { pkgs, config, ... }:
+let
+  homepage = "https://start.duckduckgo.com";
+in 
 {
 
-  imports = [
-    ./theme.nix
-  ];
+  imports = [ ./theme.nix ];
 
   programs.qutebrowser = {
     enable = true;
-
-    searchEngines = {
-      "DEFAULT" = "https://duckduckgo.com/?q={}&ia=web";
-      "nix" = "https://mynixos.com/search?q={}";
-    };
 
     quickmarks = {
       clash = "https://metacubex.github.io/metacubexd/#/setup?http=true&hostname=127.0.0.1&port=9097&secret=123456";
@@ -25,10 +21,15 @@
       youtube = "https://youtube.com/";
     };
 
+    searchEngines = {
+      "DEFAULT" = "https://duckduckgo.com/?q={}&ia=web";
+      "nix" = "https://mynixos.com/search?q={}";
+    };
+
     settings = {
       url = {
-        default_page = "https://duckduckgo.com";
-        start_pages = [ "https://duckduckgo.com" ];
+        default_page = "${homepage}";
+        start_pages = [ "${homepage}" ];
       };
       colors = {
         webpage.preferred_color_scheme = "dark"; # Enable dark mode for websites that support it
@@ -84,7 +85,7 @@
 
     keyBindings = {
       normal = {
-        "gh" = "open https://duckduckgo.com";
+        "gh" = "open ${homepage}";
 
         " p" = "tab-move -";
         " n" = "tab-move +";
