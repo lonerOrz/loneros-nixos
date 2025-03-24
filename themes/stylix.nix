@@ -4,7 +4,7 @@
 let
   colorScheme = rec {
     custom = false;
-    name = "catppuccin-mocha";
+    name = "gruvbox-dark-medium";
     # catppuccin-mocha frappe latte macchiato
     # tokyo-night-moon
     # solarized-dark
