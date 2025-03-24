@@ -5,7 +5,7 @@
     ./fuzzel.nix
     # ./ghostty.nix
     ./scripts
-    ./hyprpanel
+    # ./hyprpanel
     ./hypr
     ./git.nix
     # ./nvf.nix

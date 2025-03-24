@@ -4,7 +4,7 @@
 let
   colorScheme = rec {
     custom = false;
-    name = "catppuccin-macchiato";
+    name = "catppuccin-mocha";
     # catppuccin-mocha frappe latte macchiato
     # tokyo-night-moon
     # solarized-dark

@@ -9,8 +9,9 @@
   # - 该模式通常适用于 Intel CPU，可提高性能和功耗管理效率
 
   services = {
-    auto-cpufreq.enable = true; # - 自动优化 CPU 频率和电源管理
+    # auto-cpufreq.enable = true; # - 自动优化 CPU 频率和电源管理
     thermald.enable = true; # - Intel 官方的温控服务，可防止 CPU 过热
+    power-profiles-daemon.enable = true;
   };
 
   environment.systemPackages = with stable; [
