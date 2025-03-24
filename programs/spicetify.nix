@@ -1,9 +1,9 @@
-# Spicetify is a spotify client customizer
 {
   pkgs,
   lib,
   system,
   inputs,
+  username,
   ...
 }:
 let
@@ -16,8 +16,8 @@ in
 
   programs.spicetify = {
     enable = true;
-    theme = lib.mkForce spicePkgs.themes.text;
-    colorScheme = "Nord"; # CatppuccinMacchiato
+    theme = spicePkgs.themes.text;
+    colorScheme = "CatppuccinMacchiato";
 
     enabledExtensions = with spicePkgs.extensions; [
       autoSkipVideo # 自动跳过视频
@@ -36,7 +36,6 @@ in
     enabledCustomApps = with spicePkgs.apps; [
       lyricsPlus
       marketplace
-      #reddit
     ];
     enabledSnippets = with spicePkgs.snippets; [
       rotatingCoverart # 旋转艺术封面
@@ -45,4 +44,10 @@ in
   };
 
   # stylix.targets.spicetify.enable = true;
+
+  # 使用自定义配置文件控制spicetify
+  environment.systemPackages = with pkgs; [
+    spotify
+    # spicetify-cli # 设置不了config
+  ];
 }

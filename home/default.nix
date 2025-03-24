@@ -5,15 +5,15 @@
     ./fuzzel.nix
     # ./ghostty.nix
     ./scripts
-    # ./hyprpanel
+    ./hyprpanel
     ./hypr
     ./git.nix
     # ./nvf.nix
     ./qutebrowser
     ./zen
-    ./cava.nix
-    ./btm.nix
-    ./btop.nix
-    ./lazygit.nix
+    # ./cava.nix
+    # ./btm.nix
+    # ./btop.nix
+    # ./lazygit.nix
   ];
 }

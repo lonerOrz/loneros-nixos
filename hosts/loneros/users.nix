@@ -63,7 +63,6 @@ in
     neovim
     yazi
 
-    spotify
     qbittorrent-enhanced # qbee
     motrix
     localsend
