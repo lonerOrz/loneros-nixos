@@ -19,5 +19,6 @@
     # ./nvf.nix
     # ./clash.nix
     ./mihomo.nix
+    ./direnv.nix
   ];
 }

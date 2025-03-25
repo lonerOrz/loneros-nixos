@@ -20,4 +20,19 @@
   '';
   security.pam.services.swaylock = { };
   security.pam.services.hyprlock = { };
+
+  # 管理 GPG 密钥
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  # ssh
+  services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  networking.firewall.enable = false;
 }
