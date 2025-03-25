@@ -130,11 +130,13 @@ in
       nwg-displays # 管理显示器
       nwg-dock-hyprland # dock栏
 
+      # hyprpanel
       hyprpanel # a bar
       wf-recorder # record by hyprpanel
       matugen # 图片取色 by hyprpanel
       power-profiles-daemon # 切换电源模式
       libgtop # 获取系统性能信息的库
+      adwaita-icon-theme # icon
 
       # Qt
       libsForQt5.qt5ct
