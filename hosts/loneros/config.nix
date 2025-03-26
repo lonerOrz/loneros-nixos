@@ -167,7 +167,7 @@ in
       yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
 
       wlogout # Wayland 环境下的注销工具
-      stable.ags
+      ags_1
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
       btop

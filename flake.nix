@@ -21,7 +21,6 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
     catppuccin.url = "github:catppuccin/nix";
-    ags.url = "github:aylur/ags/v1";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
     zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
