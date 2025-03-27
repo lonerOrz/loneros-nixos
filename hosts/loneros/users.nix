@@ -56,6 +56,8 @@ in
     starship
     devbox # 配合 direnv
     stow # dotfiles needed
+    parallel-full
+    envsubst
 
     go-musicfox
     lazygit
