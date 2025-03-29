@@ -87,6 +87,6 @@ in
   # 使用自定义配置文件控制spicetify
   environment.systemPackages = with pkgs; [
     spotify
-    # spicetify-cli # 设置不了config
+    spicetify-cli # 设置不了config
   ];
 }
