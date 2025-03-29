@@ -15,7 +15,7 @@
     # ./ollama.nix
     ./wshowkeys.nix
     ./discord.nix
-    ./firefox.nix
+    # ./firefox.nix
     # ./nvf.nix
     # ./clash.nix
     ./mihomo.nix
