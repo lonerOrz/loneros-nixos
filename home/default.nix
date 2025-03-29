@@ -9,7 +9,7 @@
     ./git.nix
     # ./nvf.nix
     ./qutebrowser
-    ./zen
+    # ./zen
     # ./cava.nix
     # ./btm.nix
     # ./btop.nix

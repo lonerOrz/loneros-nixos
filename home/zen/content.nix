@@ -29,12 +29,12 @@ in
         /* 基本页面设置 */
         @-moz-document url-prefix("about:") {
           :root {
-            --in-content-page-color: #${base04} !important;
+            --in-content-page-color: #${base05} !important;
             --color-accent-primary: #${highlightColor} !important;
             --color-accent-primary-hover: rgb(185, 233, 181) !important;
             --color-accent-primary-active: rgb(161, 227, 172) !important;
             --content-background-color: #${base01} !important;
-            --content-text-color: #${base04} !important;
+            --content-text-color: #${base05} !important;
             --in-content-page-background: #${base01} !important;
           }
         }
@@ -45,8 +45,8 @@ in
             --newtab-background-color: #${base01} !important;
             --newtab-background-color-secondary: #${base02} !important;
             --newtab-element-hover-color: #${base02} !important;
-            --newtab-text-primary-color: #${base04} !important;
-            --newtab-wordmark-color: #${base04} !important;
+            --newtab-text-primary-color: #${base05} !important;
+            --newtab-wordmark-color: #${base05} !important;
             --newtab-primary-action-background: #${highlightColor} !important;
           }
           .icon { color: #${highlightColor} !important; }
@@ -62,7 +62,7 @@ in
         @-moz-document url-prefix("about:preferences") {
           :root {
             --zen-colors-tertiary: #${base00} !important;
-            --in-content-text-color: #${base04} !important;
+            --in-content-text-color: #${base05} !important;
             --link-color: #${highlightColor} !important;
             --link-color-hover: rgb(185, 233, 181) !important;
             --zen-colors-primary: #${base02} !important;
@@ -70,7 +70,7 @@ in
             --zen-primary-color: #${highlightColor} !important;
           }
           groupbox, moz-card { background: #${base01} !important; }
-          button, groupbox menulist { background: #${base02} !important; color: #${base04} !important; }
+          button, groupbox menulist { background: #${base02} !important; color: #${base05} !important; }
           .main-content { background-color: #${base00} !important; }
           .identity-color-blue { --identity-tab-color: #${base0D} !important; --identity-icon-color: #${base0D} !important; }
           .identity-color-turquoise { --identity-tab-color: #${base0C} !important; --identity-icon-color: #${base0C} !important; }
@@ -100,9 +100,9 @@ in
             --cryptominer-color: #${base06} !important;
             --tracker-color: #${highlightColor} !important;
             --in-content-primary-button-background-hover: #${base03} !important;
-            --in-content-primary-button-text-color-hover: #${base04} !important;
+            --in-content-primary-button-text-color-hover: #${base05} !important;
             --in-content-primary-button-background: #${base03} !important;
-            --in-content-primary-button-text-color: #${base04} !important;
+            --in-content-primary-button-text-color: #${base05} !important;
           }
           .card { background-color: #${base02} !important; }
         }

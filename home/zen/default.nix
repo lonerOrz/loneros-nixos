@@ -9,7 +9,7 @@
 }:
 
 let
-  path = "${host}.${username}";
+  path = "${username}.${host}";
 
   highlightColor = config.lib.stylix.colors.base0B;  # 强调色
   # base06: "#f5e0dc" # rosewater
