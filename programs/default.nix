@@ -9,13 +9,13 @@
     # ./virtualbox.nix
     ./virt-manager.nix # kvm + qemu + virt-manager
     ./tty-theme.nix # catppuccin-mocha
-    # ./flatpak.nix
+    ./flatpak.nix
     ./steam.nix
     ./wayvnc.nix
     # ./ollama.nix
     ./wshowkeys.nix
     ./discord.nix
-    # ./firefox.nix
+    ./firefox.nix
     # ./nvf.nix
     # ./clash.nix
     ./mihomo.nix
