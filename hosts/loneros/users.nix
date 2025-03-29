@@ -58,6 +58,7 @@ in
     stow # dotfiles needed
     parallel-full
     envsubst
+    pywalfox-native
 
     go-musicfox
     lazygit
