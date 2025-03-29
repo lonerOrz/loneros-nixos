@@ -26,11 +26,11 @@ in
     autoEnable = false; # 关闭默认的自动应用主题
     base16Scheme = colorScheme.path;
     polarity = "${colorScheme.polarity}";
-    cursor = {
-      package = pkgs.nordzy-cursor-theme;
-      name = "nordzy-catppuccin-mocha-grren";
-      size = 24;
-    };
+    # cursor = {
+    #   package = pkgs.nordzy-cursor-theme;
+    #   name = "nordzy-catppuccin-mocha-grren";
+    #   size = 24;
+    # };
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
