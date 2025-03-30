@@ -5,7 +5,7 @@
     ./fcitx5.nix
     ./mpd.nix
     ./rclone.nix
-    ./spicetify.nix
+    # ./spicetify.nix
     # ./virtualbox.nix
     ./virt-manager.nix # kvm + qemu + virt-manager
     ./tty-theme.nix # catppuccin-mocha

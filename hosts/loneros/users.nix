@@ -61,6 +61,8 @@ in
     # parallel-full
     # envsubst
 
+    spicetify-cli # flatpak installed spotify
+
     go-musicfox
     lazygit
     bottom
@@ -81,16 +83,15 @@ in
     libreoffice-still # 长久支持版本
 
     # cli tool
-    neo-cowsay
-    pipes
-    sl
-    figlet
+    neo-cowsay # fortune | cowsay --random --rainbow
     fortune
+    pipes # grep
+    sl
+    figlet # ascii <font>
     nyancat
     bb
     cmatrix
     hollywood
-    asciinema
   ];
 
   programs = {
