@@ -62,7 +62,6 @@ in
     # envsubst
 
     spicetify-cli # flatpak installed spotify
-
     go-musicfox
     lazygit
     bottom
@@ -81,6 +80,7 @@ in
     helix # 编辑器
     element-desktop
     libreoffice-still # 长久支持版本
+    vscodium
 
     # cli tool
     neo-cowsay # fortune | cowsay --random --rainbow
