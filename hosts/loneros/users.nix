@@ -46,7 +46,7 @@ in
 
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-11.5.0" # baidunetdisk needed
+    "electron-11.5.0" # NUR baidunetdisk needed
   ];
 
   # 我自己喜欢全局安装
