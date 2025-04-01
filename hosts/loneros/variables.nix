@@ -1,7 +1,7 @@
 {
   # Git Configuration
   gitUsername = "loner";
-  gitEmail = "loner.games@gmail.com";
+  gitEmail = "2788892716@qq.com";
 
   # Waybar Settings
   clock24h = true;
