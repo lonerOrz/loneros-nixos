@@ -20,5 +20,6 @@
     # ./clash.nix
     ./mihomo.nix
     ./direnv.nix
+    ./obs.nix
   ];
 }

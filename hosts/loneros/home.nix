@@ -31,7 +31,6 @@
       programs.home-manager.enable = true;
       imports = [
         ../../home
-        inputs.catppuccin.homeManagerModules.catppuccin
       ];
     };
   };

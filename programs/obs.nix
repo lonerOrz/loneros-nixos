@@ -13,6 +13,4 @@
       obs-pipewire-audio-capture
     ];
   };
-  # theme
-  catppuccin.obs.enable = true;
 }

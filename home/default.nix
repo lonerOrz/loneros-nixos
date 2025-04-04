@@ -1,7 +1,6 @@
 {
   imports = [
-    ./obs.nix
-    ./fuzzel.nix
+    # ./fuzzel.nix
     # ./ghostty.nix
     ./scripts
     # ./hyprpanel
