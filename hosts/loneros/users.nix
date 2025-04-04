@@ -67,6 +67,8 @@ in
     bottom
     neovim
     yazi
+    rmpc
+    rsclock
 
     qbittorrent-enhanced # qbee
     motrix
@@ -80,7 +82,7 @@ in
     helix # 编辑器
     element-desktop
     libreoffice-still # 长久支持版本
-    vscodium
+    vscodium-fhs
 
     # cli tool
     neo-cowsay # fortune | cowsay --random --rainbow
