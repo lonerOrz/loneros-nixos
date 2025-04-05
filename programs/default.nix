@@ -21,5 +21,6 @@
     ./mihomo.nix
     ./direnv.nix
     ./obs.nix
+    ./nfs.nix
   ];
 }

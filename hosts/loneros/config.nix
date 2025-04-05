@@ -218,8 +218,6 @@ in
     };
 
     libinput.enable = true; # 输入设备驱动
-    rpcbind.enable = false; # 基于 RPC（远程过程调用）的网络服务提供支持
-    nfs.server.enable = false; # 共享本地文件系统
     fwupd.enable = true; # 管理和更新硬件固件
     upower.enable = true; # 管理电池、能源和电源管理的守护进程
     gnome.gnome-keyring.enable = true; # 用于存储和管理密码、密钥、证书等敏感数据的工具
