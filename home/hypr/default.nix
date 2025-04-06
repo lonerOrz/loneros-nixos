@@ -1,7 +1,6 @@
 {
   imports = [
-    # ./hyprland.nix
-    # ./hyprspace.nix
+    ./hyprland.nix
     ./scripts
   ];
 }
