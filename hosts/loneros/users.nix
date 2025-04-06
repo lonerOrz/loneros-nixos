@@ -67,8 +67,10 @@ in
     bottom
     neovim
     yazi
-    rmpc
-    rsclock
+    rmpc # music cli
+    rsclock # colock
+    asciinema # rec demo.cast
+    asciinema-agg # cast -> gif
 
     qbittorrent-enhanced # qbee
     motrix
@@ -90,10 +92,10 @@ in
     pipes # grep
     sl
     figlet # ascii <font>
-    nyancat
     bb
     cmatrix
     hollywood
+    lolcat
   ];
 
   programs = {
