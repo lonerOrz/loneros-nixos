@@ -12,7 +12,7 @@
     ./flatpak.nix
     ./steam.nix
     ./wayvnc.nix
-    # ./ollama.nix
+    ./ollama.nix
     ./wshowkeys.nix
     ./discord.nix
     # ./firefox.nix
