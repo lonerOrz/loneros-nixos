@@ -49,6 +49,11 @@ in
     "electron-11.5.0" # NUR baidunetdisk needed
   ];
 
+    # Overlays
+  nixpkgs.overlays = [
+    (import ../../overlays/code-cursor-wrapper.nix)
+  ];
+
   # 我自己喜欢全局安装
   environment.systemPackages = with pkgs; [
     # software
@@ -84,7 +89,8 @@ in
     helix # 编辑器
     element-desktop
     libreoffice-still # 长久支持版本
-    vscodium-fhs
+    vscodium
+    code-cursor-wrapper # overlay code-cursor
 
     # cli tool
     neo-cowsay # fortune | cowsay --random --rainbow
