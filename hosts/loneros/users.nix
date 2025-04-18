@@ -52,6 +52,7 @@ in
     # Overlays
   nixpkgs.overlays = [
     (import ../../overlays/code-cursor-wrapper.nix)
+    (import ../../overlays/vscodium-wrapper.nix)
   ];
 
   # 我自己喜欢全局安装
@@ -89,7 +90,7 @@ in
     helix # 编辑器
     element-desktop
     libreoffice-still # 长久支持版本
-    vscodium
+    vscodium-wrapper
     code-cursor-wrapper # overlay code-cursor
 
     # cli tool
