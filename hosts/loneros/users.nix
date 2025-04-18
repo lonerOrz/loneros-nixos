@@ -62,6 +62,7 @@ in
     starship
     devbox # 配合 direnv
     stow # dotfiles needed
+    libcaca # img2txt
 
     # hyde needed
     # parallel-full
