@@ -35,7 +35,7 @@ in
   programs.spicetify = {
     enable = true;
     theme = spicePkgs.themes.sleek;
-    colorScheme = "nord";
+    # colorScheme = "nord";
     customColorScheme = {
       text = base05;              # main text, playlist names in main field, name of playlist selected in sidebar, headings
       subtext = base02;           # text in main buttons in sidebar, playlist names in sidebar, artist names, and mini infos
