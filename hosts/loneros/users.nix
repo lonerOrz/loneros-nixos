@@ -53,6 +53,8 @@ in
   nixpkgs.overlays = [
     (import ../../overlays/code-cursor-wrapper.nix)
     (import ../../overlays/vscodium-wrapper.nix)
+    (import ../../overlays/spotify-wrapper.nix)
+    (import ../../overlays/obsidian-wrapper.nix)
   ];
 
   # 我自己喜欢全局安装
@@ -68,7 +70,6 @@ in
     # parallel-full
     # envsubst
 
-    spicetify-cli # flatpak installed spotify
     go-musicfox
     lazygit
     bottom
@@ -87,7 +88,7 @@ in
     zed-editor
     telegram-desktop
     stable.rustdesk-flutter
-    obsidian
+    obsidian-wrapper
     helix # 编辑器
     element-desktop
     libreoffice-still # 长久支持版本
