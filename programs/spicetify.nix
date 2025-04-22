@@ -34,29 +34,31 @@ in
 
   programs.spicetify = {
     enable = true;
+    spotifyPackage = pkgs.spotify-wrapper;
+    # windowManagerPatch = true; # wm补丁
     theme = spicePkgs.themes.sleek;
-    # colorScheme = "nord";
-    customColorScheme = {
-      text = base05;              # main text, playlist names in main field, name of playlist selected in sidebar, headings
-      subtext = base02;           # text in main buttons in sidebar, playlist names in sidebar, artist names, and mini infos
-      nav-active-text = base00;   # text in main buttons in sidebar when active
-      main = base00;              # main bg
-      main-secondary = base03;    # bg color of selected song rows, bg color of artist/track cards
-      sidebar = base01;           # sidebar bg
-      player = base0D;            # player bg
-      card = base07;              # popup-card bg
-      shadow = base0F;            # all shadows
-      button = base03;            # playlist buttons bg in sidebar, drop-down menus, now playing song, like button
-      button-secondary = base09;  # download and options button
-      button-active = base0A;     # hover on song selected
-      button-disabled = base02;   # seekbar bg, volume bar bg, scrollbar
-      nav-active = base05;        # sidebar buttons bg
-      play-button = base0B;       # color of main play button in main field
-      tab-active = base0C;        # button bg in main field (playlists, podcasts, artists, albums)
-      notification = base0E;      # notification ('Added to liked songs' etc.)
-      playback-bar = base0D;      # seekbar fg, volume bar fg, main play/pause button
-      misc = base04;              # miscellaneous
-    };
+    colorScheme = "Nord";
+    # customColorScheme = {
+    #   text = base05;              # main text, playlist names in main field, name of playlist selected in sidebar, headings
+    #   subtext = base02;           # text in main buttons in sidebar, playlist names in sidebar, artist names, and mini infos
+    #   nav-active-text = base00;   # text in main buttons in sidebar when active
+    #   main = base00;              # main bg
+    #   main-secondary = base03;    # bg color of selected song rows, bg color of artist/track cards
+    #   sidebar = base01;           # sidebar bg
+    #   player = base0D;            # player bg
+    #   card = base07;              # popup-card bg
+    #   shadow = base0F;            # all shadows
+    #   button = base03;            # playlist buttons bg in sidebar, drop-down menus, now playing song, like button
+    #   button-secondary = base09;  # download and options button
+    #   button-active = base0A;     # hover on song selected
+    #   button-disabled = base02;   # seekbar bg, volume bar bg, scrollbar
+    #   nav-active = base05;        # sidebar buttons bg
+    #   play-button = base0B;       # color of main play button in main field
+    #   tab-active = base0C;        # button bg in main field (playlists, podcasts, artists, albums)
+    #   notification = base0E;      # notification ('Added to liked songs' etc.)
+    #   playback-bar = base0D;      # seekbar fg, volume bar fg, main play/pause button
+    #   misc = base04;              # miscellaneous
+    # };
 
     enabledExtensions = with spicePkgs.extensions; [
       autoSkipVideo # 自动跳过视频
@@ -86,7 +88,7 @@ in
 
   # 使用自定义配置文件控制spicetify
   environment.systemPackages = with pkgs; [
-    spotify
-    spicetify-cli # 设置不了config
+    # spotify
+    # spicetify-cli # 设置不了config
   ];
 }
