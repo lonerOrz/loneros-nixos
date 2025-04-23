@@ -1,20 +1,24 @@
-self: super: {
-  vscodium-wrapper = super.vscodium.overrideAttrs (oldAttrs: {
-    pname = "vscodium-wrapper";
+# 添加 electrcon 应用的环境变量和参数
+self: super: 
+  let
+    sftname = "vscodium"; # 软件名称
+    cmdname = "codium"; # 命令行名称
+  in 
+{
+  "${sftname}-wrapper" = super.${sftname}.overrideAttrs (oldAttrs: {
+    pname = "${sftname}-wrapper";
 
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ super.makeWrapper ];
 
     postInstall = ''
       echo "Wrapping cursor binary..."
-
-      # 确保目标存在
-      if [ -f "$out/bin/codium" ]; then
-        wrapProgram "$out/bin/codium" \
-          --set ELECTRON_OZONE_PLATFORM_HINT auto \
-          --set LIBGL_ALWAYS_INDIRECT 1 \
-          --add-flags "--disable-gpu"
+      if [ -f "$out/bin/${cmdname}" ]; then
+        wrapProgram "$out/bin/${cmdname}" \
+        --set ELECTRON_OZONE_PLATFORM_HINT auto \
+        --set LIBGL_ALWAYS_INDIRECT 1 \
+        --add-flags "--disable-gpu"
       else
-        echo "Warning: $out/bin/codium not found!"
+        echo "Warning: $out/bin/${cmdname} not found!"
       fi
     '';
   });

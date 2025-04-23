@@ -88,12 +88,14 @@ in
     zed-editor
     telegram-desktop
     stable.rustdesk-flutter
-    obsidian-wrapper
     helix # 编辑器
     element-desktop
     libreoffice-still # 长久支持版本
+
+    # electron
+    obsidian-wrapper
     vscodium-wrapper
-    code-cursor-wrapper # overlay code-cursor
+    code-cursor-wrapper
 
     # cli tool
     neo-cowsay # fortune | cowsay --random --rainbow
