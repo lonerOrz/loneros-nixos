@@ -20,7 +20,7 @@
   networking.networkmanager.dns = "systemd-resolved"; # one of "default", "dnsmasq", "systemd-resolved", "none"
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
-  networking.enableIPv6 = false;
+  networking.enableIPv6 = true;
 
   # DNS 解析服务
   services.resolved = {
@@ -33,6 +33,10 @@
       "114.114.114.114"
       "218.6.200.139"
       "61.139.2.69"
+      "2606:4700:4700::1111"  # Cloudflare IPv6
+      "2001:4860:4860::8888"  # Google IPv6
+      "240c::6666"            # 114DNS IPv6
+      "2400:3200::1"          # 阿里DNS IPv6
     ];
     extraConfig = ''
       CacheTTLSec=3600
