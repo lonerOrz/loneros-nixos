@@ -95,6 +95,7 @@ in
       loupe # rust编译的图片查看器
       bat # better cat
       fd # better find
+      zoxide
       bc
       duf # better du
       ripgrep # better grep
