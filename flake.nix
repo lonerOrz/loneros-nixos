@@ -76,13 +76,14 @@
             {
               nixpkgs.overlays = [
                 inputs.hyprpanel.overlay
+                inputs.nur.overlays.default
               ];
             }
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.honkai-railway-grub-theme.nixosModules.${system}.default
             inputs.catppuccin.nixosModules.catppuccin
             inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
-            inputs.nur.modules.nixos.default
+            # inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
           ];
         };
