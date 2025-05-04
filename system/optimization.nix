@@ -45,14 +45,4 @@
     swapDevices = 1; # 仅创建一个 ZRAM 交换设备
     algorithm = "zstd"; # 使用 `zstd` 压缩算法（高压缩比 & 低 CPU 负担）
   };
-
-  # Faster rebuilding
-  documentation = {
-    enable = true;
-    doc.enable = false;
-    man.enable = true;
-    dev.enable = false;
-    info.enable = false;
-    nixos.enable = false;
-  };
 }
