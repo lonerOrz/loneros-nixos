@@ -88,7 +88,7 @@ in
     zed-editor
     telegram-desktop
     stable.rustdesk-flutter
-    helix # 编辑器
+    evil-helix_git # introduces Vim keybindings and more
     element-desktop
     libreoffice-still # 长久支持版本
 
