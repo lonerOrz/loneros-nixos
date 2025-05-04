@@ -57,7 +57,11 @@
   services.spice-vdagentd.enable = true;
 
   # 启用 UEFI 固件支持
-  systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
+  systemd.tmpfiles.rules = [ 
+    "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware"
+    "L+ /usr/share/OVMF/OVMF_CODE.fd - - - - ${pkgs.OVMF}/FV/OVMF_CODE.fd"
+    "L+ /usr/share/OVMF/OVMF_VARS.fd - - - - ${pkgs.OVMF}/FV/OVMF_VARS.fd"
+  ];
 
   # 支持模拟的不同架构
   boot.binfmt.emulatedSystems = [
