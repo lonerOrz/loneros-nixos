@@ -18,6 +18,9 @@ in
         thefuzz
         numpy
         chardet
+
+        pyjson5
+        pytomlpp
       ];
       extraBuildInputs = [
         nur.repos.HeyImKyu.fabric-gray
