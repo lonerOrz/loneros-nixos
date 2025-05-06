@@ -23,5 +23,6 @@
     ./obs.nix
     ./nfs.nix
     ./ax-shell.nix
+    ./sunshine.nix
   ];
 }
