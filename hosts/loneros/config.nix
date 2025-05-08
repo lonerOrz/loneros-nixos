@@ -10,7 +10,7 @@ let
     ps: with ps; [
       requests
       pyquery # needed for hyprland-dots Weather script
-      gpustat
+      gpustat # gpu status
     ]
   );
 in
@@ -52,7 +52,6 @@ in
 
     waybar.enable = true;
     hyprlock.enable = true;
-    neovim.enable = true;
 
     # XFCE 桌面环境的默认文件管理器
     thunar.enable = true;
@@ -131,7 +130,6 @@ in
       matugen # 图片取色 by hyprpanel
       power-profiles-daemon # 切换电源模式
       libgtop # 获取系统性能信息的库
-      # adwaita-icon-theme # icon
 
       # Qt
       libsForQt5.qt5ct
