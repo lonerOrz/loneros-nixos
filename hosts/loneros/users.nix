@@ -92,7 +92,7 @@ in
     element-desktop
     libreoffice-still # 长久支持版本
 
-    # electron
+    # electron wrapper
     obsidian-wrapper
     vscodium-wrapper
     code-cursor-wrapper
