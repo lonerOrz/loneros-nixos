@@ -65,6 +65,7 @@ in
     devbox # 配合 direnv
     stow # dotfiles needed
     libcaca # img2txt
+    tectonic-unwrapped # TeX/LaTeX 公式渲染
 
     # hyde needed
     # parallel-full
