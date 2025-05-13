@@ -6,19 +6,13 @@
 }:
 let
   inherit (import ./variables.nix) keyboardLayout;
-  python-packages = pkgs.python3.withPackages (
-    ps: with ps; [
-      requests
-      pyquery # needed for hyprland-dots Weather script
-      gpustat # gpu status
-    ]
-  );
 in
 {
   imports = [
     ./hardware.nix
     ./users.nix
     ./home.nix
+    ./dev.nix
 
     ../../system
     ../../programs
@@ -181,10 +175,7 @@ in
       rofi-wayland # 程序启动器
       swaynotificationcenter # swaync 用于通知
       waybar # 任务栏
-    ])
-    ++ [
-      python-packages
-    ];
+    ]);
 
   # Services to start
   services = {
