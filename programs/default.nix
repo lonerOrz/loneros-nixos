@@ -25,5 +25,6 @@
     ./ax-shell.nix
     ./sunshine.nix
     ./nvim.nix
+    ./quickshell.nix
   ];
 }
