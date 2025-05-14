@@ -1,14 +1,14 @@
 # 添加 electrcon 应用的环境变量和参数
-self: super: 
-  let
-    sftname = "code-cursor"; # 软件名称
-    cmdname = "cursor"; # 命令行名称
-  in 
+self: super:
+let
+  sftname = "code-cursor"; # 软件名称
+  cmdname = "cursor"; # 命令行名称
+in
 {
   "${sftname}-wrapper" = super.${sftname}.overrideAttrs (oldAttrs: {
     pname = "${sftname}-wrapper";
 
-    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ super.makeWrapper ];
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ super.makeWrapper ];
 
     postInstall = ''
       echo "Wrapping cursor binary..."
@@ -23,4 +23,3 @@ self: super:
     '';
   });
 }
-

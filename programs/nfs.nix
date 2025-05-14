@@ -1,4 +1,4 @@
-{ 
+{
   config,
   username,
   pkgs,
@@ -28,4 +28,3 @@
     };
   };
 }
-

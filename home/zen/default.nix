@@ -11,7 +11,7 @@
 let
   path = "${username}.${host}";
 
-  highlightColor = config.lib.stylix.colors.base0B;  # 强调色
+  highlightColor = config.lib.stylix.colors.base0B; # 强调色
   # base06: "#f5e0dc" # rosewater
   # base07: "#b4befe" # lavender
   # base08: "#f38ba8" # red

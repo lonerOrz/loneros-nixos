@@ -49,7 +49,7 @@ in
     "electron-11.5.0" # NUR baidunetdisk needed
   ];
 
-    # Overlays
+  # Overlays
   nixpkgs.overlays = [
     (import ../../overlays/code-cursor-wrapper.nix)
     (import ../../overlays/vscodium-wrapper.nix)

@@ -18,12 +18,12 @@
         # 控制最大 CPU 性能（降低功耗）
         CPU_SCALING_GOVERNOR_ON_AC = "performance";
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-        RUNTIME_PM_ALL = true;  # 启用所有设备的运行时电源管理
-        START_CHARGE_THRESH_BAT0 = 75;  # 电池低于 75% 时开始充电
-        STOP_CHARGE_THRESH_BAT0 = 80;   # 充电到 80% 时停止充电
+        RUNTIME_PM_ALL = true; # 启用所有设备的运行时电源管理
+        START_CHARGE_THRESH_BAT0 = 75; # 电池低于 75% 时开始充电
+        STOP_CHARGE_THRESH_BAT0 = 80; # 充电到 80% 时停止充电
         TLP_MONITOR_BATTERY_STATUS = true;
         TLP_MONITOR_AC_STATUS = true;
-        BATT_LOAD_THRESH = 5;  # 电池电量低于 5% 时执行特定操作（例如，关闭电源）
+        BATT_LOAD_THRESH = 5; # 电池电量低于 5% 时执行特定操作（例如，关闭电源）
       };
     };
   };

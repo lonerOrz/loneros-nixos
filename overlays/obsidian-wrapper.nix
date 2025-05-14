@@ -1,24 +1,24 @@
-  self: super: 
-    let
-      sftname = "obsidian"; # 软件名称
-      cmdname = "obsidian"; # 命令行名称
-    in 
-  {
-    "${sftname}-wrapper" = super.${sftname}.overrideAttrs (oldAttrs: {
-      pname = "${sftname}-wrapper";
+self: super:
+let
+  sftname = "obsidian"; # 软件名称
+  cmdname = "obsidian"; # 命令行名称
+in
+{
+  "${sftname}-wrapper" = super.${sftname}.overrideAttrs (oldAttrs: {
+    pname = "${sftname}-wrapper";
 
-      nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ super.makeWrapper ];
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ super.makeWrapper ];
 
-      postInstall = ''
-        echo "Wrapping cursor binary..."
-        if [ -f "$out/bin/${cmdname}" ]; then
-          wrapProgram "$out/bin/${cmdname}" \
-            --set ELECTRON_OZONE_PLATFORM_HINT auto \
-            --set LIBGL_ALWAYS_INDIRECT 1 \
-            --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --disable-gpu"
-        else
-          echo "Warning: $out/bin/${cmdname} not found!"
-        fi
-      '';
-    });
-  }
+    postInstall = ''
+      echo "Wrapping cursor binary..."
+      if [ -f "$out/bin/${cmdname}" ]; then
+        wrapProgram "$out/bin/${cmdname}" \
+          --set ELECTRON_OZONE_PLATFORM_HINT auto \
+          --set LIBGL_ALWAYS_INDIRECT 1 \
+          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --disable-gpu"
+      else
+        echo "Warning: $out/bin/${cmdname} not found!"
+      fi
+    '';
+  });
+}

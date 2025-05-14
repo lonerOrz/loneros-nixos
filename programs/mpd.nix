@@ -5,7 +5,7 @@
   ...
 }:
 {
-    users.groups.mpd.members = [ "${username}" ];
+  users.groups.mpd.members = [ "${username}" ];
   # 启用 MPD 服务
   services.mpd = {
     enable = true;

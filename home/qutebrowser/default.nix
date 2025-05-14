@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 let
   homepage = "https://start.duckduckgo.com";
-in 
+in
 {
 
   imports = [ ./theme.nix ];

@@ -1,7 +1,13 @@
-{ inputs, config, pkgs, system, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  system,
+  ...
+}:
 let
   nur = inputs.nur.legacyPackages."${system}";
-in 
+in
 {
   environment.systemPackages = with pkgs; [
     aria2

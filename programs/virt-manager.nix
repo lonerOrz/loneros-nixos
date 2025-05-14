@@ -57,7 +57,7 @@
   services.spice-vdagentd.enable = true;
 
   # 启用 UEFI 固件支持
-  systemd.tmpfiles.rules = [ 
+  systemd.tmpfiles.rules = [
     "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware"
     "L+ /usr/share/qemu/vars.fd - - - - ${pkgs.qemu}/share/qemu/edk2-i386-vars.fd"
     "L+ /usr/share/qemu/secure-code.fd - - - - ${pkgs.qemu}/share/qemu/edk2-x86_64-secure-code.fd"

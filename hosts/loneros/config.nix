@@ -67,8 +67,9 @@ in
     (import ../../overlays/xdg-desktop-portal-wlr.nix)
   ];
 
-  environment.systemPackages =
-    (with pkgs; [
+  environment.systemPackages = (
+    with pkgs;
+    [
       # System Packages
       clang # C,C++
       curl
@@ -174,7 +175,8 @@ in
       rofi-wayland # 程序启动器
       swaynotificationcenter # swaync 用于通知
       waybar # 任务栏
-    ]);
+    ]
+  );
 
   # Services to start
   services = {

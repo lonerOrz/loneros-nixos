@@ -1,4 +1,9 @@
-{ lib, pkgs, username, ...}:
+{
+  lib,
+  pkgs,
+  username,
+  ...
+}:
 {
   # services.mihomo = {
   #   enable = true;
@@ -11,9 +16,9 @@
     mihomo-party
   ];
   security.wrappers.mihomo-party = {
-      owner = "root";
-      group = "root";
-      capabilities = "cap_net_bind_service,cap_net_admin=+ep";
-      source = "${lib.getExe pkgs.mihomo-party}";
-    };
+    owner = "root";
+    group = "root";
+    capabilities = "cap_net_bind_service,cap_net_admin=+ep";
+    source = "${lib.getExe pkgs.mihomo-party}";
+  };
 }
