@@ -26,5 +26,6 @@
     ./sunshine.nix
     ./nvim.nix
     ./quickshell.nix
+    ./ags.nix
   ];
 }
