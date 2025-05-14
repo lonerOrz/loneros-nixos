@@ -32,6 +32,10 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -89,6 +93,7 @@
             inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
             # inputs.nur.modules.nixos.default
             inputs.chaotic.nixosModules.default
+            inputs.lix-module.nixosModules.default
           ];
         };
       };
