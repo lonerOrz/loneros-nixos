@@ -84,7 +84,7 @@ in
     qbittorrent-enhanced # qbee
     motrix
     localsend
-    inputs.zen-browser.packages."${system}".default
+    inputs.zen-browser.packages."${system}".twilight # default
     inputs.ghostty.packages."${system}".default
     zed-editor
     telegram-desktop

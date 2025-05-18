@@ -679,6 +679,27 @@
         "type": "github"
       }
     },
+    "home-manager_4": {
+      "inputs": {
+        "nixpkgs": [
+          "zen-browser",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1747439237,
+        "narHash": "sha256-5rCGrnkglKKj4cav1U3HC+SIUNJh08pqOK4spQv9RjA=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "ae755329092c87369b9e9a1510a8cf1ce2b1c708",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "honkai-railway-grub-theme": {
       "inputs": {
         "flake-utils": "flake-utils_3",
@@ -1950,20 +1971,21 @@
     },
     "zen-browser": {
       "inputs": {
+        "home-manager": "home-manager_4",
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1747213523,
-        "narHash": "sha256-jPhYDRmTB1ozKGA7qJW7dcIdPR2rbR3HGHT4TDOkbGM=",
-        "ref": "refs/heads/main",
-        "rev": "5384355f43dc3d3c5e69797b23850c4d90489b54",
-        "revCount": 95,
-        "type": "git",
-        "url": "https://git.sr.ht/~canasta/zen-browser-flake/"
+        "lastModified": 1747538254,
+        "narHash": "sha256-PSgcaT1lpn6hz1xFWnQzmCw4Y64fxH+wZlfLUhVUFiU=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "de950d93cee9873651111c32345886f6649e6134",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "https://git.sr.ht/~canasta/zen-browser-flake/"
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "type": "github"
       }
     },
     "zig": {

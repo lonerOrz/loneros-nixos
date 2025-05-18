@@ -23,7 +23,7 @@
     catppuccin.url = "github:catppuccin/nix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
-    zen-browser.url = "git+https://git.sr.ht/~canasta/zen-browser-flake/";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     ghostty.url = "github:ghostty-org/ghostty";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nvf.url = "github:notashelf/nvf";
