@@ -16,8 +16,8 @@ let
   cmdname = "codium"; # CLI 可执行文件名
   bash = super.bash; # 系统 bash
   bgFile = builtins.fetchurl {
-    url = "https://img1.s1.googlevideo.xyz/d/BQACAgEAAx0EbsCs4QACD8toCgQLep7wEPlbFxbXUYkvgtHr8wACtgUAApzCUERtrQa5VyJ9nTYE";
-    sha256 = "sha256-oBGEFoZh6b89llSx5a3HzjOIP6KadnOP3LNOAkQ2jrY=";
+    url = "https://raw.githubusercontent.com/lonerOrz/loneros-dots/main/wallpapers/Anime-Room.png";
+    sha256 = "sha256-dOtbav0HQy1iex/I1oaeYj3i6LCa9alE8d9U2KTuD9s=";
   };
 in
 {
