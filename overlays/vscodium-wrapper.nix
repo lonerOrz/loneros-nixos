@@ -1,15 +1,3 @@
-###############################################################################
-# ↓ 图 1
-# url    = https://img1.s1.googlevideo.xyz/d/BQACAgEAAx0EbsCs4QACD8poCgHqDH-qHZrCSjUcWVUDeZ8nsAACtQUAApzCUERv4Ppo4ytsgzYE
-# sha256 = sha256-DTrx05Gki1qrPc8Gjg8dQGT9RyG0U1A0R9BjIwhKZkk=
-###############################################################################
-
-###############################################################################
-# ↓ 图 2
-# url    = https://img1.s1.googlevideo.xyz/d/BQACAgEAAx0EbsCs4QACD8toCgQLep7wEPlbFxbXUYkvgtHr8wACtgUAApzCUERtrQa5VyJ9nTYE
-# sha256 = sha256-oBGEFoZh6b89llSx5a3HzjOIP6KadnOP3LNOAkQ2jrY=
-###############################################################################
-
 self: super:
 let
   pkgs = super;
@@ -26,9 +14,7 @@ let
     rev = "main";
     sha256 = "1p2jjfb88155rglyqaccpvfm11px0lw7iff14zifslfzxmnfkpwf";
   };
-
-  bgFile = "${wallpapersRepo}/wallpapers/Anime-Room.png";
-
+  bgFile = "${wallpapersRepo}/wallpapers/loner/miles-catppuccin.jpg";
 in
 {
   "${sftname}-wrapper" = super.${sftname}.overrideAttrs (old: {
