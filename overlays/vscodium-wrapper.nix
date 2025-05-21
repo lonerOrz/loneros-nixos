@@ -10,9 +10,9 @@ let
   # };
   wallpapersRepo = pkgs.fetchFromGitHub {
     owner = "lonerOrz";
-    repo = "loneros-dots";
+    repo = "loneros-wall";
     rev = "main";
-    sha256 = "1p2jjfb88155rglyqaccpvfm11px0lw7iff14zifslfzxmnfkpwf";
+    sha256 = "1w2ngnmd1zya2jhm990610zixzis55kdpxxpjm48v916wapy9rfj";
   };
   bgFile = "${wallpapersRepo}/wallpapers/loner/miles-catppuccin.jpg";
 in
