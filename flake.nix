@@ -27,7 +27,6 @@
     ghostty.url = "github:ghostty-org/ghostty";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nvf.url = "github:notashelf/nvf";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,10 +63,6 @@
           allowUnfree = true;
         };
       };
-
-      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-
     in
     {
       nixosConfigurations = {
@@ -97,6 +92,5 @@
           ];
         };
       };
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
     };
 }
