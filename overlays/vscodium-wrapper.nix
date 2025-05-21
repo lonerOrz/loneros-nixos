@@ -12,13 +12,23 @@
 
 self: super:
 let
+  pkgs = super;
   sftname = "vscodium"; # 原包名
   cmdname = "codium"; # CLI 可执行文件名
   bash = super.bash; # 系统 bash
-  bgFile = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/lonerOrz/loneros-dots/main/wallpapers/Anime-Room.png";
-    sha256 = "sha256-dOtbav0HQy1iex/I1oaeYj3i6LCa9alE8d9U2KTuD9s=";
+  # bgFile = builtins.fetchurl {
+  #   url = "https://raw.githubusercontent.com/lonerOrz/loneros-dots/main/wallpapers/Anime-Room.png";
+  #   sha256 = "sha256-dOtbav0HQy1iex/I1oaeYj3i6LCa9alE8d9U2KTuD9s=";
+  # };
+  wallpapersRepo = pkgs.fetchFromGitHub {
+    owner = "lonerOrz";
+    repo = "loneros-dots";
+    rev = "main";
+    sha256 = "1p2jjfb88155rglyqaccpvfm11px0lw7iff14zifslfzxmnfkpwf";
   };
+
+  bgFile = "${wallpapersRepo}/wallpapers/Anime-Room.png";
+
 in
 {
   "${sftname}-wrapper" = super.${sftname}.overrideAttrs (old: {
