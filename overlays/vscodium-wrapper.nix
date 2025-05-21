@@ -12,7 +12,7 @@ let
     owner = "lonerOrz";
     repo = "loneros-wall";
     rev = "main";
-    sha256 = "1w2ngnmd1zya2jhm990610zixzis55kdpxxpjm48v916wapy9rfj";
+    sha256 = "sha256-fYHWApZlK3ImJdrwXWpPKcw/sQcgoDxROLIW/nyxvpg=";
   };
   bgFile = "${wallpapersRepo}/wallpapers/loner/miles-catppuccin.jpg";
 in
