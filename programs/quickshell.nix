@@ -4,9 +4,9 @@
   system,
   ...
 }:
-{
-  environment.systemPackages = with pkgs; [
-    (inputs.quickshell.packages.${system}.default.override {
+let
+  quickshell = pkgs.callPackage ./pkgs/quickshell.nix {
+    quickshell = inputs.quickshell.packages.${system}.default.override {
       withJemalloc = true;
       withQtSvg = true;
       withWayland = true;
@@ -15,7 +15,12 @@
       withPam = true;
       withHyprland = true;
       withI3 = false;
-    })
+    };
+  };
+in
+{
+  environment.systemPackages = with pkgs; [
+    quickshell
 
     kdePackages.qtbase
     kdePackages.qtgraphs
