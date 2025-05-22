@@ -10,7 +10,7 @@
       withJemalloc = true;
       withQtSvg = true;
       withWayland = true;
-      # withX11 = true;
+      withX11 = false;
       withPipewire = true;
       withPam = true;
       withHyprland = true;
