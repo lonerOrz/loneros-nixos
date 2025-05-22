@@ -5,7 +5,7 @@
   ...
 }:
 let
-  quickshell = pkgs.callPackage ./pkgs/quickshell.nix {
+  quickshell = pkgs.callPackage ../pkgs/quickshell.nix {
     quickshell = inputs.quickshell.packages.${system}.default.override {
       withJemalloc = true;
       withQtSvg = true;
