@@ -27,5 +27,6 @@
     ./nvim.nix
     ./quickshell.nix
     ./ags.nix
+    ./nbfc.nix
   ];
 }
