@@ -37,60 +37,57 @@
     };
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      nixpkgs-stable,
-      systems,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-      host = "loneros";
-      username = "loner";
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nixpkgs-stable,
+    systems,
+    ...
+  }: let
+    system = "x86_64-linux";
+    host = "loneros";
+    username = "loner";
 
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-        };
-      };
-
-      stable = import nixpkgs-stable {
-        inherit system;
-        config = {
-          allowUnfree = true;
-        };
-      };
-    in
-    {
-      nixosConfigurations = {
-        "${host}" = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit system;
-            inherit inputs;
-            inherit username;
-            inherit host;
-            inherit stable;
-          };
-          modules = [
-            ./hosts/${host}/config.nix
-            {
-              nixpkgs.overlays = [
-                inputs.hyprpanel.overlay
-                inputs.nur.overlays.default
-              ];
-            }
-            inputs.distro-grub-themes.nixosModules.${system}.default
-            inputs.honkai-railway-grub-theme.nixosModules.${system}.default
-            inputs.catppuccin.nixosModules.catppuccin
-            inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
-            # inputs.nur.modules.nixos.default
-            inputs.chaotic.nixosModules.default
-            inputs.lix-module.nixosModules.default
-          ];
-        };
+    pkgs = import nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
       };
     };
+
+    stable = import nixpkgs-stable {
+      inherit system;
+      config = {
+        allowUnfree = true;
+      };
+    };
+  in {
+    nixosConfigurations = {
+      "${host}" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit system;
+          inherit inputs;
+          inherit username;
+          inherit host;
+          inherit stable;
+        };
+        modules = [
+          ./hosts/${host}/config.nix
+          {
+            nixpkgs.overlays = [
+              inputs.hyprpanel.overlay
+              inputs.nur.overlays.default
+            ];
+          }
+          inputs.distro-grub-themes.nixosModules.${system}.default
+          inputs.honkai-railway-grub-theme.nixosModules.${system}.default
+          inputs.catppuccin.nixosModules.catppuccin
+          inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
+          # inputs.nur.modules.nixos.default
+          inputs.chaotic.nixosModules.default
+          inputs.lix-module.nixosModules.default
+        ];
+      };
+    };
+  };
 }

@@ -1,5 +1,5 @@
 <h1 align="center">
-   <img src="assets/preview/nixos-logo.png" width="100px" /> 
+   <img src="assets/preview/nixos-logo.png" width="100px" />
    <br>
       Install loneros on NixOS!
    <br>
@@ -25,6 +25,9 @@
       <br>
    </div>
 </h1>
+
+> [!IMPORTANT]
+> Note! I don't use home-manager for the configuration of user files, no why.
 
 ## 🖼️ 预览
 
