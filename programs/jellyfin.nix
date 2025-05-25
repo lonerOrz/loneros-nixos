@@ -9,8 +9,8 @@
     jellyfin-web
     jellyfin-ffmpeg
     jellyfin-tui
-    jellyfin-rpc
-    jellyfin-mpv-shim
+    # jellyfin-rpc
+    # jellyfin-mpv-shim
   ];
 
   services.jellyfin = {
