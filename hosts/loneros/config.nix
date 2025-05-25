@@ -3,11 +3,9 @@
   inputs,
   stable,
   ...
-}:
-let
+}: let
   inherit (import ./variables.nix) keyboardLayout;
-in
-{
+in {
   imports = [
     ./hardware.nix
     ./users.nix
@@ -68,10 +66,8 @@ in
   ];
 
   environment.systemPackages = (
-    with pkgs;
-    [
+    with pkgs; [
       # System Packages
-      clang # C,C++
       curl
       wget
       duf # 查看系统磁盘的空间使用情况 better df
@@ -95,6 +91,7 @@ in
       ripgrep # better grep
       file
       dos2unix
+      just
       git
 
       libappindicator # 创建桌面应用程序指示器（即系统托盘图标）的库
@@ -162,7 +159,7 @@ in
 
       wlogout # Wayland 环境下的注销工具
       fastfetch
-      (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
+      (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
       btop
       nvtopPackages.full # 显卡监控
       cava # 音乐可视化
@@ -180,7 +177,6 @@ in
 
   # Services to start
   services = {
-
     # 禁用 X Server
     xserver = {
       enable = false;
@@ -220,7 +216,6 @@ in
     #   dataDir = "/home/${username}";
     #   configDir = "/home/${username}/.config/syncthing";
     # };
-
   };
 
   # For Electron apps to use wayland
