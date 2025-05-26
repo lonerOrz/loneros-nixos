@@ -1,8 +1,4 @@
-{
-  pkgs,
-  ...
-}:
-{
+{pkgs, ...}: {
   i18n = {
     defaultLocale = "en_US.UTF-8";
     supportedLocales = [
@@ -14,7 +10,7 @@
       enable = true;
 
       fcitx5 = {
-        # waylandFrontend = true; #
+        waylandFrontend = true; #
         # plasma6Support = true; #不用kde6 貌似不用启用
         addons = with pkgs; [
           fcitx5-chinese-addons
@@ -52,5 +48,4 @@
       };
     };
   };
-
 }
