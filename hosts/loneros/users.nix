@@ -5,11 +5,9 @@
   system,
   username,
   ...
-}:
-let
+}: let
   inherit (import ./variables.nix) gitUsername shell;
-in
-{
+in {
   users = {
     mutableUsers = true;
     users."${username}" = {
@@ -34,11 +32,11 @@ in
 
   security.sudo.extraRules = [
     {
-      users = [ "${username}" ];
+      users = ["${username}"];
       commands = [
         {
           command = "ALL";
-          options = [ "NOPASSWD" ];
+          options = ["NOPASSWD"];
         }
       ];
     }
@@ -107,6 +105,7 @@ in
     cmatrix
     hollywood
     lolcat
+    nitch
   ];
 
   programs = {
