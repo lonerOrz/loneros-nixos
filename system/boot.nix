@@ -3,8 +3,7 @@
   host,
   pkgs,
   ...
-}:
-{
+}: {
   # BOOT related stuff
   boot = {
     # Kernel
@@ -21,8 +20,8 @@
     ];
 
     # This is for OBS Virtual Cam Support
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    kernelModules = ["v4l2loopback"];
+    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
 
     initrd = {
       availableKernelModules = [
@@ -37,7 +36,7 @@
         #"hid_logitech_hidpp"
         #"hid_logitech_dj"
       ];
-      kernelModules = [ ];
+      kernelModules = [];
     };
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
@@ -52,12 +51,12 @@
     # Bootloader GRUB
     loader.grub = {
       enable = true;
-      devices = [ "nodev" ];
+      devices = ["nodev"];
       efiSupport = true;
       gfxmodeBios = "auto";
       #memtest86.enable = true;
       # useOSProber = true;
-      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
+      extraGrubInstallArgs = ["--bootloader-id=${host}"];
       configurationName = "${host}";
       extraConfig = ''
         insmod kbd
