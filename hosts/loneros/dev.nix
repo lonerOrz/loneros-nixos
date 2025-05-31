@@ -1,8 +1,4 @@
-{
-  pkgs,
-  ...
-}:
-{
+{pkgs, ...}: {
   # 系统基本环境，用于软件运行
   environment.systemPackages =
     (with pkgs; [
@@ -12,6 +8,7 @@
     ++ (with pkgs.nodePackages; [
       yarn
       pnpm
+      eslint_d
     ])
     ++ (with pkgs; [
       python312
@@ -22,6 +19,7 @@
       requests
       pyquery # needed for hyprland-dots Weather script
       gpustat # gpu status
+      ruff
     ])
     ++ (with pkgs; [
       # lua
