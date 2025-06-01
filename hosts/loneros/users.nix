@@ -106,6 +106,7 @@ in {
     hollywood
     lolcat
     nitch
+    kbt # 键盘检测
   ];
 
   programs = {
