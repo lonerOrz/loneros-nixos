@@ -109,7 +109,8 @@ in {
       nitch
     ]
     ++ [
-      (pkgs.callPackage ../../pkgs/shijima-at.nix {})
+      # 自定义软件包
+      (pkgs.callPackage ../../pkgs/shijima-qt.nix {})
     ];
 
   programs = {
