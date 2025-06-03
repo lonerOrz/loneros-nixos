@@ -6,7 +6,6 @@
     ./spicetify.nix
     # ./virtualbox.nix
     ./virt-manager.nix # kvm + qemu + virt-manager
-    ./tty-theme.nix # catppuccin-mocha
     # ./flatpak.nix
     ./steam.nix
     ./wshowkeys.nix

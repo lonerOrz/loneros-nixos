@@ -20,7 +20,6 @@
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
-    catppuccin.url = "github:catppuccin/nix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
@@ -81,7 +80,6 @@
           }
           inputs.distro-grub-themes.nixosModules.${system}.default
           inputs.honkai-railway-grub-theme.nixosModules.${system}.default
-          inputs.catppuccin.nixosModules.catppuccin
           inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
           # inputs.nur.modules.nixos.default
           inputs.chaotic.nixosModules.default
