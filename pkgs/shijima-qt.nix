@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
       hash = "sha256-/oyFKkzhEW1+VbJyEmUw6s1m83edQ1lNYDlF5gQR9s4=";
       fetchSubmodules = true;
     }).overrideAttrs {
-    # 可以使用此�决方法来强制使用 HTTPS
+    # 强制使用 HTTPS
     GIT_CONFIG_COUNT = 1;
     GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf";
     GIT_CONFIG_VALUE_0 = "git@github.com:";
