@@ -60,11 +60,6 @@ in {
     fuse.userAllowOther = true; # 用户空间文件系统
   };
 
-  # Overlays
-  nixpkgs.overlays = [
-    (import ../../overlays/xdg-desktop-portal-wlr.nix)
-  ];
-
   environment.systemPackages = (
     with pkgs; [
       # System Packages
