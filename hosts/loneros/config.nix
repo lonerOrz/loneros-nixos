@@ -154,7 +154,8 @@ in {
 
       wlogout # Wayland 环境下的注销工具
       fastfetch
-      (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+      # (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+      mpv
       btop
       nvtopPackages.full # 显卡监控
       cava # 音乐可视化
