@@ -48,8 +48,21 @@ in {
         vdpauinfo
         libva
         libva-utils
+
+        mesa # 提供 OpenGL 支持（Mesa 通用驱动）
+        intel-media-driver # Intel GPU 视频解码驱动（VA-API，适用于 6 代 Skylake 及更新型号）
+        intel-ocl # Intel OpenCL 驱动（用于 AI 计算、Blender 渲染等）
+        libGL # 用于仲裁多个供应商之间的 OpenGL API 调用
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        mesa # 32 位 OpenGL 支持（运行 32 位游戏、Wine 等）
       ];
     };
+
+    environment.systemPackages = with pkgs; [
+      vulkan-tools
+      mesa-demos
+    ];
 
     hardware.nvidia = {
       # Modesetting is required.
