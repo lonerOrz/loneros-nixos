@@ -10,17 +10,24 @@
   xz,
   zip,
   zlib,
+  pipewire,
 }:
 stdenv.mkDerivation rec {
   pname = "shijima-qt";
   version = "0.1.0";
 
-  src = fetchFromGitHub {
-    owner = "pixelomer";
-    repo = "Shijima-Qt";
-    rev = "v${version}";
-    hash = "sha256-/oyFKkzhEW1+VbJyEmUw6s1m83edQ1lNYDlF5gQR9s4=";
-    fetchSubmodules = true;
+  src = (fetchFromGitHub
+    {
+      owner = "pixelomer";
+      repo = "Shijima-Qt";
+      rev = "v${version}";
+      hash = "sha256-/oyFKkzhEW1+VbJyEmUw6s1m83edQ1lNYDlF5gQR9s4=";
+      fetchSubmodules = true;
+    }).overrideAttrs {
+    # 可以使用此�决方法来强制使用 HTTPS
+    GIT_CONFIG_COUNT = 1;
+    GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf";
+    GIT_CONFIG_VALUE_0 = "git@github.com:";
   };
 
   nativeBuildInputs = [
@@ -45,6 +52,7 @@ stdenv.mkDerivation rec {
     libarchive
     qt6.qtbase
     qt6.qtmultimedia
+    pipewire
     xz
     zlib
   ];
