@@ -2,8 +2,7 @@
   pkgs,
   username,
   ...
-}:
-{
+}: {
   # 自动登录
   services.displayManager.autoLogin = {
     enable = true;
@@ -36,14 +35,4 @@
       # };
     })
   ];
-  # 单独设置catppuccin主题
-  catppuccin.sddm = {
-    enable = false;
-    flavor = "mocha";
-    loginBackground = true;
-    # background = ""; # Background image to use for the login screen
-    font = "Fria Code";
-    fontSize = "8";
-  };
-
 }
