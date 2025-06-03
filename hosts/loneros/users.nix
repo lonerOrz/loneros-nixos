@@ -56,57 +56,61 @@ in {
   ];
 
   # 我自己喜欢全局安装
-  environment.systemPackages = with pkgs; [
-    # software
-    translate-shell
-    starship
-    devbox # 配合 direnv
-    stow # dotfiles needed
-    libcaca # img2txt
-    tectonic-unwrapped # TeX/LaTeX 公式渲染
+  environment.systemPackages = with pkgs;
+    [
+      # software
+      translate-shell
+      starship
+      devbox # 配合 direnv
+      stow # dotfiles needed
+      libcaca # img2txt
+      tectonic-unwrapped # TeX/LaTeX 公式渲染
 
-    # hyde needed
-    # parallel-full
-    # envsubst
+      # hyde needed
+      # parallel-full
+      # envsubst
 
-    go-musicfox
-    lazygit
-    bottom
-    neovim
-    yazi
-    rmpc # music cli
-    rsclock # colock
-    asciinema # rec demo.cast
-    asciinema-agg # cast -> gif
+      go-musicfox
+      lazygit
+      bottom
+      neovim
+      yazi
+      rmpc # music cli
+      rsclock # colock
+      asciinema # rec demo.cast
+      asciinema-agg # cast -> gif
 
-    qbittorrent-enhanced # qbee
-    motrix
-    localsend
-    inputs.ghostty.packages."${system}".default
-    zed-editor
-    telegram-desktop
-    stable.rustdesk-flutter
-    evil-helix_git # introduces Vim keybindings and more
-    element-desktop
-    libreoffice-still # 长久支持版本
+      qbittorrent-enhanced # qbee
+      motrix
+      localsend
+      inputs.ghostty.packages."${system}".default
+      zed-editor
+      telegram-desktop
+      stable.rustdesk-flutter
+      evil-helix_git # introduces Vim keybindings and more
+      element-desktop
+      libreoffice-still # 长久支持版本
 
-    # electron wrapper
-    obsidian-wrapper
-    vscodium-wrapper
-    code-cursor-wrapper
+      # electron wrapper
+      obsidian-wrapper
+      vscodium-wrapper
+      code-cursor-wrapper
 
-    # cli tool
-    neo-cowsay # fortune | cowsay --random --rainbow
-    fortune
-    pipes # grep
-    sl
-    figlet # ascii <font>
-    bb
-    cmatrix
-    hollywood
-    lolcat
-    nitch
-  ];
+      # cli tool
+      neo-cowsay # fortune | cowsay --random --rainbow
+      fortune
+      pipes # grep
+      sl
+      figlet # ascii <font>
+      bb
+      cmatrix
+      hollywood
+      lolcat
+      nitch
+    ]
+    ++ [
+      (pkgs.callPackage ../../pkgs/shijima-at.nix {})
+    ];
 
   programs = {
     # 在此添加缺失的动态库（这些库会对未打包的程序生效）
