@@ -31,13 +31,20 @@
 
 ## 🖼️ 预览
 
-展示一些关于这个项目的截图或预览图片，可以帮助用户更直观地了解项目的效果。
+### 🌟 catppuccin 风格
 
-![Preview 1](assets/preview/demo-1.png)
-_预览图 1 - 示例描述_
+| ![pre-1](assets/preview/cat1.png) | ![pre-2](assets/preview/cat2.png) | ![pre-3](assets/preview/cat3.png) |
+|:---------------------------------:|:---------------------------------:|:---------------------------------:|
 
-![Preview 2](assets/preview/demo-2.png)
-_预览图 2 - 示例描述_
+<details>
+  <summary> 🎨 gruvbox 风格（点击展开）</summary>
+
+  <br>
+
+| ![pre-1](assets/preview/box1.png) | ![pre-2](assets/preview/box2.png) | ![pre-3](assets/preview/box3.png) |
+|:---------------------------------:|:---------------------------------:|:---------------------------------:|
+
+</details>
 
 ---
 
@@ -66,7 +73,7 @@ nh os switch --flake .#${HOSTNAME}
 
 ## 📝 TODO
 
-- [ ] 支持更多主题
+- [x] 支持更多主题
 - [ ] 解决rustdesk控制远程桌面报错hyprland门户未实现RemoteDesktop
 - [ ] 编写详细的文档
 
@@ -76,9 +83,9 @@ nh os switch --flake .#${HOSTNAME}
 
 以下是一些对本项目有帮助的资源：
 
-- [NixOS 官方文档](https://nixos.org/manual/)
-- [catppuccin/nixos](https://github.com/catppuccin/nixos) - 提供了一些灵感
-- [其他借鉴的仓库 1](https://github.com/example/repo1)
-- [其他借鉴的仓库 2](https://github.com/example/repo2)
+- [NixOS 手册](https://nixos.org/manual/) -  NixOS options
+- [catppuccin](https://github.com/catppuccin/nixos) - 主题配色
+- [zaneyos](https://gitlab.com/Zaney/zaneyos) - 配置参考
+
 
 ---
