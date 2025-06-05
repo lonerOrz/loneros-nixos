@@ -14,7 +14,7 @@ self: prev: let
     libplacebo = libplacebo-mpv;
   };
   mpv-wrapper = prev.mpv.override {
-    mpv = mpv-unwrapped-custom;
+    # mpv = mpv-unwrapped-custom; # pr 401421: 已经解决
     scripts = [prev.mpvScripts.mpris];
   };
 in {
