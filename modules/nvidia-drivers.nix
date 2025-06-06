@@ -1,11 +1,16 @@
 {
   lib,
   pkgs,
+  inputs,
   config,
   ...
 }:
 with lib; let
   cfg = config.drivers.nvidia;
+
+  # If you start experiencing lag and FPS drops in games or programs like Blender on stable NixOS
+  # when using the Hyprland flake, it is most likely a mesa version mismatch between your system and Hyprland.
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 
   # https://github.com/NixOS/nixpkgs/pull/412157
   gpl_symbols_linux_615_patch = pkgs.fetchpatch {
@@ -39,7 +44,9 @@ in {
 
     hardware.graphics = {
       enable = true;
+      package = pkgs-unstable.mesa;
       enable32Bit = true;
+      package32 = pkgs-unstable.pkgsi686Linux.mesa;
       extraPackages = with pkgs; [
         vaapiVdpau
         libvdpau
@@ -49,13 +56,9 @@ in {
         libva
         libva-utils
 
-        mesa # 提供 OpenGL 支持（Mesa 通用驱动）
         intel-media-driver # Intel GPU 视频解码驱动（VA-API，适用于 6 代 Skylake 及更新型号）
         intel-ocl # Intel OpenCL 驱动（用于 AI 计算、Blender 渲染等）
         libGL # 用于仲裁多个供应商之间的 OpenGL API 调用
-      ];
-      extraPackages32 = with pkgs.pkgsi686Linux; [
-        mesa # 32 位 OpenGL 支持（运行 32 位游戏、Wine 等）
       ];
     };
 
