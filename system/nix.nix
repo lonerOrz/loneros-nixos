@@ -1,20 +1,27 @@
 {
   config,
   inputs,
+  system,
   username,
   ...
-}:
-{
-  nixpkgs.config.allowUnfree = true;
+}: {
+  nixpkgs = {
+    config.allowUnfree = true;
+  };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     channel.enable = true;
     extraOptions = ''
       warn-dirty = false
     '';
     settings = {
       auto-optimise-store = true;
+      system-features = [
+        "gccarch-x86-64-v3"
+        "gccarch-x86-64-v2"
+        "gccarch-x86-64"
+      ];
       experimental-features = [
         "nix-command"
         "flakes"
