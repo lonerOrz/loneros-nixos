@@ -76,7 +76,7 @@ in {
       openssl # SSL/TLS 安全通信、证书管理和加密。
       inxi # 查看和展示系统硬件和软件信息的命令行工具
       jq # 处理 JSON 数据
-      pkgsx86_64_v3.ffmpeg
+      ffmpeg
       yt-dlp
       unzip
       fzf
