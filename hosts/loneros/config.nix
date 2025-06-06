@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  system,
   stable,
   ...
 }: let
@@ -34,7 +35,15 @@ in {
     hyprland = {
       enable = true;
       # set the flake package
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
+        stdenv =
+          (import inputs.nixpkgs {
+            system = "${system}";
+            config.gcc.arch = "x86-64-v3"; # 只对这个包生效
+          }).stdenv;
+        # 可选：你可以加额外参数优化编译器行为
+        NIX_CFLAGS_COMPILE = "-march=x86-64-v3 -O3";
+      });
       # make sure to also set the portal package, so that they are in sync
       portalPackage =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
