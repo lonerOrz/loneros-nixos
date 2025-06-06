@@ -24,7 +24,7 @@ in {
     # Kernel
     # kernelPackages = pkgs.linuxPackages_latest;
     # kernelPackages = pkgs.linuxPackages_zen;
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
