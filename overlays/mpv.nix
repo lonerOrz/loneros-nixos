@@ -15,7 +15,10 @@ self: prev: let
   };
   mpv-wrapper = prev.mpv.override {
     # mpv = mpv-unwrapped-custom; # pr 401421: 已经解决
-    scripts = [prev.mpvScripts.mpris];
+    scripts = with prev.mpvScripts; [
+      mpris
+      autoload
+    ];
   };
 in {
   mpv = mpv-wrapper;
