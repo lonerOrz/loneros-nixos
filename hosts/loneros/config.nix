@@ -14,6 +14,7 @@ in {
     ./dev.nix
 
     ../../system
+    ../../overlays
     ../../programs
     ../../modules
     ../../themes
@@ -75,7 +76,7 @@ in {
       openssl # SSL/TLS 安全通信、证书管理和加密。
       inxi # 查看和展示系统硬件和软件信息的命令行工具
       jq # 处理 JSON 数据
-      ffmpeg
+      pkgsx86_64_v3.ffmpeg
       yt-dlp
       unzip
       fzf
@@ -157,7 +158,6 @@ in {
 
       wlogout # Wayland 环境下的注销工具
       fastfetch
-      # (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
       mpv
       btop
       nvtopPackages.full # 显卡监控
