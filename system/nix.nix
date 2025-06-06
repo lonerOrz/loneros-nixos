@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  system,
   username,
   ...
 }: {
@@ -18,13 +17,12 @@
     settings = {
       auto-optimise-store = true;
       system-features = [
-        "gccarch-x86-64-v3"
-        "gccarch-x86-64-v2"
-        "gccarch-x86-64"
+        "gccarch-x86-64-v3" # for chaotic-nyx pkgsx86_64-v3
       ];
       experimental-features = [
-        "nix-command"
+        "nix-command" # 启用 nix build, nix run, nix flake 等新命令
         "flakes"
+        "ca-derivations" # 启用内容寻址 derivation（Content Addressed Derivations）
       ];
       substituters = [
         "https://hyprland.cachix.org"
