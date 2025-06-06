@@ -4,18 +4,9 @@
   system,
   username,
   ...
-}: let
-  hasCpuFlag = flag: builtins.match (".*" + flag + ".*") (builtins.readFile "/proc/cpuinfo") != null;
-in {
+}: {
   nixpkgs = {
     config.allowUnfree = true;
-    hostPlatform = {
-      gcc.arch =
-        if hasCpuFlag "avx2"
-        then "x86-64-v3"
-        else "x86-64";
-      system = "${system}";
-    };
   };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
