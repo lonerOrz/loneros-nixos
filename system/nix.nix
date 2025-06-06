@@ -1,11 +1,17 @@
 {
   config,
   inputs,
+  system,
   username,
   ...
 }: {
   nixpkgs = {
     config.allowUnfree = true;
+    hostPlatform = {
+      gcc.arch = "skylake";
+      gcc.tune = "skylake";
+      system = "${system}";
+    };
   };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
