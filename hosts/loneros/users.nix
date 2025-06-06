@@ -47,15 +47,6 @@ in {
     "electron-11.5.0" # NUR baidunetdisk needed
   ];
 
-  # Overlays
-  nixpkgs.overlays = [
-    (import ../../overlays/code-cursor-wrapper.nix)
-    (import ../../overlays/vscodium-wrapper.nix)
-    (import ../../overlays/spotify-wrapper.nix)
-    (import ../../overlays/obsidian-wrapper.nix)
-    (import ../../overlays/mpv.nix)
-  ];
-
   # 我自己喜欢全局安装
   environment.systemPackages = with pkgs;
     [
