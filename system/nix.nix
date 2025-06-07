@@ -7,11 +7,12 @@
 }: {
   nixpkgs = {
     config.allowUnfree = true;
+    config.allowBroken = true;
   };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-    channel.enable = true;
+    channel.enable = false;
     extraOptions = ''
       warn-dirty = false
     '';
