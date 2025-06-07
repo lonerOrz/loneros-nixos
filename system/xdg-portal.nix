@@ -1,8 +1,4 @@
 {pkgs, ...}: {
-  nixpkgs.overlays = [
-    (import ../overlays/xdg-desktop-portal-wlr.nix)
-  ];
-
   # Extra Portal Configuration
   xdg.portal = {
     enable = true;
