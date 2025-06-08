@@ -1850,16 +1850,17 @@
         "nixpkgs": "nixpkgs_11"
       },
       "locked": {
-        "lastModified": 1749367457,
-        "narHash": "sha256-d3Kw+ALwHe2c9cXyaypW2sqRUoxThXriO8vs3viDz44=",
+        "lastModified": 1749367397,
+        "narHash": "sha256-x3MGvlUSgoKHIyICStJ/oJoiFFVUFZJ/jDWt1SVZGng=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "a1fe7620e37aa595f888fb47bab0864bbbbaf814",
+        "rev": "a1ed62298f2bb4f6e26d42c92ccc40d59b334e46",
         "type": "github"
       },
       "original": {
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
+        "rev": "a1ed62298f2bb4f6e26d42c92ccc40d59b334e46",
         "type": "github"
       }
     },
