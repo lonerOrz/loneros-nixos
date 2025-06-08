@@ -17,11 +17,6 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-RpfHUVZmhtneeu8PIfxinYG3/groJPA9QveDSvzU6Zo=";
   };
 
-  postPatch = ''
-    sed -i '/^cargo-features/d' Cargo.toml
-    sed -i 's/edition *= *"2024"/edition = "2021"/' Cargo.toml
-  '';
-
   cargoHash = "sha256-FrE1PSRc7GTNUum05jNgKnzpDUc3FiS5CEM18It0lYY=";
   useFetchCargoVendor = true;
 
