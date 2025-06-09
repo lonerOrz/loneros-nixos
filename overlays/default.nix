@@ -4,6 +4,7 @@
     (import ./vscodium-wrapper.nix)
     (import ./spotify-wrapper.nix)
     (import ./obsidian-wrapper.nix)
+    (import ./mihomo-party-wrapper.nix)
     (import ./mpv.nix)
   ];
 }
