@@ -18,7 +18,7 @@
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
-    zen-browser.url = "github:0xc000022070/zen-browser-flake/a1ed62298f2bb4f6e26d42c92ccc40d59b334e46";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     ghostty.url = "github:ghostty-org/ghostty";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nvf.url = "github:notashelf/nvf";
