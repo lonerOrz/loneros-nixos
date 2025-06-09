@@ -20,8 +20,9 @@ with lib; let
     extraPrefix = "kernel/";
   };
 
+  nvType = "stable"; # latest beta stable
   nvidiaPackage =
-    if config.boot.kernelPackages.nvidiaPackages.latest.version == "570.153.02"
+    if config.boot.kernelPackages.nvidiaPackages."${nvType}".version == "570.153.02"
     then
       config.boot.kernelPackages.nvidiaPackages.mkDriver {
         version = "575.57.08";
@@ -33,7 +34,7 @@ with lib; let
 
         patches = [gpl_symbols_linux_615_patch];
       }
-    else config.boot.kernelPackages.nvidiaPackages.latest; # latest beta stable
+    else config.boot.kernelPackages.nvidiaPackages."${nvType}";
 in {
   options.drivers.nvidia = {
     enable = mkEnableOption "Enable Nvidia Drivers";
