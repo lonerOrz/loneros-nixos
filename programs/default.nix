@@ -19,6 +19,7 @@
     ./nvim.nix
     ./quickshell.nix
     ./ags.nix
+    ./niri.nix
 
     # server
     ./mpd.nix

@@ -13,6 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+    niri.url = "github:sodiboo/niri-flake";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
@@ -75,6 +76,7 @@
             nixpkgs.overlays = [
               inputs.hyprpanel.overlay
               inputs.nur.overlays.default
+              inputs.niri.overlays.niri
             ];
           }
           inputs.distro-grub-themes.nixosModules.${system}.default
@@ -83,6 +85,7 @@
           # inputs.nur.modules.nixos.default
           inputs.chaotic.nixosModules.default
           inputs.lix-module.nixosModules.default
+          inputs.niri.nixosModules.niri
         ];
       };
     };

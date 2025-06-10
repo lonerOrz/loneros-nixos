@@ -57,7 +57,6 @@ in {
       stow # dotfiles needed
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
-      xwayland-satellite
 
       # hyde needed
       # parallel-full
