@@ -100,6 +100,7 @@ in {
       lolcat
       nitch
       xorg.xeyes
+      ascii-image-converter
     ]
     ++ [
       # 自定义软件包
