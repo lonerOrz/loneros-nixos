@@ -9,5 +9,6 @@
     wlr-randr
     xwayland-satellite-unstable
     wayland-utils
+    gnome-control-center
   ];
 }
