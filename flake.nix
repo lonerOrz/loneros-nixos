@@ -60,6 +60,8 @@
         allowUnfree = true;
       };
     };
+
+    pkgsv3 = inputs.chaotic.legacyPackages.${system}.pkgsx86_64_v3;
   in {
     nixosConfigurations = {
       "${host}" = nixpkgs.lib.nixosSystem {
@@ -69,6 +71,7 @@
           inherit username;
           inherit host;
           inherit stable;
+          inherit pkgsv3;
         };
         modules = [
           ./hosts/${host}/config.nix
