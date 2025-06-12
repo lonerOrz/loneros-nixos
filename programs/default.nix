@@ -2,6 +2,7 @@
   imports = [
     # program
     ./nh.nix
+    ./git.nix
     ./fcitx5.nix
     ./spicetify.nix
     # ./virtualbox.nix

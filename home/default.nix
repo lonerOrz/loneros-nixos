@@ -5,7 +5,7 @@
     ./scripts
     # ./hyprpanel
     ./hypr
-    ./git.nix
+    # ./git.nix
     # ./nvf.nix
     ./qutebrowser
     # ./zen
