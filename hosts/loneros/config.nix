@@ -46,9 +46,6 @@ in {
     };
     xwayland.enable = true; # 兼容层
 
-    waybar.enable = true;
-    hyprlock.enable = true;
-
     # XFCE 桌面环境的默认文件管理器
     thunar.enable = true;
     thunar.plugins = with pkgs.xfce; [
