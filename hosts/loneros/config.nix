@@ -3,6 +3,7 @@
   inputs,
   system,
   stable,
+  pkgsv3,
   ...
 }: let
   inherit (import ./variables.nix) keyboardLayout;
@@ -76,7 +77,7 @@ in {
       ffmpeg
       yt-dlp
       unzip
-      fzf
+      pkgsv3.fzf
       chafa
       loupe # rust编译的图片查看器
       bat # better cat
