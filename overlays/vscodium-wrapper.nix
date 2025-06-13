@@ -123,7 +123,8 @@ in
           wrapProgram "$out/bin/${cmdname}" \
             --set ELECTRON_OZONE_PLATFORM_HINT auto \
             --set LIBGL_ALWAYS_INDIRECT 1     \
-            --add-flags "--disable-gpu"
+            --add-flags "--disable-gpu" \
+            --add-flags "--disable-integrity-check"
         fi
         ############ 修改插件市场为微软官方 ############
         find "$out" -type f -name product.json | while read -r product_json; do
