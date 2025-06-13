@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   i18n = {
     defaultLocale = "en_US.UTF-8";
     supportedLocales = [
@@ -17,6 +16,7 @@
           # Rime
           fcitx5-rime
           rime-data
+          rime-wanxiang
 
           fcitx5-gtk # Fcitx5 gtk im module and glib based dbus client library
           kdePackages.fcitx5-qt
