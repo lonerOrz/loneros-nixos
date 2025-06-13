@@ -4,3 +4,4 @@ dev-shells/
 result/
 result
 justfile
+.vscode/
