@@ -2,7 +2,8 @@
   pkgs,
   username,
   ...
-}: {
+}:
+{
   # 自动登录
   services.displayManager.autoLogin = {
     enable = true;

@@ -3,7 +3,8 @@
   pkgs,
   username,
   ...
-}: {
+}:
+{
   # services.mihomo = {
   #   enable = true;
   #   configFile = "/home/${username}/.config/mihomo/config.yaml"; # 需要自己写配置

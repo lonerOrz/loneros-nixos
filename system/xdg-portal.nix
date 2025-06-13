@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Extra Portal Configuration
   xdg.portal = {
     enable = true;
@@ -17,16 +18,25 @@
     config = {
       # 默认 fallback 配置
       common = {
-        default = ["gtk"];
+        default = [ "gtk" ];
       };
       hyprland = {
-        default = ["hyprland" "gtk"];
+        default = [
+          "hyprland"
+          "gtk"
+        ];
       };
       niri = {
-        default = ["wlr" "gtk"];
+        default = [
+          "wlr"
+          "gtk"
+        ];
       };
       sway = {
-        default = ["wlr" "gtk"];
+        default = [
+          "wlr"
+          "gtk"
+        ];
       };
     };
   };

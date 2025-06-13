@@ -4,9 +4,11 @@
   system,
   stable,
   ...
-}: let
+}:
+let
   inherit (import ./variables.nix) keyboardLayout;
-in {
+in
+{
   imports = [
     ./hardware.nix
     ./users.nix
@@ -36,12 +38,10 @@ in {
       enable = true;
       # set the flake package
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
-        buildInputs = (old.buildInputs or []) ++ [pkgs.cmake];
-        cmakeFlags =
-          (old.cmakeFlags or [])
-          ++ [
-            "-DCMAKE_CXX_FLAGS='-march=x86-64-v3 -O3'"
-          ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.cmake ];
+        cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+          "-DCMAKE_CXX_FLAGS='-march=x86-64-v3 -O3'"
+        ];
         # 保险起见，也保留原本的 NIX_CFLAGS_COMPILE
         NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
       }); # make sure to also set the portal package, so that they are in sync
@@ -67,7 +67,8 @@ in {
   };
 
   environment.systemPackages = (
-    with pkgs; [
+    with pkgs;
+    [
       # System Packages
       curl
       wget

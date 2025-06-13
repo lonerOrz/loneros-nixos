@@ -7,9 +7,11 @@
   username,
   pkgs,
   ...
-}: let
+}:
+let
   command = "bin/nbfc_service --config-file '/home/${username}/.config/nbfc.json'";
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     # if you are on stable uncomment the next line
     # inputs.nbfc-linux.packages.x86_64-linux.default
@@ -20,13 +22,13 @@ in {
     enable = true;
     description = "NoteBook FanControl service";
     serviceConfig.Type = "simple";
-    path = [pkgs.kmod];
+    path = [ pkgs.kmod ];
 
     # if you are on stable uncomment the next line
     #  script = "${inputs.nbfc-linux.packages.x86_64-linux.default}/${command}";
     # if you are on unstable uncomment the next line
     script = "${pkgs.nbfc-linux}/${command}";
 
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
   };
 }

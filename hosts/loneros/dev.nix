@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # 系统基本环境，用于软件运行
   environment.systemPackages =
     (with pkgs; [

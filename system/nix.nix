@@ -4,14 +4,15 @@
   system,
   username,
   ...
-}: {
+}:
+{
   nixpkgs = {
     config.allowUnfree = true;
     config.allowBroken = true;
   };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
-    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     channel.enable = true;
     extraOptions = ''
       warn-dirty = false

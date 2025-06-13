@@ -3,10 +3,10 @@
   host,
   pkgs,
   ...
-}: let
+}:
+let
   v4l2loopbackPackage =
-    if config.boot.kernelPackages.v4l2loopback.version == "0.13.2-6.15.0"
-    then
+    if config.boot.kernelPackages.v4l2loopback.version == "0.13.2-6.15.0" then
       # https://github.com/NixOS/nixpkgs/pull/411777
       (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: {
         version = "0.15.0";
@@ -17,8 +17,10 @@
           sha256 = "sha256-fa3f8GDoQTkPppAysrkA7kHuU5z2P2pqI8dKhuKYh04=";
         };
       }))
-    else config.boot.kernelPackages.v4l2loopback;
-in {
+    else
+      config.boot.kernelPackages.v4l2loopback;
+in
+{
   # BOOT related stuff
   boot = {
     # Kernel
@@ -35,7 +37,7 @@ in {
     ];
 
     # This is for OBS Virtual Cam Support
-    kernelModules = ["v4l2loopback"];
+    kernelModules = [ "v4l2loopback" ];
     extraModulePackages = [
       v4l2loopbackPackage
     ];
@@ -56,7 +58,7 @@ in {
         #"hid_logitech_hidpp"
         #"hid_logitech_dj"
       ];
-      kernelModules = [];
+      kernelModules = [ ];
     };
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
@@ -71,12 +73,12 @@ in {
     # Bootloader GRUB
     loader.grub = {
       enable = true;
-      devices = ["nodev"];
+      devices = [ "nodev" ];
       efiSupport = true;
       gfxmodeBios = "auto";
       #memtest86.enable = true;
       # useOSProber = true;
-      extraGrubInstallArgs = ["--bootloader-id=${host}"];
+      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
       configurationName = "${host}";
       extraConfig = ''
         insmod kbd

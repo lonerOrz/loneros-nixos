@@ -2,9 +2,11 @@
   username,
   pkgs,
   ...
-}: let
+}:
+let
   session = "${pkgs.hyprland}/bin/Hyprland";
-in {
+in
+{
   services.greetd = {
     enable = true;
     vt = 3; # tty3

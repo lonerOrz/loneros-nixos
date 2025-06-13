@@ -5,9 +5,11 @@
   system,
   username,
   ...
-}: let
+}:
+let
   inherit (import ./variables.nix) gitUsername shell;
-in {
+in
+{
   users = {
     mutableUsers = true;
     users."${username}" = {
@@ -32,11 +34,11 @@ in {
 
   security.sudo.extraRules = [
     {
-      users = ["${username}"];
+      users = [ "${username}" ];
       commands = [
         {
           command = "ALL";
-          options = ["NOPASSWD"];
+          options = [ "NOPASSWD" ];
         }
       ];
     }
@@ -48,7 +50,8 @@ in {
   ];
 
   # 我自己喜欢全局安装
-  environment.systemPackages = with pkgs;
+  environment.systemPackages =
+    with pkgs;
     [
       # software
       translate-shell
@@ -104,8 +107,8 @@ in {
     ]
     ++ [
       # 自定义软件包
-      (pkgs.callPackage ../../pkgs/shijima-qt.nix {})
-      (pkgs.callPackage ../../pkgs/mpv-handler.nix {})
+      (pkgs.callPackage ../../pkgs/shijima-qt.nix { })
+      (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
     ];
 
   programs = {

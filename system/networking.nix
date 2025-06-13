@@ -3,7 +3,8 @@
   host,
   stable,
   ...
-}: {
+}:
+{
   environment.systemPackages = with stable; [
     networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
     dig # 域名服务器
@@ -18,7 +19,7 @@
   networking.networkmanager.enable = true;
   networking.networkmanager.dns = "systemd-resolved"; # one of "default", "dnsmasq", "systemd-resolved", "none"
   networking.hostName = "${host}";
-  networking.timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
+  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
   networking.enableIPv6 = true;
 
   # DNS 解析服务

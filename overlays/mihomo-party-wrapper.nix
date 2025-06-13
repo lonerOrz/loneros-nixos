@@ -1,11 +1,13 @@
-self: super: let
+self: super:
+let
   sftname = "mihomo-party"; # 软件名称
   cmdname = "mihomo-party"; # 命令行名称
-in {
+in
+{
   "${sftname}-wrapper" = super.${sftname}.overrideAttrs (oldAttrs: {
     pname = "${sftname}-wrapper";
 
-    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [super.makeWrapper];
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ super.makeWrapper ];
 
     postInstall = ''
       echo "Wrapping cursor binary..."

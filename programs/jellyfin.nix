@@ -3,7 +3,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   environment.systemPackages = with pkgs; [
     jellyfin
     jellyfin-web
@@ -19,5 +20,5 @@
     openFirewall = true;
   };
 
-  users.users.${username}.extraGroups = ["jellyfin"]; # 将用户添加到 jellyfin 组
+  users.users.${username}.extraGroups = [ "jellyfin" ]; # 将用户添加到 jellyfin 组
 }

@@ -6,7 +6,7 @@
       <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="600px" /> <br>
    <div align="center">
 
-   <div align="center">
+<div align="center">
       <p></p>
       <div align="center">
          <a href="https://github.com/lonerOrz/loneros-nixos/stargazers">
@@ -34,15 +34,15 @@
 ### 🌟 catppuccin 风格
 
 | ![pre-1](assets/preview/cat1.png) | ![pre-2](assets/preview/cat2.png) | ![pre-3](assets/preview/cat3.png) |
-|:---------------------------------:|:---------------------------------:|:---------------------------------:|
+| :-------------------------------: | :-------------------------------: | :-------------------------------: |
 
 <details>
   <summary> 🎨 gruvbox 风格（点击展开）</summary>
 
-  <br>
+<br>
 
 | ![pre-1](assets/preview/box1.png) | ![pre-2](assets/preview/box2.png) | ![pre-3](assets/preview/box3.png) |
-|:---------------------------------:|:---------------------------------:|:---------------------------------:|
+| :-------------------------------: | :-------------------------------: | :-------------------------------: |
 
 </details>
 
@@ -83,9 +83,8 @@ nh os switch --flake .#${HOSTNAME}
 
 以下是一些对本项目有帮助的资源：
 
-- [NixOS 手册](https://nixos.org/manual/) -  NixOS options
+- [NixOS 手册](https://nixos.org/manual/) - NixOS options
 - [catppuccin](https://github.com/catppuccin/nixos) - 主题配色
 - [zaneyos](https://gitlab.com/Zaney/zaneyos) - 配置参考
-
 
 ---

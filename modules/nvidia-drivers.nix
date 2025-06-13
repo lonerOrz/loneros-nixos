@@ -5,7 +5,8 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.drivers.nvidia;
 
   # If you start experiencing lag and FPS drops in games or programs like Blender on stable NixOS
@@ -22,8 +23,7 @@ with lib; let
 
   nvType = "stable"; # latest beta stable
   nvidiaPackage =
-    if config.boot.kernelPackages.nvidiaPackages."${nvType}".version == "570.153.02"
-    then
+    if config.boot.kernelPackages.nvidiaPackages."${nvType}".version == "570.153.02" then
       config.boot.kernelPackages.nvidiaPackages.mkDriver {
         version = "575.57.08";
         sha256_64bit = "sha256-KqcB2sGAp7IKbleMzNkB3tjUTlfWBYDwj50o3R//xvI=";
@@ -32,16 +32,18 @@ with lib; let
         settingsSha256 = "sha256-AIeeDXFEo9VEKCgXnY3QvrW5iWZeIVg4LBCeRtMs5Io=";
         persistencedSha256 = "sha256-Len7Va4HYp5r3wMpAhL4VsPu5S0JOshPFywbO7vYnGo=";
 
-        patches = [gpl_symbols_linux_615_patch];
+        patches = [ gpl_symbols_linux_615_patch ];
       }
-    else config.boot.kernelPackages.nvidiaPackages."${nvType}";
-in {
+    else
+      config.boot.kernelPackages.nvidiaPackages."${nvType}";
+in
+{
   options.drivers.nvidia = {
     enable = mkEnableOption "Enable Nvidia Drivers";
   };
 
   config = mkIf cfg.enable {
-    services.xserver.videoDrivers = ["nvidia"];
+    services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware.graphics = {
       enable = true;

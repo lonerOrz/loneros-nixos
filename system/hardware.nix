@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Extra Logitech Support
   hardware.logitech.wireless = {
     enable = true;

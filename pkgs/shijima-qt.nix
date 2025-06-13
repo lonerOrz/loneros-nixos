@@ -16,19 +16,20 @@ stdenv.mkDerivation rec {
   pname = "shijima-qt";
   version = "0.1.0";
 
-  src = (fetchFromGitHub
-    {
+  src =
+    (fetchFromGitHub {
       owner = "pixelomer";
       repo = "Shijima-Qt";
       rev = "v${version}";
       hash = "sha256-/oyFKkzhEW1+VbJyEmUw6s1m83edQ1lNYDlF5gQR9s4=";
       fetchSubmodules = true;
-    }).overrideAttrs {
-    # 强制使用 HTTPS
-    GIT_CONFIG_COUNT = 1;
-    GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf";
-    GIT_CONFIG_VALUE_0 = "git@github.com:";
-  };
+    }).overrideAttrs
+      {
+        # 强制使用 HTTPS
+        GIT_CONFIG_COUNT = 1;
+        GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf";
+        GIT_CONFIG_VALUE_0 = "git@github.com:";
+      };
 
   nativeBuildInputs = [
     cmake
@@ -43,9 +44,9 @@ stdenv.mkDerivation rec {
 
   dontUseCmakeConfigure = true;
 
-  makeFlags = ["CONFIG=release"];
+  makeFlags = [ "CONFIG=release" ];
 
-  hardeningDisable = ["fortify"];
+  hardeningDisable = [ "fortify" ];
 
   buildInputs = [
     bzip2
@@ -89,7 +90,7 @@ stdenv.mkDerivation rec {
     description = "Shimeji desktop pet runner";
     homepage = "https://github.com/pixelomer/Shijima-Qt";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [samlukeyes123];
+    maintainers = with lib.maintainers; [ samlukeyes123 ];
     mainProgram = "shijima-qt";
     platforms = lib.platforms.linux;
   };

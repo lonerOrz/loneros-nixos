@@ -2,9 +2,11 @@
   username,
   host,
   ...
-}: let
+}:
+let
   inherit (import ../hosts/${host}/variables.nix) gitUsername gitEmail;
-in {
+in
+{
   programs = {
     # Configure Git
     git = {

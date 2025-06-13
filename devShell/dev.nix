@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 pkgs.mkShell {
   buildInputs =
     # --- Node.js/JS 工具 ---
@@ -12,11 +12,11 @@ pkgs.mkShell {
       eslint_d
     ])
     ++
-    # --- Python 工具 ---
-    (with pkgs; [
-      python312
-      pyright
-    ])
+      # --- Python 工具 ---
+      (with pkgs; [
+        python312
+        pyright
+      ])
     ++ (with pkgs.python312Packages; [
       uv
       requests
@@ -25,20 +25,20 @@ pkgs.mkShell {
       ruff
     ])
     ++
-    # --- C/C++ 工具 ---
-    (with pkgs; [
-      gcc
-      gdb
-      clang
-      lldb
-      cmake
-    ])
+      # --- C/C++ 工具 ---
+      (with pkgs; [
+        gcc
+        gdb
+        clang
+        lldb
+        cmake
+      ])
     ++
-    # --- Lua 工具 ---
-    (with pkgs; [
-      lua5_4_compat
-      luarocks
-    ]);
+      # --- Lua 工具 ---
+      (with pkgs; [
+        lua5_4_compat
+        luarocks
+      ]);
 
   shellHook = ''
     echo "🛠️ Welcome to the Dev Shell"

@@ -10,9 +10,9 @@
 }:
 symlinkJoin rec {
   name = "qs-wrapper";
-  paths = [quickshell];
+  paths = [ quickshell ];
 
-  buildInputs = [makeWrapper];
+  buildInputs = [ makeWrapper ];
 
   qtDeps = [
     kdePackages.qtbase
