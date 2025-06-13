@@ -14,7 +14,6 @@ in {
     ./dev.nix
 
     ../../system
-    ../../overlays
     ../../programs
     ../../modules
     ../../themes

@@ -9,16 +9,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/master"; # or release-24.11
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+    hyprland.url = "github:hyprwm/Hyprland";
     niri.url = "github:sodiboo/niri-flake";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
-    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes"; # 星铁grub
+    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,63 +34,87 @@
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
     nixpkgs-stable,
-    systems,
+    flake-parts,
     ...
-  }: let
-    system = "x86_64-linux";
-    host = "loneros";
-    username = "loner";
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-    pkgs = import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
+      imports = []; # 有些模块需要指定system,所以我不直接在这里导入
+
+      # 设置 devShells / formatter / checks
+      perSystem = {
+        system,
+        pkgs,
+        ...
+      }: {
+        devShells = import ./devShell/default.nix {inherit pkgs;};
+        packages = import ./pkgs/default.nix {inherit pkgs;};
+        # formatter = import ./treefmt.nix;
+      };
+
+      flake = {
+        nixosConfigurations = let
+          hosts = {
+            loneros = {
+              system = "x86_64-linux";
+              username = "loner";
+            };
+            # 扩展多个主机配置
+            # server = {
+            #   system = "aarch64-linux";
+            #   username = "loner";
+            # };
+          };
+          # 根据 system 构造 stable channel
+          mkStable = system:
+            import nixpkgs-stable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+        in
+          builtins.mapAttrs (
+            host: cfg:
+              nixpkgs.lib.nixosSystem {
+                system = cfg.system;
+                specialArgs = {
+                  inherit inputs;
+                  inherit host;
+                  username = cfg.username;
+                  system = cfg.system;
+                  stable = mkStable cfg.system;
+                  pkgsv3 = inputs.chaotic.legacyPackages.${cfg.system}.pkgsx86_64_v3 or null;
+                };
+                modules = [
+                  ./hosts/${host}/config.nix
+                  ./overlays
+                  {
+                    nixpkgs.overlays = [
+                      inputs.hyprpanel.overlay
+                      inputs.nur.overlays.default
+                      inputs.niri.overlays.niri
+                    ];
+                  }
+                  inputs.distro-grub-themes.nixosModules.${cfg.system}.default
+                  inputs.honkai-railway-grub-theme.nixosModules.${cfg.system}.default
+                  inputs.stylix.nixosModules.stylix
+                  inputs.chaotic.nixosModules.default
+                  inputs.lix-module.nixosModules.default
+                  inputs.niri.nixosModules.niri
+                ];
+              }
+          )
+          hosts;
       };
     };
-
-    stable = import nixpkgs-stable {
-      inherit system;
-      config = {
-        allowUnfree = true;
-      };
-    };
-
-    pkgsv3 = inputs.chaotic.legacyPackages.${system}.pkgsx86_64_v3;
-  in {
-    nixosConfigurations = {
-      "${host}" = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit system;
-          inherit inputs;
-          inherit username;
-          inherit host;
-          inherit stable;
-          inherit pkgsv3;
-        };
-        modules = [
-          ./hosts/${host}/config.nix
-          {
-            nixpkgs.overlays = [
-              inputs.hyprpanel.overlay
-              inputs.nur.overlays.default
-              inputs.niri.overlays.niri
-            ];
-          }
-          inputs.distro-grub-themes.nixosModules.${system}.default
-          inputs.honkai-railway-grub-theme.nixosModules.${system}.default
-          inputs.stylix.nixosModules.stylix # 包含home-manager的覆盖
-          # inputs.nur.modules.nixos.default
-          inputs.chaotic.nixosModules.default
-          inputs.lix-module.nixosModules.default
-          inputs.niri.nixosModules.niri
-        ];
-      };
-    };
-  };
 }
