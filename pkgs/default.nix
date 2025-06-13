@@ -1,5 +1,6 @@
-{pkgs}: {
-  mpv-handler = pkgs.callPackage ./mpv-handler.nix {};
+{ pkgs }:
+{
+  mpv-handler = pkgs.callPackage ./mpv-handler.nix { };
   # shijima-qt = pkgs.callPackage ./shijima-qt.nix { };
   sddm = pkgs.callPackage ./astronaut-sddm.nix {
     theme = "hyprland_kath";
@@ -11,5 +12,5 @@
     #   };
     # };
   };
-  xdman7 = pkgs.callPackage ./xdman7.nix {};
+  xdman7 = pkgs.callPackage ./xdman7.nix { };
 }
