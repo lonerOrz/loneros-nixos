@@ -35,6 +35,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -50,7 +54,11 @@
         "aarch64-linux"
       ];
 
-      imports = []; # 有些模块需要指定system,所以我不直接在这里导入
+      imports =
+        [
+          ./checks/default.nix
+        ]
+        ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
 
       # 设置 devShells / formatter / checks
       perSystem = {
@@ -60,7 +68,6 @@
       }: {
         devShells = import ./devShell/default.nix {inherit pkgs;};
         packages = import ./pkgs/default.nix {inherit pkgs;};
-        # formatter = import ./treefmt.nix;
       };
 
       flake = {
