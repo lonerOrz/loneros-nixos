@@ -3,7 +3,6 @@
   inputs,
   system,
   stable,
-  pkgsv3,
   ...
 }: let
   inherit (import ./variables.nix) keyboardLayout;
@@ -38,9 +37,15 @@ in {
       enable = true;
       # set the flake package
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
+        buildInputs = (old.buildInputs or []) ++ [pkgs.cmake];
+        cmakeFlags =
+          (old.cmakeFlags or [])
+          ++ [
+            "-DCMAKE_CXX_FLAGS='-march=x86-64-v3 -O3'"
+          ];
+        # 保险起见，也保留原本的 NIX_CFLAGS_COMPILE
         NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
-      });
-      # make sure to also set the portal package, so that they are in sync
+      }); # make sure to also set the portal package, so that they are in sync
       portalPackage =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
@@ -77,7 +82,7 @@ in {
       ffmpeg
       yt-dlp
       unzip
-      pkgsv3.fzf
+      fzf
       chafa
       loupe # rust编译的图片查看器
       bat # better cat

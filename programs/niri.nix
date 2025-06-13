@@ -1,8 +1,4 @@
-{
-  pkgs,
-  pkgsv3,
-  ...
-}: {
+{pkgs, ...}: {
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
@@ -10,9 +6,9 @@
 
   # 安装依赖软件
   environment.systemPackages = with pkgs; [
-    pkgsv3.wlr-randr
+    wlr-randr
     xwayland-satellite-unstable
-    pkgsv3.wayland-utils
+    wayland-utils
     gnome-control-center
   ];
 }
