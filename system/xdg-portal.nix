@@ -3,17 +3,15 @@
   # Extra Portal Configuration
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    # wlr.enable = true; # use wlr_git
     xdgOpenUsePortal = true;
     extraPortals = [
-      pkgs.xdg-desktop-portal
       pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-wlr_git # includes RemoteDesktop patch
     ];
     configPackages = [
-      pkgs.xdg-desktop-portal
       pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-wlr_git # includes RemoteDesktop patch
+      pkgs.xdg-desktop-portal-wlr_git
     ];
     config = {
       # 默认 fallback 配置
