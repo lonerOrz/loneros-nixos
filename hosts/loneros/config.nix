@@ -42,7 +42,6 @@ in
         cmakeFlags = (old.cmakeFlags or [ ]) ++ [
           "-DCMAKE_CXX_FLAGS='-march=x86-64-v3 -O3'"
         ];
-        # 保险起见，也保留原本的 NIX_CFLAGS_COMPILE
         NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
       }); # make sure to also set the portal package, so that they are in sync
       portalPackage =
