@@ -39,6 +39,10 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -68,7 +72,13 @@
         }:
         {
           devShells = import ./devShell/default.nix { inherit pkgs; };
-          packages = import ./pkgs/default.nix { inherit pkgs; };
+          packages = import ./pkgs/default.nix { inherit pkgs; } // {
+            iso = inputs.nixos-generators.nixosGenerate {
+              system = system;
+              format = "iso";
+              modules = [ ./iso/config.nix ];
+            };
+          };
         };
 
       flake = {
