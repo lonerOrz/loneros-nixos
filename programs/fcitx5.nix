@@ -16,8 +16,9 @@
         addons = with pkgs; [
           # Rime
           fcitx5-rime
-          rime-data
+          # rime-data
           rime-wanxiang
+          rime-ice
 
           fcitx5-gtk # Fcitx5 gtk im module and glib based dbus client library
           kdePackages.fcitx5-qt
