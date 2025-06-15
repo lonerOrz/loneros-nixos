@@ -1,0 +1,36 @@
+name: build iso
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch: # allows manual triggering
+
+concurrency:
+  group: build-livecd
+  cancel-in-progress: true
+
+jobs:
+  build-livecd:
+    runs-on: ubuntu-latest
+    name: build iso
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            accept-flake-config = true
+
+      - name: build iso
+        run: |
+          nix build .#packages.x86_64-linux.iso .#packages.aarch64-linux.iso
+
+      - name: upload iso
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./result/iso/*.iso
+            ./result-1/iso/*.iso
