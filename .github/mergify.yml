@@ -9,3 +9,4 @@ pull_request_rules:
       update:
       merge:
         method: squash
+      delete_head_branch: true
