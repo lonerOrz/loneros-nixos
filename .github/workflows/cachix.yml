@@ -26,6 +26,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android || true
+          sudo rm -rf /opt/hostedtoolcache || true
+          sudo rm -rf /usr/share/dotnet || true
+          sudo rm -rf /usr/share/swift || true
+          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' 'mono-*' 'php.*' || true
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          df -h
+
+      - name: Add swap
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 20
+
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
