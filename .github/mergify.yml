@@ -1,0 +1,11 @@
+# Automatically merge PRs with dependency upgrades
+pull_request_rules:
+  - name: Merge when labeled and all CI jobs pass
+    conditions:
+      - and:
+          - label=dependencies
+          - check-success=flake check
+    actions:
+      update:
+      merge:
+        method: squash
