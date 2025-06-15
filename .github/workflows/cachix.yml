@@ -58,6 +58,8 @@ jobs:
         with:
           name: loneros
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: nix-community
+          watchStore: true
 
       - name: Build system (x86_64-linux)
         run: |
