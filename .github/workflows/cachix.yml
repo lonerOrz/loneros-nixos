@@ -1,0 +1,44 @@
+name: Build NixOS & Push to Cachix
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "flake.*"
+      - "system/**"
+      - "hosts/**"
+      - "home/**"
+      - "modules/**"
+      - "themes/**"
+      - "programs/**"
+      - "overlays/**"
+
+env:
+  CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+jobs:
+  build-nixos:
+    name: Build NixOS system
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v14
+        with:
+          name: loneros
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build system (x86_64-linux)
+        run: |
+          nix build .#nixosConfigurations.loneros.config.system.build.toplevel \
+            --print-build-logs
