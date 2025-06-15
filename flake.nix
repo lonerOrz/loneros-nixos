@@ -53,17 +53,18 @@
       flake-parts,
       ...
     }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    let
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
-
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = systems;
       imports = [
         ./checks/default.nix
       ] ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
 
-      # 设置 devShells / formatter / checks
       perSystem =
         {
           system,
@@ -102,7 +103,6 @@
               #   username = "loner";
               # };
             };
-            # 根据 system 构造 stable channel
             mkStable =
               system:
               import nixpkgs-stable {
