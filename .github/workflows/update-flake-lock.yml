@@ -1,9 +1,6 @@
 name: update flake lock
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch: # allows manual triggering
   schedule:
     - cron: "0 0 * * *"
