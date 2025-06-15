@@ -13,5 +13,6 @@
     ./timezone.nix
     ./fonts.nix
     ./optimization.nix
+    ./doc.nix # 加快 mandb 的构建
   ];
 }
