@@ -42,6 +42,11 @@ jobs:
         with:
           swap-size-gb: 20
 
+      - name: Use disk-backed /tmp
+        run: |
+          mkdir -p "$HOME/nix-tmp"
+          echo "NIX_BUILD_TMPDIR=$HOME/nix-tmp" >> "$GITHUB_ENV"
+
       - name: Install Nix
         uses: cachix/install-nix-action@v30
         with:
