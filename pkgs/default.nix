@@ -1,4 +1,9 @@
-{ pkgs }:
+{
+  lib,
+  pkgs,
+  system,
+  ...
+}:
 {
   mpv-handler = pkgs.callPackage ./mpv-handler.nix { };
   # shijima-qt = pkgs.callPackage ./shijima-qt.nix { };
@@ -12,5 +17,11 @@
     #   };
     # };
   };
-  xdman7 = pkgs.callPackage ./xdman7.nix { };
+  xdman7 =
+    if system == "x86_64-linux" then
+      pkgs.callPackage ./xdman7.nix { }
+    else
+      pkgs.runCommand "xdman7-unavailable" { } ''
+        echo "xdman7 is only available on x86_64-linux" > $out
+      '';
 }

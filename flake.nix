@@ -68,17 +68,24 @@
         {
           system,
           pkgs,
+          lib,
           ...
         }:
         {
           devShells = import ./devShell/default.nix { inherit pkgs; };
-          packages = import ./pkgs/default.nix { inherit pkgs; } // {
-            iso = inputs.nixos-generators.nixosGenerate {
-              system = system;
-              format = "iso";
-              modules = [ ./iso/config.nix ];
+          packages =
+            import ./pkgs/default.nix {
+              inherit pkgs;
+              inherit system;
+              inherit lib;
+            }
+            // {
+              iso = inputs.nixos-generators.nixosGenerate {
+                system = system;
+                format = "iso";
+                modules = [ ./iso/config.nix ];
+              };
             };
-          };
         };
 
       flake = {

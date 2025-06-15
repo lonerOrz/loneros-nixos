@@ -8,7 +8,6 @@
   python3,
   yt-dlp,
 }:
-
 stdenv.mkDerivation rec {
   pname = "xdman";
   version = "7.2.11";
@@ -56,6 +55,6 @@ stdenv.mkDerivation rec {
     homepage = "https://xtremedownloadmanager.com/";
     license = licenses.gpl2;
     platforms = [ "x86_64-linux" ];
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ lonerOrz ];
   };
 }
