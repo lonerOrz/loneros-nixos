@@ -27,8 +27,8 @@ jobs:
       - name: Add Cachix
         uses: cachix/cachix-action@v14
         with:
-          name: loneros
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          name: nix-community
+          skipPush: true
 
       - name: Check
         run: |
