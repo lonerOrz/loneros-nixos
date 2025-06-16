@@ -23,6 +23,7 @@ in
         core.editor = "nvim";
         color.ui = "auto";
         push.default = "simple";
+        pull.rebase = true;
       };
     };
   };
