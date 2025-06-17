@@ -25,12 +25,12 @@ jobs:
             accept-flake-config = true
 
       - name: Add Cachix
-        uses: cachix/cachix-action@v14
+        uses: cachix/cachix-action@v16
         with:
           name: nix-community
           skipPush: true
 
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v16
         with:
           name: loneros
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }} # 上传 cachix 到 loneros
