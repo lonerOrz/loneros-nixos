@@ -3,6 +3,7 @@
     # program
     ./nh.nix
     ./git.nix
+    ./nix-index.nix
     ./fcitx5.nix
     ./spicetify.nix
     # ./virtualbox.nix

@@ -43,6 +43,10 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -138,6 +142,7 @@
                 inputs.chaotic.nixosModules.default
                 inputs.lix-module.nixosModules.default
                 inputs.niri.nixosModules.niri
+                inputs.nix-index-database.nixosModules.nix-index
               ];
             }
           ) hosts;
