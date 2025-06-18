@@ -16,6 +16,7 @@
     curl
     wget
     yazi
+    calamares-nixos # 安装程序的图形界面
   ];
 
   services.getty.autologinUser = "root"; # 自动以 root 用户登录
