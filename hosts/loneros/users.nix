@@ -79,6 +79,7 @@ in
       rsclock # colock
       asciinema # rec demo.cast
       asciinema-agg # cast -> gif
+      posting # postman tui
 
       qbittorrent-enhanced # qbee
       motrix
