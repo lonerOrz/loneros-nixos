@@ -11,11 +11,16 @@ let
 in
 {
   users = {
+    # groups."${username}" = {
+    #   name = "${username}";
+    #   members = ["${username}"];
+    # }; # 创建用户组
     mutableUsers = true;
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
       description = "${gitUsername}";
+      # group = "${username}";
       extraGroups = [
         "networkmanager"
         "wheel"

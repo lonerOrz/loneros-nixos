@@ -11,10 +11,10 @@
     enable = true;
     startWhenNeeded = true;
     user = "${username}"; # MPD 运行的用户
-    #group = "${username}";  # MPD 运行的用户组
+    # group = "${username}"; # MPD 运行的用户组
     network = {
       listenAddress = "127.0.0.1";
-      port = 6606;
+      port = 6600;
     };
     musicDirectory = "/home/${username}/Music/localmusic";
     playlistDirectory = "/home/${username}/.config/mpd/playlists";
@@ -43,4 +43,8 @@
       }
     '';
   };
+  environment.systemPackages = with pkgs; [
+    mpd
+    ncmpcpp
+  ];
 }
