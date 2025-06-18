@@ -20,23 +20,7 @@
   ];
 
   services.getty.autologinUser = "root"; # 自动以 root 用户登录
-  users.users.root = {
-    initialPassword = "123456";
-    shell = pkgs.fish;
-  };
-
-  programs.fish = {
-    enable = true;
-    shellInit = ''
-      set_color green
-      echo "🚀 欢迎使用 loner's NixOS Live 镜像！"
-      set_color blue
-      echo "🔐 默认 root 密码：123456"
-      set_color yellow
-      echo "💡 常用命令：neovim、yazi、git、fastfetch"
-      set_color normal
-    '';
-  };
+  users.users.root.initialPassword = "123456";
 
   # FONTS
   fonts.packages = with pkgs; [
@@ -50,16 +34,19 @@
   nix.settings.experimental-features = [
     "nix-command" # 启用 nix build, nix run, nix flake 等新命令
     "flakes"
-    "ca-derivations" # 启用内容寻址 derivation（Content Addressed Derivations）
   ];
-
-  security.sudo.enable = true;
 
   # 网络
   networking.networkmanager.enable = true;
   networking.hostName = "nixos-live";
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes"; # 允许 root 密码登录
+      PasswordAuthentication = true; # 允许密码登录（默认是 true）
+    };
+  };
 
   services = {
     pulseaudio.enable = false;
