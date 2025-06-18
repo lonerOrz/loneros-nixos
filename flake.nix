@@ -47,6 +47,7 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko.url = "github:nix-community/disko";
   };
 
   outputs =
@@ -101,11 +102,11 @@
                 system = "x86_64-linux";
                 username = "loner";
               };
-              # 扩展多个主机配置
-              # server = {
-              #   system = "aarch64-linux";
-              #   username = "loner";
-              # };
+              # 快速安装远程 nixos 配置
+              remote-vm = {
+                system = "x86_64-linux";
+                username = "test";
+              };
             };
             mkStable =
               system:
@@ -143,6 +144,7 @@
                 inputs.lix-module.nixosModules.default
                 inputs.niri.nixosModules.niri
                 inputs.nix-index-database.nixosModules.nix-index
+                inputs.disko.nixosModules.disko
               ];
             }
           ) hosts;
