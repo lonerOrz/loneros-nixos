@@ -122,7 +122,7 @@ in
         if [ -f "$out/bin/${cmdname}" ]; then
           wrapProgram "$out/bin/${cmdname}" \
             --set ELECTRON_OZONE_PLATFORM_HINT auto \
-            --set LIBGL_ALWAYS_INDIRECT 1     \
+            --set LIBGL_ALWAYS_INDIRECT 1 \
             --add-flags "--disable-gpu" \
             --add-flags "--disable-integrity-check"
         fi
