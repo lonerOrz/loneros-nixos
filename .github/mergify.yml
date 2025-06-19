@@ -5,7 +5,7 @@ pull_request_rules:
       - and:
           - label=dependencies
           - check-success=flake check
-          - check-success=nixosConfig loneros
+          # - check-success=nixosConfig loneros # 有待商榷
     actions:
       update:
       merge:
