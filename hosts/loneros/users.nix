@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   stable,
   inputs,
   system,
@@ -19,6 +20,7 @@ in
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
+      hashedPasswordFile = config.sops.secrets."loneros/loner/password".path;
       description = "${gitUsername}";
       # group = "${username}";
       extraGroups = [
@@ -116,6 +118,7 @@ in
       # 自定义软件包
       (pkgs.callPackage ../../pkgs/shijima-qt.nix { })
       (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
+      (pkgs.callPackage ../../pkgs/turntable.nix { })
     ];
 
   programs = {
