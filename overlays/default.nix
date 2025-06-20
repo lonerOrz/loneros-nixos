@@ -6,5 +6,6 @@
     (import ./obsidian-wrapper.nix)
     (import ./mihomo-party-wrapper.nix)
     (import ./mpv.nix)
+    (import ./scx_git.nix)
   ];
 }
