@@ -48,6 +48,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko.url = "github:nix-community/disko";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs =
@@ -142,9 +143,6 @@
                 inputs.stylix.nixosModules.stylix
                 inputs.chaotic.nixosModules.default
                 inputs.lix-module.nixosModules.default
-                inputs.niri.nixosModules.niri
-                inputs.nix-index-database.nixosModules.nix-index
-                inputs.disko.nixosModules.disko
               ];
             }
           ) hosts;

@@ -57,7 +57,8 @@
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
-      initialPassword = "123456"; # 初始化用户密码
+      hashedPasswordFile = config.sops.secrets."remote-vm/test/password".path;
+      # initialPassword = "123456"; # 初始化用户密码
       extraGroups = [
         "networkmanager"
         "wheel"

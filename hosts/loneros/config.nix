@@ -19,6 +19,7 @@ in
     ../../programs
     ../../modules
     ../../themes
+    ../../secrets
   ];
 
   # Extra Module Options
