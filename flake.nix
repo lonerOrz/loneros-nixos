@@ -131,6 +131,7 @@
               modules = [
                 ./hosts/${host}/config.nix
                 ./overlays
+                ./secrets
                 {
                   nixpkgs.overlays = [
                     inputs.hyprpanel.overlay
