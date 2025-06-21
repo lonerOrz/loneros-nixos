@@ -1,4 +1,15 @@
 { pkgs, ... }:
+let
+  python-packages = pkgs.python3.withPackages (
+    ps: with ps; [
+      uv
+      requests
+      pyquery # needed for hyprland-dots Weather script
+      gpustat # gpu status
+      ruff
+    ]
+  );
+in
 {
   # 系统基本环境，用于软件运行
   environment.systemPackages =
@@ -12,15 +23,13 @@
       eslint_d
     ])
     ++ (with pkgs; [
-      python312
+      python-packages
       pyright
     ])
-    ++ (with pkgs.python312Packages; [
-      uv # manager python env
-      requests
-      pyquery # needed for hyprland-dots Weather script
-      gpustat # gpu status
-      ruff
+    ++ (with pkgs; [
+      go_1_23
+      gotools # goimports, godoc, etc.
+      golangci-lint # https://github.com/golangci/golangci-lint
     ])
     ++ (with pkgs; [
       # lua
