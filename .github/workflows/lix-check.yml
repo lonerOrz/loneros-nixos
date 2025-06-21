@@ -1,0 +1,50 @@
+name: lix check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    name: flake check
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            accept-flake-config = true
+
+      - name: upgrade to Lix
+        run: |
+          nix --version
+          whereis nix
+          sudo --preserve-env=PATH /nix/var/nix/profiles/default/bin/nix run \
+            --experimental-features "nix-command flakes" \
+            --extra-substituters https://cache.lix.systems \
+            --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=" \
+            'git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.0' -- \
+            upgrade-nix \
+            --extra-substituters https://cache.lix.systems \
+            --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+          # Verify Lix installation
+          nix --version
+
+      - name: Add Cachix (nix-community)
+        uses: cachix/cachix-action@v16
+        with:
+          name: nix-community
+          skipPush: true
+
+      - name: Check
+        run: |
+          nix flake check --all-systems

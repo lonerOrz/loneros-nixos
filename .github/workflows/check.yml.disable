@@ -20,7 +20,6 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
-          nix_version: latest
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: |
             accept-flake-config = true
@@ -30,11 +29,6 @@ jobs:
         with:
           name: nix-community
           skipPush: true
-
-      - uses: cachix/cachix-action@v16
-        with:
-          name: loneros
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }} # 上传 cachix 到 loneros
 
       - name: Check
         run: |
