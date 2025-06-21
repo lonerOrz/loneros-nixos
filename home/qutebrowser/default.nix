@@ -1,13 +1,16 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  ...
+}:
 let
   homepage = "https://start.duckduckgo.com";
 in
 {
-
   imports = [ ./theme.nix ];
 
   programs.qutebrowser = {
-    enable = true;
+    enable = false;
 
     quickmarks = {
       clash = "https://metacubex.github.io/metacubexd/#/setup?http=true&hostname=127.0.0.1&port=9097&secret=123456";
