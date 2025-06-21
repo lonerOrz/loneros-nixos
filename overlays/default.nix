@@ -7,5 +7,6 @@
     (import ./mihomo-party-wrapper.nix)
     (import ./mpv.nix)
     (import ./scx_git.nix)
+    (import ./mpd.nix)
   ];
 }
