@@ -64,6 +64,7 @@
         "x86_64-linux"
         "aarch64-linux"
       ];
+      mylib = import ./lib/mylib.nix { nixpkgs-lib = nixpkgs.lib; }; # 自定义 lib
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = systems;
@@ -79,12 +80,14 @@
           ...
         }:
         {
+          _module.args.mylib = mylib;
           devShells = import ./devShell/default.nix { inherit pkgs; };
           packages =
             import ./pkgs/default.nix {
               inherit pkgs;
               inherit system;
               inherit lib;
+              inherit mylib;
             }
             // {
               iso = inputs.nixos-generators.nixosGenerate {
@@ -123,6 +126,7 @@
               specialArgs = {
                 inherit inputs;
                 inherit host;
+                inherit mylib;
                 username = cfg.username;
                 system = cfg.system;
                 stable = mkStable cfg.system;

@@ -1,5 +1,5 @@
 {
-  lib,
+  mylib,
   pkgs,
   system,
   ...
@@ -24,4 +24,10 @@
       pkgs.runCommand "xdman7-unavailable" { } ''
         echo "xdman7 is only available on x86_64-linux" > $out
       '';
+  test = pkgs.writeText "test-uppercase" (
+    let
+      upper = mylib.toUpperCase "hello loner";
+    in
+    upper
+  );
 }
