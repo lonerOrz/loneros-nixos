@@ -14,16 +14,16 @@
         waylandFrontend = true;
         # plasma6Support = true; #不用kde6 貌似不用启用
         addons = with pkgs; [
-          # Rime
-          fcitx5-rime
-          # rime-data
-          rime-wanxiang
-          rime-ice
-
           fcitx5-gtk # Fcitx5 gtk im module and glib based dbus client library
           kdePackages.fcitx5-qt
           fcitx5-material-color
 
+          # Rime
+          fcitx5-rime
+          rime-ice
+          rime-wanxiang
+
+          # pinyin
           # fcitx5-chinese-addons
           # fcitx5-pinyin-zhwiki # 中文维基百科词条
           # fcitx5-pinyin-moegirl # 萌娘百科词条
@@ -50,7 +50,7 @@
               DefaultIM = "keyboard-us";
             };
             "Groups/0/Items/0".Name = "keyboard-us";
-            "Groups/0/Items/1".Name = "pinyin";
+            "Groups/0/Items/1".Name = "Rime";
             GroupOrder."0" = "Default";
           };
         };

@@ -7,5 +7,6 @@
     (import ./mihomo-party-wrapper.nix)
     (import ./mpv.nix)
     (import ./mpd.nix)
+    (import ./papirus-icon-theme.nix)
   ];
 }
