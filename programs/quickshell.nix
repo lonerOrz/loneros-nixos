@@ -26,5 +26,8 @@ in
     kdePackages.qtgraphs
     kdePackages.qtdeclarative
     kdePackages.qtmultimedia
+
+    qt6Packages.qt5compat
+    libsForQt5.qt5.qtgraphicaleffects
   ];
 }
