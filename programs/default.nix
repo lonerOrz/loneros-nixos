@@ -22,6 +22,7 @@
     ./quickshell.nix
     ./ags.nix
     ./niri.nix
+    ./wine.nix
 
     # server
     ./mpd.nix
