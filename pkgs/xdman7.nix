@@ -10,7 +10,7 @@
 }:
 stdenv.mkDerivation rec {
   pname = "xdman";
-  version = "7.2.11";
+  version = "8.0.29";
 
   src = fetchurl {
     url = "https://github.com/subhra74/xdm/releases/download/${version}/xdman.jar";
