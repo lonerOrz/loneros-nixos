@@ -3,11 +3,11 @@ name: Update Nix Packages
 on:
   schedule:
     # 每天凌晨 2:00 UTC 运行（可调整）
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch: # 允许手动触发
     inputs:
       package:
-        description: 'Optional: Specific package to update (e.g., mpv-handler)'
+        description: "Optional: Specific package to update (e.g., mpv-handler)"
         required: false
 
 jobs:
@@ -25,29 +25,28 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
-            substituters = https://cache.nixos.org https://nix-community.cachix.org
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
 
       # 设置 Python 环境
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # 选择 Python 版本
+          python-version: "3.11" # 选择 Python 版本
 
       # 安装 nix-update
       - name: Install nix-update
         run: |
-          nix run github:nix-community/nix-update -- --version
-          # 确保 nix-update 可执行文件在 PATH 中
-          echo "/nix/profile/bin" >> $GITHUB_PATH
+          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+          nix-channel --update
+          nix-env -iA nixpkgs.nix-update
+          nix-update --help
 
-      # 运行 update_packages.py 脚本
+      # 运行 update_packages.py 脚本（位于 .github/script）
       - name: Run update script
         run: |
           if [[ -n "${{ github.event.inputs.package }}" ]]; then
-            python3 .github/script/update_packages.py --package ${{ github.event.inputs.package }} --commit
+            python3 .github/script/update.py --package ${{ github.event.inputs.package }} --commit
           else
-            python3 .github/script/update_packages.py --commit
+            python3 .github/script/update.py --commit
           fi
 
       # 检查是否有更改并提交
@@ -64,4 +63,3 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          echo "Update failed! Check the logs for details."

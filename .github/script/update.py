@@ -97,7 +97,7 @@ def main():
     )
     args = parser.parse_args()
 
-    pkgs_dir = "../../pkgs"
+    pkgs_dir = "./pkgs"
 
     if not os.path.exists(pkgs_dir):
         print(f"Directory {pkgs_dir} does not exist")
