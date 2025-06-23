@@ -3,11 +3,11 @@ name: Update Nix Packages
 on:
   schedule:
     # 每天凌晨 2:00 UTC 运行（可调整）
-    - cron: "0 2 * * *"
+    - cron: '0 2 * * *'
   workflow_dispatch: # 允许手动触发
     inputs:
       package:
-        description: "Optional: Specific package to update (e.g., mpv-handler)"
+        description: 'Optional: Specific package to update (e.g., mpv-handler)'
         required: false
 
 jobs:
@@ -23,23 +23,25 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
-          nix_version: "2.24.9" # 使用最新稳定版本
           extra_nix_config: |
             experimental-features = nix-command flakes
+            substituters = https://cache.nixos.org https://nix-community.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
 
       # 设置 Python 环境
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11" # 选择 Python 版本
+          python-version: '3.11' # 选择 Python 版本
 
       # 安装 nix-update
       - name: Install nix-update
         run: |
-          nix-env -iA nixpkgs.nix-update
-          nix-update --version
+          nix run github:nix-community/nix-update -- --version
+          # 确保 nix-update 可执行文件在 PATH 中
+          echo "/nix/profile/bin" >> $GITHUB_PATH
 
-      # 运行 update_packages.py 脚本（位于 .github/script）
+      # 运行 update_packages.py 脚本
       - name: Run update script
         run: |
           if [[ -n "${{ github.event.inputs.package }}" ]]; then
@@ -62,3 +64,4 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "Update failed! Check the logs for details."
