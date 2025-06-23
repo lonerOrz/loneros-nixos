@@ -1,0 +1,64 @@
+name: Update Nix Packages
+
+on:
+  schedule:
+    # 每天凌晨 2:00 UTC 运行（可调整）
+    - cron: "0 2 * * *"
+  workflow_dispatch: # 允许手动触发
+    inputs:
+      package:
+        description: "Optional: Specific package to update (e.g., mpv-handler)"
+        required: false
+
+jobs:
+  update-packages:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 设置 Nix 环境
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_version: "2.24.9" # 使用最新稳定版本
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      # 设置 Python 环境
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11" # 选择 Python 版本
+
+      # 安装 nix-update
+      - name: Install nix-update
+        run: |
+          nix-env -iA nixpkgs.nix-update
+          nix-update --version
+
+      # 运行 update_packages.py 脚本（位于 .github/script）
+      - name: Run update script
+        run: |
+          if [[ -n "${{ github.event.inputs.package }}" ]]; then
+            python3 .github/script/update_packages.py --package ${{ github.event.inputs.package }} --commit
+          else
+            python3 .github/script/update_packages.py --commit
+          fi
+
+      # 检查是否有更改并提交
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add pkgs/*.nix
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update Nix packages"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -68,6 +68,7 @@ in
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
       nixos-rebuild-ng # nixos-rebuild 的替代品
+      nix-update
 
       # hyde needed
       # parallel-full
