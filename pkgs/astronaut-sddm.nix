@@ -12,11 +12,12 @@ let
 in
 stdenvNoCC.mkDerivation rec {
   name = "astronaut";
+  version = "11c0bf6147bbea466ce2e2b0559e9a9abdbcc7c3";
 
   src = fetchFromGitHub {
     owner = "Keyitdev";
     repo = "sddm-astronaut-theme";
-    rev = "11c0bf6147bbea466ce2e2b0559e9a9abdbcc7c3";
+    rev = version;
     hash = "sha256-gBSz+k/qgEaIWh1Txdgwlou/Lfrfv3ABzyxYwlrLjDk=";
   };
 

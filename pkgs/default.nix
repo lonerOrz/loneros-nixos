@@ -7,6 +7,7 @@
 {
   mpv-handler = pkgs.callPackage ./mpv-handler.nix { };
   # shijima-qt = pkgs.callPackage ./shijima-qt.nix { };
+  # turntable = pkgs.callPackage ./turntable.nix { };
   sddm = pkgs.callPackage ./astronaut-sddm.nix {
     theme = "hyprland_kath";
     # themeConfig={
