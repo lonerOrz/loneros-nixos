@@ -94,7 +94,6 @@ in
       evil-helix_git # introduces Vim keybindings and more
       element-desktop
       libreoffice-still # 长久支持版本
-      wechat-uos
 
       # electron wrapper
       obsidian-wrapper
