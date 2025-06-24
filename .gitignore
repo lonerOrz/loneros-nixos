@@ -3,5 +3,4 @@ hosts/nixyos/
 dev-shells/
 result/
 result
-justfile
 .vscode/
