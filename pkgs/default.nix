@@ -39,4 +39,5 @@
     in
     upper
   );
+  abdownloadmanager = pkgs.callPackage ./abdownloadmanager.nix { };
 }
