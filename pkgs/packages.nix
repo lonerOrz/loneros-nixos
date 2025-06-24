@@ -1,3 +1,4 @@
+# For auto update packages
 {
   pkgs ? import <nixpkgs> { },
 }:
