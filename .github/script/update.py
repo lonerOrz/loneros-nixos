@@ -14,7 +14,12 @@ def find_packages(pkgs_dir):
     # 查找所有 *.nix 文件
     for item in pkgs_path.rglob("*.nix"):
         # 跳过 packages.nix 和其他非包文件
-        if item.name in ["packages.nix", "default.nix.bak", "quickshell.nix"]:
+        if item.name in [
+            "packages.nix",
+            "default.nix.bak",
+            "quickshell.nix",
+            "xdman7.nix",
+        ]:
             continue
         # 如果是 pkgs 根目录下的 xxx.nix 文件
         if item.parent == pkgs_path and item.name.endswith(".nix"):
