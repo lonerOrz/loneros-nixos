@@ -1,5 +1,4 @@
-self: prev:
-let
+self: prev: let
   # https://github.com/NixOS/nixpkgs/pull/401421
   libplacebo-mpv = prev.libplacebo.overrideAttrs (old: {
     version = "7.349.0";
@@ -18,10 +17,9 @@ let
     # mpv = mpv-unwrapped-custom; # pr 401421: 已经解决
     scripts = with prev.mpvScripts; [
       mpris
-      autoload
+      # autoload # https://github.com/zydezu/mpvconfig/issues/19#issuecomment-2998201292
     ];
   };
-in
-{
+in {
   mpv = mpv-wrapper;
 }
