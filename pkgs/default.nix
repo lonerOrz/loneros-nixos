@@ -26,6 +26,13 @@
       pkgs.runCommand "xdman7-unavailable" { } ''
         echo "xdman7 is only available on x86_64-linux" > $out
       '';
+  xdman8 =
+    if system == "x86_64-linux" then
+      pkgs.callPackage ./xdman8.nix { }
+    else
+      pkgs.runCommand "xdman7-unavailable" { } ''
+        echo "xdman8 is only available on x86_64-linux" > $out
+      '';
   test = pkgs.writeText "test-uppercase" (
     let
       upper = mylib.toUpperCase "hello loner";

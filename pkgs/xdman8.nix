@@ -11,8 +11,9 @@
   adwaita-icon-theme,
   hicolor-icon-theme,
   shared-mime-info,
+  librsvg,
+  libcanberra-gtk3,
 }:
-
 stdenv.mkDerivation rec {
   pname = "xdman8";
   version = "8.0.29";
@@ -35,6 +36,7 @@ stdenv.mkDerivation rec {
     adwaita-icon-theme
     hicolor-icon-theme
     shared-mime-info
+    libcanberra-gtk3
   ];
 
   unpackPhase = ''
@@ -63,15 +65,19 @@ stdenv.mkDerivation rec {
       --prefix PATH : "${lib.makeBinPath [ ffmpeg ]}" \
       --set DOTNET_SYSTEM_GLOBALIZATION_INVARIANT 1 \
       --prefix XDG_DATA_DIRS : "${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}:${gtk3}/share/gsettings-schemas/${gtk3.name}:${shared-mime-info}/share:$out/share:$XDG_DATA_DIRS" \
+      --set GTK_THEME "Adwaita" \
+      --set GTK_PATH "${gtk3}/lib/gtk-3.0:${libcanberra-gtk3}/lib/gtk-3.0" \
+      --set GTK3_MODULES "canberra-gtk-module" \
+      --set GDK_PIXBUF_MODULE_FILE "${librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" \
+      --set GDK_PIXBUF_MODULEDIR "${librsvg}/lib/gdk-pixbuf-2.0/2.10.0/loaders" \
       --set LD_LIBRARY_PATH "${
         lib.makeLibraryPath [
           stdenv.cc.cc.lib
           gtk3
           openssl
+          libcanberra-gtk3
         ]
-      }" \
-      --set GTK_THEME "Adwaita" \
-      --set GTK3_MODULES "${gtk3}/lib/gtk-3.0"
+      }"
 
     # Install desktop file
     install -Dm644 usr/share/applications/xdm-app.desktop $out/share/applications/xdman8.desktop
@@ -89,9 +95,10 @@ stdenv.mkDerivation rec {
                  stdenv.cc.cc
                  gtk3
                  openssl
+                 libcanberra-gtk3
                ]
              }" \
-             $out/opt/xdman/xdm-app
+     $out/opt/xdman/xdm-app
 
     runHook postInstall
   '';
@@ -101,6 +108,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/subhra74/xdm";
     license = licenses.gpl3;
     platforms = [ "x86_64-linux" ];
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ lonerOrz ];
   };
 }
