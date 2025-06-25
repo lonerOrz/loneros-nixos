@@ -40,4 +40,5 @@
     upper
   );
   abdownloadmanager = pkgs.callPackage ./abdownloadmanager.nix { };
+  testpkg = if builtins.pathExists ./testpkg.nix then pkgs.callPackage ./testpkg.nix { } else null;
 }
