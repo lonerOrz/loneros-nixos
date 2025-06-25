@@ -124,7 +124,7 @@ in
             --set ELECTRON_OZONE_PLATFORM_HINT auto \
             --set LIBGL_ALWAYS_INDIRECT 1 \
             --add-flags "--disable-integrity-check" \
-            --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime --disable-gpu"
+            --add-flags "--enable-features=UseOzonePlatform --ozone-platform=x11 --enable-wayland-ime --disable-gpu"
         fi
         ############ 修改插件市场为微软官方 ############
         find "$out" -type f -name product.json | while read -r product_json; do

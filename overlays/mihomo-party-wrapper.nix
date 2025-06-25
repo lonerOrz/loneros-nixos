@@ -15,7 +15,7 @@ in
         wrapProgram "$out/bin/${cmdname}" \
           --set ELECTRON_OZONE_PLATFORM_HINT auto \
           --set NIXOS_OZONE_WL 1 \
-          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime --use-gl=swiftshader --disable-gpu"
+          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=x11 --enable-wayland-ime --use-gl=swiftshader --disable-gpu"
       else
         echo "Warning: $out/bin/${cmdname} not found!"
       fi

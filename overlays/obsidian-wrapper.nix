@@ -19,7 +19,7 @@ in
           --set GTK_IM_MODULE "fcitx" \
           --set QT_IM_MODULE "fcitx" \
           --set INPUT_METHOD "fcitx" \
-          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime --disable-gpu"
+          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=x11 --enable-wayland-ime --disable-gpu"
       else
         echo "Warning: $out/bin/${cmdname} not found!"
       fi
