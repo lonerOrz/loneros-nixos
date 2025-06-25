@@ -16,7 +16,7 @@ in
         wrapProgram "$out/bin/${cmdname}" \
         --set ELECTRON_OZONE_PLATFORM_HINT auto \
         --set LIBGL_ALWAYS_INDIRECT 1 \
-        --add-flags "--disable-gpu"
+        --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime --disable-gpu"
       else
         echo "Warning: $out/bin/${cmdname} not found!"
       fi

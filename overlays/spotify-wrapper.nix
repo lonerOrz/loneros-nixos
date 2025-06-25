@@ -18,7 +18,7 @@ in
           --set LIBVA_DRIVER_NAME nvidia \
           --set GBM_BACKEND nvidia-drm \
           --set __GLX_VENDOR_LIBRARY_NAME nvidia \
-          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland"
+          --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime"
       else
         echo "Warning: $out/bin/${cmdname} not found!"
       fi
