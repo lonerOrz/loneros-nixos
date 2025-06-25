@@ -4,3 +4,5 @@ dev-shells/
 result/
 result
 .vscode/
+.envrc
+.direnv/

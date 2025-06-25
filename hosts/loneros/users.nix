@@ -32,9 +32,7 @@ in
         "input"
         "audio"
       ];
-      packages = with stable; [
-        tree
-      ];
+      packages = with stable; [ tree ];
     };
     defaultUserShell = pkgs.${shell};
   };
@@ -89,6 +87,7 @@ in
       motrix
       localsend
       inputs.ghostty.packages."${system}".default
+      foot
       zed-editor
       telegram-desktop
       stable.rustdesk-flutter
