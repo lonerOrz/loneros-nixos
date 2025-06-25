@@ -8,7 +8,7 @@
 
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = pkgs.niri;
   };
 
   # 安装依赖软件
