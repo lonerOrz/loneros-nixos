@@ -95,6 +95,7 @@ in
       element-desktop
       libreoffice-still # 长久支持版本
       gimp # 图片编辑
+      foliate # epub reader
 
       # electron wrapper
       obsidian-wrapper
