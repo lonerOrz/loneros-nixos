@@ -125,6 +125,6 @@ in
   services.scx = {
     enable = true;
     scheduler = "scx_rusty";
-    package = pkgs.scx.full; # 获取github上最新的调度规则
+    package = pkgs.scx_git.full; # 获取github上最新的调度规则
   };
 }
