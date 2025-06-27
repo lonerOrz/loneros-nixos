@@ -35,5 +35,6 @@
     ./wayvnc.nix
     ./docker.nix
     ./jellyfin.nix
+    ./aria2.nix
   ];
 }
