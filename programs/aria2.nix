@@ -2,15 +2,16 @@
   username,
   pkgs,
   ...
-}: {
+}:
+{
   environment.systemPackages = with pkgs; [
     aria2
   ];
 
   systemd.services.aria2 = {
     description = "Aria2 Download Manager";
-    after = ["network.target"];
-    wantedBy = ["multi-user.target"];
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Type = "simple";
