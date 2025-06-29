@@ -1,0 +1,56 @@
+name: Build NixOS & Push to Cachix
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-nixos:
+    name: Build NixOS system
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+
+      - name: Add swap
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 20
+
+      - name: Check disk usage
+        run: |
+          df -h /
+          df -h /home/runner
+          du -sh /home/runner/*
+
+      - name: Setup Nix build env
+        run: |
+          mkdir -p $HOME/nix-cache
+          mkdir -p $HOME/nix-tmp
+          echo "XDG_CACHE_HOME=$HOME/nix-cache" >> $GITHUB_ENV
+          echo "NIX_BUILD_TMPDIR=$HOME/nix-tmp" >> $GITHUB_ENV
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+            experimental-features = nix-command flakes
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v14
+        with:
+          name: loneros
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: nix-community
+
+      - name: Build loneros
+        run: |
+          cachix watch-exec loneros -- \
+            nix build .#nixosConfigurations.loneros.config.system.build.toplevel \
+            --print-build-logs
