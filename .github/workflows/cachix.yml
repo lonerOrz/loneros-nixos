@@ -10,6 +10,7 @@ jobs:
   build-nixos:
     name: Build NixOS system
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -20,20 +21,7 @@ jobs:
       - name: Add swap
         uses: pierotofy/set-swap-space@master
         with:
-          swap-size-gb: 20
-
-      - name: Check disk usage
-        run: |
-          df -h /
-          df -h /home/runner
-          du -sh /home/runner/*
-
-      - name: Setup Nix build env
-        run: |
-          mkdir -p $HOME/nix-cache
-          mkdir -p $HOME/nix-tmp
-          echo "XDG_CACHE_HOME=$HOME/nix-cache" >> $GITHUB_ENV
-          echo "NIX_BUILD_TMPDIR=$HOME/nix-tmp" >> $GITHUB_ENV
+          swap-size-gb: 10
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30
@@ -41,6 +29,26 @@ jobs:
           extra_nix_config: |
             accept-flake-config = true
             experimental-features = nix-command flakes
+            sandbox = true
+            build-users-group =
+            max-jobs = auto
+            log-lines = 25
+            trusted-users = root runner
+
+      - name: Setup Nix build env
+        run: |
+          sudo mkdir -p /nix-cache /nix-tmp
+          sudo chown -R runner:runner /nix-cache /nix-tmp
+          echo "XDG_CACHE_HOME=/nix-cache" >> $GITHUB_ENV
+          echo "NIX_BUILD_TMPDIR=/nix-tmp" >> $GITHUB_ENV
+          echo "TMPDIR=/nix-tmp" >> $GITHUB_ENV
+
+      - name: Check disk usage before build
+        run: |
+          df -h /
+          df -ih /
+          du -sh /nix-cache || true
+          du -sh /nix-tmp || true
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v14
@@ -49,8 +57,13 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
 
-      - name: Build loneros
+      - name: Build and push if not cached
         run: |
-          cachix watch-exec loneros -- \
-            nix build .#nixosConfigurations.loneros.config.system.build.toplevel \
-            --print-build-logs
+          if nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel | grep -q 'will be built'; then
+            echo "Some outputs need to be built. Proceeding with build..."
+            cachix watch-exec loneros -- \
+              nix build .#nixosConfigurations.loneros.config.system.build.toplevel \
+              --print-build-logs
+          else
+            echo "All outputs are cached. Skipping build."
+          fi
