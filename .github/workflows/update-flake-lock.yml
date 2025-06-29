@@ -29,4 +29,5 @@ jobs:
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }} # https://github.com/DeterminateSystems/update-flake-lock#with-a-personal-authentication-token
           pr-title: "Update flake.lock"
           pr-labels: |
-            dependencies
+            update_flake
+            github_actions

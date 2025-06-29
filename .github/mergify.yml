@@ -1,12 +1,26 @@
-# Automatically merge PRs with dependency upgrades
 pull_request_rules:
-  - name: Merge when labeled and all CI jobs pass
+  # for dependabot
+  - name: Auto merge dependabot updates
     conditions:
       - and:
+          - committer=dependabot[bot]
           - label=dependencies
+          - label=github_actions
           - check-success=flake check
           # - check-success=nixosConfig loneros # 有待商榷
     actions:
       update:
+      merge:
+        method: squash
+  # for update flake.lock action
+  - name: Auto merge flake.lock updates
+    conditions:
+      - and:
+          - title~=^Update flake.lock
+          - committer=github-actions[bot]
+          - label=update_flake
+          - label=github_actions
+          - check-success=flake check
+    actions:
       merge:
         method: squash
