@@ -57,8 +57,11 @@
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets."remote-vm/test/password".path;
-      # initialPassword = "123456"; # 初始化用户密码
+      hashedPassword = "$y$j9T$G4/aaUi6RJ96LQF2eWcGj1$h4ak4cLJGzwYqcRoyOzhNU8KVdCBtEL64h.xuIZFbmC";
+      # hashedPasswordFile = config.sops.secrets."remote-vm/test/password".path; # nixos-anytwhere 不起作用
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID8G+7o2ha+96GH3l/7c6IYGtUtuQHZCyXlZX8ZYPUhr lonerOrz@qq.com"
+      ];
       extraGroups = [
         "networkmanager"
         "wheel"
@@ -71,11 +74,13 @@
     };
   };
 
-  # enable flake
+  # for devlopment
+  users.users.root.hashedPassword = "$y$j9T$G4/aaUi6RJ96LQF2eWcGj1$h4ak4cLJGzwYqcRoyOzhNU8KVdCBtEL64h.xuIZFbmC";
+
+  # enable features
   nix.settings.experimental-features = [
     "nix-command" # 启用 nix build, nix run, nix flake 等新命令
     "flakes"
-    # "ca-derivations" # 启用内容寻址 derivation（Content Addressed Derivations）
   ];
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
