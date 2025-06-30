@@ -20,7 +20,10 @@
   ];
 
   services.getty.autologinUser = "root"; # 自动以 root 用户登录
-  users.users.root.initialPassword = "123456";
+  users.users.root.openssh.authorizedKeys.keys = [
+    # NOTE: 换成你的ssh公钥
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID8G+7o2ha+96GH3l/7c6IYGtUtuQHZCyXlZX8ZYPUhr lonerOrz@qq.com"
+  ];
 
   # FONTS
   fonts.packages = with pkgs; [
@@ -43,8 +46,8 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "yes"; # 允许 root 密码登录
-      PasswordAuthentication = true; # 允许密码登录（默认是 true）
+      PermitRootLogin = "prohibit-password"; # 只允许密钥登录
+      PasswordAuthentication = false; # 禁用密码登录
     };
   };
 
