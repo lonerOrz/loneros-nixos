@@ -117,7 +117,6 @@ in
     ]
     ++ [
       # 自定义软件包
-      (pkgs.callPackage ../../pkgs/shijima-qt.nix { })
       (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
       (pkgs.callPackage ../../pkgs/turntable.nix { })
     ];
