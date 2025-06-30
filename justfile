@@ -4,7 +4,7 @@
     nixos-install --flake .#{{ target }}
 
 @install-remote target ip:
-    nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- --copy-host-keys --flake .#{{ target }} root@{{ ip }}
+    nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- -i ~/.ssh/id_ed25519 --flake .#{{ target }} root@{{ ip }}
 
 @update:
     nix flake update
