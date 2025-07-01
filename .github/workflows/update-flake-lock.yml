@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@v31
+        uses: nixbuild/nix-quick-install-action@v32
         with:
           nix_conf: |
             accept-flake-config = true
