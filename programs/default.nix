@@ -23,7 +23,6 @@
     ./ags.nix
     ./niri.nix
     ./wine.nix
-    ./sudo-rs.nix
 
     # server
     ./mpd.nix

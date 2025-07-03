@@ -1,4 +1,26 @@
 {
+  pkgs,
+  username,
+  ...
+}:
+{
+  # sudo
+  security.sudo-rs = {
+    enable = true;
+    package = pkgs.sudo-rs;
+    extraRules = [
+      {
+        users = [ "${username}" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+  };
+
   # Security / Polkit
   security.rtkit.enable = true;
   security.polkit.enable = true;

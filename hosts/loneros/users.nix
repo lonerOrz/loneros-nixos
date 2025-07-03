@@ -37,18 +37,6 @@ in
     defaultUserShell = pkgs.${shell};
   };
 
-  security.sudo.extraRules = [
-    {
-      users = [ "${username}" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
-
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
     "electron-11.5.0" # NUR baidunetdisk needed
