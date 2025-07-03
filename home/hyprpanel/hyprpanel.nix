@@ -36,9 +36,6 @@ let
   location = "en"; # 地理位置（用于天气等）
 in
 {
-
-  imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ]; # 引入 hyprpanel 模块
-
   home.packages = with pkgs; [
     adwaita-icon-theme # GNOME 图标主题
   ];
