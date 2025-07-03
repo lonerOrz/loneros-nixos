@@ -14,7 +14,6 @@
     };
     hyprland.url = "github:hyprwm/Hyprland";
     niri.url = "github:sodiboo/niri-flake";
-    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
@@ -138,7 +137,6 @@
                 ./secrets
                 {
                   nixpkgs.overlays = [
-                    inputs.hyprpanel.overlay
                     inputs.nur.overlays.default
                     inputs.niri.overlays.niri
                   ];
