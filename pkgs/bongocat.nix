@@ -93,22 +93,24 @@ rustPlatform.buildRustPackage (finalAttrs: {
   '';
 
   installPhase = ''
+    install -Dm755 target/x86_64-unknown-linux-gnu/release/bongo-cat $out/libexec/bongocat
     install -Dm644 src-tauri/BongoCat.desktop $out/share/applications/BongoCat.desktop
 
-    mkdir -p $out/usr/lib/BongoCat/dist
-    cp -r dist/* $out/usr/lib/BongoCat/dist/
+    mkdir -p $out/dist
+    cp -r dist/* $out/dist/
 
-    mkdir -p $out/usr/lib/BongoCat/assets/models
-    cp -r src-tauri/assets/models/* $out/usr/lib/BongoCat/assets/models/
+    mkdir -p $out/usr/lib/BongoCat/assets
+    cp -r src-tauri/assets/* $out/usr/lib/BongoCat/assets/
 
-    makeWrapper target/x86_64-unknown-linux-gnu/release/bongo-cat $out/bin/bongo-cat \
-      --set APPDIR $out
+    makeWrapper $out/libexec/bongocat $out/bin/bongocat \
+      --set APPDIR $out \
+      --set LD_LIBRARY_PATH ${lib.makeLibraryPath [ libayatana-appindicator ]}:$LD_LIBRARY_PATH
   '';
 
   meta = {
-    description = "A Tauri-based desktop application called BongoCat";
+    description = "Desktop mascot app featuring animated cat drummer";
     homepage = "https://github.com/ayangweb/BongoCat";
-    mainProgram = "bongo-cat";
+    mainProgram = "bongocat";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ lonerOrz ];

@@ -40,5 +40,6 @@
     upper
   );
   abdownloadmanager = pkgs.callPackage ./abdownloadmanager.nix { };
+  bongocat = pkgs.callPackage ./bongocat.nix { };
   testpkg = if builtins.pathExists ./testpkg.nix then pkgs.callPackage ./testpkg.nix { } else null;
 }
