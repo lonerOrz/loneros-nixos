@@ -17,8 +17,8 @@ in
         user.email = "${gitEmail}";
         # Sign all commits using ssh key
         commit.gpgsign = true;
-        gpg.format = "ssh";
-        user.signingkey = "/home/${username}/.ssh/id_rsa";
+        gpg.format = "openpgp";
+        user.signingkey = "F55E587ECAB5D316";
         init.defaultBranch = "main";
         core.editor = "nvim";
         color.ui = "auto";
