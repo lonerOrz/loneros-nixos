@@ -118,11 +118,11 @@ stdenv.mkDerivation rec {
         runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "A Kotlin based download manager";
     homepage = "https://github.com/amir1376/ab-download-manager";
-    license = licenses.mit;
-    platforms = platforms.linux;
-    maintainers = with maintainers; [ lonerOrz ];
+    license = lib.licenses.mit;
+    platforms = lib.platforms.linux;
+    maintainers = with lib.maintainers; [ lonerOrz ];
   };
 }
