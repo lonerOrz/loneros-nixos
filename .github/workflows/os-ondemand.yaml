@@ -1,0 +1,21 @@
+name: "OS ondemand"
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        description: "OS to boot"
+        required: true
+        default: "macos-latest"
+        type: choice
+        options:
+          - ubuntu-latest
+          - macos-latest
+          - macos-13
+          - windows-latest
+          - ubuntu-22.04-arm
+jobs:
+  test:
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
