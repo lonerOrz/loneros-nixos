@@ -68,6 +68,7 @@ in
       asciinema # rec demo.cast
       asciinema-agg # cast -> gif
       posting # postman tui
+      fuzzel
 
       qbittorrent-enhanced # qbee
       motrix

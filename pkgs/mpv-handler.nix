@@ -20,7 +20,7 @@ rustPlatform.buildRustPackage rec {
   cargoHash = "sha256-FrE1PSRc7GTNUum05jNgKnzpDUc3FiS5CEM18It0lYY=";
   useFetchCargoVendor = true;
 
-  nativeBuildInputs = [makeWrapper];
+  nativeBuildInputs = [ makeWrapper ];
 
   postInstall = ''
     mkdir -p $out/share/applications
@@ -30,18 +30,18 @@ rustPlatform.buildRustPackage rec {
 
     wrapProgram $out/bin/mpv-handler \
       --prefix PATH : ${
-      lib.makeBinPath [
-        mpv
-        yt-dlp
-      ]
-    }
+        lib.makeBinPath [
+          mpv
+          yt-dlp
+        ]
+      }
   '';
 
   meta = with lib; {
     description = "Play website videos and songs with mpv & yt-dlp.";
     homepage = "https://github.com/akiirui/mpv-handler";
     license = licenses.mit;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     platforms = platforms.linux;
   };
 }
