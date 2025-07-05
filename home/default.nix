@@ -2,9 +2,8 @@
   imports = [
     # ./fuzzel.nix
     # ./ghostty.nix
-    ./scripts
     # ./hyprpanel
-    ./hypr
+    # ./hypr
     # ./git.nix
     # ./nvf.nix
     ./qutebrowser
