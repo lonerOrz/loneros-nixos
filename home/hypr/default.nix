@@ -1,6 +1,5 @@
 {
   imports = [
     ./hyprland.nix
-    ./scripts
   ];
 }
