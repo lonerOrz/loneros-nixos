@@ -28,11 +28,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install nix-update
+      - name: Install nix-update environment
         run: |
           nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
           nix-channel --update
-          nix-env -iA nixpkgs.nix-update
+          nix-env -iA nixpkgs.nix-update nixpkgs.nix-prefetch-git nixpkgs.jq
 
       - name: new branch
         run: |
@@ -66,8 +66,9 @@ jobs:
       - name: Create Pull Request via gh
         if: steps.commit.outputs.changed == 'true'
         run: |
+          DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           gh pr create \
-            --title "chore: auto update Custom packages" \
+            --title "chore: auto update Custom packages - $DATE" \
             --body "This PR was created automatically by GitHub Actions." \
             --base main \
             --head auto/update-custom-packages-${{ github.run_id }}
