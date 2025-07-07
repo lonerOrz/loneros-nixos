@@ -74,7 +74,7 @@ jobs:
             --head auto/update-custom-packages-${{ github.run_id }}
 
           gh pr edit auto/update-custom-packages-${{ github.run_id }} \
-            --add-label auto_update_package \
+            --add-label auto_update_custom_package \
             --add-label github_actions
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
