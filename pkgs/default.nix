@@ -28,9 +28,9 @@
       '';
   xdman8 =
     if system == "x86_64-linux" then
-      pkgs.callPackage ./xdman8.nix { }
+      pkgs.callPackage ./xdman8/package.nix { }
     else
-      pkgs.runCommand "xdman7-unavailable" { } ''
+      pkgs.runCommand "xdman8-unavailable" { } ''
         echo "xdman8 is only available on x86_64-linux" > $out
       '';
   test = pkgs.writeText "test-uppercase" (
@@ -42,4 +42,5 @@
   abdownloadmanager = pkgs.callPackage ./abdownloadmanager.nix { };
   bongocat = pkgs.callPackage ./bongocat.nix { };
   testpkg = if builtins.pathExists ./testpkg.nix then pkgs.callPackage ./testpkg.nix { } else null;
+  linux-wallpaperengine = pkgs.callPackage ./linux-wallpaperengine/package.nix { };
 }
