@@ -9,6 +9,9 @@
 @update:
     nix flake update
 
+@update-custom-packages:
+    nix-shell -p nix-update nix-prefetch-git jq --run "python .github/script/update.py"
+
 @clean:
     nix-collect-garbage -d
 
