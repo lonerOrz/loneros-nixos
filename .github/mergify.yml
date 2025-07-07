@@ -23,3 +23,14 @@ pull_request_rules:
     actions:
       merge:
         method: squash
+  # for auto update custom package
+  - name: Auto merge custom package updates
+    conditions:
+      - and:
+          - title~="^Chore: auto update custom package.*"
+          - label=auto_update_custom_package
+          - label=github_actions
+          - check-success=flake check
+    actions:
+      merge:
+        method: squash
