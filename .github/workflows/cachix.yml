@@ -1,4 +1,4 @@
-name: Build NixOS & Push to Cachix
+name: build nixos & push to cachix
 
 on:
   workflow_dispatch:

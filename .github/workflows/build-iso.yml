@@ -17,7 +17,7 @@ concurrency:
 jobs:
   build-livecd:
     runs-on: ubuntu-latest
-    name: build iso
+    name: Build ISO
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
           extra_nix_config: |
             accept-flake-config = true
 
-      - name: build iso
+      - name: Build ISO
         run: |
           nix build .#iso # 一般只有x86_64-linux
 

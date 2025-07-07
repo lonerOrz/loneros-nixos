@@ -1,4 +1,4 @@
-name: flake check
+name: nix check
 
 on:
   push:
