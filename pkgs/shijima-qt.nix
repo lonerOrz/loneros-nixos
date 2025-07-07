@@ -90,7 +90,7 @@ stdenv.mkDerivation rec {
     description = "Shimeji desktop pet runner";
     homepage = "https://github.com/pixelomer/Shijima-Qt";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ samlukeyes123 ];
+    maintainers = with lib.maintainers; [ ];
     mainProgram = "shijima-qt";
     platforms = lib.platforms.linux;
   };
