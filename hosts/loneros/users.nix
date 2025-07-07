@@ -49,12 +49,13 @@ in
     with pkgs;
     [
       # software
-      translate-shell
+      translate-shell # 命令行翻译
       starship
       devbox # 配合 direnv
       stow # dotfiles needed
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
+      nixfmt-rfc-style # 官方 nixfmt 风格
 
       # hyde needed
       # parallel-full
