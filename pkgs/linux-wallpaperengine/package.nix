@@ -51,7 +51,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "linux-wallpaperengine";
-  version = "0-unstable-2025-05-17";
+  version = "0-unstable-2025-07-08";
 
   src = fetchFromGitHub {
     owner = "Almamu";
@@ -60,6 +60,8 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-Wkxt6c5aSMJnQPx/n8MeNKLQ8YmdFilzhJ1wQooKprI=";
     fetchSubmodules = true;
   };
+
+  passthru.updateScript = ./update.sh;
 
   nativeBuildInputs = [
     cmake
