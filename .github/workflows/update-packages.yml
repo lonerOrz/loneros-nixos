@@ -68,9 +68,13 @@ jobs:
         run: |
           DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           gh pr create \
-            --title "chore: auto update Custom packages - $DATE" \
+            --title "Chore: auto update custom packages - $DATE" \
             --body "This PR was created automatically by GitHub Actions." \
             --base main \
             --head auto/update-custom-packages-${{ github.run_id }}
+
+          gh pr edit auto/update-custom-packages-${{ github.run_id }} \
+            --add-label auto_update_package \
+            --add-label github_actions
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
