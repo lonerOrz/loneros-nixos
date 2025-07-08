@@ -32,3 +32,6 @@
 
 @genfacter:
     nix run github:numtide/nixos-facter -- -o facter.json
+
+@init:
+  nix run github:nix-community/nix-init
