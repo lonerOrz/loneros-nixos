@@ -65,6 +65,8 @@ jobs:
 
       - name: Create Pull Request via gh
         if: steps.commit.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           gh pr create \
@@ -76,5 +78,3 @@ jobs:
           gh pr edit auto/update-custom-packages-${{ github.run_id }} \
             --add-label auto_update_custom_package \
             --add-label github_actions
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
