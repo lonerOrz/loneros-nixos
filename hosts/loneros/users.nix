@@ -56,6 +56,7 @@ in
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
       nixfmt-rfc-style # 官方 nixfmt 风格
+      gh
 
       # hyde needed
       # parallel-full
