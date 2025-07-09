@@ -5,18 +5,23 @@
     enable = true;
     # wlr.enable = true; # use wlr_git
     xdgOpenUsePortal = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr_git # includes RemoteDesktop patch
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-wlr_git # includes RemoteDesktop patch
+      # Niri
+      xdg-desktop-portal-gnome
     ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-wlr_git
+    configPackages = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-wlr_git
     ];
     config = {
       # 默认 fallback 配置
       common = {
-        default = [ "gtk" ];
+        default = [
+          "gtk"
+          "gnome"
+        ];
       };
       hyprland = {
         default = [
@@ -27,7 +32,7 @@
       niri = {
         default = [
           "wlr"
-          "gtk"
+          "gnome"
         ];
       };
       sway = {
