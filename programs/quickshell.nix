@@ -14,13 +14,16 @@ let
       withPipewire = true;
       withPam = true;
       withHyprland = true;
-      withI3 = false;
+      withI3 = true;
     };
   };
 in
 {
   environment.systemPackages = with pkgs; [
     quickshell
+
+    material-symbols
+    nerd-fonts.caskaydia-mono
 
     kdePackages.qtbase
     kdePackages.qtgraphs
