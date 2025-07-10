@@ -25,7 +25,7 @@
       experimental-features = [
         "nix-command" # 启用 nix build, nix run, nix flake 等新命令
         "flakes"
-        "ca-derivations" # 启用内容寻址 derivation（Content Addressed Derivations）
+        # "ca-derivations" # 启用内容寻址 derivation（Content Addressed Derivations）! lix 不再支持 ca-derivations 这个实验性特性
       ];
       substituters = [
         "https://hyprland.cachix.org"
