@@ -15,6 +15,7 @@ let
     sha256 = "sha256-fYHWApZlK3ImJdrwXWpPKcw/sQcgoDxROLIW/nyxvpg=";
   };
   bgFile = "${wallpapersRepo}/wallpapers/loner/miles-catppuccin.jpg";
+  bgOpacity = "0.2"; # 背景透明度
 in
 {
   "${sftname}-wrapper" = super.${sftname}.overrideAttrs (old: {
@@ -79,7 +80,7 @@ in
           width:100vw;
           height:100vh;
           background:url("data:image/png;base64,__B64__") center/cover no-repeat;
-          opacity:.3;
+          opacity:${bgOpacity};
           filter:blur(0px);
           pointer-events:none;
           z-index:2147483647 !important;
@@ -107,7 +108,7 @@ in
         '  body::before{' \
         '    content:"";position:fixed;inset:0;width:100vw;height:100vh;' \
         "    background:url(data:image/png;base64,$b64) center/cover no-repeat;" \
-        '    opacity:.3;filter:blur(0px);pointer-events:none;z-index:-1;' \
+        '    opacity:${bgOpacity};filter:blur(0px);pointer-events:none;z-index:-1;' \
         '  }`;' \
         '  document.head.appendChild(bcStyle);' \
         '} catch(e) { console.error("backgroundCover inject error:", e); }' \
