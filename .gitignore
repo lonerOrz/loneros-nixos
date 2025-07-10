@@ -3,6 +3,8 @@ hosts/nixyos/
 dev-shells/
 result/
 result
+result-
+result.json
 .vscode/
 .envrc
 .direnv/
