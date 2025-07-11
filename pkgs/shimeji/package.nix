@@ -56,7 +56,7 @@ stdenv.mkDerivation (finalAttrs: {
     install -D desktop/Spamton.desktop -t $out/share/applications
     install -D desktop/spamton.png -t $out/share/icons/hicolor/128x128/apps
 
-    makeWrapper ${lib.getExe jdk8} $out/bin/shimeji \
+    makeWrapper ${lib.getExe jdk8} $out/bin/spamton \
       --add-flags "-cp $out/share/java/Shimeji.jar:$CLASSPATH com.group_finity.mascot.Main" \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
@@ -71,7 +71,7 @@ stdenv.mkDerivation (finalAttrs: {
   meta = {
     description = "Desktop mascot program";
     homepage = "https://codeberg.org/thatonecalculator/spamton-linux-shimeji";
-    mainProgram = "shimeji";
+    mainProgram = "spamton";
     # Custom free license; see https://codeberg.org/thatonecalculator/spamton-linux-shimeji/src/branch/master/LICENSE
     license = with lib.licenses; [ free ];
     platforms = lib.intersectLists lib.platforms.linux jdk8.meta.platforms;
