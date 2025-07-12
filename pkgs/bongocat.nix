@@ -21,13 +21,13 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "bongocat";
-  version = "0.6.1";
+  version = "0.6.2";
 
   src = fetchFromGitHub {
     owner = "ayangweb";
     repo = "BongoCat";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-P+u03ttmIre9kJ8m1DJhDvn3HaD3hibowyPzhqptIu0=";
+    hash = "sha256-k9RHO0t81AUV5I18EGfAUY7G/MgYyWHjoJVm+Of0oMc=";
   };
 
   sourceRoot = "${finalAttrs.src.name}";
@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-Kq9A0qB4OLeMHWKqTRO2wlkQQYfpN2dMeUXwghTN7uY=";
+  cargoHash = "sha256-8vU70ZIMTaypNhomest8u8wWBexXslF1lITY3bmPjTM=";
 
   cargoRoot = "./";
   buildAndTestSubdir = "src-tauri";
