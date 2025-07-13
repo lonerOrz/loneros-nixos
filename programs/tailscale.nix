@@ -1,3 +1,11 @@
 {
-  services.tailscale.enable = true;
+  pkgs,
+  ...
+}:
+{
+  # services.tailscale.enable = true;
+
+  environment.systemPackages = [
+    pkgs.tailscale
+  ];
 }
