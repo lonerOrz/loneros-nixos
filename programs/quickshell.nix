@@ -5,18 +5,25 @@
   ...
 }:
 let
-  quickshell = pkgs.callPackage ../pkgs/quickshell.nix {
-    quickshell = inputs.quickshell.packages.${system}.default.override {
-      withJemalloc = true;
-      withQtSvg = true;
-      withWayland = true;
-      withX11 = false;
-      withPipewire = true;
-      withPam = true;
-      withHyprland = true;
-      withI3 = true;
-    };
+  baseQuickshell = inputs.quickshell.packages.${system}.default.override {
+    withJemalloc = true;
+    withQtSvg = true;
+    withWayland = true;
+    withX11 = false;
+    withPipewire = true;
+    withPam = true;
+    withHyprland = true;
+    withI3 = true;
   };
+
+  quickshell = baseQuickshell.overrideAttrs (oldAttrs: {
+    postInstall =
+      (oldAttrs.postInstall or "")
+      + ''
+        wrapProgram $out/bin/quickshell \
+          --prefix QML_IMPORT_PATH : "${pkgs.qt6.qt5compat}/lib/qt-6/qml:${pkgs.libsForQt5.qt5.qtgraphicaleffects}/lib/qt5/qml"
+      '';
+  });
 in
 {
   environment.systemPackages = with pkgs; [
