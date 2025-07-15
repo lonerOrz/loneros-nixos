@@ -74,6 +74,7 @@ in
       posting # postman tui
       fuzzel
       networkmanager_dmenu
+      isd # systemd TUI
 
       qbittorrent-enhanced # qbee
       motrix
