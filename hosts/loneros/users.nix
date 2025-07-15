@@ -73,6 +73,7 @@ in
       asciinema-agg # cast -> gif
       posting # postman tui
       fuzzel
+      networkmanager_dmenu
 
       qbittorrent-enhanced # qbee
       motrix
