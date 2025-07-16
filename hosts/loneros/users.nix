@@ -90,6 +90,7 @@ in
       gimp # 图片编辑
       foliate # epub reader
       bitwarden # 密码管理器
+      animeko # 番剧
 
       # electron wrapper
       obsidian-wrapper
