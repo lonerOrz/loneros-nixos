@@ -20,5 +20,8 @@
     nerd-fonts.fantasque-sans-mono # unstable
     nerd-fonts.iosevka # rofi
     maple-mono.NF-CN # 开源等宽中文
+    # quickshell
+    material-symbols
+    nerd-fonts.caskaydia-mono
   ];
 }

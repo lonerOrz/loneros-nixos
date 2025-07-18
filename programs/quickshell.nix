@@ -29,9 +29,6 @@ in
   environment.systemPackages = with pkgs; [
     quickshell
 
-    material-symbols
-    nerd-fonts.caskaydia-mono
-
     kdePackages.qtbase
     kdePackages.qtgraphs
     kdePackages.qtdeclarative
