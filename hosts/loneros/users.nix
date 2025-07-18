@@ -91,6 +91,7 @@ in
       foliate # epub reader
       bitwarden # 密码管理器
       animeko # 番剧
+      hmcl # Minecraft 启动器
 
       # electron wrapper
       obsidian-wrapper
