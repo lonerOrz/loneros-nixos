@@ -62,6 +62,7 @@ jobs:
 
       - name: Build and push if not cached
         run: |
+          set -euo pipefail
           if nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel | grep -q 'will be built'; then
             echo "Some outputs need to be built. Proceeding with build..."
             cachix watch-exec loneros -- \
