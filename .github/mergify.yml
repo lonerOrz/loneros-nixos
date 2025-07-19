@@ -16,10 +16,11 @@ pull_request_rules:
   - name: Auto merge flake.lock updates
     conditions:
       - and:
-          - title~=^Update flake.lock
+          - "title~=^Update flake.lock.*"
           - label=auto_update_flake
           - label=github_actions
           - check-success=flake check
+          - check-success=build nixos & push to cachix
     actions:
       merge:
         method: squash

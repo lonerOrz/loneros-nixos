@@ -23,11 +23,16 @@ jobs:
           nix_conf: |
             accept-flake-config = true
 
+      - name: Generate PR title with date
+        id: gen_pr_title
+        run: |
+          echo "PR_TITLE=Update flake.lock - $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
           token: ${{ secrets.GH_TOKEN }} # https://github.com/DeterminateSystems/update-flake-lock#with-a-personal-authentication-token
-          pr-title: "Update flake.lock"
+          pr-title: ${{ env.PR_TITLE }}
           pr-labels: |
             auto_update_flake
             github_actions
