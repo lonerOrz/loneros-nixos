@@ -84,13 +84,15 @@ jobs:
           DRYRUN_LOG=$(mktemp)
 
           if ! nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel \
-            --print-build-logs > "$DRYRUN_LOG" 2>&1; then
+            --print-build-logs --verbose --fallback > "$DRYRUN_LOG" 2>&1; then
             echo "❌ Dry-run failed. Full log:"
             cat "$DRYRUN_LOG"
+            echo "🔍 Flake info:"
+            nix flake show
+            echo "🔍 Disk usage during failure:"
+            df -h / /nix-tmp /nix-cache
             exit 1
           fi
-
-          cat "$DRYRUN_LOG"
 
           if grep -q 'will be built' "$DRYRUN_LOG"; then
             echo "⚙️  Some outputs need to be built. Proceeding..."
