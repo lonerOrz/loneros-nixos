@@ -5,10 +5,13 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-nixos:
-    name: Build NixOS system
+    name: build nixos & push to cachix
     runs-on: ubuntu-latest
 
     steps:
