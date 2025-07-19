@@ -66,12 +66,14 @@ jobs:
 
           echo "🔍 Running dry-run build to check if anything needs to be built..."
 
-          # 临时文件记录 dry-run 输出
           DRYRUN_LOG=$(mktemp)
 
-          # 执行 dry-run，失败就退出
-          nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel \
-            --print-build-logs > "$DRYRUN_LOG" 2>&1
+          if ! nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel \
+            --print-build-logs > "$DRYRUN_LOG" 2>&1; then
+            echo "❌ Dry-run failed. Full log:"
+            cat "$DRYRUN_LOG"
+            exit 1
+          fi
 
           cat "$DRYRUN_LOG"
 
@@ -82,3 +84,9 @@ jobs:
           else
             echo "✅ All outputs are cached. Skipping build."
           fi
+
+      - name: Debug Nix build
+        if: failure()
+        run: |
+          nix flake show
+          nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel --print-build-logs --verbose
