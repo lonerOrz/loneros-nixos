@@ -38,6 +38,21 @@ jobs:
             log-lines = 25
             trusted-users = root runner
 
+      - name: upgrade to Lix
+        run: |
+          nix --version
+          whereis nix
+          sudo --preserve-env=PATH /nix/var/nix/profiles/default/bin/nix run \
+            --experimental-features "nix-command flakes" \
+            --extra-substituters https://cache.lix.systems \
+            --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=" \
+            'git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.0' -- \
+            upgrade-nix \
+            --extra-substituters https://cache.lix.systems \
+            --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+          # Verify Lix installation
+          nix --version
+
       - name: Setup Nix build env
         run: |
           sudo mkdir -p /nix-cache /nix-tmp
@@ -80,7 +95,7 @@ jobs:
           if grep -q 'will be built' "$DRYRUN_LOG"; then
             echo "⚙️  Some outputs need to be built. Proceeding..."
             cachix watch-exec loneros -- \
-              nix build .#nixosConfigurations.loneros.config.system.build.toplevel
+              nix build .#nixosConfigurations.loneros.config.system.build.toplevel --fallback
           else
             echo "✅ All outputs are cached. Skipping build."
           fi
