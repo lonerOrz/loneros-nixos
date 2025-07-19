@@ -23,6 +23,7 @@
     ./ags.nix
     ./niri.nix
     ./wine.nix
+    ./hmcl.nix
 
     # server
     ./mpd.nix
