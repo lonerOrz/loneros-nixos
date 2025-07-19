@@ -1,5 +1,5 @@
 {
-  config,
+  pkgs,
   ...
 }:
 {
@@ -13,4 +13,8 @@
     nix-direnv.enable = true; # 启用 nix-direnv 以与 nix 环境配合使用
     silent = false; # 启用direnv日志记录的隐藏
   };
+
+  environment.systemPackages = [
+    pkgs.devbox # 配合 direnv
+  ];
 }
