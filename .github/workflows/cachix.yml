@@ -63,11 +63,22 @@ jobs:
       - name: Build and push if not cached
         run: |
           set -euo pipefail
-          if nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel | grep -q 'will be built'; then
-            echo "Some outputs need to be built. Proceeding with build..."
+
+          echo "🔍 Running dry-run build to check if anything needs to be built..."
+
+          # 临时文件记录 dry-run 输出
+          DRYRUN_LOG=$(mktemp)
+
+          # 执行 dry-run，失败就退出
+          nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel \
+            --print-build-logs > "$DRYRUN_LOG" 2>&1
+
+          cat "$DRYRUN_LOG"
+
+          if grep -q 'will be built' "$DRYRUN_LOG"; then
+            echo "⚙️  Some outputs need to be built. Proceeding..."
             cachix watch-exec loneros -- \
-              nix build .#nixosConfigurations.loneros.config.system.build.toplevel \
-              --print-build-logs
+              nix build .#nixosConfigurations.loneros.config.system.build.toplevel
           else
-            echo "All outputs are cached. Skipping build."
+            echo "✅ All outputs are cached. Skipping build."
           fi
