@@ -80,4 +80,5 @@ jobs:
           set -euo pipefail
           echo "🔍 Running check-cache.sh to build and push missing paths..."
           chmod +x .github/script/check-cache.sh
-          .github/script/check-cache.sh
+          bash .github/script/check-cache.sh
+        shell: bash

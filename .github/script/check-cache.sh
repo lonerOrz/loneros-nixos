@@ -122,7 +122,16 @@ push_to_cachix() {
 main() {
   log "INFO" "Starting cache check for $FLAKE_TARGET"
   log "DEBUG" "Calling get_store_paths"
-  mapfile -t all_paths < <(get_store_paths "$FLAKE_TARGET")
+  paths_output=$(get_store_paths "$FLAKE_TARGET")
+  if [[ -z $paths_output ]]; then
+    log "ERROR" "get_store_paths returned empty output."
+    exit 1
+  fi
+
+  if ! mapfile -t all_paths <<<"$paths_output"; then
+    log "ERROR" "Failed to parse store paths into array."
+    exit 1
+  fi
   missing_paths=()
 
   log "INFO" "Checking cache presence..."
