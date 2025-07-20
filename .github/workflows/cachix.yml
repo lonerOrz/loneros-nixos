@@ -87,4 +87,5 @@ jobs:
             df -h / /nix-tmp /nix-cache
             exit 1
           }
-          echo "✅ Script completed !"
+          echo "✅ Script completed ! Full log:"
+          cat script.log
