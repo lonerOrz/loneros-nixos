@@ -77,6 +77,8 @@ jobs:
 
       - name: Build and push if not cached
         run: |
+          echo "nix flake show"
+          nix flake show
           echo "🔍 Running check-cache.sh to build and push missing paths..."
           chmod +x .github/script/check-cache.sh
           bash .github/script/check-cache.sh
