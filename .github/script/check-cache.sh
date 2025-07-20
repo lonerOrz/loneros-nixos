@@ -50,6 +50,7 @@ get_store_paths() {
     log "ERROR" "No store paths found for $target" >&2
     exit 1
   fi
+  paths=($paths)
   log "INFO" "Found ${#paths[@]} store paths (excluding .drv)" >&2
   printf '%s\n' "${paths[@]}"
 }
@@ -121,6 +122,12 @@ push_to_cachix() {
 main() {
   log "INFO" "Starting cache check for $FLAKE_TARGET"
   log "DEBUG" "Calling get_store_paths"
+
+  # 初始化 cache_hits
+  for cache in "${CACHES[@]}"; do
+    cache_hits["$cache"]=0
+  done
+
   paths_output=$(get_store_paths "$FLAKE_TARGET")
   if [[ -z $paths_output ]]; then
     log "ERROR" "get_store_paths returned empty output."
