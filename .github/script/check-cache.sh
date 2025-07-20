@@ -29,14 +29,14 @@ log() {
 run() {
   local cmd=("$@")
   log "DEBUG" "Running command: ${cmd[*]}"
-  if output=$("${cmd[@]}" 2>&1); then
-    log "DEBUG" "Command output: $output"
-    echo "$output"
-  else
+  local output
+  if ! output=$("${cmd[@]}" 2>&1); then
     log "ERROR" "Command failed: ${cmd[*]}"
     log "ERROR" "stderr: $output"
-    exit 1
+    return 1
   fi
+  log "DEBUG" "Command output: $output"
+  echo "$output"
 }
 
 # Get store paths
@@ -76,20 +76,27 @@ is_in_cache() {
 # Get derivation path
 get_drv_path() {
   local store_path="$1"
-  log "INFO" "Getting .drv for $store_path"
+  log "INFO" "Getting .drv for $store_path" >&2
+
   local drv_path
-  drv_path=$(timeout 2 nix-store -q --deriver "$store_path" 2>/dev/null || echo "unknown-deriver")
-  if [[ -z $drv_path || $drv_path == "unknown-deriver" ]]; then
-    log "WARN" "Skipping $store_path: no derivation found"
+  drv_path=$(timeout 2 nix-store -q --deriver "$store_path" 2>/dev/null || echo "")
+
+  if [[ -z "$drv_path" ]]; then
+    log "WARN" "Skipping $store_path: no derivation found" >&2
     return 1
   fi
-  log "INFO" "➡️ $store_path derives from $drv_path"
+
+  log "INFO" "➡️ $store_path derives from $drv_path" >&2
   echo "$drv_path"
 }
 
 # Build derivation
 build_drv() {
   local drv_path="$1"
+  if [[ ! "$drv_path" =~ ^/nix/store/.*\.drv$ ]]; then
+    log "WARN" "Skipping invalid .drv path: '$drv_path'"
+    return 1
+  fi
   log "INFO" "Building $drv_path"
   local cmd=(nix build --no-link "$drv_path" --print-build-logs --option substituters "${CACHES[*]}" --option trusted-public-keys "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= loneros.cachix.org-1:dVCECfW25sOY3PBHGBUwmQYrhRRK2+p37fVtycnedDU=")
   if run "${cmd[@]}"; then

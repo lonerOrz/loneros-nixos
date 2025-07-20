@@ -83,7 +83,7 @@ jobs:
           chmod +x .github/script/check-cache.sh
 
           # Run with tee to get both real-time output and log file
-          if ! .github/script/check-cache.sh 2>&1 | tee script.log; then
+          if ! .github/script/check-cache.sh | tee script.log; then
             echo "❌ Script failed. Full log (also saved in script.log):"
             echo "------------------------------------------------------"
             cat script.log
