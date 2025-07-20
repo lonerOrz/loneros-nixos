@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 禁用浅克隆
+          submodules: recursive # 确保拉取子模块
 
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
@@ -75,10 +78,25 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
 
+      - name: Debug flake outputs
+        run: nix flake show --all-systems --verbose
+
+      - name: Debug nixosConfigurations.loneros
+        run: |
+          nix eval --json .#nixosConfigurations.loneros.config.system.build.toplevel --no-write-lock-file || {
+            echo "Evaluation failed, dumping detailed output:"
+            nix eval --json .#nixosConfigurations.loneros.config.system.build.toplevel --no-write-lock-file --show-trace
+          }
+
+      - name: Debug nix path-info
+        run: |
+          nix path-info --recursive .#nixosConfigurations.loneros.config.system.build.toplevel || {
+            echo "nix path-info failed, dumping detailed output:"
+            nix path-info --recursive .#nixosConfigurations.loneros.config.system.build.toplevel --show-trace
+          }
+
       - name: Build and push if not cached
         run: |
-          echo "nix flake show"
-          nix flake show
           echo "🔍 Running check-cache.sh to build and push missing paths..."
           chmod +x .github/script/check-cache.sh
           bash .github/script/check-cache.sh
