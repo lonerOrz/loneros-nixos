@@ -78,32 +78,13 @@ jobs:
       - name: Build and push if not cached
         run: |
           set -euo pipefail
-
-          echo "🔍 Running dry-run build to check if anything needs to be built..."
-
-          DRYRUN_LOG=$(mktemp)
-
-          if ! nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel \
-            --print-build-logs --verbose --fallback > "$DRYRUN_LOG" 2>&1; then
-            echo "❌ Dry-run failed. Full log:"
-            cat "$DRYRUN_LOG"
-            echo "🔍 Flake info:"
-            nix flake show
+          echo "🔍 Running check-cache.sh to build and push missing paths..."
+          chmod +x .github/script/check-cache.sh
+          .github/script/check-cache.sh > script.log 2>&1 || {
+            echo "❌ Script failed. Full log:"
+            cat script.log
             echo "🔍 Disk usage during failure:"
             df -h / /nix-tmp /nix-cache
             exit 1
-          fi
-
-          if grep -q 'will be built' "$DRYRUN_LOG"; then
-            echo "⚙️  Some outputs need to be built. Proceeding..."
-            cachix watch-exec loneros -- \
-              nix build .#nixosConfigurations.loneros.config.system.build.toplevel --fallback
-          else
-            echo "✅ All outputs are cached. Skipping build."
-          fi
-
-      - name: Debug Nix build
-        if: failure()
-        run: |
-          nix flake show
-          nix build --dry-run .#nixosConfigurations.loneros.config.system.build.toplevel --print-build-logs --verbose
+          }
+          echo "✅ Script completed !"
