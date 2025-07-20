@@ -37,7 +37,8 @@ jobs:
             experimental-features = nix-command flakes
             sandbox = true
             build-users-group =
-            max-jobs = auto
+            max-jobs = 2
+            cores = 1
             log-lines = 25
             trusted-users = root runner
 
@@ -64,6 +65,9 @@ jobs:
           echo "NIX_BUILD_TMPDIR=/nix-tmp" >> $GITHUB_ENV
           echo "TMPDIR=/nix-tmp" >> $GITHUB_ENV
 
+      - name: Install script env
+        run: nix-env -iA nixpkgs.jq
+
       - name: Check disk usage before build
         run: |
           df -h /
@@ -78,21 +82,11 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
 
-      - name: Debug flake outputs
-        run: nix flake show --all-systems --verbose
-
-      - name: Debug nixosConfigurations.loneros
-        run: |
-          nix eval --json .#nixosConfigurations.loneros.config.system.build.toplevel --no-write-lock-file || {
-            echo "Evaluation failed, dumping detailed output:"
-            nix eval --json .#nixosConfigurations.loneros.config.system.build.toplevel --no-write-lock-file --show-trace
-          }
-
       - name: Debug nix path-info
         run: |
           nix path-info --recursive .#nixosConfigurations.loneros.config.system.build.toplevel || {
             echo "nix path-info failed, dumping detailed output:"
-            nix path-info --recursive .#nixosConfigurations.loneros.config.system.build.toplevel --show-trace
+            nix path-info --recursive .#nixosConfigurations.loneros.config.system.build.toplevel
           }
 
       - name: Build and push if not cached

@@ -45,7 +45,7 @@ get_store_paths() {
   log "INFO" "Getting store paths for flake target: $target" >&2
   log "DEBUG" "Running nix path-info --recursive $target" >&2
   local paths
-  paths=$(nix path-info --recursive "$target" 2>/dev/null | grep -v '\.drv$')
+  paths=$(nix path-info --recursive "$target" | grep -v '\.drv$')
   if [[ -z $paths ]]; then
     log "ERROR" "No store paths found for $target" >&2
     exit 1
