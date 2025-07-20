@@ -79,35 +79,5 @@ jobs:
         run: |
           set -euo pipefail
           echo "🔍 Running check-cache.sh to build and push missing paths..."
-
           chmod +x .github/script/check-cache.sh
-
-          # Run with tee to get both real-time output and log file
-          if ! .github/script/check-cache.sh | tee script.log; then
-            echo "❌ Script failed. Full log (also saved in script.log):"
-            echo "------------------------------------------------------"
-            cat script.log
-            echo "------------------------------------------------------"
-
-            echo "🔍 Disk usage during failure:"
-            df -h / /nix-tmp /nix-cache || true
-            echo
-
-            echo "🔍 Recent build errors (grep):"
-            grep -iE "error|fail|deriv" script.log || echo "(No matching errors found)"
-            echo
-
-            exit 1
-          fi
-
-          echo "✅ Script completed successfully. Log tail:"
-          tail -n 50 script.log
-
-          echo "📝 Writing summary to GitHub Step Summary"
-          {
-            echo "## ✅ check-cache.sh Build Summary"
-            echo "### 🔍 Last 20 lines of output"
-            echo '```'
-            tail -n 20 script.log
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          .github/script/check-cache.sh
