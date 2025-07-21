@@ -45,7 +45,15 @@ get_store_paths() {
   log "INFO" "Getting store paths for flake target: $target" >&2
   log "DEBUG" "Running nix path-info --recursive $target" >&2
   local paths
-  paths=$(nix path-info --recursive "$target" | grep -v '\.drv$')
+  # paths=$(nix path-info --recursive "$target" | grep -v '\.drv$')
+  drv_paths=$(nix derivation show -r "$target" 2>/dev/null |
+    jq -r 'keys[] | select(endswith(".drv"))' |
+    grep -E '/nix/store/[a-z0-9]{32}-[^/]+-[0-9][^/]*\.drv$' |
+    sed 's/\.drv$//' |
+    grep -vE '\.(jar|tar\.gz|pom|env|tgz|bz2|zip|xz|gem|patch|pyc|exe|dll|module|cabal|a|o|so|dylib|dev|doc|man|info|html|test|check|example|sample)(\.|$)' |
+    grep -E '/nix/store/[a-z0-9]{32}-[^/]+-[^/]+$' |
+    sort -u)
+
   if [[ -z $paths ]]; then
     log "ERROR" "No store paths found for $target" >&2
     exit 1

@@ -85,12 +85,6 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
 
-      - name: Debug nix derivation show
-        run: |
-          nix derivation show -r .#nixosConfigurations.loneros.config.system.build.toplevel \
-           | jq -r 'keys[] | select(endswith(".drv"))' \
-           | grep -E '/nix/store/[a-z0-9]{32}-[^/]+-[0-9][^/]*\.drv$'
-
       - name: Build and push if not cached
         run: |
           echo "🔍 Running check-cache.sh to build and push missing paths..."
