@@ -27,7 +27,7 @@ jobs:
       - name: Add swap
         uses: pierotofy/set-swap-space@master
         with:
-          swap-size-gb: 10
+          swap-size-gb: 20
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
@@ -37,7 +37,7 @@ jobs:
             experimental-features = nix-command flakes
             sandbox = true
             build-users-group =
-            max-jobs = 2
+            max-jobs = auto
             cores = 1
             log-lines = 25
             trusted-users = root runner

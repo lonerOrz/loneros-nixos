@@ -5,7 +5,7 @@ set -euo pipefail # Exit on error
 CACHES=(
   "https://cache.nixos.org"
   "https://loneros.cachix.org"
-  "https://nix-community.cachix.org"
+  "https://chaotic-nyx.cachix.org"
   "https://hyprland.cachix.org"
 )
 
