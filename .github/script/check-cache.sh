@@ -46,7 +46,7 @@ get_store_paths() {
   log "DEBUG" "Running nix path-info --recursive $target" >&2
   local paths
   # paths=$(nix path-info --recursive "$target" | grep -v '\.drv$')
-  drv_paths=$(nix derivation show -r "$target" 2>/dev/null |
+  paths=$(nix derivation show -r "$target" 2>/dev/null |
     jq -r 'keys[] | select(endswith(".drv"))' |
     grep -E '/nix/store/[a-z0-9]{32}-[^/]+-[0-9][^/]*\.drv$' |
     sed 's/\.drv$//' |
