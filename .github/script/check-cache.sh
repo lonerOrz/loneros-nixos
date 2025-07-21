@@ -5,10 +5,13 @@ set -euo pipefail # Exit on error
 CACHES=(
   "https://cache.nixos.org"
   "https://loneros.cachix.org"
+  "https://nix-community.cachix.org"
+  "https://hyprland.cachix.org"
 )
 
 CACHIX_NAME="loneros"
 FLAKE_TARGET=".#nixosConfigurations.loneros.config.system.build.toplevel"
+PACKAGE_TARGET=".#nixosConfigurations.loneros.config.environment.systemPackages"
 
 # Cache hit statistics
 declare -A cache_hits
@@ -43,22 +46,37 @@ run() {
 get_store_paths() {
   local target="$1"
   log "INFO" "Getting store paths for flake target: $target" >&2
-  log "DEBUG" "Running nix path-info --recursive $target" >&2
-  local paths
-  # paths=$(nix path-info --recursive "$target" | grep -v '\.drv$')
-  paths=$(nix derivation show -r "$target" 2>/dev/null |
-    jq -r 'keys[] | select(endswith(".drv"))' |
-    grep -E '/nix/store/[a-z0-9]{32}-[^/]+-[0-9][^/]*\.drv$' |
-    sed 's/\.drv$//' |
-    grep -vE '\.(jar|tar\.gz|pom|env|tgz|bz2|zip|xz|gem|patch|pyc|exe|dll|module|cabal|a|o|so|dylib|dev|doc|man|info|html|test|check|example|sample)(\.|$)' |
-    grep -E '/nix/store/[a-z0-9]{32}-[^/]+-[^/]+$' |
-    sort -u)
+  log "DEBUG" "Show packages drv path" >&2
 
-  if [[ -z $paths ]]; then
-    log "ERROR" "No store paths found for $target" >&2
-    exit 1
+  # 获取所有 drvPath 列表（原始）
+  local drv_paths
+  drv_paths=$(nix eval --apply 'x: map (pkg: pkg.drvPath) x' \
+    --json "$PACKAGE_TARGET" |
+    jq -r '.[]' | sort -u)
+
+  if [[ -z $drv_paths ]]; then
+    log "ERROR" "No drv paths found for $target" >&2
+    return 1
   fi
-  paths=($paths)
+
+  # 逐条处理 drvPath，提取对应 out.path
+  local paths=()
+  local drv out_path
+  while IFS= read -r drv; do
+    out_path=$(nix derivation show "$drv" 2>/dev/null | jq -r '.[].outputs.out.path')
+    if [[ -n $out_path ]]; then
+      paths+=("$out_path")
+    fi
+  done <<<"$drv_paths"
+
+  if [[ ${#paths[@]} -eq 0 ]]; then
+    log "ERROR" "No store paths found after derivation inspection for $target" >&2
+    return 1
+  fi
+
+  # 去重排序
+  IFS=$'\n' read -rd '' -a paths < <(printf '%s\n' "${paths[@]}" | sort -u)
+
   log "INFO" "Found ${#paths[@]} store paths (excluding .drv)" >&2
   printf '%s\n' "${paths[@]}"
 }
@@ -81,21 +99,28 @@ is_in_cache() {
   return 1
 }
 
-# Get derivation path
-get_drv_path() {
-  local store_path="$1"
-  log "INFO" "Getting .drv for $store_path" >&2
+# 输出所有 systemPackages 的 outPath 和对应的 .drvPath
+# 输出格式: "<out_path> <drv_path>"
+get_drv_out_mappings() {
+  local target="$1"
+  log "INFO" "Building drv ↔ outPath mapping for $target"
 
-  local drv_path
-  drv_path=$(timeout 2 nix-store -q --deriver "$store_path" 2>/dev/null || echo "")
+  local drv_paths
+  drv_paths=$(nix eval --apply 'x: map (pkg: pkg.drvPath) x' \
+    --json "$PACKAGE_TARGET" | jq -r '.[]' | sort -u)
 
-  if [[ -z $drv_path ]]; then
-    log "WARN" "Skipping $store_path: no derivation found" >&2
+  if [[ -z $drv_paths ]]; then
+    log "ERROR" "No drv paths found from flake target $target"
     return 1
   fi
 
-  log "INFO" "➡️ $store_path derives from $drv_path" >&2
-  echo "$drv_path"
+  local drv out_path
+  while IFS= read -r drv; do
+    out_path=$(nix derivation show "$drv" 2>/dev/null | jq -r '.[].outputs.out.path')
+    if [[ -n $out_path ]]; then
+      printf '%s %s\n' "$out_path" "$drv"
+    fi
+  done <<<"$drv_paths"
 }
 
 # Build derivation
@@ -119,7 +144,7 @@ build_drv() {
 push_to_cachix() {
   local path="$1"
   log "INFO" "Pushing $path to Cachix ($CACHIX_NAME)..."
-  if run nix run nixpkgs#cachix push "$CACHIX_NAME" "$path"; then
+  if run nix run nixpkgs#cachix -- push "$CACHIX_NAME" "$path"; then
     log "INFO" "✅ Pushed $path"
   else
     log "ERROR" "Push failed for $path"
@@ -135,6 +160,12 @@ main() {
   for cache in "${CACHES[@]}"; do
     cache_hits["$cache"]=0
   done
+
+  # 获取 store path 和 out → drv 映射
+  declare -A out_to_drv
+  while read -r out drv; do
+    out_to_drv["$out"]="$drv"
+  done < <(get_drv_out_mappings "$FLAKE_TARGET")
 
   paths_output=$(get_store_paths "$FLAKE_TARGET")
   if [[ -z $paths_output ]]; then
@@ -172,12 +203,13 @@ main() {
   log "INFO" "Found ${#missing_paths[@]} missing paths. Building individually..."
   for path in "${missing_paths[@]}"; do
     log "DEBUG" "Processing missing path: $path"
-    drv_path=$(get_drv_path "$path")
-    if [[ $? -ne 0 ]]; then
-      continue
+    drv_path="${out_to_drv["$path"]:-}"
+    if [[ -z $drv_path ]]; then
+      log "WARN" "No drvPath found for $path"
+      exit 1
     fi
     build_drv "$drv_path"
-    push_to_cachix "$path"
+    push_to_cachix "$drv_path"
   done
 
   log "INFO" "✅ All missing store paths built and pushed successfully."
