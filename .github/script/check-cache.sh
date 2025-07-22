@@ -133,7 +133,7 @@ build_drv() {
   log "INFO" "Building $drv_path"
   # Add ^* suffix as required by newer Nix versions
   local drv_path_fix="${drv_path}^*"
-  local cmd=(nix build --no-link "$drv_path_fix" --print-build-logs --option substituters "${CACHES[*]}" --option trusted-public-keys "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= loneros.cachix.org-1:dVCECfW25sOY3PBHGBUwmQYrhRRK2+p37fVtycnedDU=")
+  local cmd=(nix build --no-link "$drv_path_fix" --print-build-logs)
   if run "${cmd[@]}"; then
     log "INFO" "✅ Build succeeded for $drv_path"
   else

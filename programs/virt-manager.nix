@@ -36,6 +36,7 @@
     #gnome.adwaita-icon-theme
     # quickemu
     # quickgui # quickemu GUI
+    virglrenderer # 3D 加速
   ];
 
   virtualisation = {
