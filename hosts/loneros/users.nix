@@ -58,6 +58,7 @@ in
       nixd # Nix lsp
       gh # github cli
       jujutsu # better than git
+      atuin # shell history manager
 
       go-musicfox
       lazygit
