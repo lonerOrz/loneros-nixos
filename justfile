@@ -12,6 +12,9 @@
 @update-custom-packages:
     nix-shell -p nix-update nix-prefetch-git jq --run "python .github/script/update.py"
 
+@ex-update:
+    python3 .github/script/flake_update.py
+
 @clean:
     nix-collect-garbage -d
 
@@ -21,8 +24,8 @@
 @build-remote target ip:
     nixos-rebuild switch --flake .#{{ target }} --target-host "root@{{ ip }}"
 
-@test target="loneros":
-    sudo nixos-rebuild test --flake .#{{ target }}
+@cachix target="loneros":
+    nix run nixpkgs#cachix -- push loneros $(nix path-info .#nixosConfigurations.{{ target }}.config.system.build.toplevel)
 
 @fix:
     nix-store --repair --verify --check-contents
@@ -41,3 +44,6 @@
 
 @fast-build-package target="mpv-handler":
     nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.{{ target }} --eval-max-memory-size 8192
+
+@search:
+    nsearch-tv
