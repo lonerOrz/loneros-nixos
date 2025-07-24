@@ -114,6 +114,7 @@ in
       (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
       (pkgs.callPackage ../../pkgs/turntable.nix { })
       (pkgs.callPackage ../../pkgs/shimeji/package.nix { })
+      (pkgs.callPackage ../../pkgs/nsearch-tv.nix { })
     ];
 
   programs = {
