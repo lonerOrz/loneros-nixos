@@ -69,7 +69,8 @@
       systems = systems;
       imports = [
         ./checks/default.nix
-      ] ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
+      ]
+      ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
 
       perSystem =
         {

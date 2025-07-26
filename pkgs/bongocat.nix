@@ -46,19 +46,18 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   tauriBundleType = "deb";
 
-  nativeBuildInputs =
-    [
-      cargo-tauri.hook
-      nodejs
-      pnpm_9.configHook
-      pkg-config
-      xdg-utils
-      jq
-      makeWrapper
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [
-      wrapGAppsHook4
-    ];
+  nativeBuildInputs = [
+    cargo-tauri.hook
+    nodejs
+    pnpm_9.configHook
+    pkg-config
+    xdg-utils
+    jq
+    makeWrapper
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [
+    wrapGAppsHook4
+  ];
 
   buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
     glib-networking
