@@ -8,5 +8,6 @@
     (import ./mpv.nix)
     (import ./mpd.nix)
     (import ./papirus-icon-theme.nix)
+    (import ./textual.nix)
   ];
 }
