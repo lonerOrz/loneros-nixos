@@ -69,10 +69,11 @@ in
       rsclock # colock
       asciinema # rec demo.cast
       asciinema-agg # cast -> gif
-      posting # postman tui
       fuzzel
       networkmanager_dmenu
+      posting # postman tui
       isd # systemd TUI
+      kmon # 内核编译和管理TUI
 
       qbittorrent-enhanced # qbee
       motrix
