@@ -87,7 +87,5 @@ jobs:
 
       - name: Build and push if not cached
         run: |
-          echo "🔍 Running check-cache.sh to build and push missing paths..."
-          chmod +x .github/script/check-cache.sh
-          bash .github/script/check-cache.sh
-        shell: bash
+          nix run github:Mic92/nix-fast-build -- --flake .#nixosConfigurations.loneros.config.system.build.toplevel --skip-cached --eval-workers 4 --eval-max-memory-size 8192
+          nix run nixpkgs#cachix -- push loneros $(nix path-info .#nixosConfigurations.loneros.config.system.build.toplevel)
