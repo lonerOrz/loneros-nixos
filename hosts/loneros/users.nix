@@ -90,6 +90,7 @@ in
       foliate # epub reader
       bitwarden # 密码管理器
       kazumi # 番剧
+      turntable # 音乐盒子
 
       # electron wrapper
       obsidian-wrapper
@@ -113,7 +114,6 @@ in
     ++ [
       # 自定义软件包
       (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
-      (pkgs.callPackage ../../pkgs/turntable.nix { })
       (pkgs.callPackage ../../pkgs/shimeji/package.nix { })
       (pkgs.callPackage ../../pkgs/nsearch-tv.nix { })
     ];
