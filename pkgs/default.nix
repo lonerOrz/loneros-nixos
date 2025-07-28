@@ -40,7 +40,6 @@
     upper
   );
   abdownloadmanager = pkgs.callPackage ./abdownloadmanager.nix { };
-  bongocat = pkgs.callPackage ./bongocat.nix { };
   linux-wallpaperengine = pkgs.callPackage ./linux-wallpaperengine/package.nix { };
   nsearch-tv = pkgs.callPackage ./nsearch-tv.nix { };
 }
