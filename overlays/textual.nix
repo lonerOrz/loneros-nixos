@@ -37,3 +37,4 @@ final: prev: {
     })
   ];
 }
+# 已解决 wait https://github.com/NixOS/nixpkgs/pull/428417

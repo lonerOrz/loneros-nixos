@@ -9,7 +9,6 @@
     (import ./mpv.nix)
 
     #temporary
-    (import ./mpd.nix)
     (import ./textual.nix)
     (import ./ncmpcpp.nix)
   ];
