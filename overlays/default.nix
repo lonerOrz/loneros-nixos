@@ -9,5 +9,6 @@
     (import ./mpd.nix)
     (import ./papirus-icon-theme.nix)
     (import ./textual.nix)
+    (import ./ncmpcpp.nix)
   ];
 }
