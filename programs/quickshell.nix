@@ -36,5 +36,6 @@ in
     libsForQt5.qt5.qtgraphicaleffects
 
     adwaita-icon-theme
+    material-symbols
   ];
 }
