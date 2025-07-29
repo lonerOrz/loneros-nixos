@@ -24,6 +24,7 @@
     ./niri.nix
     ./wine.nix
     ./hmcl.nix
+    ./gimp.nix
 
     # server
     ./mpd.nix
