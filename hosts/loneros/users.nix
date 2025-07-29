@@ -86,7 +86,6 @@ in
       evil-helix_git # introduces Vim keybindings and more
       element-desktop
       libreoffice-still # 长久支持版本
-      gimp # 图片编辑
       foliate # epub reader
       bitwarden # 密码管理器
       kazumi # 番剧
