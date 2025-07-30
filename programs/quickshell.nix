@@ -37,5 +37,6 @@ in
 
     adwaita-icon-theme
     material-symbols
+    adw-gtk3
   ];
 }
