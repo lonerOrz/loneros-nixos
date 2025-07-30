@@ -90,6 +90,7 @@ in
       bitwarden # 密码管理器
       kazumi # 番剧
       turntable # 音乐盒子
+      librecad # CAD
 
       # electron wrapper
       obsidian-wrapper
