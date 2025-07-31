@@ -1,5 +1,8 @@
 {
   imports = [
+    #system
+    ./mime.nix
+
     # program
     ./nh.nix
     ./git.nix
