@@ -76,7 +76,7 @@ in
       qbittorrent-enhanced # qbee
       motrix
       localsend
-      inputs.ghostty.packages."${system}".default
+      ghostty
       foot
       zed-editor
       telegram-desktop
