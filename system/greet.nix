@@ -9,7 +9,6 @@ in
 {
   services.greetd = {
     enable = true;
-    vt = 3; # tty3
     settings = {
       default_session = {
         user = "${username}";
