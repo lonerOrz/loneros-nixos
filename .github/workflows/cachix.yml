@@ -33,14 +33,13 @@ jobs:
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
-            accept-flake-config = true
             experimental-features = nix-command flakes
             sandbox = true
-            build-users-group =
             max-jobs = auto
-            cores = 1
-            log-lines = 25
             trusted-users = root runner
+
+      - name: Check nix config
+        run: nix config show | grep sandbox
 
       - name: upgrade to Lix
         run: |
