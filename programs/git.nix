@@ -18,7 +18,7 @@ in
         # Sign all commits using ssh key
         commit.gpgsign = true;
         gpg.format = "openpgp";
-        user.signingkey = "F55E587ECAB5D316";
+        user.signingkey = "BF57164EB71B66AF";
         init.defaultBranch = "main";
         core.editor = "nvim";
         color.ui = "auto";
