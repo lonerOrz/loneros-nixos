@@ -22,6 +22,10 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
+            extra_nix_config: "sandbox = true"
+
+      - name: Check nix config
+        run: nix config show | grep sandbox
 
       - name: Setup Python
         uses: actions/setup-python@v5
