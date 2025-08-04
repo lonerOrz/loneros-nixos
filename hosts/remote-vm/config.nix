@@ -74,6 +74,24 @@
     };
   };
 
+  # security
+  # 允许 wheel 组成员用 sudo
+  security.sudo = {
+    enable = true;
+    package = pkgs.sudo;
+    extraRules = [
+      {
+        users = [ "${username}" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+  };
+
   # for devlopment
   users.users.root.hashedPassword = "$y$j9T$G4/aaUi6RJ96LQF2eWcGj1$h4ak4cLJGzwYqcRoyOzhNU8KVdCBtEL64h.xuIZFbmC";
 
@@ -82,6 +100,8 @@
     "nix-command" # 启用 nix build, nix run, nix flake 等新命令
     "flakes"
   ];
+  # 禁用远程机器的签名验证,(懒得给本地构建路径签名)
+  nix.settings.require-sigs = false;
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.05"; # Did you read the comment?
