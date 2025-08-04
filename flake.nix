@@ -92,12 +92,7 @@
         {
           _module.args.mylib = mylib;
           devShells = import ./devShell/default.nix { inherit pkgs; };
-          checks =
-            let
-              deployLibs = inputs.deploy-rs.lib;
-              deployChecks = lib.concatMapAttrs (_: deployLib: deployLib.deployChecks self.deploy) deployLibs;
-            in
-            lib.mkIf (pkgs.hostPlatform.isLinux) deployChecks;
+          checks = { } // inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
           packages =
             import ./pkgs/default.nix {
               inherit pkgs;
