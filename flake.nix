@@ -53,6 +53,7 @@
     };
     disko.url = "github:nix-community/disko";
     sops-nix.url = "github:Mic92/sops-nix";
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
   outputs =
@@ -68,14 +69,24 @@
         "x86_64-linux"
         "aarch64-linux"
       ];
+      lib = nixpkgs.lib;
       mylib = import ./lib/mylib.nix { nixpkgs-lib = nixpkgs.lib; }; # 自定义 lib
+      # TODO: 分离成 hosts.nix
+      hosts = {
+        loneros = {
+          system = "x86_64-linux";
+          username = "loner";
+        };
+        # 快速安装远程 nixos 配置
+        remote-vm = {
+          system = "x86_64-linux";
+          username = "loner";
+        };
+      };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = systems;
-      imports = [
-        ./checks/default.nix
-      ]
-      ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
+      imports = [ ] ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
 
       perSystem =
         {
@@ -87,6 +98,12 @@
         {
           _module.args.mylib = mylib;
           devShells = import ./devShell/default.nix { inherit pkgs; };
+          checks =
+            let
+              deployLibs = inputs.deploy-rs.lib;
+              deployChecks = lib.concatMapAttrs (_: deployLib: deployLib.deployChecks self.deploy) deployLibs;
+            in
+            lib.mkIf (pkgs.hostPlatform.isLinux) deployChecks;
           packages =
             import ./pkgs/default.nix {
               inherit pkgs;
@@ -106,17 +123,6 @@
       flake = {
         nixosConfigurations =
           let
-            hosts = {
-              loneros = {
-                system = "x86_64-linux";
-                username = "loner";
-              };
-              # 快速安装远程 nixos 配置
-              remote-vm = {
-                system = "x86_64-linux";
-                username = "test";
-              };
-            };
             mkStable =
               system:
               import nixpkgs-stable {
@@ -155,6 +161,27 @@
               ];
             }
           ) hosts;
+
+        # deploys
+        deploy.nodes =
+          let
+            deployDir = ./deploy;
+            nodeFiles = if builtins.pathExists deployDir then builtins.readDir deployDir else { };
+            validNixFiles = lib.filterAttrs (
+              name: type: type == "regular" && lib.hasSuffix ".nix" name
+            ) nodeFiles;
+            nodeNames = map (name: lib.removeSuffix ".nix" name) (lib.attrNames validNixFiles);
+            nodes = lib.genAttrs nodeNames (
+              nodeName:
+              import (deployDir + "/${nodeName}.nix") {
+                inherit inputs;
+                nixosConfigurations = self.nixosConfigurations;
+                hostConfig = hosts.${nodeName};
+                nodeName = nodeName;
+              }
+            );
+          in
+          nodes;
       };
     };
 }
