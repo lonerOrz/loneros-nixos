@@ -39,10 +39,12 @@ jobs:
           # Verify Lix installation
           nix --version
 
-      - name: Add Cachix (nix-community)
+      - name: Setup Cachix
         uses: cachix/cachix-action@v16
         with:
-          name: nix-community
+          name: loneros
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: nix-community
           skipPush: true
 
       - name: Check
