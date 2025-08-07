@@ -102,6 +102,8 @@
   ];
   # 禁用远程机器的签名验证,(懒得给本地构建路径签名)
   nix.settings.require-sigs = false;
+  # 强制使用本地 cahe
+  nix.settings.substituters = lib.mkForce [ "http://192.168.2.6:5000" ];
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.05"; # Did you read the comment?
