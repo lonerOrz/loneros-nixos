@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }} # 允许推送
 
       - name: Install Nix
         uses: nixbuild/nix-quick-install-action@v32
@@ -24,15 +26,37 @@ jobs:
             accept-flake-config = true
 
       - name: Generate PR title with date
-        id: gen_pr_title
         run: |
           echo "PR_TITLE=Update flake.lock - $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
 
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@main
+      - name: Run flake update script and save output
+        run: |
+          BODY=$(python3 .github/script/flake_update.py)
+          echo "COMMIT_BODY<<EOF" >> $GITHUB_ENV
+          echo "$BODY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Check if flake.lock changed
+        run: |
+          if git diff --quiet flake.lock; then
+            echo "::notice title=No updates::flake.lock unchanged, skipping PR"
+            exit 0
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-flake-lock
+          git add flake.lock
+          git commit -m "${PR_TITLE}" -m "${COMMIT_BODY}"
+          git push origin update-flake-lock
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GH_TOKEN }} # https://github.com/DeterminateSystems/update-flake-lock#with-a-personal-authentication-token
-          pr-title: ${{ env.PR_TITLE }}
-          pr-labels: |
-            auto_update_flake
-            github_actions
+          token: ${{ secrets.GH_TOKEN }}
+          title: ${{ env.PR_TITLE }}
+          body: ${{ env.COMMIT_BODY }}
+          labels: auto_update_flake,github_actions
+          branch: update-flake-lock

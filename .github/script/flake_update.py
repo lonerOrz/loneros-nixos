@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 # 🛑 要排除更新的 inputs
-EXCLUDED_INPUTS = {"lix-module"}  # "lix-module","nixpkgs"
+EXCLUDED_INPUTS = {"lix", "lix-module"}  # "lix-module","nixpkgs"
 
 
 def main():
