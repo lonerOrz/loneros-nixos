@@ -27,7 +27,8 @@ jobs:
 
       - name: Generate PR title with date
         run: |
-          DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          # 用短横线替换了冒号，避免分支名非法字符
+          DATE=$(date -u +'%Y-%m-%dT%H-%M-%SZ')
           echo "DATE=$DATE" >> $GITHUB_ENV
           echo "PR_TITLE=Update flake.lock - $DATE" >> $GITHUB_ENV
 
@@ -39,13 +40,17 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Check if flake.lock changed
+        id: check_diff
         run: |
           if git diff --quiet flake.lock; then
             echo "::notice title=No updates::flake.lock unchanged, skipping PR"
-            exit 0
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit and push changes
+        if: steps.check_diff.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -55,6 +60,7 @@ jobs:
           git push origin update-flake-lock-${DATE}
 
       - name: Create pull request
+        if: steps.check_diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_TOKEN }}
