@@ -1,7 +1,7 @@
 name: update flake lock
 
 on:
-  workflow_dispatch: # allows manual triggering
+  workflow_dispatch:
   schedule:
     - cron: "0 16 * * *" # (UTC+8 00:00)
 
@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_TOKEN }} # 允许推送
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Install Nix
         uses: nixbuild/nix-quick-install-action@v32
@@ -27,7 +27,9 @@ jobs:
 
       - name: Generate PR title with date
         run: |
-          echo "PR_TITLE=Update flake.lock - $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+          DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo "DATE=$DATE" >> $GITHUB_ENV
+          echo "PR_TITLE=Update flake.lock - $DATE" >> $GITHUB_ENV
 
       - name: Run flake update script and save output
         run: |
@@ -47,10 +49,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b update-flake-lock
+          git checkout -b update-flake-lock-${DATE}
           git add flake.lock
           git commit -m "${PR_TITLE}" -m "${COMMIT_BODY}"
-          git push origin update-flake-lock
+          git push origin update-flake-lock-${DATE}
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
@@ -59,4 +61,4 @@ jobs:
           title: ${{ env.PR_TITLE }}
           body: ${{ env.COMMIT_BODY }}
           labels: auto_update_flake,github_actions
-          branch: update-flake-lock
+          branch: update-flake-lock-${{ env.DATE }}
