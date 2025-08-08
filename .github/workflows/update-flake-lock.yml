@@ -27,7 +27,6 @@ jobs:
 
       - name: Generate PR title with date
         run: |
-          # 用短横线替换了冒号，避免分支名非法字符
           DATE=$(date -u +'%Y-%m-%dT%H-%M-%SZ')
           echo "DATE=$DATE" >> $GITHUB_ENV
           echo "PR_TITLE=Update flake.lock - $DATE" >> $GITHUB_ENV
@@ -59,13 +58,22 @@ jobs:
           git commit -m "${PR_TITLE}" -m "${COMMIT_BODY}"
           git push origin update-flake-lock-${DATE}
 
-      - name: Create pull request
+      - name: Create pull request with gh CLI
         if: steps.check_diff.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          title: ${{ env.PR_TITLE }}
-          body: ${{ env.COMMIT_BODY }}
-          labels: auto_update_flake,github_actions
-          base: main
-          branch: update-flake-lock-${{ env.DATE }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PR_TITLE: ${{ env.PR_TITLE }}
+          PR_BODY: ${{ env.COMMIT_BODY }}
+          PR_BRANCH: update-flake-lock-${{ env.DATE }}
+        run: |
+          gh auth setup-git
+
+          gh pr create \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "$PR_BRANCH"
+
+          gh pr edit "$PR_BRANCH" \
+            --add-label auto_update_flake \
+            --add-label github_actions
