@@ -28,16 +28,6 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    lix = {
-      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
-      flake = false;
-    };
-
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.lix.follows = "lix";
-    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -152,7 +142,6 @@
                 inputs.honkai-railway-grub-theme.nixosModules.${cfg.system}.default
                 inputs.stylix.nixosModules.stylix
                 inputs.chaotic.nixosModules.default
-                inputs.lix-module.nixosModules.default
               ];
             }
           ) hosts;
