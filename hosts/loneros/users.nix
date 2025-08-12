@@ -57,6 +57,7 @@ in
       gh # github cli
       jujutsu # better than git
       atuin # shell history manager
+      aircrack-ng # wifi hack
 
       go-musicfox
       lazygit
