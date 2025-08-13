@@ -50,6 +50,7 @@ in
       translate-shell # 命令行翻译
       starship
       stow # dotfiles needed
+      tuckr # better than stow
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
       nixfmt-rfc-style # 官方 nixfmt 风格
