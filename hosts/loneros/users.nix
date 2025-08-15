@@ -113,9 +113,13 @@ in
     ]
     ++ [
       # 自定义软件包
-      (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
+      # (pkgs.callPackage ../../pkgs/mpv-handler.nix { })
       (pkgs.callPackage ../../pkgs/shimeji/package.nix { })
       (pkgs.callPackage ../../pkgs/nsearch-tv.nix { })
+    ]
+    ++ [
+      # NUR packages
+      pkgs.nur.repos.lonerOrz.mpv-handler
     ];
 
   programs = {
