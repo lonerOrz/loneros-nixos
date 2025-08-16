@@ -39,22 +39,22 @@ jobs:
             trusted-users = root runner
 
       - name: Check nix config
-        run: nix config show | grep sandbox
+        run: nix config show
 
-      - name: upgrade to Lix
-        run: |
-          nix --version
-          whereis nix
-          sudo --preserve-env=PATH /nix/var/nix/profiles/default/bin/nix run \
-            --experimental-features "nix-command flakes" \
-            --extra-substituters https://cache.lix.systems \
-            --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=" \
-            'git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.3' -- \
-            upgrade-nix \
-            --extra-substituters https://cache.lix.systems \
-            --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
-          # Verify Lix installation
-          nix --version
+      # - name: upgrade to Lix
+      #   run: |
+      #     nix --version
+      #     whereis nix
+      #     sudo --preserve-env=PATH /nix/var/nix/profiles/default/bin/nix run \
+      #       --experimental-features "nix-command flakes" \
+      #       --extra-substituters https://cache.lix.systems \
+      #       --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=" \
+      #       'git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.3' -- \
+      #       upgrade-nix \
+      #       --extra-substituters https://cache.lix.systems \
+      #       --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+      #     # Verify Lix installation
+      #     nix --version
 
       - name: Setup Nix build env
         run: |
