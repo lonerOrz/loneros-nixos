@@ -16,10 +16,10 @@ let
     tuckr_bin_path="$1"
     dot_path_raw="$2"
     backup_suffix="$3"
-    disabled_groups_csv="$${4:-}"   # 空时安全
+    disabled_groups_csv="''${4:-}"   # 空时安全
 
     if [[ "$dot_path_raw" == "~"* ]]; then
-      export TUCKR_HOME="$HOME/''${dot_path_raw:1}"
+      export TUCKR_HOME="$HOME''${dot_path_raw:1}"
     else
       export TUCKR_HOME="$dot_path_raw"
     fi
