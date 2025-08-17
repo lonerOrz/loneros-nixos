@@ -9,5 +9,6 @@
     (import ./mpv.nix)
 
     #temporary
+    (import ./tuckr.nix)
   ];
 }
