@@ -13,6 +13,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko.nix
+    ./module.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -26,6 +27,7 @@
     curl
     wget
     yazi
+    tuckr
   ];
 
   fonts.packages = with pkgs; [
@@ -71,6 +73,21 @@
         "input"
         "audio"
       ];
+    };
+  };
+
+  # 开启模块
+  tuckr.enable = true; # 必须保留
+  tuckr.users = {
+    ${username} = {
+      enable = true;
+      dotPath = "~/.config";
+      backupSuffix = "bak";
+      group = {
+        nvim.enable = true;
+        fzf.enable = true;
+        fastfetch.enable = false;
+      };
     };
   };
 
