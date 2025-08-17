@@ -46,6 +46,11 @@ in
   environment.systemPackages =
     with pkgs;
     [
+      # devShell
+      rust-analyzer
+      rustfmt
+      clippy
+
       # software
       translate-shell # 命令行翻译
       starship

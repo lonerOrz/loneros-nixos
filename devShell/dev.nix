@@ -1,7 +1,7 @@
 { pkgs, ... }:
 pkgs.mkShell {
   buildInputs =
-    # --- Node.js/JS 工具 ---
+    # --- Node.js/JS ---
     (with pkgs; [
       nodejs_22
       node2nix
@@ -12,7 +12,7 @@ pkgs.mkShell {
       eslint_d
     ])
     ++
-      # --- Python 工具 ---
+      # --- Python ---
       (with pkgs; [
         python312
         pyright
@@ -25,7 +25,7 @@ pkgs.mkShell {
       ruff
     ])
     ++
-      # --- C/C++ 工具 ---
+      # --- C/C++ ---
       (with pkgs; [
         gcc
         gdb
@@ -34,10 +34,17 @@ pkgs.mkShell {
         cmake
       ])
     ++
-      # --- Lua 工具 ---
+      # --- Lua ---
       (with pkgs; [
         lua5_4_compat
         luarocks
+      ])
+    ++
+      # --- Rust ---
+      (with pkgs; [
+        rust-analyzer
+        rustfmt
+        clippy
       ]);
 
   shellHook = ''
