@@ -27,7 +27,6 @@
     curl
     wget
     yazi
-    tuckr
   ];
 
   fonts.packages = with pkgs; [

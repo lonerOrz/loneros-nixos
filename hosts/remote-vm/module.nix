@@ -58,6 +58,12 @@ in
   options.tuckr = {
     enable = mkEnableOption "Enable multi-user tuckr management";
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.tuckr;
+      description = "Specify the tuckr package to use";
+    };
+
     users = mkOption {
       type = types.attrsOf (
         types.submodule (_: {
@@ -91,12 +97,18 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = [ cfg.package ];
 
     # system-wide service per user
     systemd.services = lib.mapAttrs' (
       username: userCfg:
       let
-        # 只传禁用的组
+        enabled_groups_csv = lib.concatStringsSep "," (
+          lib.filter (s: s != "") (
+            builtins.attrValues (lib.mapAttrs (n: v: if v.enable then n else "") userCfg.group)
+          )
+        );
+        # 禁用的组
         disabled_groups_csv = lib.concatStringsSep "," (
           lib.filter (s: s != "") (
             builtins.attrValues (lib.mapAttrs (n: v: if !v.enable then n else "") userCfg.group)
@@ -112,13 +124,13 @@ in
           path = [
             pkgs.coreutils
             pkgs.python3
-            pkgs.tuckr
+            cfg.package
           ];
           serviceConfig = {
             Type = "oneshot";
             User = username;
             Environment = "HOME=/home/${username}";
-            ExecStart = "${userTuckrActivatorScript} ${pkgs.tuckr}/bin/tuckr ${userCfg.dotPath} ${userCfg.backupSuffix} ${disabled_groups_csv}";
+            ExecStart = "${userTuckrActivatorScript} ${cfg.package}/bin/tuckr ${userCfg.dotPath} ${userCfg.backupSuffix} ${disabled_groups_csv}";
           };
         };
       }
