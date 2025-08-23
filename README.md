@@ -51,12 +51,12 @@
 
 ## ✨ Features
 
-*   **Declarative & Reproducible**: Managed entirely by Nix Flakes for a consistent environment.
-*   **Window Manager**: Uses [Hyprland](https://hyprland.org/), a dynamic tiling Wayland compositor.
-*   **Theming**: Themed with [Stylix](https://github.com/danth/stylix) and the beautiful [Catppuccin](https://github.com/catppuccin) color scheme.
-*   **Secrets Management**: Securely manages secrets using [sops-nix](https://github.com/Mic92/sops-nix).
-*   **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
-*   **Deployment**: Utilizes [deploy-rs](https://github.com/serokell/deploy-rs) for remote deployment.
+- **Declarative & Reproducible**: Managed entirely by Nix Flakes for a consistent environment.
+- **Window Manager**: Uses [Hyprland](https://hyprland.org/), a dynamic tiling Wayland compositor.
+- **Theming**: Themed with [Stylix](https://github.com/danth/stylix) and the beautiful [Catppuccin](https://github.com/catppuccin) color scheme.
+- **Secrets Management**: Securely manages secrets using [sops-nix](https://github.com/Mic92/sops-nix).
+- **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
+- **Deployment**: Utilizes [deploy-rs](https://github.com/serokell/deploy-rs) for remote deployment.
 
 ---
 
@@ -64,18 +64,18 @@
 
 This repository is organized as follows:
 
--   `flake.nix`: The entry point for the entire configuration.
--   `hosts/`: Contains machine-specific configurations.
-    -   `loneros/`: Main desktop configuration.
-    -   `remote-vm/`: Configuration for a remote virtual machine.
--   `home/`: User-specific configurations (not managed by home-manager).
--   `modules/`: Reusable NixOS modules for drivers and services.
--   `overlays/`: Customizations and overrides for existing packages.
--   `pkgs/`: Definitions for custom packages.
--   `programs/`: Configurations for various applications.
--   `system/`: Global, system-wide settings.
--   `secrets/`: Holds secret definitions for `sops-nix`.
--   `themes/`: Theming definitions, primarily for `stylix`.
+- `flake.nix`: The entry point for the entire configuration.
+- `hosts/`: Contains machine-specific configurations.
+  - `loneros/`: Main desktop configuration.
+  - `remote-vm/`: Configuration for a remote virtual machine.
+- `home/`: User-specific configurations (not managed by home-manager).
+- `modules/`: Reusable NixOS modules for drivers and services.
+- `overlays/`: Customizations and overrides for existing packages.
+- `pkgs/`: Definitions for custom packages.
+- `programs/`: Configurations for various applications.
+- `system/`: Global, system-wide settings.
+- `secrets/`: Holds secret definitions for `sops-nix`.
+- `themes/`: Theming definitions, primarily for `stylix`.
 
 ---
 
@@ -86,6 +86,7 @@ This repository is organized as follows:
 To install this configuration on a new machine, you can use the provided `install.sh` script or manually use `nixos-install`.
 
 **Automated Script:**
+
 ```bash
 git clone https://github.com/lonerOrz/loneros-nixos.git
 cd loneros-nixos
@@ -95,6 +96,7 @@ chmod +x install.sh
 
 **Manual Flake Installation:**
 Replace `<hostname>` with one of the defined hosts (e.g., `loneros`).
+
 ```bash
 sudo nixos-install --flake .#<hostname>
 ```
@@ -102,6 +104,7 @@ sudo nixos-install --flake .#<hostname>
 ### 2. Updating the System
 
 To apply changes after modifying the configuration, run the following command:
+
 ```bash
 # Using a helper tool like nh
 nh os switch --flake .#<hostname>
@@ -114,9 +117,9 @@ sudo nixos-rebuild switch --flake .#<hostname>
 
 ## 📝 TODO
 
--   [x] Support more themes.
--   [ ] Fix the "RemoteDesktop portal not implemented" error in `rustdesk` under Hyprland.
--   [ ] Write more detailed documentation.
+- [x] Support more themes.
+- [ ] Fix the "RemoteDesktop portal not implemented" error in `rustdesk` under Hyprland.
+- [ ] Write more detailed documentation.
 
 ---
 
@@ -124,6 +127,6 @@ sudo nixos-rebuild switch --flake .#<hostname>
 
 This configuration was inspired by and utilizes resources from the following projects:
 
--   [NixOS Manual](https://nixos.org/manual/): For NixOS options and documentation.
--   [Catppuccin](https://github.com/catppuccin/nixos): For the color scheme.
--   [ZaneyOS](https://gitlab.com/Zaney/zaneyos): As a reference for configuration patterns.
+- [NixOS Manual](https://nixos.org/manual/): For NixOS options and documentation.
+- [Catppuccin](https://github.com/catppuccin/nixos): For the color scheme.
+- [ZaneyOS](https://gitlab.com/Zaney/zaneyos): As a reference for configuration patterns.
