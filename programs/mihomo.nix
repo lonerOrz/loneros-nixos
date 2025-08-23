@@ -13,12 +13,12 @@
   # };
   # mihomo-party-wrapper
   environment.systemPackages = with pkgs; [
-    mihomo-party-wrapper
+    (pkgs.callPackage ../../pkgs/mihomo/package.nix { })
   ];
   security.wrappers.mihomo-party = {
     owner = "root";
     group = "root";
     capabilities = "cap_net_bind_service,cap_net_admin=+ep";
-    source = "${lib.getExe pkgs.mihomo-party-wrapper}";
+    source = "${lib.getExe pkgs.mihomo-party}";
   };
 }
