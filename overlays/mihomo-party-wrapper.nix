@@ -4,7 +4,9 @@ let
   cmdname = "mihomo-party"; # 命令行名称
 in
 {
-  "${sftname}-wrapper" = super.${sftname}.overrideAttrs (oldAttrs: {
+  ${sftname} = super.callPackage ../pkgs/mihomo/package.nix { };
+
+  "${sftname}-wrapper" = self.${sftname}.overrideAttrs (oldAttrs: {
     pname = "${sftname}-wrapper";
 
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ super.makeWrapper ];
