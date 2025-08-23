@@ -1,57 +1,91 @@
 <h1 align="center">
-   <img src="assets/preview/nixos-logo.png" width="100px" />
+   <img src="assets/preview/nixos-logo.png" alt="NixOS Logo" width="100px" />
    <br>
-      Install loneros on NixOS!
+   Lonero's NixOS Configuration
    <br>
-      <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="600px" /> <br>
-   <div align="center">
-
-<div align="center">
-      <p></p>
-      <div align="center">
-         <a href="https://github.com/lonerOrz/loneros-nixos/stargazers">
-            <img src="https://img.shields.io/github/stars/lonerOrz/loneros-nixos?color=F5BDE6&labelColor=303446&style=for-the-badge&logo=starship&logoColor=F5BDE6">
-         </a>
-         <a href="https://github.com/lonerOrz/loneros-nixos/">
-            <img src="https://img.shields.io/github/repo-size/lonerOrz/loneros-nixos?color=C6A0F6&labelColor=303446&style=for-the-badge&logo=github&logoColor=C6A0F6">
-         </a>
-         <a href="https://nixos.org">
-            <img src="https://img.shields.io/badge/NixOS-Unstable-blue?style=for-the-badge&logo=NixOS&logoColor=white&label=NixOS&labelColor=303446&color=91D7E3">
-         </a>
-         <a href="https://github.com/lonerOrz/loneros-nixos/blob/main/LICENSE">
-            <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=313244&colorB=F5A97F&logo=unlicense&logoColor=F5A97F&"/>
-         </a>
-      </div>
-      <br>
-   </div>
+      <a href="https://github.com/catppuccin/catppuccin">
+        <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/palette/macchiato.png" width="600px" />
+      </a>
+   <br>
 </h1>
 
+<p align="center">
+    My personal NixOS configuration, managed with Nix Flakes.
+</p>
+
+<div align="center">
+    <a href="https://github.com/lonerOrz/loneros-nixos/stargazers">
+        <img src="https://img.shields.io/github/stars/lonerOrz/loneros-nixos?color=F5BDE6&labelColor=303446&style=for-the-badge&logo=starship&logoColor=F5BDE6" alt="GitHub Stars">
+    </a>
+    <a href="https://github.com/lonerOrz/loneros-nixos/">
+        <img src="https://img.shields.io/github/repo-size/lonerOrz/loneros-nixos?color=C6A0F6&labelColor=303446&style=for-the-badge&logo=github&logoColor=C6A0F6" alt="Repo Size">
+    </a>
+    <a href="https://nixos.org">
+        <img src="https://img.shields.io/badge/NixOS-Unstable-blue?style=for-the-badge&logo=NixOS&logoColor=white&label=NixOS&labelColor=303446&color=91D7E3" alt="NixOS Unstable">
+    </a>
+    <a href="https://github.com/lonerOrz/loneros-nixos/blob/main/LICENSE">
+        <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=313244&colorB=F5A97F&logo=unlicense&logoColor=F5A97F&" alt="License MIT">
+    </a>
+</div>
+
 > [!IMPORTANT]
-> Note! I don't use home-manager for the configuration of user files, no why.
+> Note: I am not currently using home-manager for user-level dotfile configuration.
 
-## 🖼️ 预览
+---
 
-### 🌟 catppuccin 风格
+## 🖼️ Previews
 
-| ![pre-1](assets/preview/cat1.png) | ![pre-2](assets/preview/cat2.png) | ![pre-3](assets/preview/cat3.png) |
-| :-------------------------------: | :-------------------------------: | :-------------------------------: |
+### 🌟 Catppuccin Style
+
+| ![Preview 1](assets/preview/cat1.png) | ![Preview 2](assets/preview/cat2.png) | ![Preview 3](assets/preview/cat3.png) |
+| :-----------------------------------: | :-----------------------------------: | :-----------------------------------: |
 
 <details>
-  <summary> 🎨 gruvbox 风格（点击展开）</summary>
-
-<br>
-
-| ![pre-1](assets/preview/box1.png) | ![pre-2](assets/preview/box2.png) | ![pre-3](assets/preview/box3.png) |
-| :-------------------------------: | :-------------------------------: | :-------------------------------: |
-
+  <summary>🎨 Gruvbox Style (Click to expand)</summary>
+  <br>
+  | ![Preview 1](assets/preview/box1.png) | ![Preview 2](assets/preview/box2.png) | ![Preview 3](assets/preview/box3.png) |
+  | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 </details>
 
 ---
 
-## 🛠️ 安装
+## ✨ Features
 
-按照以下步骤安装和使用这个项目：
+*   **Declarative & Reproducible**: Managed entirely by Nix Flakes for a consistent environment.
+*   **Window Manager**: Uses [Hyprland](https://hyprland.org/), a dynamic tiling Wayland compositor.
+*   **Theming**: Themed with [Stylix](https://github.com/danth/stylix) and the beautiful [Catppuccin](https://github.com/catppuccin) color scheme.
+*   **Secrets Management**: Securely manages secrets using [sops-nix](https://github.com/Mic92/sops-nix).
+*   **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
+*   **Deployment**: Utilizes [deploy-rs](https://github.com/serokell/deploy-rs) for remote deployment.
 
+---
+
+## 📂 Structure
+
+This repository is organized as follows:
+
+-   `flake.nix`: The entry point for the entire configuration.
+-   `hosts/`: Contains machine-specific configurations.
+    -   `loneros/`: Main desktop configuration.
+    -   `remote-vm/`: Configuration for a remote virtual machine.
+-   `home/`: User-specific configurations (not managed by home-manager).
+-   `modules/`: Reusable NixOS modules for drivers and services.
+-   `overlays/`: Customizations and overrides for existing packages.
+-   `pkgs/`: Definitions for custom packages.
+-   `programs/`: Configurations for various applications.
+-   `system/`: Global, system-wide settings.
+-   `secrets/`: Holds secret definitions for `sops-nix`.
+-   `themes/`: Theming definitions, primarily for `stylix`.
+
+---
+
+## 🛠️ Installation & Usage
+
+### 1. Initial Installation
+
+To install this configuration on a new machine, you can use the provided `install.sh` script or manually use `nixos-install`.
+
+**Automated Script:**
 ```bash
 git clone https://github.com/lonerOrz/loneros-nixos.git
 cd loneros-nixos
@@ -59,32 +93,37 @@ chmod +x install.sh
 ./install.sh
 ```
 
-## ⚙️ 配置
+**Manual Flake Installation:**
+Replace `<hostname>` with one of the defined hosts (e.g., `loneros`).
+```bash
+sudo nixos-install --flake .#<hostname>
+```
 
-可以按照如下方式进行自定义配置：
+### 2. Updating the System
 
-1. 编辑配置文件：
+To apply changes after modifying the configuration, run the following command:
+```bash
+# Using a helper tool like nh
+nh os switch --flake .#<hostname>
 
-xxxxxxx
+# Or using standard nixos-rebuild
+sudo nixos-rebuild switch --flake .#<hostname>
+```
 
-2. 更新 NixOS 配置：
-
-nh os switch --flake .#${HOSTNAME}
+---
 
 ## 📝 TODO
 
-- [x] 支持更多主题
-- [ ] 解决rustdesk控制远程桌面报错hyprland门户未实现RemoteDesktop
-- [ ] 编写详细的文档
+-   [x] Support more themes.
+-   [ ] Fix the "RemoteDesktop portal not implemented" error in `rustdesk` under Hyprland.
+-   [ ] Write more detailed documentation.
 
 ---
 
-## 🔗 配置来源
+## 🔗 Credits
 
-以下是一些对本项目有帮助的资源：
+This configuration was inspired by and utilizes resources from the following projects:
 
-- [NixOS 手册](https://nixos.org/manual/) - NixOS options
-- [catppuccin](https://github.com/catppuccin/nixos) - 主题配色
-- [zaneyos](https://gitlab.com/Zaney/zaneyos) - 配置参考
-
----
+-   [NixOS Manual](https://nixos.org/manual/): For NixOS options and documentation.
+-   [Catppuccin](https://github.com/catppuccin/nixos): For the color scheme.
+-   [ZaneyOS](https://gitlab.com/Zaney/zaneyos): As a reference for configuration patterns.
