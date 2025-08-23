@@ -28,6 +28,7 @@
     ./wine.nix
     ./hmcl.nix
     ./gimp.nix
+    ./qq.nix
 
     # server
     ./mpd.nix
