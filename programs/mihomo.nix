@@ -13,7 +13,7 @@
   # };
   # mihomo-party-wrapper
   environment.systemPackages = with pkgs; [
-    (pkgs.callPackage ../../pkgs/mihomo/package.nix { })
+    (pkgs.callPackage ../pkgs/mihomo/package.nix { })
   ];
   security.wrappers.mihomo-party = {
     owner = "root";
