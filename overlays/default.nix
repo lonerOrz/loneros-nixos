@@ -8,6 +8,7 @@
     (import ./mihomo-party-wrapper.nix)
     (import ./mpv.nix)
     (import ./atuin)
+    (import ./lib.nix)
 
     #temporary
     (import ./tuckr.nix)
