@@ -43,5 +43,6 @@
     ./jellyfin.nix
     # ./aria2.nix # 使用 docker-compose
     ./tailscale.nix
+    ./atuin.nix
   ];
 }
