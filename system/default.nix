@@ -1,18 +1,35 @@
-{
-  imports = [
-    ./bluetooth.nix
-    ./nix.nix
-    ./boot.nix
-    ./networking.nix
-    ./xdg-portal.nix
-    ./pipewire.nix
-    ./security.nix
-    # ./sddm.nix
-    ./greet.nix
-    ./hardware.nix
-    ./timezone.nix
-    ./fonts.nix
-    ./optimization.nix
-    ./doc.nix # 加快 mandb 的构建
+let
+  dir = ./.;
+  mainFile = "default.nix";
+  exclude = [
+    "sddm"
   ];
+  files = builtins.readDir dir;
+  fullExclude = [ "default" ] ++ exclude;
+
+  isExcluded =
+    name:
+    let
+      base = builtins.head (builtins.match "([^\\.]+).*" name);
+    in
+    builtins.elem base fullExclude;
+
+  collected = builtins.concatMap (
+    name:
+    let
+      path = dir + "/${name}";
+      info = builtins.getAttr name files;
+    in
+    if isExcluded name then
+      [ ]
+    else if info == "regular" && builtins.match ".*\\.nix" name != null then
+      [ (import path) ]
+    else if info == "directory" && builtins.pathExists (path + "/${mainFile}") then
+      [ (import (path + "/${mainFile}")) ]
+    else
+      [ ]
+  ) (builtins.attrNames files);
+in
+{
+  imports = collected;
 }

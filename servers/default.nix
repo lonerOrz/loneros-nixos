@@ -2,10 +2,7 @@ let
   dir = ./.;
   mainFile = "default.nix";
   exclude = [
-    "clash"
-    "nvf"
-    "flatpak"
-    "virtualbox"
+    "aria2"
   ];
   files = builtins.readDir dir;
   fullExclude = [ "default" ] ++ exclude;

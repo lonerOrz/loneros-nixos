@@ -17,6 +17,7 @@ in
 
     ../../system
     ../../programs
+    ../../servers
     ../../modules
     ../../themes
   ];
