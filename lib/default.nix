@@ -4,7 +4,7 @@ let
   autoImport = import ./autoimport.nix;
 in
 {
-  toUpperCase = str: builtins.toUpper str;
+  toUpperCase = str: lib.toUpper str;
   prefixedAttrs = prefix: attrs: lib.mapAttrs (name: value: { "${prefix}-${name}" = value; }) attrs;
   packageVersions =
     pkg: versions:

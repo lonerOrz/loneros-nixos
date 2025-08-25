@@ -60,7 +60,7 @@
         "aarch64-linux"
       ];
       lib = nixpkgs.lib;
-      mylib = import ./lib/mylib.nix { nixpkgs-lib = nixpkgs.lib; }; # 自定义 lib
+      mylib = import ./lib { inherit lib; }; # for flake-parts
       # TODO: 分离成 hosts.nix
       hosts = {
         loneros = {
@@ -91,10 +91,12 @@
           checks = { } // inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
           packages =
             import ./pkgs/default.nix {
-              inherit pkgs;
-              inherit system;
-              inherit lib;
-              inherit mylib;
+              inherit
+                pkgs
+                system
+                lib
+                mylib
+                ;
             }
             // {
               iso = inputs.nixos-generators.nixosGenerate {
@@ -122,7 +124,6 @@
               specialArgs = {
                 inherit inputs;
                 inherit host;
-                inherit mylib;
                 username = cfg.username;
                 system = cfg.system;
                 stable = mkStable cfg.system;

@@ -1,6 +1,7 @@
 # For export packages
 {
   mylib,
+  lib,
   pkgs,
   system,
   ...
