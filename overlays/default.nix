@@ -7,6 +7,7 @@
     (import ./obsidian-wrapper.nix)
     (import ./mihomo-party-wrapper.nix)
     (import ./mpv.nix)
+    (import ./atuin)
 
     #temporary
     (import ./tuckr.nix)
