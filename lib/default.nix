@@ -2,6 +2,7 @@
 
 let
   autoImport = import ./autoimport.nix;
+  baseGetRaw = import ./getRaw.nix;
 in
 {
   toUpperCase = str: lib.toUpper str;
@@ -25,4 +26,5 @@ in
       extra = extra;
     };
   inherit autoImport;
+  getRaw = url: baseGetRaw { inherit lib url; };
 }
