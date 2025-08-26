@@ -3,6 +3,7 @@ let
   mainFile = "default.nix";
   exclude = [
     "aria2"
+    "docker"
   ];
   files = builtins.readDir dir;
   fullExclude = [ "default" ] ++ exclude;

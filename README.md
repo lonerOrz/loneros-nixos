@@ -43,8 +43,9 @@
 <details>
   <summary>🎨 Gruvbox Style (Click to expand)</summary>
 
-  | ![Preview 1](assets/preview/box1.png) | ![Preview 2](assets/preview/box2.png) | ![Preview 3](assets/preview/box3.png) |
-  | :---------------------------------: | :---------------------------------: | :---------------------------------: |
+| ![Preview 1](assets/preview/box1.png) | ![Preview 2](assets/preview/box2.png) | ![Preview 3](assets/preview/box3.png) |
+| :-----------------------------------: | :-----------------------------------: | :-----------------------------------: |
+
 </details>
 
 ---
