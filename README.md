@@ -42,7 +42,7 @@
 
 <details>
   <summary>🎨 Gruvbox Style (Click to expand)</summary>
-  <br>
+
   | ![Preview 1](assets/preview/box1.png) | ![Preview 2](assets/preview/box2.png) | ![Preview 3](assets/preview/box3.png) |
   | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 </details>
@@ -52,7 +52,7 @@
 ## ✨ Features
 
 - **Declarative & Reproducible**: Managed entirely by Nix Flakes for a consistent environment.
-- **Window Manager**: Uses [Hyprland](https://hyprland.org/), a dynamic tiling Wayland compositor.
+- **Window Managers**: Includes configurations for both [Hyprland](https://hyprland.org/) and [Niri](https://github.com/YaLTeR/niri).
 - **Theming**: Themed with [Stylix](https://github.com/danth/stylix) and the beautiful [Catppuccin](https://github.com/catppuccin) color scheme.
 - **Secrets Management**: Securely manages secrets using [sops-nix](https://github.com/Mic92/sops-nix).
 - **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
@@ -64,18 +64,21 @@
 
 This repository is organized as follows:
 
-- `flake.nix`: The entry point for the entire configuration.
-- `hosts/`: Contains machine-specific configurations.
-  - `loneros/`: Main desktop configuration.
-  - `remote-vm/`: Configuration for a remote virtual machine.
-- `home/`: User-specific configurations (not managed by home-manager).
-- `modules/`: Reusable NixOS modules for drivers and services.
-- `overlays/`: Customizations and overrides for existing packages.
-- `pkgs/`: Definitions for custom packages.
-- `programs/`: Configurations for various applications.
-- `system/`: Global, system-wide settings.
-- `secrets/`: Holds secret definitions for `sops-nix`.
-- `themes/`: Theming definitions, primarily for `stylix`.
+- `flake.nix`: The entry point for the entire configuration, defining all inputs and outputs.
+- `hosts/`: Contains system-level configurations for specific machines.
+- `home/`: Manages user-level application configurations and dotfiles.
+- `system/`: Holds global, cross-host system modules.
+- `programs/`: Declaratively manages configurations for various applications.
+- `servers/`: Contains configurations for system background services.
+- `modules/`: Reusable custom NixOS modules for different configurations.
+- `overlays/`: Modifications or overrides for existing packages in `nixpkgs`.
+- `pkgs/`: Contains custom-defined packages.
+- `themes/`: Manages themes and visual styles for the system and applications.
+- `devShell/`: Provides development environments for different programming languages.
+- `iso/`: Configuration for building a bootable NixOS ISO image.
+- `deploy/`: Contains configurations related to remote deployment.
+- `lib/`: Contains custom Nix helper functions.
+- `secrets/`: Manages encrypted files using `sops-nix`.
 
 ---
 
