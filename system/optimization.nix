@@ -26,16 +26,6 @@
         BATT_LOAD_THRESH = 5; # 电池电量低于 5% 时执行特定操作（例如，关闭电源）
       };
     };
-    # logind
-    logind = {
-      lidSwitch = "lock"; # 合盖系统进行休眠
-      lidSwitchDocked = "ignore"; # 有其他显示器连接时合盖也不执行任何操作
-      # lidSwitchExternalPower = "ignore"; # 合盖且外接电源时不执行任何操作 !默认跟 lidSwitch 一样
-      extraConfig = ''
-        IdleAction=suspend
-        IdleActionSec=10min
-      '';
-    };
   };
 
   environment.systemPackages = with stable; [
