@@ -1,4 +1,5 @@
 {
+  lib,
   inputs,
   system,
   username,
@@ -24,7 +25,7 @@
     users.${username} = {
       home = {
         username = "${username}";
-        homeDirectory = "/home/${username}";
+        homeDirectory = lib.mkForce "/home/${username}";
         stateVersion = "25.05";
         enableNixpkgsReleaseCheck = false;
       };

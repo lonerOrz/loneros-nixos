@@ -52,7 +52,7 @@
     podman-tui # 命令行查看容器状态
   ];
 
-  users.users.${username}.extraGroups = [ "podman" ]; # 将用户添加到 docker 组
+  users.users.${username}.extraGroups = [ "podman" ];
 
   hardware.nvidia-container-toolkit.enable = true; # 直通 NVIDIA GPU
 

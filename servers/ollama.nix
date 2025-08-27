@@ -2,14 +2,21 @@
   username,
   ...
 }:
+let
+  host = "127.0.0.1";
+  port = 11434;
+in
 {
   services.ollama = {
     enable = true;
-    #user = "${username}";
-    host = "127.0.0.1";
-    port = 13434;
-    #home = "/home/${username}/ollama"; # default /var/lib/ollama
-    #models = "/home/${username}/ollama/modules"; # default ${home}/models
+    host = host;
+    port = port;
     acceleration = "cuda"; # or "rocm"
+    environmentVariables = {
+      OLLAMA_LLM_LIBRARY = "gpu";
+    };
+    # loadModels = [ "llama3" ]; # cli pull
   };
+
+  environment.variables.OLLAMA_HOST = "${host}:${toString port}";
 }
