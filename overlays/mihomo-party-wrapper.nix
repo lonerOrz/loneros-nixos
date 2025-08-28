@@ -1,4 +1,5 @@
 self: super:
+
 let
   sftname = "mihomo-party"; # 软件名称
   cmdname = "mihomo-party"; # 命令行名称
@@ -12,7 +13,7 @@ in
     nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ super.makeWrapper ];
 
     postInstall = ''
-      echo "Wrapping cursor binary..."
+      echo "Wrapping ${cmdname} binary..."
       if [ -f "$out/bin/${cmdname}" ]; then
         wrapProgram "$out/bin/${cmdname}" \
           --set ELECTRON_OZONE_PLATFORM_HINT auto \

@@ -1,5 +1,6 @@
 {
   imports = [
+    # drivers
     ./amd-drivers.nix
     ./nvidia-drivers.nix
     ./nvidia-prime-drivers.nix
