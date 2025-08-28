@@ -1,8 +1,12 @@
-{ lib }:
+{
+  lib,
+  pkgs ? import <nixpkgs> { },
+}:
 
 let
   autoImport = import ./autoimport.nix;
   baseGetRaw = import ./getRaw.nix;
+  callImport = import ./callImport.nix { inherit pkgs; };
 in
 {
   toUpperCase = str: lib.toUpper str;
@@ -25,6 +29,6 @@ in
       lib = lib;
       extra = extra;
     };
-  inherit autoImport;
   getRaw = url: baseGetRaw { inherit lib url; };
+  inherit autoImport callImport;
 }
