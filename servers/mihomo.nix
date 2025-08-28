@@ -55,9 +55,9 @@
       log-level: info
 
       # 外部控制设置
-      # external-controller: 0.0.0.0:9090 # 外部控制器监听地址
-      # external-ui: /etc/mihomo/ui # 外部控制器UI目录
-      # secret: "" # 外部控制器密码
+      external-controller: 0.0.0.0:9090 # 外部控制器监听地址
+      external-ui: /var/lib/private/mihomo/ui # 外部控制器UI目录
+      secret: "${config.sops.placeholder."mihomo/secret"}" # 外部控制器密码
 
       #------------------------性能调优------------------------#
       tcp-concurrent-users: 64 # TCP并发连接数,根据服务器性能调整,建议值:16-128

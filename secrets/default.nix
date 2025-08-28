@@ -32,6 +32,10 @@
     owner = "root";
     mode = "0600";
   };
+  sops.secrets."mihomo/secret" = {
+    owner = "root";
+    mode = "0600";
+  };
   sops.secrets."myservice/my_subdir/my_secret" = {
     mode = "0600";
   };
@@ -46,7 +50,7 @@
   # 这将导致 Secret 在 NixOS 创建用户之前被解密为 /run/secrets-for-users，
   # 而不是 /run/secrets。由于尚未创建用户，因此无法为这些密钥设置所有者。
   sops.secrets."remote-vm/test/password" = {
-    # neededForUsers = true;
+    neededForUsers = true;
     mode = "0600";
   };
 }
