@@ -136,7 +136,6 @@
                 {
                   nixpkgs.overlays = [
                     inputs.nur.overlays.default
-                    inputs.niri.overlays.niri
                   ];
                 }
                 inputs.distro-grub-themes.nixosModules.${cfg.system}.default

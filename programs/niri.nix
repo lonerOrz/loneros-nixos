@@ -6,9 +6,13 @@
 {
   imports = [ inputs.niri.nixosModules.niri ];
 
+  niri-flake.cache.enable = true;
+
+  nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+
   programs.niri = {
     enable = true;
-    package = pkgs.niri;
+    package = pkgs.niri-unstable;
   };
 
   # 安装依赖软件
