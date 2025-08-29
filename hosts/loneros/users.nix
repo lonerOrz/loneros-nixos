@@ -58,6 +58,7 @@ in
       gh # github cli
       jujutsu # better than git
       aircrack-ng # wifi hack
+      socat # ipc
 
       go-musicfox
       lazygit
