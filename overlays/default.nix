@@ -13,6 +13,5 @@
     #temporary
     (import ./tuckr.nix)
     (import ./i3ipc.nix)
-    (import ./tectonic)
   ];
 }
