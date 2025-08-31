@@ -19,7 +19,7 @@
   # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
   # sops.defaultSopsFile = "/home/${username}/loneros-nixos/secrets/secrets.yaml";
   sops.defaultSopsFile = ./secrets.yaml;
-  # sops.defaultSopsFormat = "json";
+  sops.defaultSopsFormat = "yaml";
   # This will automatically import SSH keys as age keys
   sops.age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
   # This is using an age key that is expected to already be in the filesystem
