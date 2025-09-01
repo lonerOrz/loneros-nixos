@@ -4,7 +4,6 @@
   username,
   ...
 }:
-
 {
   # Enable common container config files in /etc/containers
   virtualisation = {
@@ -50,6 +49,7 @@
     podman-compose # Compose 替代 Docker Compose
     dive # 镜像分析工具
     podman-tui # 命令行查看容器状态
+    podlet # 生成 Podman Quadlet 配置
   ];
 
   users.users.${username}.extraGroups = [ "podman" ];
