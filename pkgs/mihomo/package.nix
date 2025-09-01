@@ -14,33 +14,23 @@
   libGL,
 }:
 
-stdenv.mkDerivation rec {
+let
+  sources = import ./sources.nix;
+  systemSrc = sources.${stdenv.hostPlatform.system};
+in
+stdenv.mkDerivation {
   pname = "mihomo-party";
-  version = "1.8.5";
+  version = "1.8.6";
 
-  src =
-    let
-      selectSystem =
-        attrs:
-        attrs.${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
-      arch = selectSystem {
-        x86_64-linux = "amd64";
-        aarch64-linux = "arm64";
-      };
-    in
-    fetchurl {
-      url = "https://github.com/mihomo-party-org/mihomo-party/releases/download/v${version}/mihomo-party-linux-${version}-${arch}.deb";
-      hash = selectSystem {
-        x86_64-linux = "sha256-f56bCL0OkNkCntG9imlCZdiJtCkwZ71cI/3dJIjjSrQ=";
-        aarch64-linux = "sha256-zT8V+G7oxyzgH/HkkWBDV2d+gUnXjO2XdFI9SJM6lsM=";
-      };
-    };
+  src = fetchurl {
+    url = systemSrc.url;
+    hash = systemSrc.hash;
+  };
 
   nativeBuildInputs = [
     dpkg
     autoPatchelfHook
   ];
-
   buildInputs = [
     nss
     nspr
@@ -51,16 +41,12 @@ stdenv.mkDerivation rec {
   ];
 
   installPhase = ''
-    runHook preInstall
-
     mkdir -p $out/bin
     cp -r opt $out/opt
     cp -r usr/share $out/share
     substituteInPlace $out/share/applications/mihomo-party.desktop \
       --replace-fail "/opt/mihomo-party/mihomo-party" "mihomo-party"
     ln -s $out/opt/mihomo-party/mihomo-party $out/bin/mihomo-party
-
-    runHook postInstall
   '';
 
   preFixup = ''
@@ -79,13 +65,11 @@ stdenv.mkDerivation rec {
   meta = {
     description = "Another Mihomo GUI";
     homepage = "https://github.com/mihomo-party-org/mihomo-party";
-    mainProgram = "mihomo-party";
     platforms = [
-      "aarch64-linux"
       "x86_64-linux"
+      "aarch64-linux"
     ];
     license = lib.licenses.gpl3Plus;
-    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
-    maintainers = with lib.maintainers; [ ];
+    maintainers = with lib.maintainers; [ lonerOrz ];
   };
 }
