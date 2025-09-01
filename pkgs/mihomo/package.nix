@@ -71,5 +71,6 @@ stdenv.mkDerivation {
     ];
     license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [ lonerOrz ];
+    mainProgram = "mihomo-party";
   };
 }

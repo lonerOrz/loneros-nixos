@@ -59,6 +59,7 @@ in
       jujutsu # better than git
       aircrack-ng # wifi hack
       socat # ipc
+      yq # yaml 文件解析
 
       go-musicfox
       lazygit

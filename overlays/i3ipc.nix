@@ -1,3 +1,4 @@
+# https://github.com/NixOS/nixpkgs/pull/438729
 self: super: {
   python313Packages = super.python313Packages // {
     i3ipc = super.python313Packages.i3ipc.overrideAttrs (old: {
