@@ -19,7 +19,6 @@
       # 默认 fallback 配置
       common = {
         default = [
-          "gtk"
           "gnome"
         ];
       };
@@ -31,14 +30,16 @@
       };
       niri = {
         default = [
-          "wlr"
           "gnome"
+          "wlr"
+          "gtk"
         ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
       };
       sway = {
         default = [
-          "wlr"
           "gtk"
+          "wlr"
         ];
       };
     };
