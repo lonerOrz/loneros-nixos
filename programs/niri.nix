@@ -3,6 +3,9 @@
   pkgs,
   ...
 }:
+let
+  niri-blur = pkgs.callPackage ../pkgs/niri-blur { };
+in
 {
   imports = [ inputs.niri.nixosModules.niri ];
 
@@ -12,7 +15,7 @@
 
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = niri-blur;
   };
 
   # 安装依赖软件
