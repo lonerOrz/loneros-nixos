@@ -44,7 +44,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   # 将平铺窗口的实现方式也换成 true blur 方式
-  patches = [ ./fix-blur.patch ];
+  patches = [ ./opt-wall.patch ];
 
   postPatch = ''
     patchShebangs resources/niri-session
