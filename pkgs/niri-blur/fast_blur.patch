@@ -1,0 +1,42 @@
+diff --git a/src/layout/workspace.rs b/src/layout/workspace.rs
+index 3a492997..95f7c3a8 100644
+--- a/src/layout/workspace.rs
++++ b/src/layout/workspace.rs
+@@ -14,6 +14,7 @@ use smithay::reexports::wayland_server::protocol::wl_surface::WlSurface;
+ use smithay::utils::{Logical, Point, Rectangle, Serial, Size, Transform};
+ use smithay::wayland::compositor::with_states;
+ use smithay::wayland::shell::xdg::SurfaceCachedState;
++use crate::render_helpers::blur::EffectsFramebuffers;
+ 
+ use super::floating::{FloatingSpace, FloatingSpaceRenderElement};
+ use super::scrolling::{
+@@ -475,10 +476,12 @@ impl<W: LayoutElement> Workspace<W> {
+         }
+     }
+ 
+-    fn enter_output_for_window(&self, window: &W) {
++        fn enter_output_for_window(&self, window: &W) {
+         if let Some(output) = &self.output {
+             window.set_preferred_scale_transform(self.scale, self.transform);
+             window.output_enter(output);
++            EffectsFramebuffers::set_dirty(output);
++            EffectsFramebuffers::set_dirty(output);
+         }
+     }
+ 
+diff --git a/src/render_helpers/blur/mod.rs b/src/render_helpers/blur/mod.rs
+index 80c4161c..10cfff88 100644
+--- a/src/render_helpers/blur/mod.rs
++++ b/src/render_helpers/blur/mod.rs
+@@ -93,7 +93,10 @@ impl EffectsFramebuffers {
+     pub fn set_dirty(output: &Output) {
+         const THROTTLE_INTERVAL_MS: u64 = 33;
+ 
+-        let mut fx_buffers = Self::get(output);
++        let Some(mut fx_buffers) = output.user_data().get::<EffectsFramebufffersUserData>()
++            .map(|user_data| RefCell::borrow_mut(user_data)) else {
++            return;
++        };
+         let now = Instant::now();
+ 
+         // Determine if we are in a "rapid change" phase
