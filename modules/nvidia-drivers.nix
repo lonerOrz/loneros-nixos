@@ -97,7 +97,8 @@ in
       # Enable the Nvidia settings menu,
       # accessible via `nvidia-settings`.
 
-      nvidiaSettings = true;
+      # NOTE: https://github.com/chaotic-cx/nyx/issues/1178
+      nvidiaSettings = false;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = nvidiaPackage;
