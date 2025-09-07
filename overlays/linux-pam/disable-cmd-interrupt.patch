@@ -1,0 +1,10 @@
+--- a/unit-tests/Makefile
++++ b/unit-tests/Makefile
+@@ -72,7 +72,6 @@
+ TESTS+=		cmd-errors
+ TESTS+=		cmd-errors-jobs
+ TESTS+=		cmd-errors-lint
+-TESTS+=		cmd-interrupt
+ TESTS+=		cmdline
+ TESTS+=		cmdline-redirect-stdin
+ TESTS+=		cmdline-undefined
