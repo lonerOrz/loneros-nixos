@@ -5,7 +5,7 @@ index 939e54b7..b68ac888 100644
 @@ -130,6 +130,11 @@ impl State {
                  .layer_for_surface(surface, WindowSurfaceType::TOPLEVEL)
                  .unwrap();
- 
+
 +            if matches!(layer.layer(), Layer::Background | Layer::Bottom) {
 +                // Explicitly mark blur as dirty when background/bottom layer surface commits
 +                EffectsFramebuffers::set_dirty(&output);
@@ -14,22 +14,7 @@ index 939e54b7..b68ac888 100644
              if initial_configure_sent {
                  if is_mapped(surface) {
                      let was_unmapped = self.niri.unmapped_layer_surfaces.remove(surface);
-diff --git a/src/niri.rs b/src/niri.rs
-index ede4fd15..00b886cb 100644
---- a/src/niri.rs
-+++ b/src/niri.rs
-@@ -4420,7 +4420,10 @@ impl Niri {
-         let iter = layer_map.layers_on(layer).rev().filter_map(|surface| {
-             let mapped = self.mapped_layer_surfaces.get(surface)?;
- 
--            if for_backdrop != mapped.place_within_backdrop() {
-+            // Always include Layer::Background and Layer::Bottom for blur
-+            if layer == Layer::Background || layer == Layer::Bottom {
-+                // Do not filter these layers based on for_backdrop
-+            } else if for_backdrop != mapped.place_within_backdrop() {
-                 return None;
-             }
- 
+
 diff --git a/src/render_helpers/blur/element.rs b/src/render_helpers/blur/element.rs
 index 195fbeb6..d2eef53d 100644
 --- a/src/render_helpers/blur/element.rs
@@ -42,7 +27,7 @@ index 195fbeb6..d2eef53d 100644
 +            } => src.to_buffer(*scale, *transform, &size.to_f64()),
          }
      }
- 
+
 @@ -242,9 +242,9 @@ fn draw_true_blur(
      let blurred_texture = gles_frame.with_context(|gl| unsafe {
          super::get_main_buffer_blur(
@@ -76,14 +61,14 @@ index 238b7f51..80c4161c 100644
 +    pub last_set_dirty_call_time: Instant,
 +    pub pending_blur_due_to_throttle: bool,
  }
- 
+
  type EffectsFramebufffersUserData = Rc<RefCell<EffectsFramebuffers>>;
- 
+
  fn get_rerender_at() -> Option<Instant> {
 -    Some(Instant::now() + Duration::from_secs(1))
 +    Some(Instant::now())
  }
- 
+
  impl EffectsFramebuffers {
 @@ -88,10 +91,34 @@ impl EffectsFramebuffers {
          RefCell::borrow_mut(user_data)
@@ -112,7 +97,7 @@ index 238b7f51..80c4161c 100644
 +        // Always mark for immediate re-render if not throttled
 +        fx_buffers.optimized_blur_rerender_at = Some(Instant::now());
 +        fx_buffers.last_blur_update_time = now;
- 
+
 -        if fx_buffers.optimized_blur_rerender_at.is_none() {
 -            fx_buffers.optimized_blur_rerender_at = get_rerender_at();
 +        if fx_buffers.pending_blur_due_to_throttle {
@@ -121,7 +106,7 @@ index 238b7f51..80c4161c 100644
 +            fx_buffers.last_blur_update_time = now;
          }
      }
- 
+
 @@ -119,6 +146,9 @@ impl EffectsFramebuffers {
              effects: create_buffer(renderer, output_size).unwrap(),
              effects_swapped: create_buffer(renderer, output_size).unwrap(),
@@ -130,7 +115,7 @@ index 238b7f51..80c4161c 100644
 +            last_set_dirty_call_time: Instant::now(),
 +            pending_blur_due_to_throttle: false,
          };
- 
+
          let user_data = output.user_data();
 @@ -137,7 +167,12 @@ impl EffectsFramebuffers {
      ) -> Result<(), GlesError> {
@@ -143,7 +128,7 @@ index 238b7f51..80c4161c 100644
 +            return Ok(());
 +        }
 +        let output_size = output_mode.unwrap().size;
- 
+
          fn create_buffer(
              renderer: &mut GlesRenderer,
 @@ -155,6 +190,9 @@ impl EffectsFramebuffers {
@@ -154,7 +139,7 @@ index 238b7f51..80c4161c 100644
 +            last_set_dirty_call_time: Instant::now(),
 +            pending_blur_due_to_throttle: false,
          };
- 
+
          Ok(())
 @@ -169,21 +207,48 @@ impl EffectsFramebuffers {
          scale: Scale<f64>,
@@ -166,15 +151,15 @@ index 238b7f51..80c4161c 100644
 +        if rerender_time.is_none() {
              return Ok(());
          }
- 
+
 -        if self.optimized_blur_rerender_at.unwrap() > Instant::now() {
 +        // Early exit if not yet time to rerender
 +        if rerender_time.unwrap() > Instant::now() {
              return Ok(());
          }
- 
+
          self.optimized_blur_rerender_at = None;
- 
+
 +        // Check for valid output mode before proceeding
 +        let output_mode = output.current_mode();
 +        if output_mode.is_none() {
@@ -200,7 +185,7 @@ index 238b7f51..80c4161c 100644
          // first render layer shell elements
          // NOTE: We use Blur::DISABLED since we should not include blur with Background/Bottom
          // layer shells
- 
+
 -        let mut elements = vec![];
 +        let mut elements = Vec::with_capacity(16); // Pre-allocate reasonable capacity to reduce reallocations
 +
@@ -218,18 +203,18 @@ index 238b7f51..80c4161c 100644
                      renderer, location, scale, 1.0,
 @@ -199,7 +265,8 @@ impl EffectsFramebuffers {
          }
- 
+
          let mut fb = renderer.bind(&mut self.effects).unwrap();
 -        let output_size = output.current_mode().unwrap().size;
 +        // Use the already validated output_size
 +        let output_size = output_mode.unwrap().size;
- 
+
          let _ = render_elements(
              renderer,
 @@ -216,6 +283,9 @@ impl EffectsFramebuffers {
- 
+
          let shaders = Shaders::get(renderer).blur.clone();
- 
+
 +        // Cache output dimensions to avoid repeated unwrap calls
 +        let output_size = output.current_mode().unwrap().size;
 +
@@ -239,7 +224,7 @@ index 238b7f51..80c4161c 100644
 @@ -223,43 +293,77 @@ impl EffectsFramebuffers {
              0.5 / (output_size.h as f32 / 2.0),
          ];
- 
+
 -        for _ in 0..config.passes {
 -            let (sample_buffer, render_buffer) = self.buffers();
 -            render_blur_pass_with_frame(
@@ -278,7 +263,7 @@ index 238b7f51..80c4161c 100644
 +
 +            (down, up)
 +        };
- 
+
 -        let half_pixel = [
 -            0.5 / (output_size.w as f32 * 2.0),
 -            0.5 / (output_size.h as f32 * 2.0),
@@ -332,12 +317,12 @@ index 238b7f51..80c4161c 100644
 +            }
          }
 +        // For very small radius, skip blur computation entirely
- 
+
          // Now blit from the last render buffer into optimized_blur
          // We are already bound so its just a blit
          let tex_fb = renderer.bind(&mut self.effects).unwrap();
          let mut optimized_blur_fb = renderer.bind(&mut self.optimized_blur).unwrap();
- 
+
 -        renderer.blit(
 +        let _ = renderer.blit(
              &tex_fb,
@@ -386,7 +371,7 @@ index 6816acd9..f9842ae6 100644
 @@ -113,7 +113,7 @@ impl<'render> RenderElement<TtyRenderer<'render>> for OptimizedBlurTextureElemen
          Ok(())
      }
- 
+
 -    fn underlying_storage(&self, renderer: &mut TtyRenderer<'render>) -> Option<UnderlyingStorage> {
 +    fn underlying_storage(&self, renderer: &mut TtyRenderer<'render>) -> Option<UnderlyingStorage<'_>> {
          self.0.underlying_storage(renderer.as_gles_renderer())

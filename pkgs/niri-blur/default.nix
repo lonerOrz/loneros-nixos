@@ -44,12 +44,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   patches = [
-    # 将平铺窗口的实现方式也换成 true blur 方式
-    # ./fix-blur.patch
-
     # self patch
     ./opt-wall.patch
     ./fast_blur.patch
+    # 将平铺窗口的实现方式也换成 true blur 方式
+    # ./fix-blur.patch
   ];
 
   postPatch = ''
