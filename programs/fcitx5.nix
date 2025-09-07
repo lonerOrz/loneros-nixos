@@ -19,9 +19,13 @@
           fcitx5-material-color
 
           # Rime
-          fcitx5-rime
-          rime-ice
-          rime-wanxiang
+          (fcitx5-rime.override {
+            rimeDataPkgs = [
+              rime-ice
+              rime-moegirl
+              rime-wanxiang
+            ];
+          })
 
           # pinyin
           # fcitx5-chinese-addons
