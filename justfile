@@ -31,7 +31,7 @@
     nix run nixpkgs#cachix -- push loneros $(nix path-info .#nixosConfigurations.{{ target }}.config.system.build.toplevel)
 
 @fix:
-    nix-store --repair --verify --check-contents
+    nix-store --repair --verify # --check-contents
 
 @geniso:
     nix build .#nixosConfigurations.iso.config.formats.iso
