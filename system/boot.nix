@@ -26,7 +26,8 @@ in
     # Kernel
     # kernelPackages = pkgs.linuxPackages_latest;
     # kernelPackages = pkgs.linuxPackages_zen;
-    kernelPackages = pkgs.linuxPackages_cachyos-lto;
+    # https://github.com/chaotic-cx/nyx/pull/1176
+    kernelPackages = pkgs.linuxPackages_cachyos;
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
