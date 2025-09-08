@@ -61,7 +61,6 @@ in
       tumbler # 生成文件缩略图的后台服务
     ];
 
-    dconf.enable = true;
     seahorse.enable = true; # GNOME 密钥管理器
     fuse.userAllowOther = true; # 用户空间文件系统
   };
@@ -104,10 +103,6 @@ in
       xdg-user-dirs # 创建标准的用户目录结构
       xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
 
-      dconf # 存储应用程序的设置
-      glib # for gsettings to work
-      gsettings-qt # 访问和修改应用程序设置的工具
-
       # Hyprland Stuff
       hyprcursor # 鼠标
       hypridle # 休眠
@@ -122,20 +117,7 @@ in
       hyprpanel # a bar
       wf-recorder # record by hyprpanel
       matugen # 图片取色 by hyprpanel
-      power-profiles-daemon # 切换电源模式
       libgtop # 获取系统性能信息的库
-
-      # Qt
-      libsForQt5.qt5ct
-      libsForQt5.qtstyleplugin-kvantum # kvantum
-      kdePackages.qt6ct
-      kdePackages.qtstyleplugin-kvantum # kvantum
-      kdePackages.qtwayland
-
-      # GTK
-      nwg-look # GTK主题管理工具
-      gsettings-desktop-schemas
-      gtk-engine-murrine # GTK+ 2.x 的一个 主题引擎
 
       # grimblast # grim + slurp
       grim # 截图
