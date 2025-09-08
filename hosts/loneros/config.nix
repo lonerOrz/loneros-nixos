@@ -134,6 +134,7 @@ in
 
       # GTK
       nwg-look # GTK主题管理工具
+      gsettings-desktop-schemas
       gtk-engine-murrine # GTK+ 2.x 的一个 主题引擎
 
       # grimblast # grim + slurp
