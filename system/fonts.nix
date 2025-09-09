@@ -22,6 +22,8 @@
     maple-mono.NF-CN # 开源等宽中文
     # quickshell
     material-symbols
+    roboto
+    inter-nerdfont
     nerd-fonts.caskaydia-mono
   ];
 }
