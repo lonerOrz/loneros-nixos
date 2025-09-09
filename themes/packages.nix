@@ -28,4 +28,9 @@
     material-symbols
     adw-gtk3
   ];
+
+  # https://discourse.nixos.org/t/how-is-xdg-data-dirs-set-for-some-apps/38432
+  environment.sessionVariables = {
+    GSETTINGS_SCHEMAS_PATH = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}";
+  };
 }
