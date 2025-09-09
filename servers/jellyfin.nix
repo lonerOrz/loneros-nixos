@@ -9,7 +9,7 @@
     jellyfin
     jellyfin-web
     jellyfin-ffmpeg
-    jellyfin-tui
+    # jellyfin-tui
     # jellyfin-rpc
     # jellyfin-mpv-shim
   ];
