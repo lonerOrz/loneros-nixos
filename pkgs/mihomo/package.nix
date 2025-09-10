@@ -20,7 +20,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "mihomo-party";
-  version = "1.8.6";
+  version = "1.8.7";
 
   src = fetchurl {
     url = systemSrc.url;
