@@ -27,7 +27,7 @@ in
     # kernelPackages = pkgs.linuxPackages_latest;
     # kernelPackages = pkgs.linuxPackages_zen;
     # https://github.com/chaotic-cx/nyx/pull/1176
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_cachyos.cachyOverride { mArch = "GENERIC_V3"; };
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
@@ -126,6 +126,6 @@ in
   services.scx = {
     enable = true;
     scheduler = "scx_rusty";
-    package = pkgs.scx.rustscheds; # 获取github上最新的调度规则
+    package = pkgs.scx_git.full; # 获取github上最新的调度规则
   };
 }
