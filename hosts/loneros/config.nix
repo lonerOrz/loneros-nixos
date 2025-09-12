@@ -154,7 +154,7 @@ in
       eog # GNOME 桌面环境中的一个图像查看器
       gnome-system-monitor # GNOME 风格监视器
       baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
-      rofi-wayland # 程序启动器
+      rofi # 程序启动器
       swaynotificationcenter # swaync 用于通知
       waybar # 任务栏
     ]
