@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-owner="visualglitch91"
+owner="lonerOrz"
 repo="niri"
 branch="feat/blur"
 pname="niri-blur"
