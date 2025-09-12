@@ -14,6 +14,5 @@
     #temporary
     (import ./tuckr.nix)
     (import ./zed.nix)
-    # (import ./linux-pam)
   ];
 }
