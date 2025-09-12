@@ -44,4 +44,5 @@
   linux-wallpaperengine = pkgs.callPackage ./linux-wallpaperengine/package.nix { };
   nsearch-tv = pkgs.callPackage ./nsearch-tv.nix { };
   ironbar = pkgs.callPackage ./ironbar/package.nix { };
+  niri-blur = pkgs.callPackage ./niri-blur { };
 }

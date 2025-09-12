@@ -30,10 +30,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
   version = "${raw-version}" + "-feat-blur";
 
   src = fetchFromGitHub {
-    owner = "visualglitch91";
+    owner = "lonerOrz";
     repo = "niri";
     rev = "feat/blur";
-    hash = "sha256-1XIhLlAc/x9K6LXRK8yMD8G3RiHPOiVRHmWNgIFGVi0=";
+    hash = "sha256-sV1zPG31nokCWksRGng3Ei6pfbyK5LVZJ8VuQ3lxe/A=";
   };
 
   cargoHash = "sha256-lR0emU2sOnlncN00z6DwDIE2ljI+D2xoKqG3rS45xG0=";
