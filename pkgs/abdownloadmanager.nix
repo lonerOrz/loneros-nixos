@@ -24,7 +24,7 @@
 }:
 stdenv.mkDerivation rec {
   pname = "abdownloadmanager-bin";
-  version = "1.6.11";
+  version = "dev-fix-access-denied-error-1";
 
   src = fetchurl {
     url = "https://github.com/amir1376/ab-download-manager/releases/download/v${version}/ABDownloadManager_${version}_linux_x64.tar.gz";
