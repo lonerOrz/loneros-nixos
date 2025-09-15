@@ -92,7 +92,6 @@ in
       kazumi # 番剧
       turntable # 音乐盒子
       librecad # CAD
-      wemeet
 
       # electron wrapper
       obsidian-wrapper
