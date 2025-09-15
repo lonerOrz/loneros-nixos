@@ -4,7 +4,6 @@ let
   exclude = [
     "clash"
     "nvf"
-    "flatpak"
     "virtualbox"
   ];
   files = builtins.readDir dir;
