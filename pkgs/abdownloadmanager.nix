@@ -24,11 +24,11 @@
 }:
 stdenv.mkDerivation rec {
   pname = "abdownloadmanager-bin";
-  version = "dev-fix-access-denied-error-1";
+  version = "1.6.13";
 
   src = fetchurl {
     url = "https://github.com/amir1376/ab-download-manager/releases/download/v${version}/ABDownloadManager_${version}_linux_x64.tar.gz";
-    sha256 = "sha256-VAIKXKQ7QBZgSh/vn3iMsn5KcgDixCKxdL5j7Ghut/g=";
+    sha256 = "sha256-bqKcOpTLiiplBJavjX8JIL92XAlxDSPXt9hvQbPDIAs=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
