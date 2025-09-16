@@ -18,11 +18,19 @@
         name = "flathub";
         location = "https://mirror.sjtu.edu.cn/flathub";
       }
+      {
+        name = "flathub-beta";
+        location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+      }
+      {
+        name = "flathub-official";
+        location = "https://flathub.org/repo/flathub.flatpakrepo";
+      }
     ];
     update = {
       auto = {
         enable = true;
-        onCalendar = "weekly"; # 每周自动更新
+        onCalendar = "weekly";
       };
     };
     uninstallUnmanaged = false;
@@ -39,7 +47,7 @@
     packages = [
       # {
       #   appId = "com.tencent.wemeet";
-      #   origin = "flathub";
+      #   origin = "flathub-official";
       # }
       # { appId = "com.brave.Browser"; origin = "flathub"; }
       # "com.obsproject.Studio"
