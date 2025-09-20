@@ -26,10 +26,6 @@
     owner = "root";
     mode = "0600";
     content = ''
-            # ClashMeta 高级优化配置
-      # 最后更新：2024-10-28
-      # 作者：🥞煎饼果子卷鲨鱼辣椒🌶️
-
       #------------------------基础配置------------------------#
       mixed-port: 7890 # 混合端口：HTTP(S)和SOCKS5共用端口
       geodata-mode: true # GEO模式：true使用geoip.dat数据库,false使用mmdb数据库
@@ -122,9 +118,37 @@
 
         # DNS服务器分流策略
         nameserver-policy:
-          "www.google.com": "https://dns.google/dns-query" # Google域名使用Google DNS
-          "www.facebook.com": "https://dns.google/dns-query" # Facebook域名使用Google DNS
-          ".cn": "https://doh.pub/dns-query" # 中国域名使用国内DNS
+          # 国内域名
+          "geosite:cn": https://doh.pub/dns-query
+          # 广告域名
+          "geosite:ads": rcode://success
+          # 国外服务分流
+          "geosite:gfw": https://dns.google/dns-query
+          "geosite:github": https://dns.google/dns-query
+          "geosite:telegram": https://cloudflare-dns.com/dns-query
+          "geosite:openai": https://dns.google/dns-query
+          "geosite:facebook": https://dns.google/dns-query
+          "geosite:twitter": https://dns.google/dns-query
+          "geosite:youtube": https://dns.google/dns-query
+          "geosite:google": https://dns.google/dns-query
+          "geosite:whatsapp": https://cloudflare-dns.com/dns-query
+          "geosite:line": https://dns.google/dns-query
+          # 流媒体服务
+          "geosite:netflix": https://cloudflare-dns.com/dns-query
+          "geosite:disney": https://cloudflare-dns.com/dns-query
+          "geosite:hulu": https://cloudflare-dns.com/dns-query
+          "geosite:spotify": https://dns.google/dns-query
+          "geosite:tiktok": https://dns.google/dns-query
+          # 游戏平台
+          "geosite:steam": https://dns.google/dns-query
+          "geosite:epicgames": https://dns.google/dns-query
+          "geosite:playstation": https://cloudflare-dns.com/dns-query
+          "geosite:xbox": https://cloudflare-dns.com/dns-query
+          # 大厂服务
+          "geosite:apple": https://doh.pub/dns-query
+          "geosite:microsoft": https://dns.google/dns-query
+          "geosite:amazon": https://cloudflare-dns.com/dns-query
+          "geosite:cloudflare": https://cloudflare-dns.com/dns-query
 
         # Fake-IP配置
         fake-ip-range: 198.18.0.1/16 # Fake-IP地址段
@@ -149,6 +173,13 @@
           - https://dns.google/dns-query#h3=true
           - https://1.1.1.1/dns-query#h3=true
           - tls://8.8.8.8:853
+
+        # fallback 策略过滤（Wiki: dns.fallback-filter）
+        fallback-filter:
+          geoip: true        # 启用 GeoIP 检查
+          geoip-code: CN     # 中国 IP 用 nameserver，其余用 fallback
+          ipcidr:
+            - 240.0.0.0/4    # 过滤无效 IP
 
       # 代理提供商配置
       proxy-providers:
