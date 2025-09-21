@@ -60,6 +60,7 @@ in
       aircrack-ng # wifi hack
       socat # ipc
       yq # yaml 文件解析
+      bintools
 
       go-musicfox
       lazygit
