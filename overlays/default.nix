@@ -10,7 +10,6 @@
     (import ./atuin)
     (import ./lib.nix)
     (import ./niri)
-    (import ./podman)
 
     #temporary
     (import ./tuckr.nix)
