@@ -35,9 +35,9 @@
       geo-auto-update: true # 自动更新
       geo-update-interval: 24 # 更新间隔
       geox-url:
-        geosite: "https://github.com/rts600/geosite/releases/download/mihomo/geosite-all.dat"
-        geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
-        mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+        geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+        geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+        mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
         asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
       tcp-concurrent: true # TCP并发：允许并发连接TCP,提高并发性能
       unified-delay: true # 统一延迟：统一显示节点延迟
@@ -126,39 +126,24 @@
           - 223.5.5.5 # 阿里DNS
           - 119.29.29.29 # 腾讯DNS
 
-        # DNS服务器分流策略
+        # DNS 服务器分流策略
         nameserver-policy:
           # 国内域名
-          "geosite:cn": https://doh.pub/dns-query
-          # 广告域名
-          # "geosite:ad": rcode://success
-          # 国外服务分流
-          "geosite:gfw": https://dns.google/dns-query
+          "geosite:cn": https://dns.alidns.com/dns-query
+
+          # 广告域名 → 直接拦截（可选启用）
+          # "geosite:category-ads-all": rcode://success
+
+          # 国外常见服务 → Google/Cloudflare DoH
+          # "geosite:gfw": https://dns.google/dns-query
+          "geosite:google": https://dns.google/dns-query
           "geosite:github": https://dns.google/dns-query
           "geosite:telegram": https://cloudflare-dns.com/dns-query
-          "geosite:openai": https://dns.google/dns-query
-          "geosite:facebook": https://dns.google/dns-query
-          "geosite:twitter": https://dns.google/dns-query
-          "geosite:youtube": https://dns.google/dns-query
-          "geosite:google": https://dns.google/dns-query
-          "geosite:whatsapp": https://cloudflare-dns.com/dns-query
-          "geosite:line": https://dns.google/dns-query
-          # 流媒体服务
+          "geosite:twitter": https://cloudflare-dns.com/dns-query
+
+          # 流媒体服务 → Cloudflare DoH（CDN 友好）
           "geosite:netflix": https://cloudflare-dns.com/dns-query
-          "geosite:disney": https://cloudflare-dns.com/dns-query
-          "geosite:hulu": https://cloudflare-dns.com/dns-query
-          "geosite:spotify": https://dns.google/dns-query
-          "geosite:tiktok": https://dns.google/dns-query
-          # 游戏平台
-          "geosite:steam": https://dns.google/dns-query
-          "geosite:epicgames": https://dns.google/dns-query
-          "geosite:playstation": https://cloudflare-dns.com/dns-query
-          "geosite:xbox": https://cloudflare-dns.com/dns-query
-          # 大厂服务
-          "geosite:apple": https://doh.pub/dns-query
-          "geosite:microsoft": https://dns.google/dns-query
-          "geosite:amazon": https://cloudflare-dns.com/dns-query
-          "geosite:cloudflare": https://cloudflare-dns.com/dns-query
+          "geosite:youtube": https://dns.google/dns-query
 
         # Fake-IP配置
         fake-ip-range: 198.18.0.1/16 # Fake-IP地址段
@@ -230,6 +215,14 @@
             - 🇦🇺 澳洲节点
             - 🇧🇷 巴西节点
             - 🌍 其他节点
+            - DIRECT
+
+        - name: PROXY
+          type: select
+          proxies:
+            - ♻️ 自动选择
+            - 🔯 故障转移
+            - 🔮 负载均衡
             - DIRECT
 
         - name: ♻️ 自动选择
@@ -639,6 +632,25 @@
         # 地域规则
         - GEOIP,LAN,DIRECT,no-resolve
         - GEOIP,CN,DIRECT,no-resolve
+
+        # GEOSITE 规则
+        # - GEOSITE,category-ads-all,REJECT
+        - GEOSITE,private,DIRECT
+        - GEOSITE,youtube,PROXY
+        - GEOSITE,google,PROXY
+        - GEOSITE,twitter,PROXY
+        - GEOSITE,onedrive,DIRECT
+        - GEOSITE,microsoft@cn,DIRECT
+        - GEOSITE,apple-cn,DIRECT
+        - GEOSITE,cn,DIRECT
+
+        # GEOIP 规则
+        - GEOIP,private,DIRECT,no-resolve
+        - GEOIP,telegram,PROXY
+        - GEOIP,JP,PROXY
+        - GEOIP,CN,DIRECT
+        - DST-PORT,80/8080/443/8443,PROXY
+        - MATCH,DIRECT
 
         # 兜底规则
         - MATCH,🚀 节点选择
