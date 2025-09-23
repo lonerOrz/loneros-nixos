@@ -192,6 +192,11 @@
       #  include-all-providers: true 自动引入【proxy-providers】所有代理集合，顺序将按照名称排序
       proxy-groups:
         #------------------------基础分组------------------------#
+        - name: PROXY
+          type: select
+          proxies:
+            - 🚀 节点选择
+
         - name: 🚀 节点选择
           type: select
           proxies:
@@ -215,14 +220,6 @@
             - 🇦🇺 澳洲节点
             - 🇧🇷 巴西节点
             - 🌍 其他节点
-            - DIRECT
-
-        - name: PROXY
-          type: select
-          proxies:
-            - ♻️ 自动选择
-            - 🔯 故障转移
-            - 🔮 负载均衡
             - DIRECT
 
         - name: ♻️ 自动选择
@@ -633,24 +630,12 @@
         - GEOIP,LAN,DIRECT,no-resolve
         - GEOIP,CN,DIRECT,no-resolve
 
-        # GEOSITE 规则
-        # - GEOSITE,category-ads-all,REJECT
-        - GEOSITE,private,DIRECT
-        - GEOSITE,youtube,PROXY
-        - GEOSITE,google,PROXY
-        - GEOSITE,twitter,PROXY
-        - GEOSITE,onedrive,DIRECT
-        - GEOSITE,microsoft@cn,DIRECT
-        - GEOSITE,apple-cn,DIRECT
-        - GEOSITE,cn,DIRECT
-
         # GEOIP 规则
         - GEOIP,private,DIRECT,no-resolve
         - GEOIP,telegram,PROXY
         - GEOIP,JP,PROXY
         - GEOIP,CN,DIRECT
         - DST-PORT,80/8080/443/8443,PROXY
-        - MATCH,DIRECT
 
         # 兜底规则
         - MATCH,🚀 节点选择
