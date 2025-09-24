@@ -94,6 +94,7 @@ in
       kazumi # 番剧
       turntable # 音乐盒子
       librecad # CAD
+      (dbeaver-bin.override { override_xmx = "512m"; }) # 数据库管理
 
       # electron wrapper
       obsidian-wrapper
