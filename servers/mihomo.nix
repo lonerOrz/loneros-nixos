@@ -150,6 +150,27 @@
         fake-ip-filter: # Fake-IP过滤清单
           - "*.lan" # 本地域名
           - "localhost.ptlogin2.qq.com" # QQ登录
+          - +.m2m
+          - injections.adguard.org
+          - local.adguard.org
+          - +.bogon
+          - +.local
+          - +.internal
+          - +.localdomain
+          - home.arpa
+          - 127.0.0.1.sslip.io
+          - 127.atlas.skk.moe
+          - dns.msftncsi.com
+          - "*.srv.nintendo.net"
+          - "*.stun.playstation.net"
+          - xbox.*.microsoft.com
+          - "*.xboxlive.com"
+          - "*.turn.twilio.com"
+          - "*.stun.twilio.com"
+          - stun.syncthing.net
+          - stun.*
+          - "*.sslip.io"
+          - "*.nip.io"
 
         # 主要DNS服务器
         nameserver:
