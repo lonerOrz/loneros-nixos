@@ -4,7 +4,7 @@
   ...
 }:
 let
-  niri-blur = (pkgs.callPackage ../pkgs/niri-blur { }).override { withDinit = true; };
+  niri-blur = (pkgs.callPackage ../pkgs/niri-blur/package.nix { }).override { withDinit = true; };
 in
 {
   imports = [ inputs.niri.nixosModules.niri ];

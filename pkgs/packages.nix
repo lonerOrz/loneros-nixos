@@ -1,3 +1,5 @@
+# For update-packages workflow
+# This file imports all packages in the current directory and its subdirectories.
 {
   pkgs ? import <nixpkgs> { },
   dir ? ./.,
