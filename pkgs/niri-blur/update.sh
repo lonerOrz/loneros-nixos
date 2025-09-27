@@ -7,7 +7,7 @@ branch="feat/blur"
 pname="niri-blur"
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-package_file="$script_dir/default.nix"
+package_file="$script_dir/package.nix"
 
 echo "Checking Niri version..."
 
