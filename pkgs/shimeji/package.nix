@@ -68,6 +68,8 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = {
     description = "Desktop mascot program";
     homepage = "https://codeberg.org/thatonecalculator/spamton-linux-shimeji";
