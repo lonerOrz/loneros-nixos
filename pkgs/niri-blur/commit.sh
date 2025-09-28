@@ -10,7 +10,7 @@ REPO="niri"
 BRANCH="feat/blur"
 
 FAST_MODE=false
-if [[ "${1:-}" == "--fast" ]]; then
+if [[ ${1:-} == "--fast" ]]; then
   FAST_MODE=true
 fi
 
