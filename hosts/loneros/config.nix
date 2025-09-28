@@ -134,6 +134,7 @@ in
       wl-clipboard # 命令行工具，操作剪贴板
 
       brightnessctl # 控制显示器亮度的命令行工具
+      ddcutil # 外置屏幕亮度调节
 
       swww # 设置和管理背景壁纸
       mpvpaper # 动态壁纸
