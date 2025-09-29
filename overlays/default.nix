@@ -13,5 +13,6 @@
     (import ./tuckr.nix)
 
     # temporary
+    (import ./kitty.nix)
   ];
 }
