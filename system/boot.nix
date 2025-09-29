@@ -28,7 +28,11 @@ in
     # kernelPackages = pkgs.linuxPackages_latest;
     # kernelPackages = pkgs.linuxPackages_zen;
     # https://github.com/chaotic-cx/nyx/pull/1176
-    kernelPackages = pkgs.linuxPackages_cachyos.cachyOverride { mArch = "GENERIC_V3"; };
+    kernelPackages = (pkgs.linuxPackages_cachyos.cachyOverride { mArch = "NATIVE"; }).extend (
+      lpself: lpsuper: {
+        inherit (pkgs.linuxPackages_cachyos-gcc) evdi nvidiaPackages; # 引入 CachyOS-GCC 的 NVIDIA 和 EVDI 驱动模块
+      }
+    );
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
