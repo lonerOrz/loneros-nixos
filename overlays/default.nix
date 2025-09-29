@@ -10,8 +10,8 @@
     (import ./atuin)
     (import ./lib.nix)
     (import ./niri)
-
-    #temporary
     (import ./tuckr.nix)
+
+    # temporary
   ];
 }
