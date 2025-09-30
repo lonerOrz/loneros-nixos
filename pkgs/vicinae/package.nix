@@ -153,6 +153,8 @@ stdenv.mkDerivation (finalAttrs: {
     cmake --install build
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = with lib; {
     description = "A focused launcher for your desktop — native, fast, extensible";
     homepage = "https://github.com/vicinaehq/vicinae";
