@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-script_dir=$(dirname "$0")
-package_file="$script_dir/package.nix"
-pname="niri-blur"
-
 OWNER="lonerOrz"
 REPO="niri"
 BRANCH="feat/blur"
@@ -13,6 +9,12 @@ FAST_MODE=false
 if [[ ${1:-} == "--fast" ]]; then
   FAST_MODE=true
 fi
+
+script_dir=$(cd "$(dirname "$0")" && pwd)
+package_file="$script_dir/package.nix"
+pname="niri-blur"
+
+cd "$script_dir/"
 
 # 1️⃣ 获取远程最新 commit
 latest_rev=$(git ls-remote https://github.com/${OWNER}/${REPO}.git ${BRANCH} | cut -f1)
