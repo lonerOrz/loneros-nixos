@@ -1,10 +1,28 @@
 {
-  inputs,
+  lib,
   pkgs,
+  inputs,
   system,
   ...
 }:
 let
+  extraQmlPath = lib.makeSearchPath "lib/qt-6/qml" (
+    with pkgs;
+    [
+      qt6.qtbase
+      qt6.qtdeclarative
+      qt6.qtmultimedia
+      qt6.qt5compat
+    ]
+  );
+
+  fontconfig = pkgs.makeFontsConf {
+    fontDirectories = with pkgs; [
+      material-symbols
+      nerd-fonts.caskaydia-mono
+    ];
+  };
+
   baseQuickshell = inputs.quickshell.packages.${system}.default.override {
     withJemalloc = true;
     withQtSvg = true;
@@ -16,16 +34,27 @@ let
     withI3 = true;
   };
 
-  quickshell = baseQuickshell.overrideAttrs (oldAttrs: {
-    postInstall = (oldAttrs.postInstall or "") + ''
-      wrapProgram $out/bin/quickshell \
-        --prefix QML_IMPORT_PATH:"${pkgs.qt6.qt5compat}/lib/qt-6/qml:${pkgs.qt6.qtbase}/lib/qt5/qml"
-    '';
-  });
+  quickshellWrapped =
+    pkgs.runCommand "quickshell-wrapped"
+      {
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        buildInputs = [ baseQuickshell ];
+      }
+      ''
+        mkdir -p $out/bin
+
+        for exe in ${baseQuickshell}/bin/*; do
+          [ -x "$exe" ] || continue
+
+          makeWrapper "$exe" "$out/bin/$(basename $exe)" \
+            --set FONTCONFIG_FILE "${fontconfig}/etc/fonts/fonts.conf" \
+            --set QML2_IMPORT_PATH "${extraQmlPath}"
+        done
+      '';
 in
 {
   environment.systemPackages = with pkgs; [
-    quickshell
+    quickshellWrapped
 
     kdePackages.qtbase
     kdePackages.qtgraphs
