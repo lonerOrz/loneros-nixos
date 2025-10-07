@@ -62,7 +62,6 @@ in
       yq # yaml 文件解析
       bintools
 
-      go-musicfox
       lazygit
       bottom
       neovim
@@ -120,10 +119,11 @@ in
       (pkgs.callPackage ../../pkgs/shimeji/package.nix { })
       (pkgs.callPackage ../../pkgs/nsearch-tv.nix { })
     ]
-    ++ [
+    ++ (with pkgs.nur.repos.lonerOrz; [
       # NUR packages
-      pkgs.nur.repos.lonerOrz.mpv-handler
-    ];
+      mpv-handler
+      go-musicfox
+    ]);
 
   programs = {
     # 在此添加缺失的动态库（这些库会对未打包的程序生效）
