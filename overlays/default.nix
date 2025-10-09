@@ -13,5 +13,10 @@
     (import ./tuckr.nix)
 
     # temporary
+    (import ./cmrc)
+    (import ./pytomlpp)
+    (import ./pluginbase.nix)
+    (import ./grpc-tools.nix)
+    # (import ./clang.nix)
   ];
 }
