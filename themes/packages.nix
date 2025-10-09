@@ -27,6 +27,7 @@
     adwaita-icon-theme
     material-symbols
     adw-gtk3
+    morewaita-icon-theme
   ];
 
   # https://discourse.nixos.org/t/how-is-xdg-data-dirs-set-for-some-apps/38432
