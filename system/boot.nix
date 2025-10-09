@@ -28,7 +28,7 @@ in
     # kernelPackages = pkgs.linuxPackages_latest;
     # kernelPackages = pkgs.linuxPackages_zen;
     # https://github.com/chaotic-cx/nyx/pull/1176
-    kernelPackages = pkgs.linuxPackages_cachyos.cachyOverride { mArch = "NATIVE"; };
+    kernelPackages = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "NATIVE"; };
     # if nvidia driver broken, try this:
     # .extend (
     #   lpself: lpsuper: {
