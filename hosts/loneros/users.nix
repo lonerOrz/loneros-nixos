@@ -61,6 +61,7 @@ in
       socat # ipc
       yq # yaml 文件解析
       bintools
+      udiskie # auto mount
 
       lazygit
       bottom
