@@ -20,6 +20,7 @@ let
     lua = [ "lua" ];
     go = [ "go" ];
     c = [ "c" ];
+    dotnet = [ "dotnet" ];
   };
 
   loadModules =
