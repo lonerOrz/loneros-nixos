@@ -13,7 +13,6 @@
     (import ./tuckr.nix)
 
     # temporary
-    (import ./cmrc)
     (import ./pytomlpp)
     # (import ./clang.nix)
   ];
