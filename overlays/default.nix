@@ -13,7 +13,8 @@
     (import ./tuckr.nix)
 
     # temporary
-    (import ./pytomlpp)
     # (import ./clang.nix)
+    (import ./pytomlpp)
+    (import ./openrgb)
   ];
 }
