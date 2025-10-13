@@ -14,7 +14,7 @@
 
     # temporary
     # (import ./clang.nix)
-    (import ./pytomlpp)
     (import ./openrgb)
+    (import ./pamixer.nix)
   ];
 }
