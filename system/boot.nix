@@ -42,6 +42,7 @@ in
       "nowatchdog"
       "modprobe.blacklist=sp5100_tco" # watchdog for AMD
       "modprobe.blacklist=iTCO_wdt" # watchdog for Intel
+      "i2c_hid.ignore_duplicate_id=1" # 忽略重复注册的 I2C HID 设备
     ];
 
     # This is for OBS Virtual Cam Support
