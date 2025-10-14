@@ -104,8 +104,8 @@ in
       defaultApplications = associations;
       addedAssociations = {
         "x-scheme-handler/clash" = [ "mihomo-party.desktop" ];
-        "x-scheme-handler/mpv" = [ "mpv-handler.desktop" ];
-        "x-scheme-handler/mpv-debug" = [ "mpv-handler-debug.desktop" ];
+        "x-scheme-handler/mpv-handler" = [ "mpv-handler.desktop" ];
+        "x-scheme-handler/mpv-handler-debug" = [ "mpv-handler-debug.desktop" ];
         "x-scheme-handler/discord" = [ "vesktop.desktop" ];
         "x-scheme-handler/tg" = [ "telegram.desktop" ];
       };
