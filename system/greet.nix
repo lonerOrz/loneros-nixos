@@ -5,7 +5,7 @@
 }:
 let
   hypr-session = "${pkgs.hyprland}/bin/Hyprland";
-  niri-session = "${pkgs.niri}/bin/niri-session";
+  niri-session = "${pkgs.niri}/bin/niri --session";
 in
 {
   services.greetd = {
