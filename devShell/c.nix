@@ -3,6 +3,7 @@
   packages =
     with pkgs;
     [
+      gcc
       clang-tools
       cmake
       codespell
