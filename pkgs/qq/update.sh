@@ -7,35 +7,35 @@ cd "$(readlink -e "$(dirname "${BASH_SOURCE[0]}")")"
 
 # Fetch JSON payload from URL
 fetch_payload() {
-    local url="$1"
-    curl -s "$url" | grep -oP 'var params= \K\{.*\}(?=;)'
+  local url="$1"
+  curl -s "$url" | grep -oP 'var params= \K\{.*\}(?=;)'
 }
 
 # Extract version from payload
 fetch_version_info() {
-    local payload="$1"
-    jq -r .version <<<"$payload"
+  local payload="$1"
+  jq -r .version <<<"$payload"
 }
 
 # Get nix-prefetch-url hash
 fetch_url_hash() {
-    local url="$1"
-    local hash=$(nix-prefetch-url "$url")
-    echo "sha256-$(nix hash to-base64 "sha256:$hash")"
+  local url="$1"
+  local hash=$(nix-prefetch-url "$url")
+  echo "sha256-$(nix hash to-base64 "sha256:$hash")"
 }
 
 # Read old version from sources.nix for a given pattern
 read_old_version() {
-    local pattern="$1"
-    if [[ -f sources.nix ]]; then
-        sed -n "/$pattern = {/,/};/p" sources.nix | grep version | awk -F\" '{print $2}' || true
-    fi
+  local pattern="$1"
+  if [[ -f sources.nix ]]; then
+    sed -n "/$pattern = {/,/};/p" sources.nix | grep version | awk -F\" '{print $2}' || true
+  fi
 }
 
 # Compare versions
 version_gt() {
-    local v1="$1" v2="$2"
-    [[ "$(printf '%s\n%s' "$v1" "$v2" | sort -V | tail -n1)" == "$v1" ]] && [[ "$v1" != "$v2" ]]
+  local v1="$1" v2="$2"
+  [[ "$(printf '%s\n%s' "$v1" "$v2" | sort -V | tail -n1)" == "$v1" ]] && [[ $v1 != "$v2" ]]
 }
 
 update_needed=false
@@ -44,18 +44,18 @@ today=$(date +%F)
 # macOS update
 darwin_payload=$(fetch_payload "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/macOSConfig.js")
 darwin_version=$(fetch_version_info "$darwin_payload")
-darwin_vernum=$(echo "$darwin_version" | sed 's/ *(.*)//')   # remove parentheses
+darwin_vernum=$(echo "$darwin_version" | sed 's/ *(.*)//') # remove parentheses
 darwin_url=$(jq -r .downloadUrl <<<"$darwin_payload")
 darwin_hash=$(fetch_url_hash "$darwin_url")
 
 old_darwin_version=$(read_old_version 'any-darwin')
 old_darwin_vernum=$(echo "$old_darwin_version" | sed 's/ *(.*)//' | awk -F'-' '{print $1}')
 
-if [[ -z "$old_darwin_vernum" ]] || version_gt "$darwin_vernum" "$old_darwin_vernum"; then
-    echo "✅ macOS version update: $old_darwin_vernum → $darwin_vernum"
-    update_needed=true
+if [[ -z $old_darwin_vernum ]] || version_gt "$darwin_vernum" "$old_darwin_vernum"; then
+  echo "✅ macOS version update: $old_darwin_vernum → $darwin_vernum"
+  update_needed=true
 else
-    echo "⚪ macOS version $darwin_vernum ≤ $old_darwin_vernum, skip update"
+  echo "⚪ macOS version $darwin_vernum ≤ $old_darwin_vernum, skip update"
 fi
 
 # Linux update
@@ -64,31 +64,31 @@ linux_payload=$(fetch_payload "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rai
 declare -A linux_versions linux_vernums linux_urls linux_hashes old_linux_versions old_linux_vernums
 
 for arch in aarch64 x86_64; do
-    if [[ "$arch" == "aarch64" ]]; then
-        linux_versions[$arch]=$(fetch_version_info "$linux_payload")
-        linux_urls[$arch]=$(jq -r .armDownloadUrl.deb <<<"$linux_payload")
-    else
-        linux_versions[$arch]=$(fetch_version_info "$linux_payload")
-        linux_urls[$arch]=$(jq -r .x64DownloadUrl.deb <<<"$linux_payload")
-    fi
+  if [[ $arch == "aarch64" ]]; then
+    linux_versions[$arch]=$(fetch_version_info "$linux_payload")
+    linux_urls[$arch]=$(jq -r .armDownloadUrl.deb <<<"$linux_payload")
+  else
+    linux_versions[$arch]=$(fetch_version_info "$linux_payload")
+    linux_urls[$arch]=$(jq -r .x64DownloadUrl.deb <<<"$linux_payload")
+  fi
 
-    linux_vernums[$arch]=$(echo "${linux_versions[$arch]}" | awk -F'[- ]' '{print $1}')
-    linux_hashes[$arch]=$(fetch_url_hash "${linux_urls[$arch]}")
-    old_linux_versions[$arch]=$(sed -n "/$arch-linux = {/,/};/p" sources.nix | grep version | awk -F\" '{print $2}' || true)
-    old_linux_vernums[$arch]=$(echo "${old_linux_versions[$arch]}" | awk -F'[- ]' '{print $1}')
+  linux_vernums[$arch]=$(echo "${linux_versions[$arch]}" | awk -F'[- ]' '{print $1}')
+  linux_hashes[$arch]=$(fetch_url_hash "${linux_urls[$arch]}")
+  old_linux_versions[$arch]=$(sed -n "/$arch-linux = {/,/};/p" sources.nix | grep version | awk -F\" '{print $2}' || true)
+  old_linux_vernums[$arch]=$(echo "${old_linux_versions[$arch]}" | awk -F'[- ]' '{print $1}')
 
-    if [[ -z "${old_linux_vernums[$arch]}" ]] || version_gt "${linux_vernums[$arch]}" "${old_linux_vernums[$arch]}"; then
-        echo "✅ Linux $arch version update: ${old_linux_vernums[$arch]} → ${linux_vernums[$arch]}"
-        update_needed=true
-    else
-        echo "⚪ Linux $arch version ${linux_vernums[$arch]} ≤ ${old_linux_vernums[$arch]}, skip"
-    fi
+  if [[ -z ${old_linux_vernums[$arch]} ]] || version_gt "${linux_vernums[$arch]}" "${old_linux_vernums[$arch]}"; then
+    echo "✅ Linux $arch version update: ${old_linux_vernums[$arch]} → ${linux_vernums[$arch]}"
+    update_needed=true
+  else
+    echo "⚪ Linux $arch version ${linux_vernums[$arch]} ≤ ${old_linux_vernums[$arch]}, skip"
+  fi
 done
 
 # Write sources.nix if needed
 if ! $update_needed; then
-    echo "⏭ No updates needed. sources.nix unchanged."
-    exit 0
+  echo "⏭ No updates needed. sources.nix unchanged."
+  exit 0
 fi
 
 cat >sources.nix <<EOF
