@@ -20,6 +20,7 @@
       common = {
         default = [
           "gnome"
+          "gtk"
         ];
       };
       hyprland = {
