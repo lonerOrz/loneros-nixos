@@ -62,6 +62,7 @@ in
       yq # yaml 文件解析
       bintools
       udiskie # auto mount
+      gpu-screen-recorder # record video
 
       lazygit
       bottom
