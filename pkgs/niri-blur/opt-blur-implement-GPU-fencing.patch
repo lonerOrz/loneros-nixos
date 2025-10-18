@@ -1,0 +1,103 @@
+diff --git a/src/render_helpers/blur/mod.rs b/src/render_helpers/blur/mod.rs
+index 4bed1c95..1bf31c8a 100644
+--- a/src/render_helpers/blur/mod.rs
++++ b/src/render_helpers/blur/mod.rs
+@@ -14,6 +14,7 @@ use smithay::backend::renderer::element::surface::WaylandSurfaceRenderElement;
+ use smithay::backend::renderer::element::AsRenderElements;
+ use smithay::backend::renderer::gles::format::fourcc_to_gl_formats;
+ use smithay::backend::renderer::gles::{ffi, Capability, GlesError, GlesRenderer, GlesTexture};
++use smithay::backend::renderer::sync::SyncPoint;
+ use smithay::backend::renderer::{Bind, Blit, Frame, Offscreen, Renderer, Texture, TextureFilter};
+ use smithay::desktop::LayerMap;
+ use smithay::output::Output;
+@@ -326,17 +327,22 @@ impl EffectsFramebuffers {
+         // Reduce computation for minimal blur effect
+         // Use a small epsilon to handle floating point precision issues
+         if config.radius.0 >= 0.1f64 {
++            let mut sync_point: Option<SyncPoint> = None;
++
+             // Downsample passes
+             for _ in 0..downsample_passes {
++                if let Some(sync) = sync_point {
++                    sync.wait().unwrap();
++                }
+                 let (sample_buffer, render_buffer) = self.buffers();
+-                render_blur_pass_with_frame(
++                sync_point = Some(render_blur_pass_with_frame(
+                     renderer,
+                     sample_buffer,
+                     render_buffer,
+                     &shaders.down,
+                     half_pixel,
+                     config,
+-                )?;
++                )?);
+                 self.current_buffer.swap();
+             }
+ 
+@@ -347,15 +353,18 @@ impl EffectsFramebuffers {
+             // FIXME: Why we need inclusive here but down is exclusive?
+             // Upsample passes
+             for _ in 0..upsample_passes {
++                if let Some(sync) = sync_point {
++                    sync.wait().unwrap();
++                }
+                 let (sample_buffer, render_buffer) = self.buffers();
+-                render_blur_pass_with_frame(
++                sync_point = Some(render_blur_pass_with_frame(
+                     renderer,
+                     sample_buffer,
+                     render_buffer,
+                     &shaders.up,
+                     half_pixel,
+                     config,
+-                )?;
++                )?);
+                 self.current_buffer.swap();
+             }
+         }
+@@ -601,13 +610,12 @@ fn render_blur_pass_with_frame(
+     blur_program: &shader::BlurShader,
+     half_pixel: [f32; 2],
+     config: Blur,
+-) -> anyhow::Result<()> {
++) -> anyhow::Result<SyncPoint> {
+     // We use a texture render element with a custom GlesTexProgram in order todo the blurring
+     // At least this is what swayfx/scenefx do, but they just use gl calls directly.
+     let size = sample_buffer.size().to_logical(1, Transform::Normal);
+ 
+     let vbos = RendererData::get(renderer).vbos;
+-    let is_shared = renderer.egl_context().is_shared();
+ 
+     let mut fb = renderer.bind(render_buffer)?;
+     // Using GlesFrame since I want to use a custom program
+@@ -698,7 +706,9 @@ fn render_blur_pass_with_frame(
+             ffi::FALSE,
+             tex_mat.as_ref() as *const f32,
+         );
+-        gl.Uniform1f(program.uniform_alpha, 1.0);
++        if program.uniform_alpha != -1 {
++            gl.Uniform1f(program.uniform_alpha, 1.0);
++        }
+         gl.Uniform1f(program.uniform_radius, config.radius.0 as f32);
+         gl.Uniform2f(program.uniform_half_pixel, half_pixel[0], half_pixel[1]);
+ 
+@@ -742,17 +752,10 @@ fn render_blur_pass_with_frame(
+         gl.Enable(ffi::BLEND);
+         gl.BlendFunc(ffi::ONE, ffi::ONE_MINUS_SRC_ALPHA);
+ 
+-        // FIXME: Check for Fencing support
+-        if is_shared {
+-            gl.Finish();
+-        }
+-
+         Result::<_, GlesError>::Ok(())
+     })??;
+ 
+-    let _sync_point = frame.finish()?;
+-
+-    Ok(())
++    frame.finish().map_err(Into::into)
+ }
+ 
+ // Renders a blur pass using gl code bypassing smithay's Frame mechanisms

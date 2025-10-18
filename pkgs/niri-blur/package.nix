@@ -32,8 +32,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "lonerOrz";
     repo = "niri";
-    rev = "cf19d68fd5589e22982c23a233456a4eca698d1a";
-    hash = "sha256-XqJBJsYpHsf6+eopHdkFN7IxCW+HYpn1ajaZdZ9BNz0=";
+    rev = "ea3a51dfdea8d75f002087399ac4b0717c213c18";
+    hash = "sha256-h8+kKXWtR/rqEayaWRu/V7BHDljtCWbWofbmt9q73lM=";
   };
 
   cargoHash = "sha256-3A37vUNv37IKAm9MdlfVMkuTd/HZSkPO+gv1m23qJvo=";
@@ -46,6 +46,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
   patches = [
     # 将平铺窗口的实现方式也换成 true blur 方式
     # ./fix-blur.patch
+    # 改动测试
+    ./opt-elgs.patch
+    ./opt-sync-blur-paaaes.patch
+    ./opt-blur-implement-GPU-fencing.patch
+    ./fix-vbo.patch
+    ./fix-raw.patch
   ];
 
   postPatch = ''

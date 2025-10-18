@@ -1,0 +1,162 @@
+diff --git a/src/render_helpers/blur/element.rs b/src/render_helpers/blur/element.rs
+index 3bbfffc3..84c7cac7 100644
+--- a/src/render_helpers/blur/element.rs
++++ b/src/render_helpers/blur/element.rs
+@@ -262,6 +262,7 @@ fn draw_true_blur(
+ 
+     // Update the blur buffers.
+     // We use gl ffi directly to circumvent some stuff done by smithay
++    let is_shared = gles_frame.egl_context().is_shared();
+     let blurred_texture = gles_frame.with_context(|gl| unsafe {
+         super::get_main_buffer_blur(
+             gl,
+@@ -275,6 +276,7 @@ fn draw_true_blur(
+             supports_instancing,
+             dst,
+             is_tty,
++            is_shared,
+         )
+     })??;
+ 
+diff --git a/src/render_helpers/blur/mod.rs b/src/render_helpers/blur/mod.rs
+index 7d0b33ca..4bed1c95 100644
+--- a/src/render_helpers/blur/mod.rs
++++ b/src/render_helpers/blur/mod.rs
+@@ -399,6 +399,7 @@ pub(super) unsafe fn get_main_buffer_blur(
+     // dst is the region that we want blur on
+     dst: Rectangle<i32, Physical>,
+     is_tty: bool,
++    is_shared: bool,
+ ) -> Result<GlesTexture, GlesError> {
+     let tex_size = fx_buffers
+         .effects
+@@ -433,12 +434,13 @@ pub(super) unsafe fn get_main_buffer_blur(
+         .to_str()
+         .unwrap_or("Unknown GLES Version");
+ 
+-    let major_version = gles_version
+-        .find("OpenGL ES ") // Find the start of the version part
+-        .and_then(|idx| gles_version.get(idx + "OpenGL ES ".len()..)) // Get the substring after "OpenGL ES "
+-        .and_then(|s| s.split('.').next()) // Get the major version part (e.g., "3" from "3.2")
+-        .and_then(|s| s.parse::<u32>().ok())
+-        .unwrap_or(2); // Default to 2 if parsing fails
++    let mut major_version = 2;
++    let mut minor_version = 0;
++    if let Some(version_part) = gles_version.get(gles_version.find("OpenGL ES ").unwrap_or(0) + "OpenGL ES ".len()..) {
++        let mut parts = version_part.split('.');
++        major_version = parts.next().and_then(|s| s.parse().ok()).unwrap_or(2);
++        minor_version = parts.next().and_then(|s| s.parse().ok()).unwrap_or(0);
++    }
+ 
+     if major_version < 3 {
+         error!(
+@@ -448,6 +450,8 @@ pub(super) unsafe fn get_main_buffer_blur(
+         return Err(GlesError::BlitError);
+     }
+ 
++    let supports_memory_barrier = major_version > 3 || (major_version == 3 && minor_version >= 1);
++
+     // First get a fbo for the texture we are about to read into
+     let mut sample_fbo = 0u32;
+     {
+@@ -546,6 +550,8 @@ pub(super) unsafe fn get_main_buffer_blur(
+                 half_pixel,
+                 blur_config.clone(),
+                 damage,
++                is_shared,
++                supports_memory_barrier,
+             )?;
+             fx_buffers.current_buffer.swap();
+         }
+@@ -570,6 +576,8 @@ pub(super) unsafe fn get_main_buffer_blur(
+                 half_pixel,
+                 blur_config.clone(),
+                 damage,
++                is_shared,
++                supports_memory_barrier,
+             )?;
+             fx_buffers.current_buffer.swap();
+         }
+@@ -769,6 +777,8 @@ unsafe fn render_blur_pass_with_gl(
+     // dst is the region that should have blur
+     // it gets up/downscaled with passes
+     _damage: Rectangle<i32, Physical>,
++    is_shared: bool,
++    supports_memory_barrier: bool,
+ ) -> Result<(), GlesError> {
+     let tex_size = sample_buffer.size();
+     let src = Rectangle::from_size(tex_size.to_f64());
+@@ -779,9 +789,6 @@ unsafe fn render_blur_pass_with_gl(
+ 
+     let damage = dest;
+ 
+-    // FIXME: Should we call gl.Finish() when done rendering this pass? If yes, should we check
+-    // if the gl context is shared or not? What about fencing, we don't have access to that
+-
+     // PERF: Instead of taking the whole src/dst as damage, adapt the code to run with only the
+     // damaged window? This would cause us to make a custom WaylandSurfaceRenderElement to blur out
+     // stuff. Complicated.
+@@ -865,7 +872,9 @@ unsafe fn render_blur_pass_with_gl(
+             ffi::FALSE,
+             tex_mat.as_ref() as *const f32,
+         );
+-        gl.Uniform1f(program.uniform_alpha, 1.0);
++        if program.uniform_alpha != -1 {
++            gl.Uniform1f(program.uniform_alpha, 1.0);
++        }
+         gl.Uniform1f(program.uniform_radius, config.radius.0 as f32);
+         gl.Uniform2f(program.uniform_half_pixel, half_pixel[0], half_pixel[1]);
+ 
+@@ -907,6 +916,22 @@ unsafe fn render_blur_pass_with_gl(
+         gl.DisableVertexAttribArray(program.attrib_vert_position as u32);
+     }
+ 
++    // After each pass, we need to add a barrier to ensure that the texture we just rendered to
++    // is not read from before the rendering is complete. This is a classic read-after-write
++    // hazard.
++    //
++    // In case of a shared context, we must use gl.Finish() to ensure that the other context
++    // sees the changes. In other cases, we can use a memory barrier, which is much more
++    // efficient.
++    if is_shared {
++        gl.Finish();
++    } else if supports_memory_barrier {
++        gl.MemoryBarrier(ffi::TEXTURE_FETCH_BARRIER_BIT);
++    } else {
++        // Fallback for GLES < 3.1
++        gl.Finish();
++    }
++
+     // Clean up
+     {
+         gl.Enable(ffi::BLEND);
+diff --git a/src/render_helpers/blur/shader.rs b/src/render_helpers/blur/shader.rs
+index bf13580d..4203d771 100644
+--- a/src/render_helpers/blur/shader.rs
++++ b/src/render_helpers/blur/shader.rs
+@@ -108,11 +108,7 @@ impl BlurShader {
+                         debug_assert_ne!(loc, -1, "Uniform 'tex_matrix' not found in blur shader program (normal)");
+                         loc
+                     },
+-                    uniform_alpha: {
+-                        let loc = gl.GetUniformLocation(program, alpha.as_ptr() as *const ffi::types::GLchar);
+-                        debug_assert_ne!(loc, -1, "Uniform 'alpha' not found in blur shader program (normal)");
+-                        loc
+-                    },
++                    uniform_alpha: gl.GetUniformLocation(program, alpha.as_ptr() as *const ffi::types::GLchar),
+                     uniform_radius: {
+                         let loc = gl.GetUniformLocation(program, radius.as_ptr() as *const ffi::types::GLchar);
+                         debug_assert_ne!(loc, -1, "Uniform 'radius' not found in blur shader program (normal)");
+@@ -151,11 +147,7 @@ impl BlurShader {
+                         debug_assert_ne!(loc, -1, "Uniform 'tex_matrix' not found in blur shader program (debug)");
+                         loc
+                     },
+-                    uniform_alpha: {
+-                        let loc = gl.GetUniformLocation(debug_program, alpha.as_ptr() as *const ffi::types::GLchar);
+-                        debug_assert_ne!(loc, -1, "Uniform 'alpha' not found in blur shader program (debug)");
+-                        loc
+-                    },
++                    uniform_alpha: gl.GetUniformLocation(debug_program, alpha.as_ptr() as *const ffi::types::GLchar),
+                     uniform_radius: {
+                         let loc = gl.GetUniformLocation(debug_program, radius.as_ptr() as *const ffi::types::GLchar);
+                         debug_assert_ne!(loc, -1, "Uniform 'radius' not found in blur shader program (debug)");

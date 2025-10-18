@@ -1,0 +1,270 @@
+diff --git a/src/render_helpers/blur/element.rs b/src/render_helpers/blur/element.rs
+index 7c25e0db..3bbfffc3 100644
+--- a/src/render_helpers/blur/element.rs
++++ b/src/render_helpers/blur/element.rs
+@@ -18,6 +18,18 @@ use crate::render_helpers::shaders::Shaders;
+ use super::optimized_blur_texture_element::OptimizedBlurTextureElement;
+ use super::{CurrentBuffer, EffectsFramebuffers};
+
++fn clamp_f32_uniform(value: f32, name: &str) -> f32 {
++    if value.is_nan() {
++        warn!("Uniform '{}' is NaN, clamping to 0.0", name);
++        0.0
++    } else if value.is_infinite() {
++        warn!("Uniform '{}' is infinite, clamping to 0.0", name);
++        0.0
++    } else {
++        value
++    }
++}
++
+ #[derive(Debug)]
+ pub enum BlurRenderElement {
+     /// Use optimized blur, aka X-ray blur.
+@@ -276,15 +288,15 @@ fn draw_true_blur(
+                 Uniform::new(
+                     "geo",
+                     [
+-                        dst.loc.x as f32,
+-                        dst.loc.y as f32,
+-                        dst.size.w as f32,
+-                        dst.size.h as f32,
++                        clamp_f32_uniform(dst.loc.x as f32, "geo.x"),
++                        clamp_f32_uniform(dst.loc.y as f32, "geo.y"),
++                        clamp_f32_uniform(dst.size.w as f32, "geo.w"),
++                        clamp_f32_uniform(dst.size.h as f32, "geo.h"),
+                     ],
+                 ),
+-                Uniform::new("alpha", alpha),
+-                Uniform::new("noise", config.noise.0 as f32),
+-                Uniform::new("corner_radius", corner_radius),
++                Uniform::new("alpha", clamp_f32_uniform(alpha, "alpha")),
++                Uniform::new("noise", clamp_f32_uniform(config.noise.0 as f32, "noise")),
++                Uniform::new("corner_radius", clamp_f32_uniform(corner_radius, "corner_radius")),
+             ],
+         )
+     };
+@@ -344,15 +356,15 @@ impl RenderElement<GlesRenderer> for BlurRenderElement {
+                             Uniform::new(
+                                 "geo",
+                                 [
+-                                    dst.loc.x as f32,
+-                                    dst.loc.y as f32,
+-                                    dst.size.w as f32,
+-                                    dst.size.h as f32,
++                                    clamp_f32_uniform(dst.loc.x as f32, "geo.x"),
++                                    clamp_f32_uniform(dst.loc.y as f32, "geo.y"),
++                                    clamp_f32_uniform(dst.size.w as f32, "geo.w"),
++                                    clamp_f32_uniform(dst.size.h as f32, "geo.h"),
+                                 ],
+                             ),
+-                            Uniform::new("corner_radius", *corner_radius),
+-                            Uniform::new("noise", *noise),
+-                            Uniform::new("alpha", self.alpha()),
++                            Uniform::new("corner_radius", clamp_f32_uniform(*corner_radius, "corner_radius")),
++                            Uniform::new("noise", clamp_f32_uniform(*noise, "noise")),
++                            Uniform::new("alpha", clamp_f32_uniform(self.alpha(), "alpha")),
+                         ],
+                     );
+
+diff --git a/src/render_helpers/blur/mod.rs b/src/render_helpers/blur/mod.rs
+index 3626cb3e..7d0b33ca 100644
+--- a/src/render_helpers/blur/mod.rs
++++ b/src/render_helpers/blur/mod.rs
+@@ -412,7 +412,14 @@ pub(super) unsafe fn get_main_buffer_blur(
+             (2f32.powi(blur_config.passes as i32 + 1) * blur_config.radius.0 as f32).ceil() as i32;
+         dst.loc -= Point::from((size, size));
+         dst.size += Size::from((size, size)).upscale(2);
+-        dst
++        // Clamp the expanded destination to the texture size to prevent out-of-bounds blitting.
++        Rectangle::new(
++            Point::from((dst.loc.x.max(0), dst.loc.y.max(0))),
++            Size::from((
++                dst.size.w.min(tex_size.w - dst.loc.x.max(0)),
++                dst.size.h.min(tex_size.h - dst.loc.y.max(0)),
++            )),
++        )
+     };
+
+     let mut prev_fbo = 0;
+@@ -510,8 +517,9 @@ pub(super) unsafe fn get_main_buffer_blur(
+             );
+         }
+
+-        if gl.GetError() == ffi::INVALID_OPERATION {
+-            error!("TrueBlur needs GLES3.0 for blitting");
++        let error = gl.GetError();
++        if error != ffi::NO_ERROR {
++            error!("gl.BlitFramebuffer failed with error: {:#x}", error);
+             return Err(GlesError::BlitError);
+         }
+     }
+@@ -872,9 +880,9 @@ unsafe fn render_blur_pass_with_gl(
+             std::ptr::null(),
+         );
+
+-        // vert_position
++        // vert_position (using vbos[1] for vertex position data)
+         gl.EnableVertexAttribArray(program.attrib_vert_position as u32);
+-        gl.BindBuffer(ffi::ARRAY_BUFFER, 0);
++        gl.BindBuffer(ffi::ARRAY_BUFFER, vbos[1]); // Assuming vbos[1] is for vert_position
+
+         gl.VertexAttribPointer(
+             program.attrib_vert_position as u32,
+@@ -882,7 +890,7 @@ unsafe fn render_blur_pass_with_gl(
+             ffi::FLOAT,
+             ffi::FALSE,
+             0,
+-            vertices.as_ptr() as *const _,
++            std::ptr::null(), // Offset into the bound buffer
+         );
+
+         if supports_instancing {
+diff --git a/src/render_helpers/blur/shader.rs b/src/render_helpers/blur/shader.rs
+index c98c2256..bf13580d 100644
+--- a/src/render_helpers/blur/shader.rs
++++ b/src/render_helpers/blur/shader.rs
+@@ -93,63 +93,89 @@ impl BlurShader {
+             Ok(BlurShaderVariant {
+                 normal: BlurShaderProgram {
+                     program,
+-                    uniform_tex: gl
+-                        .GetUniformLocation(program, tex.as_ptr() as *const ffi::types::GLchar),
+-                    uniform_matrix: gl
+-                        .GetUniformLocation(program, matrix.as_ptr() as *const ffi::types::GLchar),
+-                    uniform_tex_matrix: gl.GetUniformLocation(
+-                        program,
+-                        tex_matrix.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    uniform_alpha: gl
+-                        .GetUniformLocation(program, alpha.as_ptr() as *const ffi::types::GLchar),
+-                    uniform_radius: gl
+-                        .GetUniformLocation(program, radius.as_ptr() as *const ffi::types::GLchar),
+-                    uniform_half_pixel: gl.GetUniformLocation(
+-                        program,
+-                        half_pixel.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    attrib_vert: gl
+-                        .GetAttribLocation(program, vert.as_ptr() as *const ffi::types::GLchar),
+-                    attrib_vert_position: gl.GetAttribLocation(
+-                        program,
+-                        vert_position.as_ptr() as *const ffi::types::GLchar,
+-                    ),
++                    uniform_tex: {
++                        let loc = gl.GetUniformLocation(program, tex.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'tex' not found in blur shader program (normal)");
++                        loc
++                    },
++                    uniform_matrix: {
++                        let loc = gl.GetUniformLocation(program, matrix.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'matrix' not found in blur shader program (normal)");
++                        loc
++                    },
++                    uniform_tex_matrix: {
++                        let loc = gl.GetUniformLocation(program, tex_matrix.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'tex_matrix' not found in blur shader program (normal)");
++                        loc
++                    },
++                    uniform_alpha: {
++                        let loc = gl.GetUniformLocation(program, alpha.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'alpha' not found in blur shader program (normal)");
++                        loc
++                    },
++                    uniform_radius: {
++                        let loc = gl.GetUniformLocation(program, radius.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'radius' not found in blur shader program (normal)");
++                        loc
++                    },
++                    uniform_half_pixel: {
++                        let loc = gl.GetUniformLocation(program, half_pixel.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'half_pixel' not found in blur shader program (normal)");
++                        loc
++                    },
++                    attrib_vert: {
++                        let loc = gl.GetAttribLocation(program, vert.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Attribute 'vert' not found in blur shader program (normal)");
++                        loc
++                    },
++                    attrib_vert_position: {
++                        let loc = gl.GetAttribLocation(program, vert_position.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Attribute 'vert_position' not found in blur shader program (normal)");
++                        loc
++                    },
+                 },
+                 debug: BlurShaderProgram {
+                     program: debug_program,
+-                    uniform_tex: gl.GetUniformLocation(
+-                        debug_program,
+-                        tex.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    uniform_matrix: gl.GetUniformLocation(
+-                        debug_program,
+-                        matrix.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    uniform_tex_matrix: gl.GetUniformLocation(
+-                        debug_program,
+-                        tex_matrix.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    uniform_alpha: gl.GetUniformLocation(
+-                        debug_program,
+-                        alpha.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    uniform_radius: gl.GetUniformLocation(
+-                        debug_program,
+-                        radius.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    uniform_half_pixel: gl.GetUniformLocation(
+-                        debug_program,
+-                        half_pixel.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    attrib_vert: gl.GetAttribLocation(
+-                        debug_program,
+-                        vert.as_ptr() as *const ffi::types::GLchar,
+-                    ),
+-                    attrib_vert_position: gl.GetAttribLocation(
+-                        debug_program,
+-                        vert_position.as_ptr() as *const ffi::types::GLchar,
+-                    ),
++                    uniform_tex: {
++                        let loc = gl.GetUniformLocation(debug_program, tex.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'tex' not found in blur shader program (debug)");
++                        loc
++                    },
++                    uniform_matrix: {
++                        let loc = gl.GetUniformLocation(debug_program, matrix.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'matrix' not found in blur shader program (debug)");
++                        loc
++                    },
++                    uniform_tex_matrix: {
++                        let loc = gl.GetUniformLocation(debug_program, tex_matrix.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'tex_matrix' not found in blur shader program (debug)");
++                        loc
++                    },
++                    uniform_alpha: {
++                        let loc = gl.GetUniformLocation(debug_program, alpha.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'alpha' not found in blur shader program (debug)");
++                        loc
++                    },
++                    uniform_radius: {
++                        let loc = gl.GetUniformLocation(debug_program, radius.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'radius' not found in blur shader program (debug)");
++                        loc
++                    },
++                    uniform_half_pixel: {
++                        let loc = gl.GetUniformLocation(debug_program, half_pixel.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Uniform 'half_pixel' not found in blur shader program (debug)");
++                        loc
++                    },
++                    attrib_vert: {
++                        let loc = gl.GetAttribLocation(debug_program, vert.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Attribute 'vert' not found in blur shader program (debug)");
++                        loc
++                    },
++                    attrib_vert_position: {
++                        let loc = gl.GetAttribLocation(debug_program, vert_position.as_ptr() as *const ffi::types::GLchar);
++                        debug_assert_ne!(loc, -1, "Attribute 'vert_position' not found in blur shader program (debug)");
++                        loc
++                    },
+                 },
+             })
+         };

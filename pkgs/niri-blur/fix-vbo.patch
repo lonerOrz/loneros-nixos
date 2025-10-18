@@ -1,0 +1,17 @@
+diff --git a/src/render_helpers/blur/mod.rs b/src/render_helpers/blur/mod.rs
+index 1bf31c8a..d5c9f836 100644
+--- a/src/render_helpers/blur/mod.rs
++++ b/src/render_helpers/blur/mod.rs
+@@ -895,6 +895,12 @@ unsafe fn render_blur_pass_with_gl(
+         // vert_position (using vbos[1] for vertex position data)
+         gl.EnableVertexAttribArray(program.attrib_vert_position as u32);
+         gl.BindBuffer(ffi::ARRAY_BUFFER, vbos[1]); // Assuming vbos[1] is for vert_position
++        gl.BufferData(
++            ffi::ARRAY_BUFFER,
++            (vertices.len() * std::mem::size_of::<f32>()) as ffi::types::GLsizeiptr,
++            vertices.as_ptr() as *const _,
++            ffi::STREAM_DRAW,
++        );
+ 
+         gl.VertexAttribPointer(
+             program.attrib_vert_position as u32,
