@@ -2,8 +2,8 @@
   services.libinput = {
     enable = true;
 
-    # ---- 通用稳定性优化 ----
-    # （这里的 additionalOptions 直接对应 libinput 属性）
+    # 通用稳定性优化
+    # 这里的 additionalOptions 直接对应 libinput 属性
     touchpad.additionalOptions = {
       "libinput Palm Detection Enabled" = "1";
       "libinput Disable While Typing Enabled" = "1";
@@ -12,7 +12,7 @@
       "libinput Accel Profile Enabled" = "1, 0";
     };
 
-    # ---- 触摸板 ----
+    # 触摸板
     touchpad = {
       # 减慢移动速度防止乱飞
       accelSpeed = -0.5;
@@ -59,4 +59,11 @@
       accelStepMotion = 0.05;
     };
   };
+
+  # 修复 MSFT0001:01 04F3:304B 跳动 bug
+  environment.etc."libinput/local-overrides.quirks".text = ''
+    [Touchpad Jump Fix]
+    MatchName=MSFT0001:01 04F3:304B
+    AttrIgnoreTouchpadJumpEvents=true
+  '';
 }
