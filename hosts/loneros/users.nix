@@ -63,6 +63,7 @@ in
       bintools
       udiskie # auto mount
       gpu-screen-recorder # record video
+      satty # Screenshot Annotation
 
       lazygit
       bottom
