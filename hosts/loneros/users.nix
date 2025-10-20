@@ -126,6 +126,7 @@ in
       # NUR packages
       mpv-handler
       go-musicfox
+      pear-desktop # youtube music
     ]);
 
   programs = {
