@@ -1,11 +1,12 @@
 {
   lib,
+  libGL,
+  cairo,
   dbus,
   eudev,
   fetchFromGitHub,
   installShellFiles,
   libdisplay-info,
-  libglvnd,
   libinput,
   libxkbcommon,
   libgbm,
@@ -32,8 +33,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "lonerOrz";
     repo = "niri";
-    rev = "ea3a51dfdea8d75f002087399ac4b0717c213c18";
-    hash = "sha256-h8+kKXWtR/rqEayaWRu/V7BHDljtCWbWofbmt9q73lM=";
+    rev = "9b5fd1f01e08c24a512e27cc2702b1523d0fad52";
+    hash = "sha256-vKeoC82LHVFzW1AdLFK7rJ+TTKBLQ9odH9dTeYLRkNM=";
   };
 
   cargoHash = "sha256-3A37vUNv37IKAm9MdlfVMkuTd/HZSkPO+gv1m23qJvo=";
@@ -46,12 +47,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
   patches = [
     # 将平铺窗口的实现方式也换成 true blur 方式
     # ./fix-blur.patch
-    # 改动测试
-    ./opt-elgs.patch
-    ./opt-sync-blur-paaaes.patch
-    ./opt-blur-implement-GPU-fencing.patch
-    ./fix-vbo.patch
-    ./fix-raw.patch
   ];
 
   postPatch = ''
@@ -69,14 +64,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   buildInputs = [
+    cairo
+    dbus
+    libGL
     libdisplay-info
-    libglvnd # 用于 libEGL
     libinput
+    seatd
     libxkbcommon
     libgbm
     pango
-    seatd
-    wayland # 用于 libwayland-client
+    wayland
   ]
   ++ lib.optional (withDbus || withScreencastSupport || withSystemd) dbus
   ++ lib.optional withScreencastSupport pipewire
@@ -89,6 +86,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
     ++ lib.optional withScreencastSupport "xdp-gnome-screencast"
     ++ lib.optional withSystemd "systemd";
   buildNoDefaultFeatures = true;
+
+  # ever since this commit:
+  # https://github.com/YaLTeR/niri/commit/771ea1e81557ffe7af9cbdbec161601575b64d81
+  # niri now runs an actual instance of the real compositor (with a mock backend) during tests
+  # and thus creates a real socket file in the runtime dir.
+  # this is fine for our build, we just need to make sure it has a directory to write to.
+  preCheck = ''
+    export XDG_RUNTIME_DIR="$(mktemp -d)"
+  '';
 
   postInstall = ''
     install -Dm0644 README.md resources/default-config.kdl -t $doc/share/doc/niri
