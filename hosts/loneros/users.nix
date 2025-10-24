@@ -97,6 +97,7 @@ in
       turntable # 音乐盒子
       librecad # CAD
       (dbeaver-bin.override { override_xmx = "1024m"; }) # 数据库管理
+      nautilus # file manager
 
       # electron wrapper
       obsidian-wrapper
