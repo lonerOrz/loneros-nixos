@@ -14,7 +14,7 @@
 
     # temporary
     # (import ./clang.nix)
-    (import ./openrgb)
     (import ./pamixer.nix)
+    # (import ./rust-cbindgen.nix)
   ];
 }
