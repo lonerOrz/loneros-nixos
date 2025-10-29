@@ -50,9 +50,11 @@ get_store_paths() {
 
   # 获取所有 drvPath 列表（原始）
   local drv_paths
-  drv_paths=$(nix eval --apply 'x: map (pkg: pkg.drvPath) x' \
-    --json "$PACKAGE_TARGET" |
-    jq -r '.[]' | sort -u)
+  drv_paths=$(nix eval --apply '
+    x: map (pkg:
+      if builtins.isAttrs pkg then pkg.drvPath else null
+    ) x
+  ' --json "$PACKAGE_TARGET" | jq -r 'map(select(. != null)) | .[]' | sort -u)
 
   if [[ -z $drv_paths ]]; then
     log "ERROR" "No drv paths found for $target" >&2
