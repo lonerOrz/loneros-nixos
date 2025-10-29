@@ -7,5 +7,8 @@
     ./intel-drivers.nix
     ./vm-guest-services.nix
     ./local-hardware-clock.nix
+
+    # other modules
+    ./battery.nix
   ];
 }
