@@ -31,7 +31,7 @@
     spice
     spice-gtk
     spice-protocol
-    win-virtio
+    virtio-win
     win-spice
     #gnome.adwaita-icon-theme
     # quickemu

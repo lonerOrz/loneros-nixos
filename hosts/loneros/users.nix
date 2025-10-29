@@ -92,7 +92,7 @@ in
       element-desktop
       libreoffice-still # 长久支持版本
       foliate # epub reader
-      bitwarden # 密码管理器
+      bitwarden-desktop # 密码管理器
       kazumi # 番剧
       turntable # 音乐盒子
       librecad # CAD

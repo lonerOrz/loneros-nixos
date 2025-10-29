@@ -8,7 +8,7 @@
       # 通用字体（支持多语言）
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
 
       # 编程 / 等宽字体
       jetbrains-mono
