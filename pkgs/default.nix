@@ -3,7 +3,6 @@
   pkgs,
   lib,
   mylib,
-  system,
   dir ? ./.,
   pkgFileName ? "package.nix",
   excluded ? [

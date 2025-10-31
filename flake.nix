@@ -81,7 +81,6 @@
 
       perSystem =
         {
-          system,
           pkgs,
           lib,
           ...
@@ -89,19 +88,18 @@
         {
           _module.args.mylib = mylib;
           devShells = import ./devShell/default.nix { inherit pkgs; };
-          checks = { } // inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
+          checks = { } // inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy;
           packages =
             import ./pkgs/default.nix {
               inherit
                 pkgs
-                system
                 lib
                 mylib
                 ;
             }
             // {
               iso = inputs.nixos-generators.nixosGenerate {
-                system = system;
+                system = pkgs.stdenv.hostPlatform.system;
                 format = "iso";
                 modules = [ ./iso/config.nix ];
               };
@@ -146,27 +144,27 @@
               ];
             }
           ) hosts;
-
-        # deploys
-        deploy.nodes =
-          let
-            deployDir = ./deploy;
-            nodeFiles = if builtins.pathExists deployDir then builtins.readDir deployDir else { };
-            validNixFiles = lib.filterAttrs (
-              name: type: type == "regular" && lib.hasSuffix ".nix" name
-            ) nodeFiles;
-            nodeNames = map (name: lib.removeSuffix ".nix" name) (lib.attrNames validNixFiles);
-            nodes = lib.genAttrs nodeNames (
-              nodeName:
-              import (deployDir + "/${nodeName}.nix") {
-                inherit inputs;
-                nixosConfigurations = self.nixosConfigurations;
-                hostConfig = hosts.${nodeName};
-                nodeName = nodeName;
-              }
-            );
-          in
-          nodes;
       };
+    }
+    // {
+      deploy.nodes =
+        let
+          deployDir = ./deploy;
+          nodeFiles = if builtins.pathExists deployDir then builtins.readDir deployDir else { };
+          validNixFiles = lib.filterAttrs (
+            name: type: type == "regular" && lib.hasSuffix ".nix" name
+          ) nodeFiles;
+          nodeNames = map (name: lib.removeSuffix ".nix" name) (lib.attrNames validNixFiles);
+          nodes = lib.genAttrs nodeNames (
+            nodeName:
+            import (deployDir + "/${nodeName}.nix") {
+              inherit inputs;
+              nixosConfigurations = self.nixosConfigurations;
+              hostConfig = hosts.${nodeName};
+              nodeName = nodeName;
+            }
+          );
+        in
+        nodes;
     };
 }
