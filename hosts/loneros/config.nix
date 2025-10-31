@@ -156,7 +156,6 @@ in
       polkit_gnome # GNOME 风格授权图形界面
       file-roller # GNOME 风格的归档管理器
       eog # GNOME 桌面环境中的一个图像查看器
-      gnome-system-monitor # GNOME 风格监视器
       baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
       rofi # 程序启动器
       swaynotificationcenter # swaync 用于通知
@@ -196,7 +195,6 @@ in
     libinput.enable = true; # 输入设备驱动
     fwupd.enable = true; # 管理和更新硬件固件
     upower.enable = true; # 管理电池、能源和电源管理的守护进程
-    gnome.gnome-keyring.enable = true; # 用于存储和管理密码、密钥、证书等敏感数据的工具
 
     # 用于文件同步的工具
     # syncthing = {

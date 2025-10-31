@@ -23,7 +23,6 @@ in
     wlr-randr
     xwayland-satellite-unstable
     wayland-utils
-    gnome-control-center
     gammastep # 蓝光过滤
   ];
 }
