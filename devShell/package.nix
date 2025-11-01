@@ -1,4 +1,8 @@
-{ pkgs, modulesList }:
+{
+  pkgs,
+  lib,
+  modulesList,
+}:
 
 let
   loadModulesForSystem =

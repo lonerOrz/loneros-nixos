@@ -54,9 +54,18 @@ builtins.mapAttrs (
 
     shellHook = ''
       ${s.shellHook}
+
+      # 保留旧值：让所有 env 变量追加到现有的环境中
       ${builtins.concatStringsSep "\n" (
-        map (k: "export ${k}=\"${s.env.${k}}\"") (builtins.attrNames s.env)
+        map (k: ''
+          if [ -n "${"$" + k}" ]; then
+            export ${k}="${s.env.${k}}:${"$" + k}"
+          else
+            export ${k}="${s.env.${k}}"
+          fi
+        '') (builtins.attrNames s.env)
       )}
+
       echo "✅ ${name} DevShell ready"
     '';
   }
