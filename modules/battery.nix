@@ -141,10 +141,11 @@ in
     # 重载 polkit 服务
     systemd.services.reload-polkit-battery = {
       description = "Reload polkit rules for battery manager";
+      after = [ "polkit.service" ];
+      wants = [ "polkit.service" ];
       serviceConfig.Type = "oneshot";
       serviceConfig.ExecStart = "${pkgs.systemd}/bin/systemctl reload polkit.service";
       wantedBy = [ "multi-user.target" ];
-      restartTriggers = [ "/etc/polkit-1/rules.d/50-battery-manager.rules" ];
     };
   };
 }
