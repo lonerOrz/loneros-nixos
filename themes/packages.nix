@@ -34,4 +34,5 @@
   environment.sessionVariables = {
     GSETTINGS_SCHEMAS_PATH = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}";
   };
+  environment.pathsToLink = [ "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas" ];
 }
