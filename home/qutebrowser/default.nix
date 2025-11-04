@@ -10,7 +10,7 @@ in
   imports = [ ./theme.nix ];
 
   programs.qutebrowser = {
-    enable = false;
+    enable = true;
 
     quickmarks = {
       clash = "https://metacubex.github.io/metacubexd/#/setup?http=true&hostname=127.0.0.1&port=9097&secret=123456";
