@@ -134,3 +134,14 @@ This configuration was inspired by and utilizes resources from the following pro
 - [NixOS Manual](https://nixos.org/manual/): For NixOS options and documentation.
 - [Catppuccin](https://github.com/catppuccin/nixos): For the color scheme.
 - [ZaneyOS](https://gitlab.com/Zaney/zaneyos): As a reference for configuration patterns.
+
+---
+
+## ☁️ Cache & Build Status
+
+**My personal Cachix Cache**
+
+- substituter: `https://loneros.cachix.org`
+- public-key: `loneros.cachix.org-1:dVCECfW25sOY3PBHGBUwmQYrhRRK2+p37fVtycnedDU=`
+
+[![Cachix Cache](https://img.shields.io/badge/cachix-loneros-blue.svg)](https://loneros.cachix.org)
