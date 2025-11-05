@@ -47,6 +47,7 @@ in
     with pkgs;
     [
       # software
+      net-tools # 网络工具
       translate-shell # 命令行翻译
       starship
       stow # dotfiles needed
@@ -99,6 +100,7 @@ in
       # (dbeaver-bin.override { override_xmx = "1024m"; }) # 数据库管理
       nautilus # file manager
       door-knocker # protal check
+      feishu
 
       # electron wrapper
       obsidian-wrapper
