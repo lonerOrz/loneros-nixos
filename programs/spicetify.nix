@@ -2,12 +2,12 @@
   pkgs,
   lib,
   config,
-  system,
   inputs,
   username,
   ...
 }:
 let
+  system = pkgs.stdenv.hostPlatform.system;
   spicePkgs = inputs.spicetify-nix.legacyPackages.${system};
   # 定义 Stylix 颜色变量，确保正确嵌入字符串
   base00 = "${config.lib.stylix.colors.base00}";

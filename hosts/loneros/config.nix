@@ -1,11 +1,11 @@
 {
   pkgs,
   inputs,
-  system,
   stable,
   ...
 }:
 let
+  system = pkgs.stdenv.hostPlatform.system;
   inherit (import ./variables.nix) keyboardLayout;
 in
 {

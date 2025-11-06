@@ -4,11 +4,11 @@
   pkgs,
   username,
   host,
-  system,
   ...
 }:
 
 let
+  system = pkgs.stdenv.hostPlatform.system;
   path = "${username}.${host}";
 
   highlightColor = config.lib.stylix.colors.base0B; # 强调色

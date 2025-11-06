@@ -1,12 +1,15 @@
 {
   lib,
   inputs,
-  system,
+  pkgs,
   username,
   host,
   stable,
   ...
 }:
+let
+  system = pkgs.stdenv.hostPlatform.system;
+in
 {
   imports = [ inputs.home-manager.nixosModules.home-manager ];
   home-manager = {

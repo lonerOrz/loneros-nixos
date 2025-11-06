@@ -2,10 +2,12 @@
   pkgs,
   config,
   inputs,
-  system,
   username,
   ...
 }:
+let
+  system = pkgs.stdenv.hostPlatform.system;
+in
 {
   nixpkgs = {
     config.allowUnfree = true;

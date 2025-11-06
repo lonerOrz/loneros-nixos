@@ -2,10 +2,10 @@
   lib,
   pkgs,
   inputs,
-  system,
   ...
 }:
 let
+  system = pkgs.stdenv.hostPlatform.system;
   extraQmlPath = lib.makeSearchPath "lib/qt-6/qml" (
     with pkgs;
     [

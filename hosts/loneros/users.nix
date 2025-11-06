@@ -3,11 +3,11 @@
   config,
   stable,
   inputs,
-  system,
   username,
   ...
 }:
 let
+  system = pkgs.stdenv.hostPlatform.system;
   inherit (import ./variables.nix) gitUsername shell;
 in
 {

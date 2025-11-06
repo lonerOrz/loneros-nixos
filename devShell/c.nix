@@ -1,4 +1,5 @@
 { pkgs, ... }:
+
 {
   packages =
     with pkgs;
@@ -15,7 +16,7 @@
       vcpkg
       vcpkg-tool
     ]
-    ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
+    ++ (if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then [ ] else [ gdb ]);
   nativeBuildInputs = [ pkgs.pkg-config ];
   env = {
     LIBRARY_PATH = "${pkgs.zlib}/lib";

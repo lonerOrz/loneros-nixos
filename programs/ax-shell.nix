@@ -2,10 +2,10 @@
   inputs,
   config,
   pkgs,
-  system,
   ...
 }:
 let
+  system = pkgs.stdenv.hostPlatform.system;
   nur = inputs.nur.legacyPackages."${system}";
 in
 {
