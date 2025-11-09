@@ -36,8 +36,8 @@ in
     enable = true;
     spotifyPackage = pkgs.spotify-wrapper;
     # windowManagerPatch = true; # wm补丁
-    theme = spicePkgs.themes.catppuccin;
-    colorScheme = "mocha";
+    theme = spicePkgs.themes.text;
+    colorScheme = "Nord";
     # customColorScheme = {
     #   text = base05;              # main text, playlist names in main field, name of playlist selected in sidebar, headings
     #   subtext = base02;           # text in main buttons in sidebar, playlist names in sidebar, artist names, and mini infos
