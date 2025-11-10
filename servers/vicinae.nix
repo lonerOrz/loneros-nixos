@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   ...
 }:
@@ -18,7 +19,7 @@ in
     bindsTo = [ "graphical-session.target" ];
 
     serviceConfig = {
-      ExecStart = "${vicinaePkg}/bin/vicinae server";
+      ExecStart = "${lib.getExe' vicinaePkg "vicinae"} server";
       Type = "simple";
       Restart = "always";
       RestartSec = 5;
@@ -30,9 +31,10 @@ in
         XDG_RUNTIME_DIR=/run/user/1000
         WAYLAND_DISPLAY=wayland-1
         DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+        USE_LAYER_SHELL=1
       '';
     };
 
-    wantedBy = [ "default.target" ];
+    wantedBy = [ "graphical-session.target" ]; # # autoStart
   };
 }

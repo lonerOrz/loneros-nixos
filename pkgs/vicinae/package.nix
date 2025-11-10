@@ -23,15 +23,16 @@
   qt6,
   typescript,
   wayland,
+  libsForQt5,
 }:
 
 let
   pname = "vicinae";
-  version = "0.15.1";
+  version = "0.16.2";
 
-  srcHash = "sha256-OhElA2oXPtXvE4L4wStV02DKhbNKwrGD9DH9LNUFUsE=";
-  apiDepsHash = "sha256-dSHEzw15lSRRbldl9PljuWFf2htdG+HgSeKPAB88RBg=";
-  extensionManagerDepsHash = "sha256-TCT7uZRZn4rsLA/z2yLeK5Bt4DJPmdSC4zkmuCxTtc8=";
+  srcHash = "sha256-CNL45FJG8JAtFFbc8V8Hhf+RwZuWXFwz/v5E1yAi1bQ=";
+  apiDepsHash = "sha256-VrtxQG1wQGcRHbJWPPt6aS7x1hAHc4Z1+0l+cKv3YdI=";
+  extensionManagerDepsHash = "sha256-krDFHTG8irgVk4a79LMz148drLgy2oxEoHCKRpur1R4=";
 
   src = fetchFromGitHub {
     owner = "vicinaehq";
@@ -146,7 +147,8 @@ stdenv.mkDerivation (finalAttrs: {
           wayland
           (placeholder "out")
         ]
-      }
+      } \
+      --prefix QT_PLUGIN_PATH : ${with libsForQt5; "${qtbase}/${qtbase.qtPluginPrefix}"}
   '';
 
   installPhase = ''
