@@ -8,7 +8,6 @@
   excluded ? [
     "default"
     "packages"
-    "qq"
   ],
 }:
 let

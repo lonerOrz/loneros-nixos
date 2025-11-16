@@ -124,7 +124,6 @@ in
     ++ [
       # 自定义软件包
       (pkgs.callPackage ../../pkgs/shimeji/package.nix { })
-      (pkgs.callPackage ../../pkgs/nsearch-tv.nix { })
     ]
     ++ (with pkgs.nur.repos.lonerOrz; [
       # NUR packages
@@ -132,6 +131,7 @@ in
       go-musicfox
       pear-desktop # youtube music
       gitfetch
+      nsearch-tv
     ]);
 
   programs = {

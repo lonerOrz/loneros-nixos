@@ -3,7 +3,7 @@
   ...
 }:
 let
-  QQ = pkgs.callPackage ../pkgs/qq/package.nix { };
+  QQ = pkgs.nur.repos.lonerOrz.qq;
 in
 {
   environment.systemPackages = [
