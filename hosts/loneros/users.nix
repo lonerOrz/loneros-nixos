@@ -34,7 +34,7 @@ in
       ];
       packages = with stable; [ tree ];
     };
-    defaultUserShell = pkgs.${shell};
+    defaultUserShell = if shell == "fish" then pkgs.nur.repos.lonerOrz.fish else pkgs.${shell};
   };
 
   # 允许过期不维护的包
@@ -115,7 +115,7 @@ in
       figlet # ascii <font>
       bb
       cmatrix
-      hollywood
+      # hollywood # https://github.com/NixOS/nixpkgs/issues/461499
       lolcat
       nitch
       xorg.xeyes
@@ -143,7 +143,10 @@ in
         icu
       ];
     };
-    ${shell}.enable = true;
+    ${shell} = {
+      enable = true;
+      package = if shell == "fish" then pkgs.nur.repos.lonerOrz.fish else pkgs.${shell};
+    };
     starship.enable = true;
   };
 }
