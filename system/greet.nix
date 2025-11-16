@@ -4,8 +4,9 @@
   ...
 }:
 let
+  niri-blur = (pkgs.callPackage ../pkgs/niri-blur/package.nix { }).override { withDinit = true; };
   hypr-session = "${pkgs.hyprland}/bin/Hyprland";
-  niri-session = "${pkgs.niri}/bin/niri-session";
+  niri-session = "${niri-blur}/bin/niri-session";
 in
 {
   services.greetd = {
