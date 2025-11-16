@@ -4,15 +4,10 @@
   pkgs,
   ...
 }:
-let
-  system = pkgs.stdenv.hostPlatform.system;
-  nur = inputs.nur.legacyPackages."${system}";
-in
 {
   environment.systemPackages = with pkgs; [
-    aria2
-    nur.repos.HeyImKyu.fabric-cli
-    (nur.repos.HeyImKyu.run-widget.override {
+    nur.repos.lonerOrz.fabric-cli
+    (nur.repos.lonerOrz.run-fabric.override {
       extraPythonPackages = with python3Packages; [
         ijson
         pillow
@@ -29,12 +24,12 @@ in
         pytomlpp
       ];
       extraBuildInputs = [
-        nur.repos.HeyImKyu.fabric-gray
+        nur.repos.lonerOrz.fabric-gray
+        nur.repos.lonerOrz.fabric-glace
         networkmanager
         networkmanager.dev
         playerctl
       ];
     })
   ];
-
 }
