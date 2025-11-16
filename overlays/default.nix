@@ -16,5 +16,6 @@
     # (import ./clang.nix)
     (import ./pamixer.nix)
     # (import ./rust-cbindgen.nix)
+    (import ./vcpkg-tool.nix)
   ];
 }
