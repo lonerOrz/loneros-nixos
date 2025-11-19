@@ -56,6 +56,10 @@
 - **Window Managers**: Includes configurations for both [Hyprland](https://hyprland.org/) and [Niri](https://github.com/YaLTeR/niri).
 - **Theming**: Themed with [Stylix](https://github.com/danth/stylix) and the beautiful [Catppuccin](https://github.com/catppuccin) color scheme.
 - **Secrets Management**: Securely manages secrets using [sops-nix](https://github.com/Mic92/sops-nix).
+- **Browser**: [Zen Browser](https://github.com/0xc000022070/zen-browser-flake) for a modern web experience.
+- **Music**: [Spicetify](https://github.com/Gerg-L/spicetify-nix) for a customized Spotify experience.
+- **Editor**: [Neovim](https://neovim.io/) configured with [nvf](https://github.com/notashelf/nvf).
+- **Shell UI**: [Quickshell](https://github.com/quickshell-mirror/quickshell) for creating custom shell interfaces.
 - **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
 - **Deployment**: Utilizes [deploy-rs](https://github.com/serokell/deploy-rs) for remote deployment.
 
@@ -121,7 +125,7 @@ sudo nixos-rebuild switch --flake .#<hostname>
 
 ## 📝 TODO
 
-- [x] Support more themes.
+- [x] Support more themes (via Stylix).
 - [ ] Fix the "RemoteDesktop portal not implemented" error in `rustdesk` under Hyprland.
 - [ ] Write more detailed documentation.
 
