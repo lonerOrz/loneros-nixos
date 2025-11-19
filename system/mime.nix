@@ -103,7 +103,7 @@ in
       enable = true;
       defaultApplications = associations;
       addedAssociations = {
-        "x-scheme-handler/clash" = [ "mihomo-party.desktop" ];
+        "x-scheme-handler/clash" = [ "sparkle.desktop" ];
         "x-scheme-handler/mpv-handler" = [ "mpv-handler.desktop" ];
         "x-scheme-handler/mpv-handler-debug" = [ "mpv-handler-debug.desktop" ];
         "x-scheme-handler/discord" = [ "vesktop.desktop" ];
