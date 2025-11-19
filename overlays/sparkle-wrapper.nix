@@ -1,11 +1,11 @@
 self: super:
 
 let
-  sftname = "mihomo-party"; # 软件名称
-  cmdname = "mihomo-party"; # 命令行名称
+  sftname = "sparkle"; # 软件名称
+  cmdname = "sparkle"; # 命令行名称
 in
 {
-  ${sftname} = super.callPackage ../pkgs/mihomo/package.nix { };
+  ${sftname} = super.nur.repos.lonerOrz.sparkle;
 
   "${sftname}-wrapper" = self.${sftname}.overrideAttrs (oldAttrs: {
     pname = "${sftname}-wrapper";

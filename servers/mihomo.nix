@@ -663,15 +663,15 @@
     '';
   };
 
-  # mihomo-party-wrapper
+  # sparkle-wrapper
   environment.systemPackages = with pkgs; [
-    mihomo-party-wrapper
+    sparkle-wrapper
   ];
 
-  security.wrappers.mihomo-party = {
+  security.wrappers.sparkle = {
     owner = "root";
     group = "root";
     capabilities = "cap_net_bind_service,cap_net_admin=+ep";
-    source = "${lib.getExe pkgs.mihomo-party-wrapper}";
+    source = "${lib.getExe pkgs.sparkle-wrapper}";
   };
 }
