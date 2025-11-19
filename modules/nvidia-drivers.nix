@@ -22,20 +22,33 @@ let
   };
 
   nvType = "stable"; # latest beta stable
-  nvidiaPackage =
-    if config.boot.kernelPackages.nvidiaPackages."${nvType}".version == "570.153.02" then
-      config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        version = "575.57.08";
-        sha256_64bit = "sha256-KqcB2sGAp7IKbleMzNkB3tjUTlfWBYDwj50o3R//xvI=";
-        sha256_aarch64 = "sha256-VJ5z5PdAL2YnXuZltuOirl179XKWt0O4JNcT8gUgO98=";
-        openSha256 = "sha256-DOJw73sjhQoy+5R0GHGnUddE6xaXb/z/Ihq3BKBf+lg=";
-        settingsSha256 = "sha256-AIeeDXFEo9VEKCgXnY3QvrW5iWZeIVg4LBCeRtMs5Io=";
-        persistencedSha256 = "sha256-Len7Va4HYp5r3wMpAhL4VsPu5S0JOshPFywbO7vYnGo=";
+  nvidiaDrivers = {
+    "570.153.02" = {
+      version = "575.57.08";
+      sha256_64bit = "sha256-KqcB2sGAp7IKbleMzNkB3tjUTlfWBYDwj50o3R//xvI=";
+      sha256_aarch64 = "sha256-VJ5z5PdAL2YnXuZltuOirl179XKWt0O4JNcT8gUgO98=";
+      openSha256 = "sha256-DOJw73sjhQoy+5R0GHGnUddE6xaXb/z/Ihq3BKBf+lg=";
+      settingsSha256 = "sha256-AIeeDXFEo9VEKCgXnY3QvrW5iWZeIVg4LBCeRtMs5Io=";
+      persistencedSha256 = "sha256-Len7Va4HYp5r3wMpAhL4VsPu5S0JOshPFywbO7vYnGo=";
+      patches = [ gpl_symbols_linux_615_patch ];
+    };
 
-        patches = [ gpl_symbols_linux_615_patch ];
-      }
+    "580.105.08" = {
+      version = "580.95.05";
+      sha256_64bit = "sha256-hJ7w746EK5gGss3p8RwTA9VPGpp2lGfk5dlhsv4Rgqc=";
+      sha256_aarch64 = "sha256-zLRCbpiik2fGDa+d80wqV3ZV1U1b4lRjzNQJsLLlICk=";
+      openSha256 = "sha256-RFwDGQOi9jVngVONCOB5m/IYKZIeGEle7h0+0yGnBEI=";
+      settingsSha256 = "sha256-F2wmUEaRrpR1Vz0TQSwVK4Fv13f3J9NJLtBe4UP2f14=";
+      persistencedSha256 = "sha256-QCwxXQfG/Pa7jSTBB0xD3lsIofcerAWWAHKvWjWGQtg=";
+    };
+  };
+
+  currentVersion = config.boot.kernelPackages.nvidiaPackages.${nvType}.version;
+  nvidiaPackage =
+    if builtins.hasAttr currentVersion nvidiaDrivers then
+      config.boot.kernelPackages.nvidiaPackages.mkDriver (nvidiaDrivers.${currentVersion})
     else
-      config.boot.kernelPackages.nvidiaPackages."${nvType}";
+      config.boot.kernelPackages.nvidiaPackages.${nvType};
 in
 {
   options.drivers.nvidia = {
