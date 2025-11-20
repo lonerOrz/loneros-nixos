@@ -20,7 +20,7 @@ jobs:
     name: Build ISO
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
