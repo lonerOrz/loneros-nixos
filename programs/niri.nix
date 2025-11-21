@@ -4,7 +4,12 @@
   ...
 }:
 let
-  niri-blur = (pkgs.callPackage ../pkgs/niri-blur/package.nix { }).override { withDinit = true; };
+  niri-blur = (pkgs.callPackage ../pkgs/niri-blur/package.nix { }).override {
+    withDbus = true;
+    withSystemd = true;
+    withScreencastSupport = true;
+    withDinit = false;
+  };
 in
 {
   programs.niri = {
