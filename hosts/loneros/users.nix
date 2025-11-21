@@ -132,6 +132,7 @@ in
       pear-desktop # youtube music
       gitfetch
       nsearch-tv
+      nmgui
     ]);
 
   programs = {
