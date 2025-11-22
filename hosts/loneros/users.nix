@@ -65,6 +65,8 @@ in
       udiskie # auto mount
       gpu-screen-recorder # record video
       satty # Screenshot Annotation
+      gum
+      terminaltexteffects # 终端管道标准文本的视觉特效
 
       lazygit
       bottom
