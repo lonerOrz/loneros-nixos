@@ -40,6 +40,7 @@ let
     #   };
     # };
   };
+  sddm-theme = silent-sddm;
 in
 {
   # 自动登录
@@ -54,7 +55,7 @@ in
     package = pkgs.kdePackages.sddm; # 确保使用 Qt 6 版本的 SDDM
     enableHidpi = true;
     autoNumlock = true;
-    theme = silent-sddm.pname; # or astronaut-sddm.pname
+    theme = sddm-theme.pname;
     extraPackages =
       with pkgs;
       [
@@ -66,7 +67,7 @@ in
     settings = {
       # required for styling the virtual keyboard
       General = {
-        GreeterEnvironment = "QML2_IMPORT_PATH=${silent-sddm}/share/sddm/themes/${silent-sddm.pname}/components/,QT_IM_MODULE=qtvirtualkeyboard";
+        GreeterEnvironment = "QML2_IMPORT_PATH=${sddm-theme}/share/sddm/themes/${sddm-theme.pname}/components/,QT_IM_MODULE=qtvirtualkeyboard";
         InputMethod = "qtvirtualkeyboard";
       };
     };
