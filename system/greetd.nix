@@ -11,8 +11,8 @@ let
     withScreencastSupport = true;
     withDinit = false;
   };
-  hypr-session = "${pkgs.hyprland}/bin/Hyprland";
-  niri-session = "${lib.getExe' niri-blur "niri-session"} -l";
+  hypr-command = "${lib.getExe' pkgs.hyprland "Hyprland"}";
+  niri-command = "${lib.getExe' niri-blur "niri-session"}";
 in
 {
   services.greetd = {
@@ -25,8 +25,11 @@ in
       # 自动登录: --cmd ${session}
       initial_session = {
         user = "${username}";
-        command = "${niri-session}";
+        command = "${niri-command}";
       };
     };
   };
+
+  services.seatd.enable = false; # 会导致黑屏
+  users.users.${username}.extraGroups = [ "seat" ];
 }
