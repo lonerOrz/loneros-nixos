@@ -1271,6 +1271,7 @@
         "nur": "nur",
         "nvf": "nvf",
         "quickshell": "quickshell",
+        "silentSDDM": "silentSDDM",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
@@ -1296,6 +1297,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "silentSDDM": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1761228832,
+        "narHash": "sha256-yOE3CA5VzThSTTtwv4K0iR0BUq1qc9vE6Kxoe0KXplo=",
+        "owner": "uiriansan",
+        "repo": "SilentSDDM",
+        "rev": "e334d92d3512cb5f49d16ca4b0a4baef721f9713",
+        "type": "github"
+      },
+      "original": {
+        "owner": "uiriansan",
+        "repo": "SilentSDDM",
         "type": "github"
       }
     },

@@ -16,6 +16,10 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
