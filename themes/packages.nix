@@ -30,6 +30,12 @@
     morewaita-icon-theme
   ];
 
+  qt = {
+    enable = true;
+    style = "kvantum"; # 使用 kvantum 作为 qt 样式
+    platformTheme = "qt5ct";
+  };
+
   # https://discourse.nixos.org/t/how-is-xdg-data-dirs-set-for-some-apps/38432
   environment.sessionVariables = {
     GSETTINGS_SCHEMAS_PATH = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}";
