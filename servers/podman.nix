@@ -54,7 +54,8 @@
 
   users.users.${username}.extraGroups = [ "podman" ];
 
-  hardware.nvidia-container-toolkit.enable = true; # 直通 NVIDIA GPU
+  # waite https://github.com/NixOS/nixpkgs/pull/463702
+  # hardware.nvidia-container-toolkit.enable = true; # 直通 NVIDIA GPU
 
   # 开启 Podman 自动更新定时器（用户级 systemd）
   systemd.user.timers.podman-auto-update = {
