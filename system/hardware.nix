@@ -1,5 +1,13 @@
-{ pkgs, ... }:
 {
+  pkgs,
+  username,
+  ...
+}:
+{
+  # devices input seatd 服务，用于改进多设备输入支持
+  services.seatd.enable = true;
+  users.users.${username}.extraGroups = [ "seat" ];
+
   # Extra Logitech Support
   hardware.logitech.wireless = {
     enable = true;

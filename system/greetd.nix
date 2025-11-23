@@ -29,7 +29,4 @@ in
       };
     };
   };
-
-  # services.seatd.enable = true; # 会导致黑屏
-  # users.users.${username}.extraGroups = [ "seat" ];
 }

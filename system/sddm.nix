@@ -65,6 +65,10 @@ in
       ]
       ++ silent-sddm.propagatedBuildInputs;
     settings = {
+      Autologin = {
+        Session = "niri-session";
+        User = "loner";
+      };
       # required for styling the virtual keyboard
       General = {
         GreeterEnvironment = "QML2_IMPORT_PATH=${sddm-theme}/share/sddm/themes/${sddm-theme.pname}/components/,QT_IM_MODULE=qtvirtualkeyboard";
