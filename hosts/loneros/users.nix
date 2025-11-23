@@ -90,7 +90,7 @@ in
       foot
       rio
       zed-editor
-      telegram-desktop
+      telegram-desktop-wrapper
       stable.rustdesk-flutter
       evil-helix_git # introduces Vim keybindings and more
       element-desktop

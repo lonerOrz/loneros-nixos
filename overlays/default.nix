@@ -6,6 +6,7 @@
     (import ./spotify-wrapper.nix)
     (import ./obsidian-wrapper.nix)
     (import ./sparkle-wrapper.nix)
+    (import ./telegram-wrapper.nix)
     (import ./mpv.nix)
     (import ./atuin)
     (import ./lib.nix)
@@ -16,6 +17,5 @@
     # (import ./clang.nix)
     (import ./pamixer.nix)
     # (import ./rust-cbindgen.nix)
-    (import ./vcpkg-tool.nix)
   ];
 }
