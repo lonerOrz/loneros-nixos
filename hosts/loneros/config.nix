@@ -35,23 +35,6 @@ in
   local.hardware-clock.enable = false;
 
   programs = {
-    hyprland = {
-      enable = true;
-      # set the flake package
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.cmake ];
-        cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-          # "-DCMAKE_CXX_FLAGS='-march=x86-64-v3 -O3'"
-          "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
-        ];
-        NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
-        NIX_CXXFLAGS_COMPILE = (old.NIX_CXXFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
-      }); # make sure to also set the portal package, so that they are in sync
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-      # portalPackage = pkgs.xdg-desktop-portal-hyprland; # xdph none git
-      xwayland.enable = true;
-    };
     xwayland.enable = true; # 兼容层
 
     # XFCE 桌面环境的默认文件管理器
@@ -64,7 +47,6 @@ in
       tumbler # 生成文件缩略图的后台服务
     ];
 
-    seahorse.enable = true; # GNOME 密钥管理器
     fuse.userAllowOther = true; # 用户空间文件系统
   };
 
@@ -106,22 +88,6 @@ in
       xdg-user-dirs # 创建标准的用户目录结构
       xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
 
-      # Hyprland Stuff
-      hyprcursor # 鼠标
-      hypridle # 休眠
-      hyprlock # 锁屏
-      hyprpicker # 提取色素
-      hyprsunset # 护眼
-      hyprshot # 截图
-      nwg-displays # 管理显示器
-      nwg-dock-hyprland # dock栏
-
-      # hyprpanel
-      hyprpanel # a bar
-      wf-recorder # record by hyprpanel
-      matugen # 图片取色 by hyprpanel
-      libgtop # 获取系统性能信息的库
-
       # grimblast # grim + slurp
       grim # 截图
       slurp # 选择
@@ -154,9 +120,6 @@ in
       cava # 音乐可视化
       kitty # teminal
       polkit_gnome # GNOME 风格授权图形界面
-      file-roller # GNOME 风格的归档管理器
-      eog # GNOME 桌面环境中的一个图像查看器
-      baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
       rofi # 程序启动器
       swaynotificationcenter # swaync 用于通知
       waybar # 任务栏
