@@ -10,5 +10,6 @@
 
     # other modules
     ./battery.nix
+    ./tumbler.nix
   ];
 }
