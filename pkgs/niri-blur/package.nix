@@ -22,6 +22,8 @@
   withDinit ? false,
   withScreencastSupport ? true,
   withSystemd ? true,
+  withLto ? false,
+  withNative ? false,
 }:
 let
   raw-version = "25.8.0";
@@ -133,7 +135,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
           "-Wl,--pop-state"
         ]
       ))
-      + " -C debuginfo=line-tables-only";
+      + " -C debuginfo=line-tables-only"
+      + lib.optionalString withNative " -C target-cpu=native"
+      + lib.optionalString withLto " -C lto=thin -C opt-level=3";
 
     # 上游建议在没有 Git 仓库的构建环境中手动设置提交 hash
     # 参考：https://github.com/YaLTeR/niri/wiki/Packaging-niri#version-string

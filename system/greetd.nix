@@ -10,6 +10,8 @@ let
     withSystemd = true;
     withScreencastSupport = true;
     withDinit = false;
+    withNative = true;
+    withLto = true;
   };
   hypr-command = "${lib.getExe' pkgs.hyprland "Hyprland"}";
   niri-command = "${lib.getExe' niri-blur "niri-session"}";

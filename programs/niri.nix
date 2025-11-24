@@ -9,6 +9,8 @@ let
     withSystemd = true;
     withScreencastSupport = true;
     withDinit = false;
+    withNative = true;
+    withLto = true;
   };
 in
 {
