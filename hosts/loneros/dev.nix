@@ -20,7 +20,13 @@ let
   };
 in
 {
-  environment.systemPackages = packagesForSystem.systemPackages;
+  environment.systemPackages =
+    with pkgs;
+    [
+      openssl
+      pkg-config
+    ]
+    ++ packagesForSystem.systemPackages;
 
   environment.variables = packagesForSystem.environmentVariables // {
     LD_LIBRARY_PATH = lib.mkDefault "${pkgs.glib}/lib:${pkgs.gobject-introspection}/lib";
