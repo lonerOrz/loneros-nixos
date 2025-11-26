@@ -10,17 +10,10 @@
     enable = true;
     package = pkgs.mihomo;
     # configFile = "/home/${username}/.config/mihomo/config.yaml";
-    configFile = "/etc/mihomo/config.yaml";
+    configFile = config.sops.templates."mihomo-config.yaml".path;
     webui = pkgs.metacubexd; # clash-dashboard yacd metacubexd
     tunMode = true;
     extraOpts = "-m";
-  };
-
-  environment.etc."mihomo/config.yaml" = {
-    user = "root";
-    group = "mihomo";
-    mode = "0600";
-    source = config.sops.templates."mihomo-config.yaml".path;
   };
 
   sops.templates."mihomo-config.yaml" = {

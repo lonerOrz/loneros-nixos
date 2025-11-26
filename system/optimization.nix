@@ -38,8 +38,9 @@
     # - 通常比 `performance` 和 `powersave` 更智能，适合大多数场景
   };
 
+  # waite https://github.com/NixOS/nixpkgs/pull/465161
   zramSwap = {
-    enable = true; # 启用 ZRAM 交换空间（在内存中创建压缩 swap）
+    enable = false; # 启用 ZRAM 交换空间（在内存中创建压缩 swap）
     priority = 100; # 设置 ZRAM swap 优先级（高于物理 swap）
     memoryPercent = 30; # 使用总内存的 30% 作为 ZRAM 交换空间
     swapDevices = 1; # 仅创建一个 ZRAM 交换设备
