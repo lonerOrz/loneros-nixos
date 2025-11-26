@@ -46,7 +46,7 @@ in
   environment.systemPackages =
     with pkgs;
     [
-      # software
+      # base cli
       net-tools # 网络工具
       translate-shell # 命令行翻译
       starship
@@ -69,6 +69,7 @@ in
       terminaltexteffects # 终端管道标准文本的视觉特效
       csound
 
+      # tui
       lazygit
       bottom
       neovim
@@ -82,7 +83,15 @@ in
       posting # postman tui
       isd # systemd TUI
       kmon # 内核编译和管理TUI
+      (neomutt.override {
+        enableLua = true;
+        enableZstd = true;
+        enableSmimeKeys = true; # S/MIME 密钥支持
+        withNotmuch = true; # 邮件索引集成
+        withContrib = true; # 官方提供的贡献工具和脚本集合
+      })
 
+      #gui
       qbittorrent-enhanced # qbee
       motrix
       localsend
@@ -124,7 +133,7 @@ in
       ascii-image-converter
     ]
     ++ [
-      # 自定义软件包
+      # custom packages
       (pkgs.callPackage ../../pkgs/shimeji/package.nix { })
     ]
     ++ (with pkgs.nur.repos.lonerOrz; [
