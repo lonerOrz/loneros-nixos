@@ -54,6 +54,66 @@
         ];
         emoji = [ "Noto Color Emoji" ];
       };
+      localConf =
+        let
+          zhSC = "LXGW WenKai"; # 简体中文
+          zhTC = "LXGW WenKai"; # 繁体中文
+          jaJP = "Noto Sans CJK JP"; # 日文
+        in
+        ''
+          <?xml version="1.0"?>
+          <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+
+          <fontconfig>
+
+            <selectfont>
+              <rejectfont>
+                <pattern>
+                  <patelt name="family">
+                    <string>DejaVu Sans</string>
+                  </patelt>
+                </pattern>
+              </rejectfont>
+            </selectfont>
+
+            <match target="pattern">
+              <test name="lang" compare="eq">
+                <string>zh-cn</string>
+              </test>
+              <test name="family">
+                <string>sans-serif</string>
+              </test>
+              <edit name="family" mode="prepend" binding="strong">
+                <string>${zhSC}</string>
+              </edit>
+            </match>
+
+            <match target="pattern">
+              <test name="lang" compare="eq">
+                <string>zh-tw</string>
+              </test>
+              <test name="family">
+                <string>sans-serif</string>
+              </test>
+              <edit name="family" mode="prepend" binding="strong">
+                <string>${zhTC}</string>
+              </edit>
+            </match>
+
+            <match target="pattern">
+              <test name="lang" compare="eq">
+                <string>ja</string>
+              </test>
+              <test name="family">
+                <string>sans-serif</string>
+              </test>
+              <edit name="family" mode="prepend" binding="strong">
+                <string>${jaJP}</string>
+              </edit>
+            </match>
+
+          </fontconfig>
+        '';
     };
   };
 }
