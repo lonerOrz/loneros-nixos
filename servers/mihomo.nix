@@ -9,14 +9,13 @@
   services.mihomo = {
     enable = true;
     package = pkgs.mihomo;
-    # configFile = "/home/${username}/.config/mihomo/config.yaml";
-    configFile = config.sops.templates."mihomo-config.yaml".path;
+    configFile = config.sops.templates."mihomo.yaml".path;
     webui = pkgs.metacubexd; # clash-dashboard yacd metacubexd
     tunMode = true;
     extraOpts = "-m";
   };
 
-  sops.templates."mihomo-config.yaml" = {
+  sops.templates."mihomo.yaml" = {
     owner = "root";
     mode = "0600";
     content = ''
