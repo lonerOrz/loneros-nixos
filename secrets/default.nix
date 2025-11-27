@@ -53,4 +53,10 @@
     neededForUsers = true;
     mode = "0600";
   };
+
+  sops.secrets."bootstrap/test/password" = {
+    neededForUsers = true;
+    mode = "0600";
+  };
+
 }
