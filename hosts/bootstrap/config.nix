@@ -11,14 +11,39 @@
 {
   imports = [
     # (modulesPath + "/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix")
-    (modulesPath + "/installer/scan/not-detected.nix")
+    # (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
+    inputs.impermanence.nixosModules.impermanence
     inputs.tuckr-nix.tuckrModules.default
-    ./secure-boot.nix
     ./disko.nix
   ];
 
-  boot.loader.systemd-boot.enable = true;
+  boot.kernelParams = [
+    # 关闭内核的操作审计功能
+    "audit=0"
+    # 不要根据 PCIe 地址生成网卡名（例如 enp1s0，对 VPS 没用），而是直接根据顺序生成（例如 eth0）
+    # "net.ifnames=0"
+  ];
+
+  # 我用的 Initrd 配置，开启 ZSTD 压缩和基于 systemd 的第一阶段启动
+  boot.initrd = {
+    compressor = "zstd";
+    compressorArgs = [
+      "-19"
+      "-T0"
+    ];
+    systemd.enable = true;
+  };
+
+  # 安装 Grub
+  boot.loader.grub = {
+    enable = !config.boot.isContainer;
+    default = "saved";
+    devices = lib.mkForce [ "/dev/vda" ];
+  };
+
+  # systemd-boot
+  boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
 
   environment.systemPackages = with pkgs; [

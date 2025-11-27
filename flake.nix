@@ -48,6 +48,8 @@
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    tuckr-nix.url = "github:lonerOrz/tuckr-nix";
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs =
@@ -73,6 +75,11 @@
         };
         # 快速安装远程 nixos 配置
         remote-vm = {
+          system = "x86_64-linux";
+          username = "loner";
+        };
+        # root on tmpfs
+        bootstrap = {
           system = "x86_64-linux";
           username = "loner";
         };
