@@ -4,6 +4,7 @@ let
   exclude = [
     "sddm"
     # "greetd"
+    "nixos-init"
   ];
   files = builtins.readDir dir;
   fullExclude = [ "default" ] ++ exclude;

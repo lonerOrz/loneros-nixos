@@ -68,7 +68,6 @@ in
         #"hid_logitech_dj"
       ];
       kernelModules = [ ];
-      systemd.enable = true; # stage1 使用 systemd, 以后 nixos-init 负责 declarative stage 2 activation
     };
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub
