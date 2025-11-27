@@ -28,6 +28,10 @@ in
     # 让 user session 启动 tumblerd
     systemd.user.services.tumblerd = {
       description = "Thumbnailing service (tumblerd)";
+      after = [
+        "dbus.service"
+        "gvfs-daemon.service"
+      ];
       serviceConfig.ExecStart = "${pkgs.xfce.tumbler}/lib/tumbler-1/tumblerd";
       serviceConfig.Restart = "on-failure";
       wantedBy = [ "default.target" ];
