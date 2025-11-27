@@ -79,37 +79,37 @@
       };
     };
   };
-  # 由于我们没有让 Disko 管理 fileSystems.* 配置，我们需要手动配置
-  # 根分区，由于我开了 Impermanence，所以这里是 tmpfs
-  fileSystems."/" = {
-    device = "tmpfs";
-    fsType = "tmpfs";
-    options = [
-      "relatime"
-      "mode=755"
-      "nosuid"
-      "nodev"
-    ];
-  };
-
-  # /boot 分区，是磁盘镜像上的第二个分区。由于我的 虚拟机 将硬盘识别为 vda，因此这里用 vda2
-  fileSystems."/esp" = {
-    device = "/dev/vda2";
-    fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
-  };
-
-  # /nix 分区，是磁盘镜像上的第三个分区。由于我的 虚拟机 将硬盘识别为 vda，因此这里用 vda3
-  fileSystems."/nix" = {
-    device = lib.mkForce "/dev/vda3";
-    fsType = "btrfs";
-    options = [
-      "compress-force=zstd"
-      "nosuid"
-      "nodev"
-    ];
-  };
+  # # 由于我们没有让 Disko 管理 fileSystems.* 配置，我们需要手动配置
+  # # 根分区，由于我开了 Impermanence，所以这里是 tmpfs
+  # fileSystems."/" = {
+  #   device = "tmpfs";
+  #   fsType = "tmpfs";
+  #   options = [
+  #     "relatime"
+  #     "mode=755"
+  #     "nosuid"
+  #     "nodev"
+  #   ];
+  # };
+  #
+  # # /boot 分区，是磁盘镜像上的第二个分区。由于我的 虚拟机 将硬盘识别为 vda，因此这里用 vda2
+  # fileSystems."/esp" = {
+  #   device = "/dev/vda2";
+  #   fsType = "vfat";
+  #   options = [
+  #     "fmask=0077"
+  #     "dmask=0077"
+  #   ];
+  # };
+  #
+  # # /nix 分区，是磁盘镜像上的第三个分区。由于我的 虚拟机 将硬盘识别为 vda，因此这里用 vda3
+  # fileSystems."/nix" = {
+  #   device = lib.mkForce "/dev/vda3";
+  #   fsType = "btrfs";
+  #   options = [
+  #     "compress-force=zstd"
+  #     "nosuid"
+  #     "nodev"
+  #   ];
+  # };
 }

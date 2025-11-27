@@ -11,11 +11,13 @@
 {
   imports = [
     # (modulesPath + "/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix")
-    # (modulesPath + "/installer/scan/not-detected.nix")
+    (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     inputs.impermanence.nixosModules.impermanence
     inputs.tuckr-nix.tuckrModules.default
     ./disko.nix
+    (if builtins.pathExists ./hardware.nix then ./hardware.nix else { })
+    ./persistent.nix
   ];
 
   boot.kernelParams = [
@@ -36,14 +38,14 @@
   };
 
   # 安装 Grub
-  boot.loader.grub = {
-    enable = !config.boot.isContainer;
-    default = "saved";
-    devices = lib.mkForce [ "/dev/vda" ];
-  };
+  # boot.loader.grub = {
+  #   enable = !config.boot.isContainer;
+  #   default = "saved";
+  #   devices = lib.mkForce [ "/dev/vda" ];
+  # };
 
   # systemd-boot
-  boot.loader.systemd-boot.enable = false;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   environment.systemPackages = with pkgs; [

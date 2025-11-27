@@ -4,7 +4,18 @@
     nixos-install --flake .#{{ target }}
 
 @install-remote target ip:
-    nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- -i ~/.ssh/id_ed25519 --flake .#{{ target }} root@{{ ip }}
+    nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- \
+      -i ~/.ssh/id_ed25519 \
+      --generate-hardware-config nixos-generate-config ./hosts/{{target}}/hardware.nix \
+      --flake .#{{target}} \
+      root@{{ip}}
+
+@test-install-remote target ip:
+    nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- \
+      -i ~/.ssh/id_ed25519 \
+      --vm-test \
+      --flake .#{{target}} \
+      root@{{ip}}
 
 @update:
     nix flake update
@@ -43,7 +54,11 @@
     nix run github:nix-community/nix-init
 
 @fast-build-system target="loneros":
-    nix run github:Mic92/nix-fast-build -- --flake .#nixosConfigurations.{{ target }}.config.system.build.toplevel --skip-cached --eval-workers 2 --eval-max-memory-size 15360
+    nix run github:Mic92/nix-fast-build -- \
+      --flake .#nixosConfigurations.{{ target }}.config.system.build.toplevel \
+      --skip-cached \
+      --eval-workers 2 \
+      --eval-max-memory-size 15360
 
 @fast-build-package target="mpv-handler":
     nix run github:Mic92/nix-fast-build -- --flake .#packages.x86_64-linux.{{ target }} --eval-max-memory-size 15360
