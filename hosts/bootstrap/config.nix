@@ -37,13 +37,6 @@
     systemd.enable = true;
   };
 
-  # 安装 Grub
-  # boot.loader.grub = {
-  #   enable = !config.boot.isContainer;
-  #   default = "saved";
-  #   devices = lib.mkForce [ "/dev/vda" ];
-  # };
-
   # systemd-boot
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -139,6 +132,9 @@
 
   # for devlopment
   users.users.root.hashedPassword = "$y$j9T$G4/aaUi6RJ96LQF2eWcGj1$h4ak4cLJGzwYqcRoyOzhNU8KVdCBtEL64h.xuIZFbmC";
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID8G+7o2ha+96GH3l/7c6IYGtUtuQHZCyXlZX8ZYPUhr lonerOrz@qq.com"
+  ];
 
   # enable features
   nix.settings.experimental-features = [

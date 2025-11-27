@@ -3,9 +3,7 @@
   ...
 }:
 {
-  # =========================================
-  # 持久化配置
-  # =========================================
+  # https://github.com/ryan4yin/nix-config/blob/main/hosts/k8s/kubevirt-shoryu/preservation.nix
   environment.persistence."/persistent" = {
     enable = true; # 启用持久化
     hideMounts = true; # 在文件管理器隐藏绑定挂载
@@ -43,11 +41,12 @@
         ".ssh" # SSH keys & authorized_keys
         ".gnupg" # GPG keys
         ".local/share/keyrings"
-        ".nixops"
         ".local/share/direnv"
+        "cps"
+        ".config"
       ];
       files = [
-        ".screenrc"
+        # ".bashrc"
       ];
     };
   };

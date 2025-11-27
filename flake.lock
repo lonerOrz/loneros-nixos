@@ -1689,11 +1689,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1763310766,
-        "narHash": "sha256-XkXHjIWFWGwL2cNPiVUhuYy1M+QEo1d/jfHZSOPY4os=",
+        "lastModified": 1764251273,
+        "narHash": "sha256-coUQnQDRbK2goTCjykHzpP3lYQ+Nc+xHy/4SmpPOG/k=",
         "owner": "lonerOrz",
         "repo": "tuckr-nix",
-        "rev": "9223dddf5c259a27a19cd9f56b7af82770aab1bc",
+        "rev": "71c96b0d988cbcb24b270da5f1ac9b3b6ac5df55",
         "type": "github"
       },
       "original": {
