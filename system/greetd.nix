@@ -1,20 +1,13 @@
 {
   lib,
   pkgs,
+  config,
   username,
   ...
 }:
 let
-  niri-blur = (pkgs.callPackage ../pkgs/niri-blur/package.nix { }).override {
-    withDbus = true;
-    withSystemd = true;
-    withScreencastSupport = true;
-    withDinit = false;
-    withNative = true;
-    withLto = true;
-  };
-  hypr-command = "${lib.getExe' pkgs.hyprland "Hyprland"}";
-  niri-command = "${lib.getExe' niri-blur "niri-session"}";
+  hypr-command = "${lib.getExe' config.programs.hyprland.package "Hyprland"}";
+  niri-command = "${lib.getExe' config.programs.niri.package "niri-session"}";
 in
 {
   services.greetd = {
