@@ -4,7 +4,8 @@
   ...
 }:
 let
-  niri-blur = (pkgs.callPackage ../pkgs/niri-blur/package.nix { }).override {
+  niri-package = pkgs.callPackage ../pkgs/niri-blur/package.nix { }; # pkgs.nur.repos.lonerOrz.niri-Naxdy; # or pkgs.callPackage ../pkgs/niri-blur/package.nix { }
+  niri-blur = niri-package.override {
     withDbus = true;
     withSystemd = true;
     withScreencastSupport = true;
