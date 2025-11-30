@@ -11,7 +11,7 @@ in
     enable = true;
     host = host;
     port = port;
-    acceleration = "cuda"; # or "rocm"
+    acceleration = "vulkan"; # or "rocm" "cuda"
     environmentVariables = {
       OLLAMA_LLM_LIBRARY = "gpu";
     };
