@@ -21,8 +21,8 @@ in
 {
   programs.hyprland = {
     enable = true;
-    package = hyprland-git; # or pkgs.hyprland
-    portalPackage = hyprland-portal-git; # or pkgs.xdg-desktop-portal-hyprland
+    package = pkgs.hyprland; # hyprland-git or pkgs.hyprland
+    portalPackage = pkgs.xdg-desktop-portal-hyprland; # hyprland-portal-git or pkgs.xdg-desktop-portal-hyprland
     xwayland.enable = true;
   };
 
