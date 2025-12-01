@@ -3,8 +3,6 @@
   ...
 }:
 {
-  stylix.enableReleaseChecks = false;
-
   programs.dconf.enable = true;
 
   environment.systemPackages = with pkgs; [

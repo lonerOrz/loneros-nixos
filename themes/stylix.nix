@@ -23,6 +23,7 @@ in
 {
   stylix = {
     enable = true;
+    enableReleaseChecks = false; # 关闭版本检查
     autoEnable = false; # 关闭默认的自动应用主题
     base16Scheme = colorScheme.path;
     polarity = "${colorScheme.polarity}";
