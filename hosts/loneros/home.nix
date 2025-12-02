@@ -29,7 +29,7 @@ in
       home = {
         username = "${username}";
         homeDirectory = lib.mkForce "/home/${username}";
-        stateVersion = "25.05";
+        stateVersion = "25.11";
         enableNixpkgsReleaseCheck = false;
       };
       programs.home-manager.enable = true;
