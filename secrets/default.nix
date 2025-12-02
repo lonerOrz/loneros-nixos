@@ -28,35 +28,68 @@
   sops.age.generateKey = true;
 
   # This is the actual specification of the secrets.
-  sops.secrets."mihomo/subscription1" = {
-    owner = "root";
-    mode = "0600";
-  };
-  sops.secrets."mihomo/secret" = {
-    owner = "root";
-    mode = "0600";
-  };
-  sops.secrets."myservice/my_subdir/my_secret" = {
-    mode = "0600";
-  };
-  sops.secrets."loneros/loner/password" = {
-    # neededForUsers = true;
-    owner = config.users.users.loner.name;
-    mode = "0600";
-  };
-  # sops-nix 必须在 NixOS 创建用户后运行（为了指定哪些用户拥有 secret）。
-  # 这意味着无法设置为 users.users.<name>.hashedPasswordFile sops-nix 管理的任何密钥。
-  # 要解决此问题，可以在 secret 中设置 neededForUsers = true。
-  # 这将导致 Secret 在 NixOS 创建用户之前被解密为 /run/secrets-for-users，
-  # 而不是 /run/secrets。由于尚未创建用户，因此无法为这些密钥设置所有者。
-  sops.secrets."remote-vm/test/password" = {
-    neededForUsers = true;
-    mode = "0600";
-  };
+  sops.secrets =
+    let
+      mkMihomo = mode: {
+        sopsFile = ./mihomo.yaml;
+        owner = "root";
+        inherit mode;
+      };
 
-  sops.secrets."bootstrap/test/password" = {
-    neededForUsers = true;
-    mode = "0600";
-  };
+      # 支持递归展开多层 attrset
+      flattenSecrets =
+        sep: prefix: attrs:
+        builtins.foldl' (
+          acc: key:
+          let
+            value = attrs.${key};
+            newPrefix = if prefix == "" then key else "${prefix}${sep}${key}";
+            isLeafAttrset =
+              builtins.isAttrs value && builtins.all (k: !builtins.isAttrs value.${k}) (builtins.attrNames value);
+          in
+          if builtins.isAttrs value && !isLeafAttrset then
+            acc // flattenSecrets sep newPrefix value
+          else
+            acc // { "${newPrefix}" = value; }
+        ) { } (builtins.attrNames attrs);
 
+      secretsNested = {
+        mihomo = {
+          subscription1 = mkMihomo "0600";
+          secret = mkMihomo "0600";
+        };
+        loneros = {
+          loner = {
+            password = {
+              # neededForUsers = true;
+              owner = config.users.users.loner.name;
+              mode = "0600";
+            };
+          };
+        };
+        remote-vm = {
+          test = {
+            password = {
+              # sops-nix 必须在 NixOS 创建用户后运行（为了指定哪些用户拥有 secret）。
+              # 这意味着无法设置为 users.users.<name>.hashedPasswordFile sops-nix 管理的任何密钥。
+              # 要解决此问题，可以在 secret 中设置 neededForUsers = true。
+              # 这将导致 Secret 在 NixOS 创建用户之前被解密为 /run/secrets-for-users，
+              # 而不是 /run/secrets。由于尚未创建用户，因此无法为这些密钥设置所有者。
+              neededForUsers = true;
+              mode = "0600";
+            };
+          };
+        };
+        bootstrap = {
+          test = {
+            password = {
+              neededForUsers = true;
+              mode = "0600";
+            };
+          };
+        };
+      };
+
+    in
+    flattenSecrets "/" "" secretsNested;
 }
