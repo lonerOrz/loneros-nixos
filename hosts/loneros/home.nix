@@ -33,6 +33,7 @@ in
         enableNixpkgsReleaseCheck = false;
       };
       programs.home-manager.enable = true;
+      stylix.enableReleaseChecks = false;
       imports = [
         ../../home
       ];
