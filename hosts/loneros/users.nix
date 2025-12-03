@@ -68,6 +68,7 @@ in
       gum
       terminaltexteffects # 终端管道标准文本的视觉特效
       csound
+      terraform # infrastructure as code
 
       # tui
       lazygit
