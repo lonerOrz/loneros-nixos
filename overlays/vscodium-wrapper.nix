@@ -12,9 +12,9 @@ let
     owner = "lonerOrz";
     repo = "loneros-wall";
     rev = "main";
-    sha256 = "sha256-fYHWApZlK3ImJdrwXWpPKcw/sQcgoDxROLIW/nyxvpg=";
+    sha256 = "sha256-LH/vjN/1Ph6rIV05MPmSEQ/MVh0SuUliuHxs2DFhsSQ=";
   };
-  bgFile = "${wallpapersRepo}/wallpapers/loner/miles-catppuccin.jpg";
+  bgFile = "${wallpapersRepo}/wallpapers/loner/keyb2.png"; # miles-catppuccin.jpg
   bgOpacity = "0.2"; # 背景透明度
 in
 {
