@@ -21,7 +21,7 @@ let
     extraPrefix = "kernel/";
   };
 
-  nvType = "stable"; # latest beta stable
+  nvType = "beta"; # latest beta stable
   nvidiaDrivers = {
     "570.153.02" = {
       version = "575.57.08";
@@ -33,14 +33,15 @@ let
       patches = [ gpl_symbols_linux_615_patch ];
     };
 
-    # "580.105.08" = {
-    #   version = "580.95.05";
-    #   sha256_64bit = "sha256-hJ7w746EK5gGss3p8RwTA9VPGpp2lGfk5dlhsv4Rgqc=";
-    #   sha256_aarch64 = "sha256-zLRCbpiik2fGDa+d80wqV3ZV1U1b4lRjzNQJsLLlICk=";
-    #   openSha256 = "sha256-RFwDGQOi9jVngVONCOB5m/IYKZIeGEle7h0+0yGnBEI=";
-    #   settingsSha256 = "sha256-F2wmUEaRrpR1Vz0TQSwVK4Fv13f3J9NJLtBe4UP2f14=";
-    #   persistencedSha256 = "sha256-QCwxXQfG/Pa7jSTBB0xD3lsIofcerAWWAHKvWjWGQtg=";
-    # };
+    # waite https://github.com/NixOS/nixpkgs/pull/467274
+    "580.105.08" = {
+      version = "590.44.01";
+      sha256_64bit = "sha256-VbkVaKwElaazojfxkHnz/nN/5olk13ezkw/EQjhKPms=";
+      sha256_aarch64 = "sha256-gpqz07aFx+lBBOGPMCkbl5X8KBMPwDqsS+knPHpL/5g=";
+      openSha256 = "sha256-ft8FEnBotC9Bl+o4vQA1rWFuRe7gviD/j1B8t0MRL/o=";
+      settingsSha256 = "sha256-wVf1hku1l5OACiBeIePUMeZTWDQ4ueNvIk6BsW/RmF4=";
+      persistencedSha256 = "sha256-nHzD32EN77PG75hH9W8ArjKNY/7KY6kPKSAhxAWcuS4=";
+    };
   };
 
   currentVersion = config.boot.kernelPackages.nvidiaPackages.${nvType}.version;
