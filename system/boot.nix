@@ -7,15 +7,15 @@
 }:
 let
   v4l2loopbackPackage =
-    if config.boot.kernelPackages.v4l2loopback.version == "0.13.2-6.15.0" then
-      # https://github.com/NixOS/nixpkgs/pull/411777
-      (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: {
-        version = "0.15.0";
+    if config.boot.kernelPackages.v4l2loopback.version == "0.15.1-6.18.0" then
+      # wait https://github.com/NixOS/nixpkgs/pull/467572
+      (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: rec {
+        version = "0.15.3";
         src = pkgs.fetchFromGitHub {
           owner = "umlaeute";
           repo = "v4l2loopback";
-          rev = "v0.15.0";
-          sha256 = "sha256-fa3f8GDoQTkPppAysrkA7kHuU5z2P2pqI8dKhuKYh04=";
+          rev = "v${version}";
+          sha256 = "sha256-KXJgsEJJTr4TG4Ww5HlF42v2F1J+AsHwrllUP1n/7g8=";
         };
       }))
     else
