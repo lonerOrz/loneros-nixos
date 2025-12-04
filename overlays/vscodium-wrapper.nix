@@ -6,13 +6,13 @@ let
   bash = super.bash; # 系统 bash
   # bgFile = builtins.fetchurl {
   #   url = "https://raw.githubusercontent.com/lonerOrz/loneros-dots/main/wallpapers/Anime-Room.png";
-  #   sha256 = "sha256-dOtbav0HQy1iex/I1oaeYj3i6LCa9alE8d9U2KTuD9s=";
+  #   hash = "sha256-dOtbav0HQy1iex/I1oaeYj3i6LCa9alE8d9U2KTuD9s=";
   # };
   wallpapersRepo = pkgs.fetchFromGitHub {
     owner = "lonerOrz";
     repo = "loneros-wall";
     rev = "main";
-    sha256 = "sha256-LH/vjN/1Ph6rIV05MPmSEQ/MVh0SuUliuHxs2DFhsSQ=";
+    hash = "sha256-LH/vjN/1Ph6rIV05MPmSEQ/MVh0SuUliuHxs2DFhsSQ=";
   };
   bgFile = "${wallpapersRepo}/wallpapers/loner/keyb2.png"; # miles-catppuccin.jpg
   bgOpacity = "0.2"; # 背景透明度

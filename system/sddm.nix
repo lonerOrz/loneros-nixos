@@ -9,25 +9,32 @@ let
     url = "https://www.desktophut.com/files/kV1sBGwNvy-Wallpaperghgh2Prob4.mp4";
     hash = "sha256-VkOAkmFrK9L00+CeYR7BKyij/R1b/WhWuYf0nWjsIkM=";
   };
+  wallpapersRepo = pkgs.fetchFromGitHub {
+    owner = "lonerOrz";
+    repo = "loneros-wall";
+    rev = "main";
+    hash = "sha256-LH/vjN/1Ph6rIV05MPmSEQ/MVh0SuUliuHxs2DFhsSQ=";
+  };
+  avatar = "${wallpapersRepo}/avatar/avatar (5).png";
   silent-sddm = inputs.silentSDDM.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
     # one of configs/<$theme>.conf
     theme = "rei";
     # aditional backgrounds
     # extraBackgrounds = [ zero-bg ];
     # overrides config set by <$theme>.conf
-    # theme-overrides = {
-    #   # Available options: https://github.com/uiriansan/SilentSDDM/wiki/Options
-    #   "LoginScreen.LoginArea.Avatar" = {
-    #     shape = "circle";
-    #     active-border-color = "#ffcfce";
-    #   };
-    #   "LoginScreen" = {
-    #     background = "${zero-bg.name}";
-    #   };
-    #   "LockScreen" = {
-    #     background = "${zero-bg.name}";
-    #   };
-    # };
+    theme-overrides = {
+      # Available options: https://github.com/uiriansan/SilentSDDM/wiki/Options
+      # "LoginScreen.LoginArea.Avatar" = {
+      #   shape = "circle";
+      #   active-border-color = "#ffcfce";
+      # };
+      # "LoginScreen" = {
+      #   background = "${zero-bg.name}";
+      # };
+      # "LockScreen" = {
+      #   background = "${zero-bg.name}";
+      # };
+    };
   };
   astronaut-sddm = pkgs.nur.repos.lonerOrz.astronaut-sddm.override {
     # https://github.com/Keyitdev/sddm-astronaut-theme
@@ -76,6 +83,17 @@ in
       };
     };
   };
+  # silent-sddm avatar
+  systemd.tmpfiles.rules =
+    let
+      user = "${username}";
+      iconPath = avatar;
+    in
+    [
+      "f+ /var/lib/AccountsService/users/${user}  0600 root root -  [User]\\nIcon=/var/lib/AccountsService/icons/${user}\\n"
+      "L+ /var/lib/AccountsService/icons/${user}  -    -    -    -  ${iconPath}"
+    ];
+
   environment.systemPackages = [
     pkgs.elegant-sddm # Elegant
     astronaut-sddm
