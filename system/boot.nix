@@ -8,7 +8,7 @@
 let
   v4l2loopbackPackage =
     if config.boot.kernelPackages.v4l2loopback.version == "0.15.1-6.18.0" then
-      # wait https://github.com/NixOS/nixpkgs/pull/467572
+      # waite https://github.com/NixOS/nixpkgs/pull/467572
       (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: rec {
         version = "0.15.3";
         src = pkgs.fetchFromGitHub {

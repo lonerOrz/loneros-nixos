@@ -26,9 +26,6 @@
 @ex-update:
     python3 .github/script/flake_update.py
 
-@clean:
-    nix-collect-garbage -d
-
 @build target="loneros":
     sudo nixos-rebuild switch --flake .#{{ target }}
 
@@ -42,7 +39,10 @@
     nix run nixpkgs#cachix -- push loneros $(nix path-info .#nixosConfigurations.{{ target }}.config.system.build.toplevel)
 
 @fix:
-    nix-store --repair --verify # --check-contents
+    nix-store --repair --verify --check-contents
+
+@clean:
+    nix-collect-garbage -d
 
 @geniso:
     nix build .#nixosConfigurations.iso.config.formats.iso
