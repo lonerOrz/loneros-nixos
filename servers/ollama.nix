@@ -1,4 +1,5 @@
 {
+  pkgs,
   username,
   ...
 }:
@@ -9,9 +10,9 @@ in
 {
   services.ollama = {
     enable = true;
+    package = pkgs.ollama-vulkan;
     host = host;
     port = port;
-    acceleration = "vulkan"; # or "rocm" "cuda"
     environmentVariables = {
       OLLAMA_LLM_LIBRARY = "gpu";
     };

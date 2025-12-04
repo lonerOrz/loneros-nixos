@@ -33,7 +33,7 @@ let
       patches = [ gpl_symbols_linux_615_patch ];
     };
 
-    # waite https://github.com/NixOS/nixpkgs/pull/467274
+    # done https://github.com/NixOS/nixpkgs/pull/467274
     "580.105.08" = {
       version = "590.44.01";
       sha256_64bit = "sha256-VbkVaKwElaazojfxkHnz/nN/5olk13ezkw/EQjhKPms=";
