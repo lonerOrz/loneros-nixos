@@ -145,6 +145,7 @@ in
       gitfetch
       nsearch-tv
       nmgui
+      neowall
     ]);
 
   programs = {
