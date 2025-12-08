@@ -84,13 +84,6 @@ in
       posting # postman tui
       isd # systemd TUI
       kmon # 内核编译和管理TUI
-      (neomutt.override {
-        enableLua = true;
-        enableZstd = true;
-        enableSmimeKeys = true; # S/MIME 密钥支持
-        withNotmuch = true; # 邮件索引集成
-        withContrib = true; # 官方提供的贡献工具和脚本集合
-      })
 
       #gui
       qbittorrent-enhanced # qbee
