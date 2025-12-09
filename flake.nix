@@ -13,7 +13,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    chaotic.url = "github:lonerOrz/nyx-loner";
+    firefox.url = "github:nix-community/flake-firefox-nightly";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
     silentSDDM = {
