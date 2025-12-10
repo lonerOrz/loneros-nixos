@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   ...
 }:
@@ -56,9 +57,136 @@
       };
       localConf =
         let
-          zhSC = "LXGW WenKai"; # 简体中文
-          zhTC = "LXGW WenKai"; # 繁体中文
-          jaJP = "Noto Sans CJK JP"; # 日文
+          languageFonts = {
+            "zh-cn" = {
+              sans-serif = "LXGW WenKai";
+              serif = "LXGW WenKai";
+              monospace = "Maple Mono NF CN";
+            };
+
+            "ja" = {
+              sans-serif = "Noto Sans CJK JP";
+              serif = "Noto Serif";
+              monospace = "Maple Mono NF CN";
+            };
+
+            "en" = {
+              sans-serif = "Inter Nerd Font";
+              serif = "Noto Serif";
+              monospace = "Maple Mono NF CN";
+            };
+
+            "emoji" = {
+              sans-serif = "Noto Color Emoji";
+              serif = "Noto Color Emoji";
+              monospace = "Noto Color Emoji";
+            };
+          };
+
+          rejectFonts = [
+            "DejaVu Sans"
+            "DejaVu Serif"
+            "DejaVu Sans Mono"
+            "Source Han Sans"
+            "WenQuanYi Zen Hei"
+          ];
+
+          uiFamilies = {
+            "system-ui" = "Inter Nerd Font";
+            "ui-sans-serif" = "Inter Nerd Font";
+            "ui-monospace" = "Maple Mono NF CN";
+          };
+
+          appFonts = {
+            "chrome" = {
+              "sans-serif" = "Inter Nerd Font";
+              "monospace" = "Maple Mono NF CN";
+            };
+            "firefox" = {
+              "sans-serif" = "Inter Nerd Font";
+              "monospace" = "Maple Mono NF CN";
+            };
+            "code" = {
+              "sans-serif" = "Inter Nerd Font";
+              "monospace" = "Maple Mono NF CN";
+            };
+          };
+
+          generatedRules = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (
+              lang: families:
+              lib.concatStringsSep "\n" (
+                lib.mapAttrsToList (family: font: ''
+                  <match target="pattern">
+                    <test name="lang" compare="eq">
+                      <string>${lang}</string>
+                    </test>
+                    <test name="family">
+                      <string>${family}</string>
+                    </test>
+                    <edit name="family" mode="prepend" binding="strong">
+                      <string>${font}</string>
+                    </edit>
+                  </match>
+                '') families
+              )
+            ) languageFonts
+          );
+
+          genRejectRules = lib.concatStringsSep "\n" (
+            map (f: ''
+              <rejectfont>
+                <pattern><patelt name="family"><string>${f}</string></patelt></pattern>
+              </rejectfont>
+            '') rejectFonts
+          );
+
+          genUIRules = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (family: font: ''
+              <match target="pattern">
+                <test name="family"><string>${family}</string></test>
+                <edit name="family" mode="prepend" binding="strong">
+                  <string>${font}</string>
+                </edit>
+              </match>
+            '') uiFamilies
+          );
+
+          genAppRules = lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (
+              prog: families:
+              lib.concatStringsSep "\n" (
+                lib.mapAttrsToList (family: font: ''
+                  <match target="pattern">
+                    <test name="prgname" compare="eq"><string>${prog}</string></test>
+                    <test name="family"><string>${family}</string></test>
+                    <edit name="family" mode="prepend" binding="strong">
+                      <string>${font}</string>
+                    </edit>
+                  </match>
+                '') families
+              )
+            ) appFonts
+          );
+
+          emojiFallback =
+            let
+              ef = languageFonts."emoji";
+            in
+            ''
+              <alias>
+                <family>sans-serif</family>
+                <prefer><family>${ef."sans-serif"}</family></prefer>
+              </alias>
+              <alias>
+                <family>serif</family>
+                <prefer><family>${ef."serif"}</family></prefer>
+              </alias>
+              <alias>
+                <family>monospace</family>
+                <prefer><family>${ef."monospace"}</family></prefer>
+              </alias>
+            '';
         in
         ''
           <?xml version="1.0"?>
@@ -67,50 +195,16 @@
           <fontconfig>
 
             <selectfont>
-              <rejectfont>
-                <pattern>
-                  <patelt name="family">
-                    <string>DejaVu Sans</string>
-                  </patelt>
-                </pattern>
-              </rejectfont>
+              ${genRejectRules}
             </selectfont>
 
-            <match target="pattern">
-              <test name="lang" compare="eq">
-                <string>zh-cn</string>
-              </test>
-              <test name="family">
-                <string>sans-serif</string>
-              </test>
-              <edit name="family" mode="prepend" binding="strong">
-                <string>${zhSC}</string>
-              </edit>
-            </match>
+            ${generatedRules}
 
-            <match target="pattern">
-              <test name="lang" compare="eq">
-                <string>zh-tw</string>
-              </test>
-              <test name="family">
-                <string>sans-serif</string>
-              </test>
-              <edit name="family" mode="prepend" binding="strong">
-                <string>${zhTC}</string>
-              </edit>
-            </match>
+            ${genUIRules}
 
-            <match target="pattern">
-              <test name="lang" compare="eq">
-                <string>ja</string>
-              </test>
-              <test name="family">
-                <string>sans-serif</string>
-              </test>
-              <edit name="family" mode="prepend" binding="strong">
-                <string>${jaJP}</string>
-              </edit>
-            </match>
+            ${genAppRules}
+
+            ${emojiFallback}
 
           </fontconfig>
         '';
