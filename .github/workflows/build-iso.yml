@@ -2,8 +2,8 @@ name: build iso
 
 on:
   schedule:
-    - cron: "0 12 * * *"
-  workflow_dispatch: # allows manual triggering
+    - cron: "0 17 * * 0" # 每周一 01:00（北京时间 UTC+8）
+  workflow_dispatch:
   push:
     branches:
       - main
