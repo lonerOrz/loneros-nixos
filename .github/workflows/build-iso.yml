@@ -34,7 +34,7 @@ jobs:
           nix build .#iso # 一般只有x86_64-linux
 
       - name: upload iso
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           path: |
             ./result/iso/*.iso
