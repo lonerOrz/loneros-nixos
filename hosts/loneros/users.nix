@@ -139,6 +139,8 @@ in
       nsearch-tv
       nmgui
       neowall
+      chameleos
+      linux-desktop-gremlin
     ]);
 
   programs = {
