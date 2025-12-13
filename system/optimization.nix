@@ -46,4 +46,17 @@
     swapDevices = 1; # 仅创建一个 ZRAM 交换设备
     algorithm = "zstd"; # 使用 `zstd` 压缩算法（高压缩比 & 低 CPU 负担）
   };
+
+  imports = [
+    ../modules/btrfs-scrub-resume.nix
+  ];
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [
+      "/" # 只需要根挂载点,是同一个 Btrfs FS
+    ];
+    interval = "monthly";
+    limit = "25M";
+  };
 }
