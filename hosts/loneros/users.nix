@@ -140,7 +140,7 @@ in
       nmgui
       neowall
       chameleos
-      linux-desktop-gremlin
+      gremlin
     ]);
 
   programs = {
