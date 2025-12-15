@@ -12,7 +12,7 @@ let
     owner = "lonerOrz";
     repo = "loneros-wall";
     rev = "main";
-    hash = "sha256-LH/vjN/1Ph6rIV05MPmSEQ/MVh0SuUliuHxs2DFhsSQ=";
+    hash = "sha256-1ko4e4t9hlMpKgW5/0CPdoriUz6FSTdKO8T8FFO6z14=";
   };
   bgFile = "${wallpapersRepo}/wallpapers/loner/keyb2.png"; # miles-catppuccin.jpg
   bgOpacity = "0.2"; # 背景透明度

@@ -13,9 +13,9 @@ let
     owner = "lonerOrz";
     repo = "loneros-wall";
     rev = "main";
-    hash = "sha256-LH/vjN/1Ph6rIV05MPmSEQ/MVh0SuUliuHxs2DFhsSQ=";
+    hash = "sha256-1ko4e4t9hlMpKgW5/0CPdoriUz6FSTdKO8T8FFO6z14=";
   };
-  avatar = "${wallpapersRepo}/avatar/avatar (5).png";
+  avatar = "${wallpapersRepo}/avatar/avatar5.png";
   silent-sddm = inputs.silentSDDM.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
     # one of configs/<$theme>.conf
     theme = "rei";
