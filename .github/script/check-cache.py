@@ -185,7 +185,7 @@ def check_one_path(path: str) -> tuple[str, bool]:
     found = is_in_cache(path)
     return path, found
 
-# ---------------- Main ----------------
+# ---------------- Main (single-threaded) ----------------
 def main() -> None:
     log("INFO", f"Starting cache check for {FLAKE_TARGET}")
 
@@ -197,13 +197,16 @@ def main() -> None:
 
     missing: List[str] = []
 
-    log("INFO", "Checking cache presence...")
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        futures = {pool.submit(check_one_path, path): path for path in all_paths}
-        for future in as_completed(futures):
-            path, found = future.result()
-            if not found:
-                missing.append(path)
+    log("INFO", "Checking cache presence (single-threaded)...")
+    for path in all_paths:
+        log("DEBUG", f"Checking path: {path}")
+        try:
+            found = is_in_cache(path)
+        except Exception as e:
+            log("WARN", f"Cache check failed for {path}: {e}")
+            found = False
+        if not found:
+            missing.append(path)
 
     log("INFO", "Cache hit statistics:")
     for cache in CACHES:
@@ -222,10 +225,10 @@ def main() -> None:
             continue
         build_drv(drv)
         push_to_cachix(drv)
-        try:
-            run(["nix-collect-garbage", "-d"])
-        except Exception as e:
-            log("WARN", f"GC failed: {e}")
+        # try:
+        #     run(["nix-collect-garbage", "-d"])
+        # except Exception as e:
+        #     log("WARN", f"GC failed: {e}")
 
     log("INFO", "✅ All missing store paths built and pushed successfully.")
 
