@@ -12,15 +12,7 @@
     startWhenNeeded = true;
     user = "${username}"; # MPD 运行的用户
     # group = "${username}"; # MPD 运行的用户组
-    network = {
-      listenAddress = "127.0.0.1";
-      port = 6600;
-    };
-    musicDirectory = "/home/${username}/Music/localmusic";
-    playlistDirectory = "/home/${username}/.config/mpd/playlists";
-    dbFile = "/home/${username}/.config/mpd/database";
 
-    # 指定 mpd.conf 配置文件路径
     settings = {
       log_file = "/home/${username}/.config/mpd/log";
       pid_file = "/home/${username}/.config/mpd/mpd.pid";
@@ -29,6 +21,13 @@
       restore_paused = true;
       auto_update = true;
       auto_update_depth = 4;
+
+      port = 6600;
+      bind_to_address = "127.0.0.1";
+
+      music_directory = "/home/${username}/Music/localmusic";
+      playlist_directory = "/home/${username}/.config/mpd/playlists";
+      db_file = "/home/${username}/.config/mpd/database";
 
       audio_output = [
         {
