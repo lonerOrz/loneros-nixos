@@ -17,7 +17,16 @@ jobs:
   test:
     runs-on: ${{ inputs.os }}
     steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            accept-flake-config = true
+
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         with:
-          limit-access-to-actor: true
+          limit-access-to-actor: true # 使用已注册的 SSH 公钥
+          timeout-minutes: 15
+          sudo: false
