@@ -65,7 +65,7 @@ get_store_paths() {
   local paths=()
   local drv out_path
   while IFS= read -r drv; do
-    out_path=$(nix derivation show "$drv" 2>/dev/null | jq -r '.[].outputs.out.path')
+    out_path="/nix/store/$(nix derivation show "$drv" 2>/dev/null | jq -r '.[].outputs.out.path')"
     if [[ -n $out_path ]]; then
       paths+=("$out_path")
     fi
@@ -118,7 +118,7 @@ get_drv_out_mappings() {
 
   local drv out_path
   while IFS= read -r drv; do
-    out_path=$(nix derivation show "$drv" 2>/dev/null | jq -r '.[].outputs.out.path')
+    out_path="/nix/store/$(nix derivation show "$drv" 2>/dev/null | jq -r '.[].outputs.out.path')"
     if [[ -n $out_path ]]; then
       printf '%s %s\n' "$out_path" "$drv"
     fi
