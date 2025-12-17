@@ -11,12 +11,9 @@
     (import ./atuin)
     (import ./lib.nix)
     (import ./niri)
-    (import ./tuckr.nix)
 
     # temporary
-    # (import ./clang.nix)
     (import ./pamixer.nix)
-    # (import ./rust-cbindgen.nix)
     (import ./dbusmock.nix)
   ];
 }
