@@ -21,7 +21,7 @@
     dbFile = "/home/${username}/.config/mpd/database";
 
     # 指定 mpd.conf 配置文件路径
-    extraConfig = ''
+    settings = ''
       log_file                "/home/${username}/.config/mpd/log"
       pid_file                "/home/${username}/.config/mpd/mpd.pid"
       state_file              "/home/${username}/.config/mpd/state"

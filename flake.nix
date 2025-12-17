@@ -2,7 +2,7 @@
   description = "loner's NixOS-Hyprland";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nur = {
       url = "github:nix-community/NUR";
