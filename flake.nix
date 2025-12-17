@@ -52,7 +52,7 @@
     tuckr-nix.url = "github:lonerOrz/tuckr-nix";
     impermanence.url = "github:nix-community/impermanence";
     # https://github.com/DeterminateSystems/nix-src/releases
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0.tar.gz";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
   };
 
   outputs =

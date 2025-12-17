@@ -24,9 +24,12 @@ jobs:
           extra_nix_config: |
             accept-flake-config = true
 
+      - run: sudo apt-get update && sudo apt-get install -y tmate
+
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
+        # timeout-minutes: 15
         with:
           limit-access-to-actor: true # 使用已注册的 SSH 公钥
-          timeout-minutes: 15
           sudo: false
+          install-dependencies: false

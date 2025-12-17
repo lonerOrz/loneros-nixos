@@ -157,11 +157,11 @@
         "rev": "1ddd28880651054346c34009d7bb9de36f1db2c1",
         "revCount": 23362,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/nix-src/3.14.0/019b0159-8907-7fab-a120-9d287c7e6d2e/source.tar.gz?rev=1ddd28880651054346c34009d7bb9de36f1db2c1&revCount=23362"
+        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/nix-src/3.14.0/019b0159-8907-7fab-a120-9d287c7e6d2e/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0.tar.gz"
+        "url": "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0"
       }
     },
     "disko": {
