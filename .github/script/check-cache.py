@@ -98,24 +98,26 @@ def get_store_paths(target: str) -> List[str]:
         log("ERROR", f"No drv paths found for {target}")
         raise RuntimeError("no drv paths")
 
-    out_paths: List[str] = []
+    log("INFO", f"Found {len(drv_paths)} .drv paths")
+    return drv_paths  # 直接返回 .drv 路径
+
+# ---------------- drv ↔ outPath Mapping ----------------
+def get_drv_out_mappings(target: str) -> None:
+    log("INFO", f"Building drv ↔ outPath mapping for {target}")
+    drv_paths: List[str] = sorted(list({str(p) for p in run_json([
+        "nix", "eval",
+        "--apply",
+        "x: map (pkg: pkg.drvPath) x",
+        "--json",
+        PACKAGE_TARGET,
+    ]) if p}))
+
+    if not drv_paths:
+        log("WARN", f"No drv paths found from flake target {target}, skipping mapping")
+        return
+
     for drv in drv_paths:
-        try:
-            drv_json = run_json(["nix", "derivation", "show", drv])
-            for v in drv_json.values():
-                out = v.get("outputs", {}).get("out", {}).get("path")
-                if out:
-                    out_paths.append(f"/nix/store/{out}")
-        except Exception:
-            continue
-
-    if not out_paths:
-        log("ERROR", f"No store paths found after derivation inspection for {target}")
-        raise RuntimeError("no store paths")
-
-    out_paths = sorted(set(out_paths))
-    log("INFO", f"Found {len(out_paths)} store paths (excluding .drv)")
-    return out_paths
+        out_to_drv[drv] = drv  # drv -> drv 映射
 
 # ---------------- Cache Lookup ----------------
 def is_in_cache(path: str) -> bool:
@@ -138,31 +140,6 @@ def is_in_cache(path: str) -> bool:
             log("DEBUG", f"Path {path} not found in {cache}")
     log("INFO", f"🚫 {path} not found in any cache")
     return False
-
-# ---------------- drv ↔ outPath Mapping ----------------
-def get_drv_out_mappings(target: str) -> None:
-    log("INFO", f"Building drv ↔ outPath mapping for {target}")
-    drv_paths: List[str] = sorted(list({str(p) for p in run_json([
-        "nix", "eval",
-        "--apply",
-        "x: map (pkg: pkg.drvPath) x",
-        "--json",
-        PACKAGE_TARGET,
-    ]) if p}))
-
-    if not drv_paths:
-        log("WARN", f"No drv paths found from flake target {target}, skipping mapping")
-        return
-
-    for drv in drv_paths:
-        try:
-            drv_json = run_json(["nix", "derivation", "show", drv])
-            for v in drv_json.values():
-                out = v.get("outputs", {}).get("out", {}).get("path")
-                if out:
-                    out_to_drv[f"/nix/store/{out}"] = drv
-        except Exception:
-            continue
 
 # ---------------- Build + Push ----------------
 def build_drv(drv_path: str) -> None:
@@ -198,7 +175,7 @@ def push_to_cachix(path: str) -> None:
                 except Exception as e_gc:
                     log("WARN", f"GC failed: {e_gc}")
             else:
-                time.sleep(5)  # 保留重试间隔
+                time.sleep(5)  # 重试间隔
 
 # ---------------- Parallel Cache Check ----------------
 def check_one_path(path: str) -> tuple[str, bool]:
@@ -245,7 +222,6 @@ def main() -> None:
             continue
         build_drv(drv)
         push_to_cachix(drv)
-        log("INFO", f"Running nix-collect-garbage after {drv}")
         try:
             run(["nix-collect-garbage", "-d"])
         except Exception as e:
