@@ -70,6 +70,8 @@ in
       csound
       terraform # infrastructure as code
       unixtools.xxd
+      dmenu
+      wtype
 
       # tui
       lazygit
