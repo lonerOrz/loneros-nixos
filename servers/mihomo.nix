@@ -163,6 +163,14 @@
           - stun.*
           - "*.sslip.io"
           - "*.nip.io"
+          # Gmail / IMAP / OAuth2
+          - imap.gmail.com
+          - smtp.gmail.com
+          - pop.gmail.com
+          - mail.google.com
+          - accounts.google.com
+          - oauth2.googleapis.com
+          - www.googleapis.com
 
         # 主要DNS服务器
         nameserver:
