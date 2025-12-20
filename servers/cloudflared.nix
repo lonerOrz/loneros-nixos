@@ -16,7 +16,7 @@
       credentialsFile = config.sops.secrets."cloudflared/tunnel_json".path; # tunnel ID 凭证
       ingress = {
         "router.lonerorz.dpdns.org" = {
-          service = "http://127.0.0.1:2025";
+          service = "http://127.0.0.1:2026";
         };
       };
       default = "http_status:404";
