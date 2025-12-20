@@ -36,6 +36,12 @@
         inherit mode;
       };
 
+      mkCloudflared = mode: {
+        sopsFile = ./cloudflared.yaml;
+        owner = "root";
+        inherit mode;
+      };
+
       # 支持递归展开多层 attrset
       flattenSecrets =
         sep: prefix: attrs:
@@ -54,6 +60,10 @@
         ) { } (builtins.attrNames attrs);
 
       secretsNested = {
+        cloudflared = {
+          cert_pem = mkCloudflared "0600";
+          tunnel_json = mkCloudflared "0600";
+        };
         mihomo = {
           subscription1 = mkMihomo "0600";
           secret = mkMihomo "0600";
