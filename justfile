@@ -38,7 +38,7 @@
 @cachix-system target="loneros":
     nix run nixpkgs#cachix -- push loneros $(nix path-info .#nixosConfigurations.{{ target }}.config.system.build.toplevel)
 
-@cachix-system package="":
+@cachix-package package="":
     nix run nixpkgs#cachix -- push loneros $(nix path-info .#{{ package }})
 
 @fix:
