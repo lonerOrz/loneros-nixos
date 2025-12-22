@@ -57,19 +57,19 @@ in
     };
   };
 
-  systemd.sockets.caddy-h2 = {
-    socketConfig = {
-      ListenStream = [ "${portH2}" ]; # TCP
-      Service = "caddy.service";
-    };
-    wantedBy = [ "sockets.target" ];
-  };
-
-  systemd.sockets.caddy-h3 = {
-    socketConfig = {
-      ListenDatagram = [ "${portH3}" ]; # UDP
-      Service = "caddy.service";
-    };
-    wantedBy = [ "sockets.target" ];
-  };
+  # systemd.sockets.caddy-h2 = {
+  #   socketConfig = {
+  #     ListenStream = [ "${portH2}" ]; # TCP
+  #     Service = "caddy.service";
+  #   };
+  #   wantedBy = [ "sockets.target" ];
+  # };
+  #
+  # systemd.sockets.caddy-h3 = {
+  #   socketConfig = {
+  #     ListenDatagram = [ "${portH3}" ]; # UDP
+  #     Service = "caddy.service";
+  #   };
+  #   wantedBy = [ "sockets.target" ];
+  # };
 }
