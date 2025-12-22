@@ -35,11 +35,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "lonerOrz";
     repo = "niri";
-    rev = "08d8c1b6fdd67cce273d3e5f4e6f391c592d7803";
-    hash = "sha256-vOvaiN5hMbGa77qHWPPUV1gvfvjNHI9G+K3/xLiPmlk=";
+    rev = "ef93d151b32028fe18d02a8b55069fc64d67f19a";
+    hash = "sha256-YGU5mT5ezgEI6oUvf72bR24wbx2vAAiFCr/MbUZyGW0=";
   };
 
-  cargoHash = "sha256-uKbCm7aW8uZNoJmiLrea8wH/ziwcu3l9AfXLY3g9x5Q=";
+  cargoHash = "sha256-/jmV5mWYW3khDmyioSRj10IsfLtj5EYDIVSMK4KAc4A=";
 
   outputs = [
     "out"

@@ -35,8 +35,11 @@
 @deploy target="remote-vm":
     nix shell github:serokell/deploy-rs --command deploy .#{{ target }} --ssh-user root --profile-user root --skip-checks
 
-@cachix target="loneros":
+@cachix-system target="loneros":
     nix run nixpkgs#cachix -- push loneros $(nix path-info .#nixosConfigurations.{{ target }}.config.system.build.toplevel)
+
+@cachix-system package="":
+    nix run nixpkgs#cachix -- push loneros $(nix path-info .#{{ package }})
 
 @fix:
     nix-store --repair --verify --check-contents

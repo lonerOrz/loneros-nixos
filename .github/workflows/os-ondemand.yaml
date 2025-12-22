@@ -33,3 +33,5 @@ jobs:
           limit-access-to-actor: true # 使用已注册的 SSH 公钥
           sudo: false
           install-dependencies: false
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
