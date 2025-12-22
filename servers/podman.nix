@@ -10,8 +10,8 @@
     containers = {
       enable = true;
       registries.search = [
-        "registry.cn-hangzhou.aliyuncs.com"
-        "docker-0.unsee.tech"
+        "docker.1panel.live"
+        "docker.1ms.run"
         "docker.io"
       ]; # 镜像的仓库列表
       registries.insecure = [ ]; # 仓库不支持 TLS
