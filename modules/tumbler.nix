@@ -19,25 +19,25 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # 安装 tumbler 包
-    environment.systemPackages = with pkgs.xfce; [ tumbler ];
+    environment.systemPackages = with pkgs.xfce; [
+      tumbler
+    ];
 
-    # 安装 D-Bus 支持
+    # 注册 D-Bus 支持
     services.dbus.packages = with pkgs.xfce; [ tumbler ];
 
-    # 让 user session 启动 tumblerd
-    systemd.user.services.tumblerd = {
-      description = "Thumbnailing service (tumblerd)";
-      after = [
-        "dbus.service"
-        "gvfs-daemon.service"
-      ];
-      serviceConfig.ExecStart = "${pkgs.xfce.tumbler}/lib/tumbler-1/tumblerd";
-      serviceConfig.Restart = "on-failure";
-      wantedBy = [ "default.target" ];
+    services.udisks2 = {
+      enable = true;
+      settings = lib.mkIf config.zramSwap.enable {
+        "udisks2.conf" = {
+          udisks2 = {
+            ignore_devices = [
+              "/dev/zram0" # 忽略 zram 设备，防止系统卡顿
+            ];
+          };
+        };
+      };
     };
-
-    services.udisks2.enable = true;
     services.gvfs.enable = true;
   };
 
