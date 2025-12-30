@@ -23,7 +23,7 @@
   # This will automatically import SSH keys as age keys
   sops.age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
   # This is using an age key that is expected to already be in the filesystem
-  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt"; # 更改位置需要使用 SOPS_AGE_KEY_FILE 环境变量
   # This will generate a new key if the key specified above does not exist
   sops.age.generateKey = true;
 
