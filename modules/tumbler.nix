@@ -19,12 +19,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs.xfce; [
-      tumbler
+    environment.systemPackages = [
+      pkgs.tumbler
     ];
 
     # 注册 D-Bus 支持
-    services.dbus.packages = with pkgs.xfce; [ tumbler ];
+    services.dbus.packages = [ pkgs.tumbler ];
 
     services.udisks2 = {
       enable = true;
