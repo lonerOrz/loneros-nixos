@@ -5,7 +5,7 @@ on:
       os:
         description: "OS to boot"
         required: true
-        default: "macos-latest"
+        default: "ubuntu-latest"
         type: choice
         options:
           - ubuntu-latest
@@ -35,3 +35,4 @@ jobs:
           install-dependencies: false
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
