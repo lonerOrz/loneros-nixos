@@ -64,7 +64,11 @@
       --eval-max-memory-size 15360
 
 @fast-build-package target="mpv-handler":
-    nix run github:Mic92/nix-fast-build -- --flake .#{{ target }} --eval-max-memory-size 15360
+    nix run github:Mic92/nix-fast-build -- \
+      --flake .#{{ target }} \
+      --skip-cached \
+      --eval-workers 2 \
+      --eval-max-memory-size 15360
 
 @search:
     nsearch-tv

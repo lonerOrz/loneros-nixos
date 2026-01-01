@@ -1,3 +1,4 @@
+# waiting https://github.com/NixOS/nixpkgs/pull/475797
 self: super: {
   conan = super.conan.overrideAttrs (oldAttrs: {
     disabledTestPaths = (oldAttrs.disabledTestPaths or [ ]) ++ [
