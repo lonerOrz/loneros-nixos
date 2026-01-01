@@ -109,7 +109,6 @@ in
       # (dbeaver-bin.override { override_xmx = "1024m"; }) # 数据库管理
       door-knocker # protal check
       feishu
-      folo
 
       # electron wrapper
       obsidian-wrapper
@@ -145,6 +144,7 @@ in
       neowall
       chameleos
       gremlin
+      folo
     ]);
 
   programs = {
