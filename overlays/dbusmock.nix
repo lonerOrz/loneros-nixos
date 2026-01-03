@@ -1,5 +1,5 @@
 # done https://github.com/NixOS/nixpkgs/pull/471047
-# waite https://github.com/NixOS/nixpkgs/pull/471043
+# waiting-pr https://github.com/NixOS/nixpkgs/pull/471043
 final: prev: {
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
     (python-final: python-prev: {
