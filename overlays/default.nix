@@ -14,6 +14,6 @@
 
     # temporary
     (import ./pamixer.nix)
-    (import ./conan.nix)
+    (import ./vesktop.nix)
   ];
 }
