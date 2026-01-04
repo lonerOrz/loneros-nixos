@@ -5,6 +5,7 @@ import signal
 import datetime
 import json
 import re
+import math
 from typing import List, Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
@@ -13,8 +14,9 @@ import time
 # ---------------- Configuration ----------------
 CACHES = [
     "https://cache.nixos.org",
+    "https://nix-community.cachix.org",
     "https://loneros.cachix.org",
-    "https://chaotic-nyx.cachix.org",
+    "https://cache.garnix.io",
     "https://hyprland.cachix.org",
 ]
 
@@ -24,6 +26,7 @@ PACKAGE_TARGET = ".#nixosConfigurations.loneros.config.environment.systemPackage
 
 LOG_LEVEL = "DEBUG"
 MAX_PUSH_RETRIES = 3
+MAX_WORKERS = 10
 
 # ---------------- Globals ----------------
 cache_hits: Dict[str, int] = {}
@@ -43,26 +46,33 @@ def log(level: str, message: str) -> None:
 # ---------------- Command Runner ----------------
 def run(cmd: List[str], timeout: float | None = None) -> str:
     log("DEBUG", f"Running command: {' '.join(cmd)}")
+    p = None
     try:
-        p = subprocess.run(
+        with subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
-            timeout=timeout,
-            check=False,
-        )
+            bufsize=1,
+            universal_newlines=True,
+        ) as p:
+            output_lines = []
+            if p.stdout:
+                for line in p.stdout:
+                    output_lines.append(line)
+                    print(str(line.rstrip()))
+            p.wait(timeout=timeout)
+            if p.returncode != 0:
+                log("ERROR", str(f"Command failed: {' '.join(cmd)}"))
+                log("ERROR", str("".join(output_lines).strip()))
+                raise RuntimeError("command failed")
+            log("DEBUG", str(f"Command output: {''.join(output_lines).strip()}"))
+            return str("".join(output_lines))
     except subprocess.TimeoutExpired:
         log("ERROR", f"Command timed out: {' '.join(cmd)}")
+        if p:
+            p.kill()
         raise
-
-    if p.returncode != 0:
-        log("ERROR", f"Command failed: {' '.join(cmd)}")
-        log("ERROR", p.stdout.strip())
-        raise RuntimeError("command failed")
-
-    log("DEBUG", f"Command output: {p.stdout.strip()}")
-    return p.stdout
 
 # ---------------- JSON Runner ----------------
 def run_json(cmd: List[str]) -> Any:
@@ -119,6 +129,19 @@ def get_drv_out_mappings(target: str) -> None:
     for drv in drv_paths:
         out_to_drv[drv] = drv  # drv -> drv 映射
 
+# ---------------- Cache Timeout Calculation ----------------
+def cache_timeout(max_workers: int, num_caches: int) -> float:
+    base = 0.5  # TLS + DNS 基础成本
+    α = 0.25  # 并行放大因子
+    β = 0.15  # cache 串行累积
+
+    return round(
+        base
+        + α * math.log2(max_workers)
+        + β * max(0, num_caches - 1),
+        2
+    )
+
 # ---------------- Cache Lookup ----------------
 def is_in_cache(path: str) -> bool:
     log("DEBUG", f"Checking path: {path}")
@@ -129,7 +152,7 @@ def is_in_cache(path: str) -> bool:
                 ["nix", "path-info", "--store", cache, path],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
-                timeout=0.5,
+                timeout=cache_timeout(MAX_WORKERS, len(CACHES)),
                 check=True,
             )
             log("INFO", f"✅ {path} is in {cache}")
@@ -185,9 +208,9 @@ def check_one_path(path: str) -> tuple[str, bool]:
     found = is_in_cache(path)
     return path, found
 
-# ---------------- Main (single-threaded) ----------------
+# ---------------- Main (with parallel cache check) ----------------
 def main() -> None:
-    log("INFO", f"Starting cache check for {FLAKE_TARGET}")
+    log("INFO", str(f"Starting cache check for {FLAKE_TARGET}"))
 
     for cache in CACHES:
         cache_hits[cache] = 0
@@ -197,16 +220,13 @@ def main() -> None:
 
     missing: List[str] = []
 
-    log("INFO", "Checking cache presence (single-threaded)...")
-    for path in all_paths:
-        log("DEBUG", f"Checking path: {path}")
-        try:
-            found = is_in_cache(path)
-        except Exception as e:
-            log("WARN", f"Cache check failed for {path}: {e}")
-            found = False
-        if not found:
-            missing.append(path)
+    log("INFO", str("Checking cache presence (parallel)..."))
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:  # 可调整线程数
+        futures = {executor.submit(check_one_path, path): path for path in all_paths}
+        for future in as_completed(futures):
+            path, found = future.result()
+            if not found:
+                missing.append(path)
 
     log("INFO", "Cache hit statistics:")
     for cache in CACHES:
@@ -216,21 +236,27 @@ def main() -> None:
         log("INFO", "🎉 All paths already in cache. Nothing to build.")
         return
 
-    log("INFO", f"Found {len(missing)} missing paths. Building individually...")
-    for path in missing:
-        log("DEBUG", f"Processing missing path: {path}")
-        drv = out_to_drv.get(path)
-        if not drv:
-            log("WARN", f"No drvPath found for {path}, skipping.")
-            continue
-        build_drv(drv)
-        push_to_cachix(drv)
-        # try:
-        #     run(["nix-collect-garbage", "-d"])
-        # except Exception as e:
-        #     log("WARN", f"GC failed: {e}")
+    log("INFO", str(f"Found {len(missing)} missing paths. Building individually..."))
+    with ThreadPoolExecutor(max_workers=1) as executor:  # 构建线程数为1
+        futures = {executor.submit(build_and_push, path): path for path in missing}
+        for future in as_completed(futures):
+            future.result()
 
     log("INFO", "✅ All missing store paths built and pushed successfully.")
+
+# ---------------- Build and Push ----------------
+def build_and_push(path: str) -> None:
+    log("DEBUG", f"Processing missing path: {path}")
+    drv = out_to_drv.get(path)
+    if not drv:
+        log("WARN", f"No drvPath found for {path}, skipping.")
+        return
+    build_drv(drv)
+    push_to_cachix(drv)
+    # try:
+    #     run(["nix-collect-garbage", "-d"])
+    # except Exception as e:
+    #     log("WARN", f"GC failed: {e}")
 
 # ---------------- Signal Handling ----------------
 def on_sigint(_signum, _frame):
