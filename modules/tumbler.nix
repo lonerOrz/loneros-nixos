@@ -26,18 +26,6 @@ in
     # 注册 D-Bus 支持
     services.dbus.packages = [ pkgs.tumbler ];
 
-    services.udisks2 = {
-      enable = true;
-      settings = lib.mkIf config.zramSwap.enable {
-        "udisks2.conf" = {
-          udisks2 = {
-            ignore_devices = [
-              "/dev/zram0" # 忽略 zram 设备，防止系统卡顿
-            ];
-          };
-        };
-      };
-    };
     services.gvfs.enable = true;
   };
 

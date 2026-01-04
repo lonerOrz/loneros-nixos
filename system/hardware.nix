@@ -1,8 +1,19 @@
 {
+  lib,
   pkgs,
+  config,
   username,
   ...
 }:
+let
+  polkitAgents = [
+    "polkit-agent.service"
+    "polkit-gnome-authentication-agent-1.service"
+  ];
+  existingAgents = lib.filter (
+    s: config.systemd.user.services ? "${lib.removeSuffix ".service" s}"
+  ) polkitAgents;
+in
 {
   # devices input seatd 服务，用于改进多设备输入支持
   # services.seatd.enable = true;
@@ -45,5 +56,32 @@
     #   nssmdns4 = true;
     #   openFirewall = true;
     # };
+  };
+
+  # 自动挂载
+  services.udisks2 = {
+    enable = true;
+    settings = lib.mkIf config.zramSwap.enable {
+      "udisks2.conf" = {
+        udisks2 = {
+          ignore_devices = [
+            "/dev/zram0" # 忽略 zram 设备，防止系统卡顿
+          ];
+        };
+      };
+    };
+  };
+  systemd.user.services.udiskie = {
+    description = "Automatic disk mounting (udiskie)";
+    wantedBy = [ "graphical-session.target" ];
+    after = [
+      "graphical-session.target"
+    ]
+    ++ existingAgents;
+
+    serviceConfig = {
+      ExecStart = "${pkgs.udiskie}/bin/udiskie --no-notify";
+      Restart = "on-failure";
+    };
   };
 }
