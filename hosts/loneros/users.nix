@@ -109,6 +109,7 @@ in
       # (dbeaver-bin.override { override_xmx = "1024m"; }) # 数据库管理
       door-knocker # protal check
       feishu
+      blanket
 
       # electron wrapper
       obsidian-wrapper
