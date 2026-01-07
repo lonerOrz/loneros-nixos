@@ -37,14 +37,22 @@
 
 ### 🌟 Catppuccin Style
 
-| ![Preview 1](assets/preview/cat1.png) | ![Preview 2](assets/preview/cat2.png) | ![Preview 3](assets/preview/cat3.png) |
-| :-----------------------------------: | :-----------------------------------: | :-----------------------------------: |
+| ![Preview 1](assets/preview/catppuccin.png) |
+| :-----------------------------------------: |
 
 <details>
   <summary>🎨 Gruvbox Style (Click to expand)</summary>
 
-| ![Preview 1](assets/preview/box1.png) | ![Preview 2](assets/preview/box2.png) | ![Preview 3](assets/preview/box3.png) |
-| :-----------------------------------: | :-----------------------------------: | :-----------------------------------: |
+| ![Preview 1](assets/preview/gruvbox.png) |
+| :--------------------------------------: |
+
+</details>
+
+<details>
+  <summary>🎨 Nord Style (Click to expand)</summary>
+
+| ![Preview 1](assets/preview/Nord.png) |
+| :-----------------------------------: |
 
 </details>
 
@@ -62,6 +70,7 @@
 - **Shell UI**: [Quickshell](https://github.com/quickshell-mirror/quickshell) for creating custom shell interfaces.
 - **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
 - **Deployment**: Utilizes [deploy-rs](https://github.com/serokell/deploy-rs) for remote deployment.
+- **Regular Updates**: Dependencies are regularly updated through automated flake.lock updates to ensure security and access to latest features.
 
 ---
 
@@ -71,6 +80,10 @@ This repository is organized as follows:
 
 - `flake.nix`: The entry point for the entire configuration, defining all inputs and outputs.
 - `hosts/`: Contains system-level configurations for specific machines.
+  - `loneros/`: Main desktop system with NVIDIA GPU support, Hyprland/Niri window managers, and comprehensive application suite.
+  - `loneros-wsl/`: WSL-specific configuration for Windows Subsystem for Linux with optimized packages for development.
+  - `bootstrap/`: Minimal installation environment with impermanence support, used for system installation and recovery.
+  - `remote-vm/`: Remote virtual machine configuration with secure boot support.
 - `home/`: Manages user-level application configurations and dotfiles.
 - `system/`: Holds global, cross-host system modules.
 - `programs/`: Declaratively manages configurations for various applications.
@@ -127,7 +140,7 @@ sudo nixos-rebuild switch --flake .#<hostname>
 
 - [x] Support more themes (via Stylix).
 - [ ] Fix the "RemoteDesktop portal not implemented" error in `rustdesk` under Hyprland.
-- [ ] Write more detailed documentation.
+- [x] Write more detailed documentation.
 
 ---
 
