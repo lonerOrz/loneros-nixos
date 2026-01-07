@@ -72,7 +72,7 @@
           loner = {
             password = {
               # neededForUsers = true;
-              owner = config.users.users.loner.name;
+              owner = config.users.users.${username}.name;
               mode = "0600";
             };
           };
