@@ -6,20 +6,22 @@
 {
   # 引入 `nvf` (Neovim Flake) 模块
   imports = [ inputs.nvf.nixosModules.default ];
-  # 开启 Neovim
+
   programs.nvf = {
     enable = true;
-    enableManpages = true; # 启用 Neovim 的帮助文档
+    enableManpages = true;
 
     settings = {
       vim = {
-        # 基本 Neovim 配置
-        preventJunkFiles = true; # 防止生成临时文件
-        searchCase = "smart"; # 智能大小写搜索
-        useSystemClipboard = true; # 允许与系统剪贴板共享
-        viAlias = true; # 让 `vi` 命令使用 Neovim
-        vimAlias = true; # 让 `vim` 命令使用 Neovim
-        undoFile.enable = true; # 启用撤销文件，重启后仍可撤销
+        ## ======================
+        ## 基本配置
+        ## ======================
+        preventJunkFiles = true;
+        searchCase = "smart";
+        viAlias = true;
+        vimAlias = true;
+
+        undoFile.enable = true;
 
         options = {
           tabstop = 2;
@@ -27,60 +29,83 @@
           wrap = false;
         };
 
-        ### 🔧 LSP（语言服务器）相关配置
+        ## ======================
+        ## 剪贴板（替代 useSystemClipboard）
+        ## ======================
+	clipboard = {
+  enable = true;
+  registers = "unnamedplus";
+};
+
+        ## ======================
+        ## LSP
+        ## ======================
         lsp = {
-          formatOnSave = false; # 关闭保存时自动格式化
+          formatOnSave = false;
           lspkind.enable = false;
           lightbulb.enable = false;
           lspsaga.enable = false;
-          trouble.enable = true; # 启用 LSP 诊断界面
-          lspSignature.enable = true; # 显示函数签名
-          lsplines.enable = false;
+          trouble.enable = true;
+          lspSignature.enable = true;
           nvim-docs-view.enable = false;
         };
 
-        ### 🐞 调试器（DAP）
+        ## 替代 lsplines（保持你原来“关闭”的语义）
+        diagnostics.config = {
+          virtual_lines = false;
+        };
+
+        ## ======================
+        ## DAP
+        ## ======================
         debugger.nvim-dap = {
           enable = true;
           ui.enable = true;
         };
 
-        ### 🌍 语言支持（LSP + Treesitter + 代码格式化）
+        ## ======================
+        ## 语言支持
+        ## ======================
         languages = {
-          enableLSP = true; # 启用 LSP
-          enableFormat = true; # 启用代码格式化
-          enableTreesitter = true; # 启用 Treesitter 语法解析
-          enableExtraDiagnostics = true; # 启用额外的 LSP 诊断
+          enableLSP = true;
+          enableFormat = true;
+          enableTreesitter = true;
+          enableExtraDiagnostics = true;
 
-          nix.enable = true; # Nix 语言支持
-          markdown.enable = true; # Markdown 支持
-          html.enable = true; # HTML 支持
-          css.enable = true; # CSS 支持
-          sql.enable = true; # SQL 支持
-          java.enable = false; # 关闭 Java 支持
-          ts.enable = true; # 启用 TypeScript
-          go.enable = true; # 启用 Go 语言支持
-          zig.enable = true; # 启用 Zig 语言支持
-          python.enable = true; # 启用 Python 语言支持
-          lua.enable = true; # 启用 Lua 语言支持
-          bash.enable = true; # 启用 Bash 语言支持
+          nix.enable = true;
+          markdown.enable = true;
+          html.enable = true;
+          css.enable = true;
+          sql.enable = true;
+          java.enable = false;
+          ts.enable = true;
+          go.enable = true;
+          zig.enable = true;
+          python.enable = true;
+          lua.enable = true;
+          bash.enable = true;
+
           clang = {
-            enable = true; # 启用 C/C++ 语言支持
-            lsp.server = "clangd"; # 使用 clangd 作为 LSP 服务器
+            enable = true;
+            lsp.server = "clangd";
           };
+
           rust = {
-            enable = true; # 启用 Rust 语言支持
-            crates.enable = true; # Rust Crates 依赖管理支持
+            enable = true;
+            crates.enable = true;
           };
         };
 
-        ### 🎨 视觉增强（UI 相关）
+        ## ======================
+        ## 视觉/UI
+        ## ======================
         visuals = {
-          nvim-web-devicons.enable = true; # 启用图标支持
+          nvim-web-devicons.enable = true;
           cellular-automaton.enable = true;
-          fidget-nvim.enable = true; # 显示 LSP 加载状态
-          highlight-undo.enable = true; # 撤销时高亮修改部分
-          indent-blankline.enable = true; # 显示缩进参考线
+          fidget-nvim.enable = true;
+          highlight-undo.enable = true;
+          indent-blankline.enable = true;
+
           nvim-cursorline = {
             enable = true;
             setupOpts = {
@@ -89,86 +114,99 @@
           };
         };
 
-        ### 📊 状态栏配置
+        ## ======================
+        ## 状态栏 / 主题
+        ## ======================
         statusline.lualine = {
           enable = true;
-          theme = "tokyonight"; # 使用 Tokyo Night 主题
+          theme = "tokyonight";
         };
 
-        ### 🎨 主题配置
         theme = {
           enable = true;
           name = "tokyonight";
           style = "night";
-          transparent = false; # 关闭透明背景
+          transparent = false;
         };
 
-        autopairs.nvim-autopairs.enable = true; # 启用自动配对插件
-        autocomplete.nvim-cmp.enable = true; # 启用智能自动补全插件
-        snippets.luasnip.enable = true; # 启用代码片段插件
+        ## ======================
+        ## 编辑增强
+        ## ======================
+        autopairs.nvim-autopairs.enable = true;
+        autocomplete.nvim-cmp.enable = true;
+        snippets.luasnip.enable = true;
 
-        tabline = {
-          nvimBufferline.enable = true;
-        }; # 启用文件标签栏
-
-        treesitter.context.enable = true; # 启用代码上下文提示
+        tabline.nvimBufferline.enable = true;
+        treesitter.context.enable = true;
 
         binds = {
           whichKey.enable = true;
           cheatsheet.enable = true;
-        }; # 启用快捷键提示和帮助文档
+        };
 
+        ## ======================
+        ## Git
+        ## ======================
         git = {
           enable = true;
           gitsigns.enable = true;
-          gitsigns.codeActions.enable = false; # 禁用 Git 代码操作提示，防止调试信息
+          gitsigns.codeActions.enable = false;
         };
 
-        projects.project-nvim.enable = true; # 启用项目管理插件
-        dashboard.dashboard-nvim.enable = true; # 启用启动界面插件
+        ## ======================
+        ## 项目 / 文件
+        ## ======================
+        projects.project-nvim.enable = true;
+        dashboard.dashboard-nvim.enable = true;
+        filetree.neo-tree.enable = true;
 
-        filetree.neo-tree.enable = true; # 启用文件树插件
-
-        notify = {
-          nvim-notify.enable = true; # 启用通知插件
-        };
+        ## ======================
+        ## 通知 / UI
+        ## ======================
+        notify.nvim-notify.enable = true;
 
         utility = {
-          ccc.enable = false; # 禁用颜色选择插件
-          vim-wakatime.enable = false; # 禁用 Wakatime 插件
-          icon-picker.enable = true; # 启用图标选择插件
-          surround.enable = true; # 启用 Surround 插件
-          diffview-nvim.enable = true; # 启用 DiffView 插件，用于查看 Git 差异
+          ccc.enable = false;
+          vim-wakatime.enable = false;
+          icon-picker.enable = true;
+          surround.enable = true;
+          diffview-nvim.enable = true;
+
           motion = {
-            hop.enable = true; # 启用 Hop 插件，快速跳转到指定位置
-            leap.enable = true; # 启用 Leap 插件，增强跳转功能
-            precognition.enable = false; # 禁用 Precognition 插件
+            hop.enable = true;
+            leap.enable = true;
+            precognition.enable = false;
           };
-          images.image-nvim.enable = false; # 禁用图片插件
+
+          images.image-nvim.enable = false;
         };
 
         ui = {
-          borders.enable = true; # 启用界面边框效果
-          noice.enable = true; # 启用高级信息显示插件
-          colorizer.enable = true; # 启用颜色高亮插件
-          illuminate.enable = true; # 启用光标高亮插件
+          borders.enable = true;
+          noice.enable = true;
+          colorizer.enable = true;
+          illuminate.enable = true;
+
           breadcrumbs = {
             enable = false;
             navbuddy.enable = false;
-          }; # 禁用导航面包屑插件
-          smartcolumn = {
-            enable = false;
-          }; # 禁用智能列宽插件
-          fastaction.enable = true; # 启用快速操作插件
+          };
+
+          smartcolumn.enable = false;
+          fastaction.enable = true;
         };
 
-        ### 📌 终端集成
+        ## ======================
+        ## 终端
+        ## ======================
         terminal.toggleterm = {
           enable = true;
           lazygit.enable = true;
         };
 
-        ### 📝 记事 & 任务管理
+        ## ======================
+        ## 笔记 / 注释
+        ## ======================
         notes = {
           neorg = {
             enable = true;
@@ -183,30 +221,30 @@
                 "core.summary" = { };
                 "core.text-objects" = { };
                 "core.dirman" = {
-                  config = {
-                    workspaces = {
-                      notes = "~/Documents/neorg";
-                    };
-                  };
+                  config.workspaces.notes = "~/Documents/neorg";
                 };
               };
             };
           };
-          todo-comments.enable = true; # 启用 TODO 标注
+
+          todo-comments.enable = true;
         };
 
-        ### 🎭 代码注释
         comments.comment-nvim.enable = true;
 
-        ### 🔥 额外插件
+        ## ======================
+        ## Lazy 插件
+        ## ======================
         lazy.plugins = with pkgs.vimPlugins; {
           ${eyeliner-nvim.pname} = {
             package = eyeliner-nvim;
             event = [ "BufEnter" ];
-            after = ''print('hello')'';
+            after = ''print("hello")'';
           };
+
           ${lazygit-nvim.pname} = {
             lazy = true;
+            package = lazygit-nvim;
             cmd = [
               "LazyGit"
               "LazyGitConfig"
@@ -214,10 +252,7 @@
               "LazyGitFilter"
               "LazyGitFilterCurrentFile"
             ];
-            package = lazygit-nvim;
-            setupOpts = {
-              open_cmd = "zen %s";
-            };
+            setupOpts.open_cmd = "zen %s";
             keys = [
               {
                 key = "<leader>lg";
@@ -228,12 +263,14 @@
           };
         };
 
-        ### ⌨️ 自定义快捷键
+        ## ======================
+        ## 快捷键
+        ## ======================
         keymaps = [
           {
             key = "<leader><leader>";
             mode = "n";
-            action = "<cmd>:Telescope find_files<cr>";
+            action = "<cmd>Telescope find_files<cr>";
             silent = true;
             desc = "快速查找文件";
           }
@@ -248,3 +285,4 @@
     };
   };
 }
+
