@@ -12,6 +12,10 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl= {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
     chaotic.url = "github:lonerOrz/nyx-loner";
     firefox.url = "github:nix-community/flake-firefox-nightly";
@@ -75,6 +79,10 @@
         loneros = {
           system = "x86_64-linux";
           username = "loner";
+        };
+        loneros-wsl = {
+          system = "x86_64-linux";
+          username = "nixos";
         };
         # 快速安装远程 nixos 配置
         remote-vm = {
