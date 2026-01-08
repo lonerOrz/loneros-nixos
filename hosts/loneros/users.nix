@@ -110,6 +110,7 @@ in
       door-knocker # protal check
       feishu
       blanket
+      keypunch
 
       # electron wrapper
       obsidian-wrapper
