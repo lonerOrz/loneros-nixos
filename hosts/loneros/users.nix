@@ -146,6 +146,7 @@ in
       chameleos
       gremlin
       folo
+      wayclick
     ]);
 
   programs = {
