@@ -1,4 +1,4 @@
-# waiting-pr https://github.com/NixOS/nixpkgs/pull/476347
+# done https://github.com/NixOS/nixpkgs/pull/476347
 final: prev: {
   vesktop = prev.vesktop.overrideAttrs (oldAttrs: {
     # electron builds must be writable
