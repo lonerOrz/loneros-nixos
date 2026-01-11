@@ -111,6 +111,7 @@ in
       feishu
       blanket
       keypunch
+      gapless
 
       # electron wrapper
       obsidian-wrapper
