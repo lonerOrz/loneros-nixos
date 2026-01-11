@@ -14,5 +14,6 @@
 
     # temporary
     (import ./pamixer.nix)
+    (import ./zed.nix)
   ];
 }

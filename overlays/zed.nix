@@ -1,3 +1,4 @@
+# waiting-pr https://github.com/NixOS/nixpkgs/pull/478690
 final: prev: {
   zed-editor = prev.zed-editor.overrideAttrs (
     old:
@@ -11,6 +12,12 @@ final: prev: {
         };
       }
     else
-      { }
+      {
+        # 使用 cargo-nextest 代替 cargo test
+        useNextest = true;
+
+        # 明确移除上游为 cargo test 写的 skip 规则
+        checkFlags = [ ];
+      }
   );
 }
