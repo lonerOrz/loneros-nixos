@@ -1,0 +1,114 @@
+{
+  pkgs,
+  ...
+}:
+{
+  programs.tmux = {
+    enable = true;
+
+    plugins = with pkgs.tmuxPlugins; [
+      sensible
+      resurrect
+      yank
+    ];
+
+    extraConfig = ''
+      # === 原生 tmux.conf，从第一行开始 ===
+
+      # 使用 Ctrl h 作为 prefix
+      set -g prefix C-h
+
+      # 这真是一个无解的问题
+      # 1. 如果 default-terminal 设置为 tmux-256color ，那么 ssh 到服务器，打开 vim ，存在如下报错:
+      #   E437: terminal capability "cm" required
+      # 2. 如果设置为 xterm-256color, 那么 weechat 和 nvim 的 healthcheck 会报错
+      # 最后参考这个解决 : https://github.com/alacritty/alacritty/issues/1208
+      set -g default-terminal "tmux-256color"
+      set-option -sa terminal-features ',xterm-256color:RGB'
+      set -s set-clipboard on
+
+      # 让 window 的编号和 pane 的编号从 0 开始，因为 0 这个键实在是太远了
+      set -g base-index 1
+      setw -g pane-base-index 1
+
+      # 使用 Alt + num 来选择不同的 window
+      bind-key -n M-1 select-window -t 1
+      bind-key -n M-2 select-window -t 2
+      bind-key -n M-3 select-window -t 3
+      bind-key -n M-4 select-window -t 4
+      bind-key -n M-5 select-window -t 5
+      bind-key -n M-6 select-window -t 6
+      bind-key -n M-7 select-window -t 7
+      bind-key -n M-8 select-window -t 8
+      bind-key -n M-9 select-window -t 9
+      bind-key -n M-0 select-window -t 10
+
+      # 使用 Alt+hljk 来在不同的 pane 中移动
+      bind -n M-h select-pane -L
+      bind -n M-j select-pane -D
+      bind -n M-k select-pane -U
+      bind -n M-l select-pane -R
+
+      # 增加状态栏的对比度
+      setw -g window-status-current-style fg=black,bg=yellow
+      # 将默认在底部的状态栏移动到上面去
+      set-option -g status-position top
+
+      # 可以用鼠标直接调整 pane 的大小
+      set -g mouse on
+
+      # 让 window 的各种操作使用 vim 模式
+      set-window-option -g mode-keys vi
+
+      # 给当前窗口添加 emoji 表情
+      # catppuccin_window_current_text 选项已经覆盖了，现在无需设置了
+      set-option -g window-status-current-format  '🧀 #{window_index}:#{b:pane_current_path}'
+
+      # 创建新的 window
+      bind c new-window -c "#{pane_current_path}"
+      # 水平创建新的 pane
+      bind '"' split-window -c "#{pane_current_path}"
+      # 垂直创建新的 pane
+      bind % split-window -h -c "#{pane_current_path}"
+
+      # 将 window 的名称自动修改为路径名称，便于区分
+      set-option -g status-interval 0
+      set-option -g automatic-rename on
+      set-option -g automatic-rename-format '#{b:pane_current_path}'
+
+      # prefix v 进入到 copy mode
+      bind-key -T prefix v copy-mode
+
+      # https://superuser.com/questions/395158/tmux-copy-mode-select-text-block
+      setw -g mode-keys vi
+      bind-key -T copy-mode-vi 'v' send -X begin-selection     # Begin selection in copy mode.
+      # bind-key -T copy-mode-vi 'C-v' send -X rectangle-toggle  # Begin selection in copy mode.
+      bind-key -T copy-mode-vi 'y' send -X copy-selection      # Yank selection in copy mode.
+
+      # https://superuser.com/questions/343572/how-do-i-reorder-tmux-windows
+      # 使用 「Ctrl Shift 方向键」调整 window 的位置
+      bind-key -n C-S-Left swap-window -t -1\; select-window -t -1
+      bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
+
+      # 使用 prefix f 直接进入到搜索
+      # https://stackoverflow.com/questions/66430860/on-tmux-2-4-how-to-enter-copy-mode-and-start-a-search-all-in-one-go
+      bind f copy-mode \; command-prompt -p "(search up)" "send -X search-forward \"%%%\""
+      bind -T copy-mode-vi f copy-mode \; command-prompt -p "(search up)" "send -X search-forward \"%%%\""
+
+      # 我一般会使用两个 session ，使用 Ctrl j 来切换 session
+      bind-key -n C-j switch-client -n
+
+      # 拷贝之后不要默认自动进入到 normal mode
+      set -g @yank_action 'copy-pipe'
+
+      # 加载插件
+      # List of plugins
+      set -g @plugin 'tmux-plugins/tpm'
+      set -g @plugin 'tmux-plugins/tmux-sensible' # 默认配置
+      set -g @plugin 'tmux-plugins/tmux-resurrect' # 关机保存 session
+      set -g @plugin 'tmux-plugins/tmux-yank' # 方便的拷贝到系统剪切板
+      run '~/.tmux/plugins/tpm/tpm'
+    '';
+  };
+
+}
