@@ -1,4 +1,4 @@
-# waiting-pr https://github.com/NixOS/nixpkgs/pull/478690
+# done https://github.com/NixOS/nixpkgs/pull/478690
 final: prev: {
   zed-editor = prev.zed-editor.overrideAttrs (
     old:

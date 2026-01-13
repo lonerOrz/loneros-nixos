@@ -14,6 +14,6 @@
 
     # temporary
     (import ./pamixer.nix)
-    (import ./zed.nix)
+    (import ./librecad.nix)
   ];
 }
