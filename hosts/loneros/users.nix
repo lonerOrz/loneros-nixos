@@ -95,7 +95,7 @@ in
       ghostty
       foot
       rio
-      # zed-editor
+      zed-editor
       telegram-desktop
       stable.rustdesk-flutter
       evil-helix_git # introduces Vim keybindings and more
