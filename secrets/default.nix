@@ -80,6 +80,9 @@
         // lib.optionalAttrs (config.cluster.k3s.enable or false) {
           k3s = {
             token = mkK3s "0400";
+            certificate-authority-data = mkK3s "0600";
+            client-certificate-data = mkK3s "0600";
+            client-key-data = mkK3s "0600";
           };
         }
         // {

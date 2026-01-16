@@ -4,6 +4,8 @@
   ...
 }:
 {
+  imports = [ ./kubeconfig.nix ];
+
   cluster.k3s = {
     enable = true;
 

@@ -16,8 +16,6 @@ let
     disable = [
       # 默认使用 k3s 自带组件
     ];
-
-    configPath = "/etc/rancher/k3s/k3s.yaml";
   };
 in
 {
@@ -50,8 +48,8 @@ in
     };
 
     serverAddr = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+      type = types.str;
+      default = "";
       description = ''
         Address of the existing k3s server to join.
 
@@ -70,6 +68,12 @@ in
         Required for agents and non-initial servers.
         Not required when clusterInit = true.
       '';
+    };
+
+    configPath = mkOption {
+      type = types.nullOr types.path;
+      default = builtins.toPath "/etc/rancher/k3s/k3s.yaml";
+      description = "Path to the kubeconfig file.";
     };
 
     node = {
@@ -134,13 +138,13 @@ in
       inherit (clusterConfig)
         package
         disable
-        configPath
         ;
 
       # ---- 节点差异 ----
       role = cfg.role;
       clusterInit = cfg.clusterInit;
-      tokenFile = lib.mkIf (cfg.tokenFile != null) cfg.tokenFile;
+      tokenFile = cfg.tokenFile;
+      configPath = cfg.configPath;
 
       serverAddr = if cfg.clusterInit then "" else cfg.serverAddr;
 
@@ -150,6 +154,6 @@ in
       nodeIP = cfg.node.ip;
     };
 
-    environment.variables.KUBECONFIG = clusterConfig.configPath;
+    environment.variables.KUBECONFIG = cfg.configPath;
   };
 }
