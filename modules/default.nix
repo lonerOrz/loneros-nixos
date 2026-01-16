@@ -12,5 +12,6 @@
     ./battery.nix
     ./tumbler.nix
     # ./mihomo.nix
+    ./k3s.nix
   ];
 }

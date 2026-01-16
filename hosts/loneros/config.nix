@@ -1,4 +1,6 @@
 {
+  lib,
+  host,
   pkgs,
   inputs,
   stable,
@@ -7,6 +9,14 @@
 let
   system = pkgs.stdenv.hostPlatform.system;
   inherit (import ./variables.nix) keyboardLayout;
+
+  clusterDir = ../../cluster;
+  clusterFiles = builtins.attrNames (builtins.readDir clusterDir);
+  matchedFiles = builtins.filter (
+    name: lib.hasSuffix ".nix" name && lib.hasSuffix "-${host}.nix" name
+
+  ) clusterFiles;
+  importsFromCluster = map (name: clusterDir + "/${name}") matchedFiles;
 in
 {
   imports = [
@@ -20,7 +30,8 @@ in
     ../../servers
     ../../modules
     ../../themes
-  ];
+  ]
+  ++ importsFromCluster;
 
   # Extra Module Options
   drivers.amdgpu.enable = false;

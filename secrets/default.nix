@@ -1,7 +1,9 @@
 {
+  lib,
   pkgs,
-  config,
   inputs,
+  config,
+  host,
   username,
   ...
 }:
@@ -16,9 +18,7 @@
 
   # This will add secrets.yml to the nix store
   # You can avoid this by adding a string to the full path instead, i.e.
-  # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
-  # sops.defaultSopsFile = "/home/${username}/loneros-nixos/secrets/secrets.yaml";
-  sops.defaultSopsFile = ./secrets.yaml;
+  sops.defaultSopsFile = ./${host}/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   # This will automatically import SSH keys as age keys
   sops.age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
@@ -31,17 +31,22 @@
   sops.secrets =
     let
       mkMihomo = mode: {
-        sopsFile = ./mihomo.yaml;
+        sopsFile = ./${host}/mihomo.yaml;
         owner = "root";
         inherit mode;
       };
 
       mkCloudflared = mode: {
-        sopsFile = ./cloudflared.yaml;
+        sopsFile = ./${host}/cloudflared.yaml;
         owner = "root";
         inherit mode;
       };
 
+      mkK3s = mode: {
+        sopsFile = ./${host}/k3s.yaml;
+        owner = "root";
+        inherit mode;
+      };
       # 支持递归展开多层 attrset
       flattenSecrets =
         sep: prefix: attrs:
@@ -59,46 +64,34 @@
             acc // { "${newPrefix}" = value; }
         ) { } (builtins.attrNames attrs);
 
-      secretsNested = {
-        cloudflared = {
-          cert_pem = mkCloudflared "0600";
-          tunnel_json = mkCloudflared "0600";
-        };
-        mihomo = {
-          subscription1 = mkMihomo "0600";
-          secret = mkMihomo "0600";
-        };
-        loneros = {
-          loner = {
-            password = {
-              # neededForUsers = true;
-              owner = config.users.users.${username}.name;
-              mode = "0600";
+      secretsNested =
+        lib.optionalAttrs (config.services.cloudflared.enable or false) {
+          cloudflared = {
+            cert_pem = mkCloudflared "0600";
+            tunnel_json = mkCloudflared "0600";
+          };
+        }
+        // lib.optionalAttrs (config.services.mihomo.enable or false) {
+          mihomo = {
+            subscription1 = mkMihomo "0600";
+            secret = mkMihomo "0600";
+          };
+        }
+        // lib.optionalAttrs (config.cluster.k3s.enable or false) {
+          k3s = {
+            token = mkK3s "0400";
+          };
+        }
+        // {
+          ${host} = {
+            ${username} = {
+              password = {
+                owner = config.users.users.${username}.name;
+                mode = "0600";
+              };
             };
           };
         };
-        remote-vm = {
-          test = {
-            password = {
-              # sops-nix 必须在 NixOS 创建用户后运行（为了指定哪些用户拥有 secret）。
-              # 这意味着无法设置为 users.users.<name>.hashedPasswordFile sops-nix 管理的任何密钥。
-              # 要解决此问题，可以在 secret 中设置 neededForUsers = true。
-              # 这将导致 Secret 在 NixOS 创建用户之前被解密为 /run/secrets-for-users，
-              # 而不是 /run/secrets。由于尚未创建用户，因此无法为这些密钥设置所有者。
-              neededForUsers = true;
-              mode = "0600";
-            };
-          };
-        };
-        bootstrap = {
-          test = {
-            password = {
-              neededForUsers = true;
-              mode = "0600";
-            };
-          };
-        };
-      };
 
     in
     flattenSecrets "/" "" secretsNested;
