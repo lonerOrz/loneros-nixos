@@ -127,6 +127,7 @@ in
   config = mkIf cfg.enable {
 
     environment.systemPackages = with pkgs; [
+      kubernetes-helm
       kubectl
       k9s
     ];
