@@ -4,12 +4,10 @@
   stable,
   username,
   ...
-}:
-let
+}: let
   system = pkgs.stdenv.hostPlatform.system;
   inherit (import ./variables.nix) keyboardLayout;
-in
-{
+in {
   imports = [
     inputs.nixos-wsl.nixosModules.default
 
@@ -18,7 +16,6 @@ in
 
     ../../programs/git.nix
     ../../programs/direnv.nix
-    ../../programs/nvf.nix
     ../../servers/atuin.nix
   ];
 
@@ -68,8 +65,7 @@ in
   services.openssh.enable = true;
 
   environment.systemPackages = (
-    with pkgs;
-    [
+    with pkgs; [
       # System Packages
       curl
       wget
