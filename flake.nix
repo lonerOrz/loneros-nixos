@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-loner.url = "github:lonerOrz/nixpkgs/master";
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,6 +65,7 @@
       self,
       nixpkgs,
       nixpkgs-stable,
+      nixpkgs-loner,
       flake-parts,
       ...
     }:
@@ -130,9 +132,9 @@
       flake = {
         nixosConfigurations =
           let
-            mkStable =
-              system:
-              import nixpkgs-stable {
+            mkPkgs =
+              nixpkgsInput: system:
+              import nixpkgsInput {
                 inherit system;
                 config.allowUnfree = true;
               };
@@ -146,7 +148,8 @@
                 inherit host;
                 username = cfg.username;
                 system = cfg.system;
-                stable = mkStable cfg.system;
+                stable = mkPkgs nixpkgs-stable cfg.system;
+                loner = mkPkgs nixpkgs-loner cfg.system;
                 pkgsv3 = inputs.chaotic.legacyPackages.${cfg.system}.pkgsx86_64_v3 or null;
               };
               modules = [
