@@ -34,6 +34,7 @@
       command = "echo 'Hello WSL'";
       # 是否使用 systemd 作为 init（禁用可能导致 NixOS 损坏）
       systemd = true;
+      initTimeout = 40000; # 40 seconds to ensure services have time to start
     };
 
     # Windows 与 Linux 互操作设置
