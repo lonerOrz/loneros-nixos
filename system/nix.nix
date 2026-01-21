@@ -15,17 +15,14 @@ in
   };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
-    package = inputs.determinate.packages.${system}.default;
+    # package = inputs.determinate.packages.${system}.default;
+    package = pkgs.lix;
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     channel.enable = true;
     extraOptions = ''
       warn-dirty = false
     '';
     settings = {
-      # just detnix optimizations
-      lazy-trees = true;
-      eval-cores = 0;
-
       auto-optimise-store = true;
       system-features = [
         "gccarch-x86-64-v3" # for chaotic-nyx pkgsx86_64-v3
