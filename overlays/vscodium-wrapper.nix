@@ -14,8 +14,8 @@ let
     rev = "main";
     hash = "sha256-1ko4e4t9hlMpKgW5/0CPdoriUz6FSTdKO8T8FFO6z14=";
   };
-  bgFile = "${wallpapersRepo}/wallpapers/loner/keyb2.png"; # miles-catppuccin.jpg
-  bgOpacity = "0.2"; # 背景透明度
+  bgFile = "${wallpapersRepo}/wallpapers/loner/vp1uuhi.jpg"; # miles-catppuccin.jpg
+  bgOpacity = "0.3"; # 背景透明度
 in
 {
   "${sftname}-wrapper" = super.${sftname}.overrideAttrs (old: {
