@@ -28,11 +28,6 @@
     </a>
 </div>
 
-> [!IMPORTANT]
-> Note: I am not currently using home-manager for user-level dotfile configuration.
-
----
-
 ## 🖼️ Previews
 
 ### 🌟 Catppuccin Style
@@ -58,19 +53,20 @@
 
 ---
 
+> [!IMPORTANT]
+> Note: Although this configuration includes home-manager integration, I do not use it for managing user configurations.
+
+> [!CAUTION]
+> This configuration contains encrypted secrets managed by sops-nix that require my personal keys. Do not attempt to directly install this configuration.
+
+---
+
 ## ✨ Features
 
-- **Declarative & Reproducible**: Managed entirely by Nix Flakes for a consistent environment.
-- **Window Managers**: Includes configurations for both [Hyprland](https://hyprland.org/) and [Niri](https://github.com/YaLTeR/niri).
-- **Theming**: Themed with [Stylix](https://github.com/danth/stylix) and the beautiful [Catppuccin](https://github.com/catppuccin) color scheme.
-- **Secrets Management**: Securely manages secrets using [sops-nix](https://github.com/Mic92/sops-nix).
-- **Browser**: [Zen Browser](https://github.com/0xc000022070/zen-browser-flake) for a modern web experience.
-- **Music**: [Spicetify](https://github.com/Gerg-L/spicetify-nix) for a customized Spotify experience.
-- **Editor**: [Neovim](https://neovim.io/) configured with [nvf](https://github.com/notashelf/nvf).
-- **Shell UI**: [Quickshell](https://github.com/quickshell-mirror/quickshell) for creating custom shell interfaces.
-- **Custom Packages**: Includes custom packages and overlays, defined in the `pkgs` and `overlays` directories.
-- **Deployment**: Utilizes [deploy-rs](https://github.com/serokell/deploy-rs) for remote deployment.
-- **Regular Updates**: Dependencies are regularly updated through automated flake.lock updates to ensure security and access to latest features.
+- **Declarative & Reproducible**: Managed entirely by Nix Flakes
+- **Desktop Environment**: Hyprland/Niri with Stylix theming
+- **Security**: Encrypted secrets with sops-nix
+- **Development**: Neovim with nvf configuration
 
 ---
 
@@ -95,70 +91,13 @@ This repository is organized as follows:
 - `devShell/`: Provides development environments for different programming languages.
 - `iso/`: Configuration for building a bootable NixOS ISO image.
 - `deploy/`: Contains configurations related to remote deployment.
+- `cluster/`: Kubernetes cluster configurations (k3s, kubeconfig).
 - `lib/`: Contains custom Nix helper functions.
 - `secrets/`: Manages encrypted files using `sops-nix`.
 
 ---
 
-## 🛠️ Installation & Usage
-
-### 1. Initial Installation
-
-To install this configuration on a new machine, you can use the provided `install.sh` script or manually use `nixos-install`.
-
-**Automated Script:**
-
-```bash
-git clone https://github.com/lonerOrz/loneros-nixos.git
-cd loneros-nixos
-chmod +x install.sh
-./install.sh
-```
-
-**Manual Flake Installation:**
-Replace `<hostname>` with one of the defined hosts (e.g., `loneros`).
-
-```bash
-sudo nixos-install --flake .#<hostname>
-```
-
-### 2. Updating the System
-
-To apply changes after modifying the configuration, run the following command:
-
-```bash
-# Using a helper tool like nh
-nh os switch --flake .#<hostname>
-
-# Or using standard nixos-rebuild
-sudo nixos-rebuild switch --flake .#<hostname>
-```
-
----
-
-## 📝 TODO
-
-- [x] Support more themes (via Stylix).
-- [ ] Fix the "RemoteDesktop portal not implemented" error in `rustdesk` under Hyprland.
-- [x] Write more detailed documentation.
-
----
-
-## 🔗 Credits
-
-This configuration was inspired by and utilizes resources from the following projects:
-
-- [NixOS Manual](https://nixos.org/manual/): For NixOS options and documentation.
-- [Catppuccin](https://github.com/catppuccin/nixos): For the color scheme.
-- [ZaneyOS](https://gitlab.com/Zaney/zaneyos): As a reference for configuration patterns.
-
----
-
-## ☁️ Cache & Build Status
-
-**My personal Cachix Cache**
+## ☁️ Cache
 
 - substituter: `https://loneros.cachix.org`
 - public-key: `loneros.cachix.org-1:dVCECfW25sOY3PBHGBUwmQYrhRRK2+p37fVtycnedDU=`
-
-[![Cachix Cache](https://img.shields.io/badge/cachix-loneros-blue.svg)](https://loneros.cachix.org)
