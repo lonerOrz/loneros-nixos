@@ -31,4 +31,26 @@ in
     };
   getRaw = url: baseGetRaw { inherit lib url; };
   inherit autoImport callImport;
+
+  mkOutOfStoreSymlink =
+    sourcePath:
+    let
+      replaceChars =
+        str:
+        builtins.foldl' (s: kv: builtins.replaceStrings [ kv.key ] [ kv.value ] s) str [
+          {
+            key = "/";
+            value = "-";
+          }
+          {
+            key = ".";
+            value = "_";
+          }
+        ];
+      sourceStr = toString sourcePath;
+      storeName = "out-of-store-${replaceChars sourceStr}";
+    in
+    pkgs.runCommandLocal storeName { } ''
+      ln -s "${sourceStr}" $out
+    '';
 }
