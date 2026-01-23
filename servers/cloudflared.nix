@@ -18,6 +18,12 @@
         "router.lonerorz.dpdns.org" = {
           service = "http://127.0.0.1:2026";
         };
+        "uptime.lonerorz.dpdns.org" = {
+          service = "http://127.0.0.1:16937";
+        };
+        "reader.lonerorz.dpdns.org" = {
+          service = "http://127.0.0.1:4396";
+        };
       };
       default = "http_status:404";
     };
