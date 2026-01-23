@@ -1,9 +1,19 @@
 {
+  lib,
   pkgs,
   config,
   username,
   ...
 }:
+let
+  domain = "lonerorz.dpdns.org";
+
+  services = {
+    router = 2026; # caddy
+    uptime = 16937;
+    reader = 4396;
+  };
+in
 {
   environment.systemPackages = with pkgs; [
     cloudflared
@@ -14,17 +24,12 @@
     # certificateFile = config.sops.secrets."cloudflared/cert_pem".path; # cloudflared 登录凭证文件
     tunnels.laptop = {
       credentialsFile = config.sops.secrets."cloudflared/tunnel_json".path; # tunnel ID 凭证
-      ingress = {
-        "router.lonerorz.dpdns.org" = {
-          service = "http://127.0.0.1:2026";
+      ingress = lib.mapAttrs' (name: port: {
+        name = "${name}.${domain}";
+        value = {
+          service = "http://127.0.0.1:${toString port}";
         };
-        "uptime.lonerorz.dpdns.org" = {
-          service = "http://127.0.0.1:16937";
-        };
-        "reader.lonerorz.dpdns.org" = {
-          service = "http://127.0.0.1:4396";
-        };
-      };
+      }) services;
       default = "http_status:404";
     };
   };
