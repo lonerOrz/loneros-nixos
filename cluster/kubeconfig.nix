@@ -1,4 +1,5 @@
 {
+  host,
   config,
   username,
   ...
@@ -14,7 +15,7 @@
           certificate-authority-data: ${
             config.sops.placeholder."k3s/certificate-authority-data"
           } # base64 encoded CA
-          server: https://127.0.0.1:6443 # master-ip
+          server: https://${host}:6443 # master-ip
         name: default
       contexts:
       - context:
