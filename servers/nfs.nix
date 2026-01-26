@@ -29,4 +29,11 @@
       mountd.manage-gids = true;
     };
   };
+
+  # Limit shutdown time of NFS server to avoid blocking system shutdown
+  # when clients (e.g. k3s pods) still hold NFS volumes.
+  systemd.services.nfs-server.serviceConfig = {
+    TimeoutStopSec = "15s";
+    KillMode = "mixed";
+  };
 }
