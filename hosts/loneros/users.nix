@@ -148,6 +148,7 @@ in
       chameleos
       gremlin
       folo
+      biu
     ]);
 
   programs = {
