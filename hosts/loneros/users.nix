@@ -94,7 +94,6 @@ in
       localsend
       ghostty
       foot
-      rio
       zed-editor
       telegram-desktop
       stable.rustdesk-flutter
