@@ -79,6 +79,13 @@
       };
     };
   };
+
+  #Failed assertions:
+  # - environment.persistence:
+  #   All filesystems used for persistent storage must
+  #   have the flag neededForBoot set to true.
+  fileSystems."/nix".neededForBoot = true;
+
   # # 由于我们没有让 Disko 管理 fileSystems.* 配置，我们需要手动配置
   # # 根分区，由于我开了 Impermanence，所以这里是 tmpfs
   # fileSystems."/" = {
