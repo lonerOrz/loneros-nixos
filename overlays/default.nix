@@ -14,7 +14,7 @@
 
     # temporary
     (import ./pamixer.nix)
-    (import ./replaceStdenv.nix)
-    (import ./pygame-ce.nix)
+    # (import ./replaceStdenv.nix)
+    # (import ./pygame-ce.nix)
   ];
 }
