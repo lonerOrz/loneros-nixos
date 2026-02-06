@@ -12,7 +12,7 @@ let
     router = 2026; # caddy
     uptime = 16937;
     reader = 4396;
-    "*" = 80;
+    apps = 80;
   };
 in
 {
