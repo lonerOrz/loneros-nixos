@@ -98,7 +98,7 @@ in
       # hollywood # https://github.com/NixOS/nixpkgs/issues/461499
       lolcat
       nitch
-      xorg.xeyes
+      xeyes
       ascii-image-converter
     ]
     ++ [

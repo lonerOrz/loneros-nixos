@@ -23,8 +23,6 @@
       udev
       alsa-lib
       bash
-    ])
-    ++ (with pkgs.xorg; [
       libX11
       libXcursor
       libXrandr

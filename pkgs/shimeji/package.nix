@@ -3,9 +3,10 @@
   stdenv,
   fetchFromGitea,
   ant,
+  libX11,
+  libXrender,
   jdk8,
   jna,
-  xorg,
   stripJavaArchivesHook,
   makeBinaryWrapper,
 }:
@@ -60,8 +61,8 @@ stdenv.mkDerivation (finalAttrs: {
       --add-flags "-cp $out/share/java/Shimeji.jar:$CLASSPATH com.group_finity.mascot.Main" \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
-          xorg.libX11
-          xorg.libXrender
+          libX11
+          libXrender
         ]
       }
 
