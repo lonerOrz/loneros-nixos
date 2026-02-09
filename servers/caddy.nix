@@ -10,6 +10,8 @@ let
   portH3 = "2026";
 in
 {
+  users.users.${username}.extraGroups = [ "caddy" ];
+
   environment.systemPackages = with pkgs; [
     caddy
   ];
@@ -42,7 +44,7 @@ in
                       handler = "reverse_proxy";
                       upstreams = [
                         {
-                          dial = "127.0.0.1:16937";
+                          dial = "127.0.0.1:18900";
                         }
                       ];
                     }
