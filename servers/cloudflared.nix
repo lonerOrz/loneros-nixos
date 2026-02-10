@@ -12,6 +12,7 @@ let
     router = 2026; # caddy
     # uptime = 16937;
     reader = 4396;
+    share = 14278;
   };
 
   k8sServices = [
