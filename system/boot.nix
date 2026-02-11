@@ -6,6 +6,8 @@
   ...
 }:
 let
+  inherit (import ../hosts/${host}/variables.nix) lto native;
+
   v4l2loopbackPackage =
     if config.boot.kernelPackages.v4l2loopback.version == "0.15.1-6.18.0" then
       # done https://github.com/NixOS/nixpkgs/pull/467572
@@ -28,7 +30,13 @@ in
     # kernelPackages = pkgs.linuxPackages_latest;
     # kernelPackages = pkgs.linuxPackages_zen;
     # https://github.com/chaotic-cx/nyx/pull/1176
-    kernelPackages = pkgs.linuxPackages_cachyos-gcc.cachyOverride { mArch = "NATIVE"; };
+    kernelPackages =
+      (if lto then pkgs.linuxPackages_cachyos-lto else pkgs.linuxPackages_cachyos-gcc).cachyOverride
+        (
+          lib.optionalAttrs native {
+            mArch = "NATIVE";
+          }
+        );
     # if nvidia driver broken, try this:
     # .extend (
     #   lpself: lpsuper: {

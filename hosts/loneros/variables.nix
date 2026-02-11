@@ -23,4 +23,7 @@
   font_en = "FiraCode Nerd Font Mono Reg";
 
   fetch = "maxfetch"; # fastfetch
+
+  lto = false;
+  native = true;
 }

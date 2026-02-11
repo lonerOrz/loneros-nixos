@@ -1,17 +1,20 @@
 {
+  host,
   inputs,
   pkgs,
   ...
 }:
 let
+  inherit (import ../hosts/${host}/variables.nix) lto native;
+
   niri-package = pkgs.callPackage ../pkgs/niri-blur/package.nix { }; # pkgs.nur.repos.lonerOrz.niri-Naxdy; # or pkgs.callPackage ../pkgs/niri-blur/package.nix { }
   niri-blur = niri-package.override {
     withDbus = true;
     withSystemd = true;
     withScreencastSupport = true;
     withDinit = false;
-    withNative = true;
-    withLto = true;
+    withNative = native;
+    withLto = lto;
   };
 in
 {

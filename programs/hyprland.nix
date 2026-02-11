@@ -1,22 +1,26 @@
 {
   inputs,
+  host,
   pkgs,
   ...
 }:
 let
-  hyprland-git =
-    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs
-      (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.cmake ];
-        cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-          # "-DCMAKE_CXX_FLAGS='-march=x86-64-v3 -O3'"
-          "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
-        ];
-        NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
-        NIX_CXXFLAGS_COMPILE = (old.NIX_CXXFLAGS_COMPILE or "") + " -march=x86-64-v3 -O3";
-      }); # make sure to also set the portal package, so that they are in sync
-  hyprland-portal-git =
-    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  inherit (import ../hosts/${host}/variables.nix) lto native;
+  system = pkgs.stdenv.hostPlatform.system;
+  hyprland-git = inputs.hyprland.packages.${system}.hyprland.overrideAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.cmake ];
+
+    cmakeFlags =
+      (old.cmakeFlags or [ ])
+      ++ [ "-DCMAKE_BUILD_TYPE=RelWithDebInfo" ]
+      ++ pkgs.lib.optional lto "-DENABLE_LTO=ON";
+
+    NIX_CFLAGS_COMPILE =
+      (old.NIX_CFLAGS_COMPILE or "") + pkgs.lib.optionalString native " -march=native" + " -O3";
+    NIX_CXXFLAGS_COMPILE =
+      (old.NIX_CXXFLAGS_COMPILE or "") + pkgs.lib.optionalString native " -march=native" + " -O3";
+  });
+  hyprland-portal-git = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
 in
 {
   programs.hyprland = {
