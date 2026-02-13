@@ -5,12 +5,12 @@ let
     if display == "wayland" then
       [
         pkgs.wine-wayland
-        pkgs.wineWowPackages.waylandFull
+        pkgs.wineWow64Packages.waylandFull
       ]
     else
       [
         pkgs.wine
-        pkgs.wineWowPackages.stable
+        pkgs.wineWow64Packages.stable
       ];
 in
 {
