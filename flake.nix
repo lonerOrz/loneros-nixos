@@ -42,10 +42,6 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -121,11 +117,20 @@
                 ;
             }
             // {
-              iso = inputs.nixos-generators.nixosGenerate {
-                system = pkgs.stdenv.hostPlatform.system;
-                format = "iso";
-                modules = [ ./iso/config.nix ];
-              };
+              iso =
+                let
+                  iso-nixos = nixpkgs.lib.nixosSystem {
+                    system = pkgs.stdenv.hostPlatform.system;
+                    specialArgs = {
+                      inherit inputs;
+                    };
+                    modules = [
+                      ./iso/config.nix
+                      "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+                    ];
+                  };
+                in
+                iso-nixos.config.system.build.isoImage;
             };
         };
 

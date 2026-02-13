@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -19,7 +20,7 @@
     calamares-nixos # 安装程序的图形界面
   ];
 
-  services.getty.autologinUser = "root"; # 自动以 root 用户登录
+  services.getty.autologinUser = lib.mkForce "root"; # 自动以 root 用户登录
   users.users.root.openssh.authorizedKeys.keys = [
     # NOTE: 换成你的ssh公钥
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID8G+7o2ha+96GH3l/7c6IYGtUtuQHZCyXlZX8ZYPUhr lonerOrz@qq.com"
