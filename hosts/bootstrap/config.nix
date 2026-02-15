@@ -13,7 +13,6 @@
     # (modulesPath + "/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix")
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-    inputs.impermanence.nixosModules.impermanence
     inputs.tuckr-nix.tuckrModules.default
     ./disko.nix
     (if builtins.pathExists ./hardware.nix then ./hardware.nix else { })
