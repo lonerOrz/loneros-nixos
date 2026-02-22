@@ -148,6 +148,7 @@ in
       gremlin
       folo
       biu
+      fluxer
     ]);
 
   programs = {
