@@ -1,14 +1,12 @@
 {
-  host,
-  inputs,
   pkgs,
+  host,
   ...
 }:
 let
   inherit (import ../hosts/${host}/variables.nix) lto native;
 
-  niri-package = pkgs.callPackage ../pkgs/niri-blur/package.nix { }; # pkgs.nur.repos.lonerOrz.niri-Naxdy; # or pkgs.callPackage ../pkgs/niri-blur/package.nix { }
-  niri-blur = niri-package.override {
+  niri = pkgs.nur.repos.lonerOrz.niri-blur.override {
     withDbus = true;
     withSystemd = true;
     withScreencastSupport = true;
@@ -20,10 +18,9 @@ in
 {
   programs.niri = {
     enable = true;
-    package = niri-blur;
+    package = niri;
   };
 
-  # 安装依赖软件
   environment.systemPackages = with pkgs; [
     wlr-randr
     xwayland-satellite
