@@ -14,6 +14,6 @@
 
     # temporary
     (import ./pamixer.nix)
-    (import ./deno.nix)
+    # (import ./deno.nix)
   ];
 }
