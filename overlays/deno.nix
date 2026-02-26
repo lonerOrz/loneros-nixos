@@ -1,4 +1,4 @@
-# waiting-pr https://github.com/NixOS/nixpkgs/pull/491807
+# done https://github.com/NixOS/nixpkgs/pull/491807
 final: prev: {
   deno = prev.deno.overrideAttrs (old: {
     cargoTestFlags = [

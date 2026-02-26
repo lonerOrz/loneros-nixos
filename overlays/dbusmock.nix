@@ -1,9 +1,9 @@
 # done https://github.com/NixOS/nixpkgs/pull/471047
-# waiting-pr https://github.com/NixOS/nixpkgs/pull/471043
+# done https://github.com/NixOS/nixpkgs/pull/471043
 final: prev: {
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-    (python-final: python-prev: {
-      python-dbusmock = python-prev.python-dbusmock.overridePythonAttrs (oldAttrs: rec {
+    (pyFinal: pyPrev: {
+      python-dbusmock = pyPrev.python-dbusmock.overridePythonAttrs (oldAttrs: rec {
         version = "0.37.2";
 
         src = prev.fetchFromGitHub {

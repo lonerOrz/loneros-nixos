@@ -6,7 +6,6 @@
     (import ./spotify-wrapper.nix)
     (import ./obsidian-wrapper.nix)
     (import ./sparkle-wrapper.nix)
-    # (import ./telegram-wrapper.nix)
     (import ./mpv.nix)
     (import ./atuin)
     (import ./lib.nix)
@@ -14,6 +13,5 @@
 
     # temporary
     (import ./pamixer.nix)
-    # (import ./deno.nix)
   ];
 }
