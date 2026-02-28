@@ -13,5 +13,9 @@
 
     # temporary
     (import ./pamixer.nix)
+    (import ./conan.nix)
+    (import ./pygobject-stubs.nix)
+    (import ./node2nix.nix)
+    (import ./ncmpcpp.nix)
   ];
 }
