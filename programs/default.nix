@@ -5,6 +5,7 @@ let
     "clash"
     "nvf"
     "virtualbox"
+    "fabric"
   ];
   files = builtins.readDir dir;
   fullExclude = [ "default" ] ++ exclude;
