@@ -1,13 +1,17 @@
 {
+  lib,
   config,
   host,
   ...
 }:
+let
+  k3sEnabled = false;
+in
 {
-  imports = [ ./kubeconfig.nix ];
+  imports = [ ] ++ lib.optionals k3sEnabled [ ./kubeconfig.nix ];
 
   cluster.k3s = {
-    enable = true;
+    enable = k3sEnabled;
 
     role = "server";
     clusterInit = true;

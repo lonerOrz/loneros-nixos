@@ -99,7 +99,7 @@ in
       stable.rustdesk-flutter
       evil-helix_git # introduces Vim keybindings and more
       element-desktop
-      libreoffice-still # 长久支持版本
+      libreoffice-fresh
       foliate # epub reader
       bitwarden-desktop # 密码管理器
       kazumi # 番剧

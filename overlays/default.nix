@@ -17,5 +17,6 @@
     (import ./pygobject-stubs.nix)
     (import ./node2nix.nix)
     (import ./ncmpcpp.nix)
+    (import ./libreoffice.nix)
   ];
 }
