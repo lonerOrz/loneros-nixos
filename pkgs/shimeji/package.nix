@@ -45,7 +45,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   buildPhase = ''
     runHook preBuild
-    ant
+    export ANT_HOME=${ant}/share/ant
+
+    ${jdk8}/bin/java \
+      -classpath $ANT_HOME/lib/ant-launcher.jar \
+      org.apache.tools.ant.launch.Launcher \
+      -buildfile build.xml
+
     runHook postBuild
   '';
 
@@ -57,7 +63,7 @@ stdenv.mkDerivation (finalAttrs: {
     install -D desktop/Spamton.desktop -t $out/share/applications
     install -D desktop/spamton.png -t $out/share/icons/hicolor/128x128/apps
 
-    makeWrapper ${lib.getExe jdk8} $out/bin/spamton \
+    makeWrapper ${jdk8}/bin/java $out/bin/spamton \
       --add-flags "-cp $out/share/java/Shimeji.jar:$CLASSPATH com.group_finity.mascot.Main" \
       --prefix LD_LIBRARY_PATH : ${
         lib.makeLibraryPath [
