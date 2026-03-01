@@ -10,6 +10,8 @@ from typing import List, Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 import time
+import os
+from urllib.parse import urlparse
 
 # ---------------- Configuration ----------------
 CACHES = [
@@ -28,6 +30,9 @@ LOG_LEVEL = "DEBUG"
 MAX_PUSH_RETRIES = 3
 MAX_WORKERS = 10
 
+# Only these levels show timestamps
+TIMESTAMP_LEVELS = {"ERROR", "WARN", "STAGE", "SUMMARY"}
+
 # ---------------- Globals ----------------
 cache_hits: Dict[str, int] = {}
 out_to_drv: Dict[str, str] = {}
@@ -35,44 +40,144 @@ out_to_drv: Dict[str, str] = {}
 cache_lock = threading.Lock()
 log_lock = threading.Lock()
 
+USE_COLOR = os.environ.get("NO_COLOR") is None and sys.stdout.isatty()
+
+
+# ---------------- Color Utilities ----------------
+class Color:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+
+    RED = "\033[31m"
+    GREEN = "\033[32m"
+    YELLOW = "\033[33m"
+    CYAN = "\033[36m"
+    MAGENTA = "\033[35m"
+    GRAY = "\033[90m"
+
+
+def _c(text: str, color: str, bold: bool = False) -> str:
+    if not USE_COLOR:
+        return text
+    prefix = ""
+    if bold:
+        prefix += Color.BOLD
+    prefix += color
+    return f"{prefix}{text}{Color.RESET}"
+
+
+# ---------------- nix name-version extractor ----------------
+def nix_name_version(path: str) -> str:
+    if not path.startswith("/nix/store/"):
+        return path
+
+    name = path.rsplit("/", 1)[-1]
+
+    if name.endswith(".drv"):
+        name = name[:-4]
+
+    parts = name.split("-", 1)
+    if len(parts) == 2:
+        return parts[1]
+
+    return name
+
+
+def short_cache_name(url: str) -> str:
+    return urlparse(url).netloc
+
+
 # ---------------- Logging ----------------
 def log(level: str, message: str) -> None:
-    if LOG_LEVEL == "DEBUG" or level != "DEBUG":
-        ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        stream = sys.stderr if level in ("ERROR", "WARN") else sys.stdout
+    if LOG_LEVEL != "DEBUG" and level == "DEBUG":
+        return
+
+    ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    stream = sys.stderr if level in ("ERROR", "WARN") else sys.stdout
+
+    level_colored = level
+
+    if level == "ERROR":
+        level_colored = _c(level, Color.RED, bold=True)
+    elif level == "WARN":
+        level_colored = _c(level, Color.YELLOW, bold=True)
+    elif level == "DEBUG":
+        level_colored = _c(level, Color.GRAY)
+    elif level == "SUCCESS":
+        level_colored = _c(level, Color.GREEN, bold=True)
+    elif level == "STAGE":
+        level_colored = _c(level, Color.CYAN, bold=True)
+    elif level == "SUMMARY":
+        level_colored = _c(level, Color.MAGENTA, bold=True)
+
+    with log_lock:
+        if level in TIMESTAMP_LEVELS:
+            print(f"{ts} [{level_colored}] {message}", file=stream)
+        else:
+            print(f"[{level_colored}] {message}", file=stream)
+
+
+# ---------------- Cache Timeout Calculation ----------------
+def cache_timeout(max_workers: int, num_caches: int) -> float:
+    base = 0.5
+    alpha = 0.35
+    beta = 0.25
+    return round(
+        base + alpha * math.log2(max_workers) + beta * max(0, num_caches - 1), 2
+    )
+
+
+# ---------------- Summary Printers ----------------
+def print_cache_summary() -> None:
+    with log_lock:
+        print()
+
+    log("SUMMARY", "Cache hit statistics:")
+
+    for cache in CACHES:
+        hits = cache_hits.get(cache, 0)
+        hits_str = _c(str(hits), Color.GREEN if hits > 0 else Color.YELLOW, bold=True)
         with log_lock:
-            print(f"{ts} [{level}] {message}", file=stream)
+            print(f"    {short_cache_name(cache)}: {hits_str} hits")
+
+    with log_lock:
+        print()
+
+
+def print_missing_summary(count: int) -> None:
+    if count == 0:
+        log("SUCCESS", "All paths already in cache. Nothing to build.")
+    else:
+        log("SUMMARY", f"Found {count} missing paths. Building individually...")
+
 
 # ---------------- Command Runner ----------------
 def run(cmd: List[str], timeout: float | None = None) -> str:
     log("DEBUG", f"Running command: {' '.join(cmd)}")
-    p = None
-    try:
-        with subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1,
-            universal_newlines=True,
-        ) as p:
-            output_lines = []
-            if p.stdout:
-                for line in p.stdout:
-                    output_lines.append(line)
-                    print(str(line.rstrip()))
-            p.wait(timeout=timeout)
-            if p.returncode != 0:
-                log("ERROR", str(f"Command failed: {' '.join(cmd)}"))
-                log("ERROR", str("".join(output_lines).strip()))
-                raise RuntimeError("command failed")
-            log("DEBUG", str(f"Command output: {''.join(output_lines).strip()}"))
-            return str("".join(output_lines))
-    except subprocess.TimeoutExpired:
-        log("ERROR", f"Command timed out: {' '.join(cmd)}")
-        if p:
-            p.kill()
-        raise
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+
+    if result.returncode != 0:
+        log("ERROR", f"Command failed: {' '.join(cmd)}")
+        log("ERROR", result.stderr.strip())
+        raise RuntimeError("command failed")
+
+    if LOG_LEVEL == "DEBUG" and result.stdout.strip():
+        if cmd[:2] == ["nix", "eval"] and "--json" in cmd:
+            try:
+                data = json.loads(result.stdout)
+                if isinstance(data, list):
+                    log("DEBUG", f"nix eval returned {len(data)} entries")
+                elif isinstance(data, dict):
+                    log("DEBUG", f"nix eval returned {len(data)} attributes")
+                else:
+                    log("DEBUG", "nix eval returned JSON output")
+            except Exception:
+                log("DEBUG", "nix eval returned non-JSON output")
+        else:
+            log("DEBUG", result.stdout.strip())
+
+    return result.stdout
+
 
 # ---------------- JSON Runner ----------------
 def run_json(cmd: List[str]) -> Any:
@@ -80,73 +185,53 @@ def run_json(cmd: List[str]) -> Any:
     if not raw.strip():
         log("WARN", f"nix eval returned empty output for: {' '.join(cmd)}")
         return []
-    first_brace = raw.find("{")
-    first_bracket = raw.find("[")
-    if first_brace == -1 and first_bracket == -1:
-        log("WARN", f"No JSON found in output for: {' '.join(cmd)}")
-        return []
-    start = min(x for x in [first_brace, first_bracket] if x != -1)
-    clean = raw[start:]
     try:
-        return json.loads(clean)
+        return json.loads(raw)
     except json.JSONDecodeError as e:
         log("WARN", f"Failed to parse JSON: {e}")
         return []
 
+
 # ---------------- Store Path Resolution ----------------
 def get_store_paths(target: str) -> List[str]:
-    log("INFO", f"Getting store paths for flake target: {target}")
-    drv_paths: List[str] = sorted(list({str(p) for p in run_json([
-        "nix", "eval",
-        "--apply",
-        "x: map (pkg: if builtins.isAttrs pkg && pkg.drvPath != null then pkg.drvPath else null) x",
-        "--json",
-        PACKAGE_TARGET,
-    ]) if p}))
+    log("STAGE", f"Getting store paths for {target}")
+
+    raw = run_json(
+        [
+            "nix",
+            "eval",
+            "--apply",
+            "x: map (pkg: if builtins.isAttrs pkg && pkg.drvPath != null then pkg.drvPath else null) x",
+            "--json",
+            target,
+        ]
+    )
+
+    seen = set()
+    drv_paths: List[str] = []
+    for p in raw:
+        if p and p not in seen:
+            seen.add(p)
+            drv_paths.append(str(p))
 
     if not drv_paths:
-        log("ERROR", f"No drv paths found for {target}")
+        log("ERROR", "No drv paths found")
         raise RuntimeError("no drv paths")
 
-    log("INFO", f"Found {len(drv_paths)} .drv paths")
-    return drv_paths  # 直接返回 .drv 路径
+    log("INFO", f"Found {len(drv_paths)} unique .drv paths")
+    return drv_paths
+
 
 # ---------------- drv ↔ outPath Mapping ----------------
 def get_drv_out_mappings(target: str) -> None:
-    log("INFO", f"Building drv ↔ outPath mapping for {target}")
-    drv_paths: List[str] = sorted(list({str(p) for p in run_json([
-        "nix", "eval",
-        "--apply",
-        "x: map (pkg: pkg.drvPath) x",
-        "--json",
-        PACKAGE_TARGET,
-    ]) if p}))
-
-    if not drv_paths:
-        log("WARN", f"No drv paths found from flake target {target}, skipping mapping")
-        return
-
+    drv_paths = get_store_paths(target)
     for drv in drv_paths:
-        out_to_drv[drv] = drv  # drv -> drv 映射
+        out_to_drv[drv] = drv
 
-# ---------------- Cache Timeout Calculation ----------------
-def cache_timeout(max_workers: int, num_caches: int) -> float:
-    base = 0.5  # TLS + DNS 基础成本
-    α = 0.25  # 并行放大因子
-    β = 0.15  # cache 串行累积
-
-    return round(
-        base
-        + α * math.log2(max_workers)
-        + β * max(0, num_caches - 1),
-        2
-    )
 
 # ---------------- Cache Lookup ----------------
 def is_in_cache(path: str) -> bool:
-    log("DEBUG", f"Checking path: {path}")
     for cache in CACHES:
-        log("DEBUG", f"Checking cache: {cache} for {path}")
         try:
             subprocess.run(
                 ["nix", "path-info", "--store", cache, path],
@@ -155,115 +240,100 @@ def is_in_cache(path: str) -> bool:
                 timeout=cache_timeout(MAX_WORKERS, len(CACHES)),
                 check=True,
             )
-            log("INFO", f"✅ {path} is in {cache}")
+            log("SUCCESS", f"{nix_name_version(path)} → {short_cache_name(cache)}")
             with cache_lock:
                 cache_hits[cache] += 1
             return True
-        except Exception:
-            log("DEBUG", f"Path {path} not found in {cache}")
-    log("INFO", f"🚫 {path} not found in any cache")
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            continue
+
+    log("INFO", f"{nix_name_version(path)} not found in any cache")
     return False
 
+
 # ---------------- Build + Push ----------------
+def is_heavy_build(drv_path: str) -> bool:
+    """
+    判断是否为耗时构建包，目前只跳过 Linux 内核。
+    后续可扩展其他大包，例如大型桌面环境或数据库。
+    """
+    return bool(re.search(r"-linux(-\w+)?-\d+\.\d+", drv_path))
+
 def build_drv(drv_path: str) -> None:
     if not re.match(r"^/nix/store/.*\.drv$", drv_path):
         log("WARN", f"Skipping invalid .drv path: '{drv_path}'")
         return
 
-    log("INFO", f"Building {drv_path}")
-    run([
-        "nix", "build",
-        "--no-link",
-        f"{drv_path}^*",
-        "--print-build-logs",
-    ])
-    log("INFO", f"✅ Build succeeded for {drv_path}")
+    if is_heavy_build(drv_path):
+        log("INFO", f"Skipping heavy build: {nix_name_version(drv_path)}")
+        return
+
+    log("STAGE", f"Building {nix_name_version(drv_path)}")
+    run(
+        [
+            "nix",
+            "build",
+            "--no-link",
+            f"{drv_path}^*",
+            "--print-build-logs",
+        ]
+    )
+    log("SUCCESS", f"Build succeeded for {nix_name_version(drv_path)}")
+
 
 def push_to_cachix(path: str) -> None:
     for attempt in range(1, MAX_PUSH_RETRIES + 1):
-        log("INFO", f"Pushing {path} to Cachix ({CACHIX_NAME}), attempt {attempt}...")
+        log("INFO", f"Pushing {nix_name_version(path)} (attempt {attempt})...")
         try:
-            run([
-                "nix", "run", "nixpkgs#cachix",
-                "--", "push", CACHIX_NAME, path
-            ])
-            log("INFO", f"✅ Pushed {path}")
+            run(["nix", "run", "nixpkgs#cachix", "--", "push", CACHIX_NAME, path])
+            log("SUCCESS", f"Pushed {nix_name_version(path)}")
             return
         except Exception as e:
             log("WARN", f"Push attempt {attempt} failed: {e}")
-            if attempt == MAX_PUSH_RETRIES:
-                log("INFO", "Running nix-collect-garbage and continuing with next path...")
-                try:
-                    run(["nix-collect-garbage", "-d"])
-                except Exception as e_gc:
-                    log("WARN", f"GC failed: {e_gc}")
-            else:
-                time.sleep(5)  # 重试间隔
+            time.sleep(3)
 
-# ---------------- Parallel Cache Check ----------------
-def check_one_path(path: str) -> tuple[str, bool]:
-    if not path.startswith("/nix/store/"):
-        log("WARN", f"Skipping invalid path: {path}")
-        return path, True  # 视为已存在
-    found = is_in_cache(path)
-    return path, found
 
-# ---------------- Main (with parallel cache check) ----------------
+# ---------------- Main ----------------
 def main() -> None:
-    log("INFO", str(f"Starting cache check for {FLAKE_TARGET}"))
+    log("STAGE", f"Starting cache check for {PACKAGE_TARGET}")
 
     for cache in CACHES:
         cache_hits[cache] = 0
 
-    get_drv_out_mappings(FLAKE_TARGET)
-    all_paths = get_store_paths(FLAKE_TARGET)
+    get_drv_out_mappings(PACKAGE_TARGET)
+    all_paths = list(out_to_drv.keys())
 
     missing: List[str] = []
 
-    log("INFO", str("Checking cache presence (parallel)..."))
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:  # 可调整线程数
-        futures = {executor.submit(check_one_path, path): path for path in all_paths}
+    log("STAGE", "Checking cache presence (parallel)...")
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(is_in_cache, path): path for path in all_paths}
         for future in as_completed(futures):
-            path, found = future.result()
-            if not found:
-                missing.append(path)
+            if not future.result():
+                missing.append(futures[future])
 
-    log("INFO", "Cache hit statistics:")
-    for cache in CACHES:
-        log("INFO", f"{cache}: {cache_hits.get(cache, 0)} hits")
+    print_cache_summary()
+    print_missing_summary(len(missing))
 
     if not missing:
-        log("INFO", "🎉 All paths already in cache. Nothing to build.")
         return
 
-    log("INFO", str(f"Found {len(missing)} missing paths. Building individually..."))
-    with ThreadPoolExecutor(max_workers=1) as executor:  # 构建线程数为1
-        futures = {executor.submit(build_and_push, path): path for path in missing}
-        for future in as_completed(futures):
-            future.result()
+    log("STAGE", "Building missing paths...")
+    for path in missing:
+        build_drv(path)
+        push_to_cachix(path)
 
-    log("INFO", "✅ All missing store paths built and pushed successfully.")
+    log("SUCCESS", "All missing store paths built and pushed successfully.")
 
-# ---------------- Build and Push ----------------
-def build_and_push(path: str) -> None:
-    log("DEBUG", f"Processing missing path: {path}")
-    drv = out_to_drv.get(path)
-    if not drv:
-        log("WARN", f"No drvPath found for {path}, skipping.")
-        return
-    build_drv(drv)
-    push_to_cachix(drv)
-    # try:
-    #     run(["nix-collect-garbage", "-d"])
-    # except Exception as e:
-    #     log("WARN", f"GC failed: {e}")
 
 # ---------------- Signal Handling ----------------
 def on_sigint(_signum, _frame):
     log("ERROR", "Interrupted.")
     sys.exit(1)
 
+
 signal.signal(signal.SIGINT, on_sigint)
+
 
 # ---------------- Entry Point ----------------
 if __name__ == "__main__":
