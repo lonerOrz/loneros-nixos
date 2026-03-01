@@ -1,4 +1,4 @@
-# wait https://github.com/NixOS/nixpkgs/pull/429146
+# waiting-pr https://github.com/NixOS/nixpkgs/pull/494110
 self: super: {
   ncmpcpp = super.ncmpcpp.overrideAttrs (
     old:

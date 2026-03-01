@@ -1,3 +1,4 @@
+#waiting-pr https://github.com/NixOS/nixpkgs/pull/495124
 final: prev:
 
 let
