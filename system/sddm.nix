@@ -20,7 +20,7 @@ let
     # one of configs/<$theme>.conf
     theme = "rei";
     # aditional backgrounds
-    # extraBackgrounds = [ zero-bg ];
+    extraBackgrounds = [ zero-bg ];
     # overrides config set by <$theme>.conf
     theme-overrides = {
       # Available options: https://github.com/uiriansan/SilentSDDM/wiki/Options
@@ -28,12 +28,12 @@ let
       #   shape = "circle";
       #   active-border-color = "#ffcfce";
       # };
-      # "LoginScreen" = {
-      #   background = "${zero-bg.name}";
-      # };
-      # "LockScreen" = {
-      #   background = "${zero-bg.name}";
-      # };
+      "LoginScreen" = {
+        background = "${zero-bg.name}";
+      };
+      "LockScreen" = {
+        background = "${zero-bg.name}";
+      };
     };
   };
   astronaut-sddm = pkgs.nur.repos.lonerOrz.astronaut-sddm.override {
@@ -50,12 +50,6 @@ let
   sddm-theme = silent-sddm;
 in
 {
-  # 自动登录
-  services.displayManager.autoLogin = {
-    enable = true;
-    user = "${username}";
-  };
-
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
@@ -72,10 +66,6 @@ in
       ]
       ++ silent-sddm.propagatedBuildInputs;
     settings = {
-      Autologin = {
-        Session = "niri-session";
-        User = "loner";
-      };
       # required for styling the virtual keyboard
       General = {
         GreeterEnvironment = "QML2_IMPORT_PATH=${sddm-theme}/share/sddm/themes/${sddm-theme.pname}/components/,QT_IM_MODULE=qtvirtualkeyboard";
