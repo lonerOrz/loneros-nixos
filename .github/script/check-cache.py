@@ -154,17 +154,22 @@ def print_missing_summary(count: int) -> None:
 # ---------------- Command Runner ----------------
 def run(cmd: List[str], timeout: float | None = None) -> str:
     log("DEBUG", f"Running command: {' '.join(cmd)}")
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+
+    # 避免 text=True 在遇到二进制输出时触发 UnicodeDecodeError
+    result = subprocess.run(cmd, capture_output=True, timeout=timeout)
+
+    stdout = result.stdout.decode("utf-8", errors="replace")
+    stderr = result.stderr.decode("utf-8", errors="replace")
 
     if result.returncode != 0:
         log("ERROR", f"Command failed: {' '.join(cmd)}")
-        log("ERROR", result.stderr.strip())
+        log("ERROR", stderr.strip())
         raise RuntimeError("command failed")
 
-    if LOG_LEVEL == "DEBUG" and result.stdout.strip():
+    if LOG_LEVEL == "DEBUG" and stdout.strip():
         if cmd[:2] == ["nix", "eval"] and "--json" in cmd:
             try:
-                data = json.loads(result.stdout)
+                data = json.loads(stdout)
                 if isinstance(data, list):
                     log("DEBUG", f"nix eval returned {len(data)} entries")
                 elif isinstance(data, dict):
@@ -174,9 +179,9 @@ def run(cmd: List[str], timeout: float | None = None) -> str:
             except Exception:
                 log("DEBUG", "nix eval returned non-JSON output")
         else:
-            log("DEBUG", result.stdout.strip())
+            log("DEBUG", stdout.strip())
 
-    return result.stdout
+    return stdout
 
 
 # ---------------- JSON Runner ----------------
@@ -258,6 +263,7 @@ def is_heavy_build(drv_path: str) -> bool:
     后续可扩展其他大包，例如大型桌面环境或数据库。
     """
     return bool(re.search(r"-linux(-\w+)?-\d+\.\d+", drv_path))
+
 
 def build_drv(drv_path: str) -> None:
     if not re.match(r"^/nix/store/.*\.drv$", drv_path):
