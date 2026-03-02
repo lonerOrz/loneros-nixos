@@ -152,10 +152,27 @@ def print_missing_summary(count: int) -> None:
 
 
 # ---------------- Command Runner ----------------
-def run(cmd: List[str], timeout: float | None = None) -> str:
+def run(
+    cmd: List[str],
+    timeout: float | None = None,
+    stream: bool = False,
+) -> str:
     log("DEBUG", f"Running command: {' '.join(cmd)}")
 
-    # 避免 text=True 在遇到二进制输出时触发 UnicodeDecodeError
+    # 如果需要流式输出（用于 build 等大日志场景）
+    if stream:
+        result = subprocess.run(
+            cmd,
+            timeout=timeout,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+        )
+        if result.returncode != 0:
+            log("ERROR", f"Command failed: {' '.join(cmd)}")
+            raise RuntimeError("command failed")
+        return ""
+
+    # 默认：捕获输出（用于 nix eval / cachix 等小输出）
     result = subprocess.run(cmd, capture_output=True, timeout=timeout)
 
     stdout = result.stdout.decode("utf-8", errors="replace")
@@ -235,7 +252,8 @@ def get_drv_out_mappings(target: str) -> None:
 
 
 # ---------------- Cache Lookup ----------------
-def is_in_cache(path: str) -> bool:
+def is_in_cache(path: str) -> str | None:
+    """Return cache name if found, None if missing."""
     for cache in CACHES:
         try:
             subprocess.run(
@@ -245,15 +263,13 @@ def is_in_cache(path: str) -> bool:
                 timeout=cache_timeout(MAX_WORKERS, len(CACHES)),
                 check=True,
             )
-            log("SUCCESS", f"{nix_name_version(path)} → {short_cache_name(cache)}")
             with cache_lock:
                 cache_hits[cache] += 1
-            return True
+            return short_cache_name(cache)
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
             continue
 
-    log("INFO", f"{nix_name_version(path)} not found in any cache")
-    return False
+    return None
 
 
 # ---------------- Build + Push ----------------
@@ -274,15 +290,16 @@ def build_drv(drv_path: str) -> None:
         log("INFO", f"Skipping heavy build: {nix_name_version(drv_path)}")
         return
 
-    log("STAGE", f"Building {nix_name_version(drv_path)}")
     run(
         [
             "nix",
             "build",
             "--no-link",
+            "--keep-going",
             f"{drv_path}^*",
             "--print-build-logs",
-        ]
+        ],
+        stream=True,
     )
     log("SUCCESS", f"Build succeeded for {nix_name_version(drv_path)}")
 
@@ -312,11 +329,31 @@ def main() -> None:
     missing: List[str] = []
 
     log("STAGE", "Checking cache presence (parallel)...")
+
+    total = len(all_paths)
+    progress = 0
+    progress_lock = threading.Lock()
+    check_start = time.time()
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {executor.submit(is_in_cache, path): path for path in all_paths}
         for future in as_completed(futures):
-            if not future.result():
-                missing.append(futures[future])
+            path = futures[future]
+            cache_name = future.result()
+
+            with progress_lock:
+                progress += 1
+                current = progress
+
+            name = nix_name_version(path)
+            if cache_name:
+                log("SUCCESS", f"[{current}/{total}] {name} → {cache_name}")
+            else:
+                log("INFO", f"[{current}/{total}] {name} (missing)")
+                missing.append(path)
+
+    check_elapsed = time.time() - check_start
+    log("SUMMARY", f"Cache check completed in {check_elapsed:.2f}s")
 
     print_cache_summary()
     print_missing_summary(len(missing))
@@ -324,12 +361,17 @@ def main() -> None:
     if not missing:
         return
 
+    total_build = len(missing)
+    build_start = time.time()
+
     log("STAGE", "Building missing paths...")
-    for path in missing:
+    for idx, path in enumerate(missing, 1):
+        log("STAGE", f"[{idx}/{total_build}] Building {nix_name_version(path)}")
         build_drv(path)
         push_to_cachix(path)
 
-    log("SUCCESS", "All missing store paths built and pushed successfully.")
+    build_elapsed = time.time() - build_start
+    log("SUCCESS", f"All missing store paths built and pushed in {build_elapsed:.2f}s")
 
 
 # ---------------- Signal Handling ----------------
