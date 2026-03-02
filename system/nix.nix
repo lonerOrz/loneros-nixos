@@ -15,8 +15,8 @@ in
   };
   # Cachix, Optimization settings and garbage collection automation
   nix = {
-    # package = inputs.determinate.packages.${system}.default;
-    package = pkgs.lix;
+    package = inputs.determinate.packages.${system}.default;
+    # package = pkgs.lix;
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     channel.enable = true;
     extraOptions = ''
