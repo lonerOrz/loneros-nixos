@@ -152,19 +152,41 @@ def print_missing_summary(count: int) -> None:
 
 
 # ---------------- Command Runner ----------------
-def run(cmd: List[str], timeout: float | None = None) -> str:
+def run(
+    cmd: List[str],
+    timeout: float | None = None,
+    stream: bool = False,
+) -> str:
     log("DEBUG", f"Running command: {' '.join(cmd)}")
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+
+    # 如果需要流式输出（用于 build 等大日志场景）
+    if stream:
+        result = subprocess.run(
+            cmd,
+            timeout=timeout,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+        )
+        if result.returncode != 0:
+            log("ERROR", f"Command failed: {' '.join(cmd)}")
+            raise RuntimeError("command failed")
+        return ""
+
+    # 默认：捕获输出（用于 nix eval / cachix 等小输出）
+    result = subprocess.run(cmd, capture_output=True, timeout=timeout)
+
+    stdout = result.stdout.decode("utf-8", errors="replace")
+    stderr = result.stderr.decode("utf-8", errors="replace")
 
     if result.returncode != 0:
         log("ERROR", f"Command failed: {' '.join(cmd)}")
-        log("ERROR", result.stderr.strip())
+        log("ERROR", stderr.strip())
         raise RuntimeError("command failed")
 
-    if LOG_LEVEL == "DEBUG" and result.stdout.strip():
+    if LOG_LEVEL == "DEBUG" and stdout.strip():
         if cmd[:2] == ["nix", "eval"] and "--json" in cmd:
             try:
-                data = json.loads(result.stdout)
+                data = json.loads(stdout)
                 if isinstance(data, list):
                     log("DEBUG", f"nix eval returned {len(data)} entries")
                 elif isinstance(data, dict):
@@ -174,9 +196,9 @@ def run(cmd: List[str], timeout: float | None = None) -> str:
             except Exception:
                 log("DEBUG", "nix eval returned non-JSON output")
         else:
-            log("DEBUG", result.stdout.strip())
+            log("DEBUG", stdout.strip())
 
-    return result.stdout
+    return stdout
 
 
 # ---------------- JSON Runner ----------------
@@ -230,7 +252,8 @@ def get_drv_out_mappings(target: str) -> None:
 
 
 # ---------------- Cache Lookup ----------------
-def is_in_cache(path: str) -> bool:
+def is_in_cache(path: str) -> str | None:
+    """Return cache name if found, None if missing."""
     for cache in CACHES:
         try:
             subprocess.run(
@@ -240,15 +263,13 @@ def is_in_cache(path: str) -> bool:
                 timeout=cache_timeout(MAX_WORKERS, len(CACHES)),
                 check=True,
             )
-            log("SUCCESS", f"{nix_name_version(path)} → {short_cache_name(cache)}")
             with cache_lock:
                 cache_hits[cache] += 1
-            return True
+            return short_cache_name(cache)
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
             continue
 
-    log("INFO", f"{nix_name_version(path)} not found in any cache")
-    return False
+    return None
 
 
 # ---------------- Build + Push ----------------
@@ -259,6 +280,7 @@ def is_heavy_build(drv_path: str) -> bool:
     """
     return bool(re.search(r"-linux(-\w+)?-\d+\.\d+", drv_path))
 
+
 def build_drv(drv_path: str) -> None:
     if not re.match(r"^/nix/store/.*\.drv$", drv_path):
         log("WARN", f"Skipping invalid .drv path: '{drv_path}'")
@@ -268,15 +290,16 @@ def build_drv(drv_path: str) -> None:
         log("INFO", f"Skipping heavy build: {nix_name_version(drv_path)}")
         return
 
-    log("STAGE", f"Building {nix_name_version(drv_path)}")
     run(
         [
             "nix",
             "build",
             "--no-link",
+            "--keep-going",
             f"{drv_path}^*",
             "--print-build-logs",
-        ]
+        ],
+        stream=True,
     )
     log("SUCCESS", f"Build succeeded for {nix_name_version(drv_path)}")
 
@@ -306,11 +329,31 @@ def main() -> None:
     missing: List[str] = []
 
     log("STAGE", "Checking cache presence (parallel)...")
+
+    total = len(all_paths)
+    progress = 0
+    progress_lock = threading.Lock()
+    check_start = time.time()
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {executor.submit(is_in_cache, path): path for path in all_paths}
         for future in as_completed(futures):
-            if not future.result():
-                missing.append(futures[future])
+            path = futures[future]
+            cache_name = future.result()
+
+            with progress_lock:
+                progress += 1
+                current = progress
+
+            name = nix_name_version(path)
+            if cache_name:
+                log("SUCCESS", f"[{current}/{total}] {name} → {cache_name}")
+            else:
+                log("INFO", f"[{current}/{total}] {name} (missing)")
+                missing.append(path)
+
+    check_elapsed = time.time() - check_start
+    log("SUMMARY", f"Cache check completed in {check_elapsed:.2f}s")
 
     print_cache_summary()
     print_missing_summary(len(missing))
@@ -318,12 +361,17 @@ def main() -> None:
     if not missing:
         return
 
+    total_build = len(missing)
+    build_start = time.time()
+
     log("STAGE", "Building missing paths...")
-    for path in missing:
+    for idx, path in enumerate(missing, 1):
+        log("STAGE", f"[{idx}/{total_build}] Building {nix_name_version(path)}")
         build_drv(path)
         push_to_cachix(path)
 
-    log("SUCCESS", "All missing store paths built and pushed successfully.")
+    build_elapsed = time.time() - build_start
+    log("SUCCESS", f"All missing store paths built and pushed in {build_elapsed:.2f}s")
 
 
 # ---------------- Signal Handling ----------------

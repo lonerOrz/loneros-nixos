@@ -17,16 +17,30 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
+    # https://github.com/DeterminateSystems/nix-src/releases
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko.url = "github:nix-community/disko";
+    sops-nix.url = "github:Mic92/sops-nix";
+    deploy-rs.url = "github:serokell/deploy-rs";
     chaotic.url = "github:lonerOrz/nyx-loner";
-    firefox.url = "github:nix-community/flake-firefox-nightly";
     stylix.url = "github:danth/stylix";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
+    preservation.url = "github:nix-community/preservation";
+
+    firefox.url = "github:nix-community/flake-firefox-nightly";
+    hyprland.url = "github:hyprwm/Hyprland";
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,23 +51,12 @@
       url = "github:quickshell-mirror/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    disko.url = "github:nix-community/disko";
-    sops-nix.url = "github:Mic92/sops-nix";
-    deploy-rs.url = "github:serokell/deploy-rs";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     tuckr-nix.url = "github:lonerOrz/tuckr-nix";
-    preservation.url = "github:nix-community/preservation";
-    # https://github.com/DeterminateSystems/nix-src/releases
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
   };
 
   outputs =

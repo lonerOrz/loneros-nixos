@@ -6,6 +6,7 @@ let
     "nvf"
     "virtualbox"
     "fabric"
+    "nix-index"
   ];
   files = builtins.readDir dir;
   fullExclude = [ "default" ] ++ exclude;
