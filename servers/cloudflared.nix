@@ -6,6 +6,8 @@
   ...
 }:
 let
+  tunnelName = "laptop";
+
   domain = "lonerorz.dpdns.org";
 
   hostServices = {
@@ -28,7 +30,7 @@ in
   services.cloudflared = {
     enable = true;
     # certificateFile = config.sops.secrets."cloudflared/cert_pem".path; # cloudflared 登录凭证文件
-    tunnels.laptop = {
+    tunnels.${tunnelName} = {
       credentialsFile = config.sops.secrets."cloudflared/tunnel_json".path; # tunnel ID 凭证
       ingress =
         # Podman / Host
