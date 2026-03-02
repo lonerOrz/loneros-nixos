@@ -18,14 +18,18 @@
 
   # This will add secrets.yml to the nix store
   # You can avoid this by adding a string to the full path instead, i.e.
-  sops.defaultSopsFile = ./${host}/secrets.yaml;
-  sops.defaultSopsFormat = "yaml";
-  # This will automatically import SSH keys as age keys
-  sops.age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
-  # This is using an age key that is expected to already be in the filesystem
-  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt"; # 更改位置需要使用 SOPS_AGE_KEY_FILE 环境变量
-  # This will generate a new key if the key specified above does not exist
-  sops.age.generateKey = true;
+  sops = {
+    defaultSopsFile = ./${host}/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    # 创建 sops-install-secrets.service systemd 服务
+    useSystemdActivation = true;
+    # This will automatically import SSH keys as age keys
+    age.sshKeyPaths = [ "/home/${username}/.ssh/id_ed25519" ];
+    # This is using an age key that is expected to already be in the filesystem
+    age.keyFile = "/home/${username}/.config/sops/age/keys.txt"; # 更改位置需要使用 SOPS_AGE_KEY_FILE 环境变量
+    # This will generate a new key if the key specified above does not exist
+    age.generateKey = true;
+  };
 
   # This is the actual specification of the secrets.
   sops.secrets =
