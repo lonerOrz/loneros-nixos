@@ -4,13 +4,27 @@
 }:
 
 let
-  autoImport = import ./autoimport.nix;
+  autoImport = import ./autoImport.nix;
   baseGetRaw = import ./getRaw.nix;
   callImport = import ./callImport.nix { inherit pkgs; };
+  flattenAttrset = import ./flattenAttrset.nix { inherit lib; };
 in
 {
+  inherit autoImport callImport flattenAttrset;
+
+  getRaw = url: baseGetRaw { inherit lib url; };
+
   toUpperCase = str: lib.toUpper str;
-  prefixedAttrs = prefix: attrs: lib.mapAttrs (name: value: { "${prefix}-${name}" = value; }) attrs;
+
+  prefixedAttrs =
+    prefix: attrs:
+    lib.listToAttrs (
+      lib.mapAttrsToList (name: value: {
+        name = "${prefix}-${name}";
+        value = value;
+      }) attrs
+    );
+
   packageVersions =
     pkg: versions:
     let
@@ -29,8 +43,6 @@ in
       lib = lib;
       extra = extra;
     };
-  getRaw = url: baseGetRaw { inherit lib url; };
-  inherit autoImport callImport;
 
   mkOutOfStoreSymlink =
     sourcePath:
