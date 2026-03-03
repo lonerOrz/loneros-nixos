@@ -8,51 +8,56 @@
 
 let
   lib = pkgs.lib;
+
+  # readDir 只会在本次 evaluation 中执行一次
   entries = builtins.readDir dir;
 
   excludedNames = [ "default.nix" ];
+
   names = lib.filter (name: !(lib.elem name excludedNames)) (builtins.attrNames entries);
 
-  importDir = lib.foldl' (
-    acc: name:
+  mkEntry =
+    name:
     let
-      path = dir + "/${name}";
       kind = entries.${name};
+      path = dir + "/${name}";
     in
     if kind == "regular" && lib.hasSuffix ".nix" name then
       let
-        relativePath = dir + "/${name}";
-        drv = pkgs.callPackage relativePath { };
+        drv = pkgs.callPackage path { };
       in
-      acc
-      // {
-        "${lib.removeSuffix ".nix" name}" = drv // {
+      {
+        name = lib.removeSuffix ".nix" name;
+
+        # 在这里统一扩展 passthru，避免在 fold 中反复 //
+        value = drv // {
           passthru = (drv.passthru or { }) // {
-            updateFile = relativePath;
+            updateFile = path;
           };
         };
       }
+
     else if kind == "directory" then
       let
-        subPath = dir + "/${name}/${pkgFileName}";
+        subPath = path + "/${pkgFileName}";
       in
       if builtins.pathExists subPath then
         let
           drv = pkgs.callPackage subPath { };
         in
-        acc
-        // {
-          "${name}" = drv // {
+        {
+          name = name;
+          value = drv // {
             passthru = (drv.passthru or { }) // {
               updateFile = subPath;
             };
           };
         }
       else
-        acc
+        null
     else
-      acc
-  ) { } names;
+      null;
 
 in
-importDir
+# 使用 listToAttrs 一次性构造，避免 foldl' + // 的 O(n²)
+lib.listToAttrs (lib.filter (x: x != null) (map mkEntry names))

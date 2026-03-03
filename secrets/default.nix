@@ -7,6 +7,10 @@
   username,
   ...
 }:
+
+let
+  mylib = import ../lib/default.nix { inherit lib pkgs; };
+in
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
@@ -16,7 +20,7 @@
     sops
   ];
 
-  # This will add secrets.yml to the nix store
+  # This will add secrets.yaml to the nix store
   # You can avoid this by adding a string to the full path instead, i.e.
   sops = {
     defaultSopsFile = ./${host}/secrets.yaml;
@@ -34,72 +38,77 @@
   # This is the actual specification of the secrets.
   sops.secrets =
     let
-      mkMihomo = mode: {
-        sopsFile = ./${host}/mihomo.yaml;
-        owner = "root";
-        inherit mode;
-      };
+      # 基础构造函数
+      # args@{ mode, owner ? "root", group ? "root", ... } 允许额外字段自动透传
+      mkSecretFile =
+        file:
+        args@{
+          mode,
+          owner ? "root",
+          group ? "root",
+          ...
+        }:
+        {
+          sopsFile = file;
+          inherit mode owner group;
+        };
 
-      mkCloudflared = mode: {
-        sopsFile = ./${host}/cloudflared.yaml;
-        owner = "root";
-        inherit mode;
-      };
+      mkMihomo = args: mkSecretFile ./${host}/mihomo.yaml args;
+      mkCloudflared = args: mkSecretFile ./${host}/cloudflared.yaml args;
+      mkK3s = args: mkSecretFile ./${host}/k3s.yaml args;
 
-      mkK3s = mode: {
-        sopsFile = ./${host}/k3s.yaml;
-        owner = "root";
-        inherit mode;
-      };
-      # 支持递归展开多层 attrset
-      flattenSecrets =
-        sep: prefix: attrs:
-        builtins.foldl' (
-          acc: key:
-          let
-            value = attrs.${key};
-            newPrefix = if prefix == "" then key else "${prefix}${sep}${key}";
-            isLeafAttrset =
-              builtins.isAttrs value && builtins.all (k: !builtins.isAttrs value.${k}) (builtins.attrNames value);
-          in
-          if builtins.isAttrs value && !isLeafAttrset then
-            acc // flattenSecrets sep newPrefix value
-          else
-            acc // { "${newPrefix}" = value; }
-        ) { } (builtins.attrNames attrs);
+      # 批量处理：将 { name = { mode = "..."; }; ... } 转为 { name = mkXxx { mode = "..."; }; ... }
+      mkBatch = fn: lib.mapAttrs (_: fn);
 
       secretsNested =
         lib.optionalAttrs (config.services.cloudflared.enable or false) {
-          cloudflared = {
-            cert_pem = mkCloudflared "0600";
-            tunnel_json = mkCloudflared "0600";
+          cloudflared = mkBatch mkCloudflared {
+            cert_pem = {
+              mode = "0600";
+            };
+            tunnel_json = {
+              mode = "0600";
+            };
           };
         }
         // lib.optionalAttrs (config.services.mihomo.enable or false) {
-          mihomo = {
-            subscription1 = mkMihomo "0600";
-            secret = mkMihomo "0600";
+          mihomo = mkBatch mkMihomo {
+            subscription1 = {
+              mode = "0600";
+              format = "yaml";
+            };
+            secret = {
+              mode = "0600";
+            };
           };
         }
         // lib.optionalAttrs (config.cluster.k3s.enable or false) {
-          k3s = {
-            token = mkK3s "0400";
-            certificate-authority-data = mkK3s "0600";
-            client-certificate-data = mkK3s "0600";
-            client-key-data = mkK3s "0600";
+          k3s = mkBatch mkK3s {
+            token = {
+              mode = "0400";
+            };
+            certificate-authority-data = {
+              mode = "0600";
+            };
+            client-certificate-data = {
+              mode = "0600";
+            };
+            client-key-data = {
+              mode = "0600";
+            };
           };
         }
         // {
           ${host} = {
             ${username} = {
               password = {
-                owner = config.users.users.${username}.name;
                 mode = "0600";
+                owner = config.users.users.${username}.name;
               };
             };
           };
         };
 
     in
-    flattenSecrets "/" "" secretsNested;
+    mylib.flattenAttrset "/" secretsNested;
 }
