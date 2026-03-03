@@ -1,40 +1,19 @@
+{ lib, pkgs, ... }:
+
 let
-  dir = ./.;
-  mainFile = "default.nix";
-  exclude = [
-    "clash"
-    "nvf"
-    "virtualbox"
-    "fabric"
-    "nix-index"
-  ];
-  files = builtins.readDir dir;
-  fullExclude = [ "default" ] ++ exclude;
-
-  isExcluded =
-    name:
-    let
-      base = builtins.head (builtins.match "([^\\.]+).*" name);
-    in
-    builtins.elem base fullExclude;
-
-  collected = builtins.concatMap (
-    name:
-    let
-      path = dir + "/${name}";
-      info = builtins.getAttr name files;
-    in
-    if isExcluded name then
-      [ ]
-    else if info == "regular" && builtins.match ".*\\.nix" name != null then
-      [ (import path) ]
-    else if info == "directory" && builtins.pathExists (path + "/${mainFile}") then
-      [ (import (path + "/${mainFile}")) ]
-    else
-      [ ]
-  ) (builtins.attrNames files);
+  mylib = import ../lib/default.nix {
+    inherit lib pkgs;
+  };
 in
 {
-
-  imports = collected;
+  imports = mylib.autoImport {
+    dir = ./.;
+    exclude = [
+      "clash"
+      "nvf"
+      "virtualbox"
+      "fabric"
+      "nix-index"
+    ];
+  };
 }
