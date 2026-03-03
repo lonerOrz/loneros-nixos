@@ -27,22 +27,23 @@ let
     moduleList:
     let
       imported = map (name: import ./${name}.nix { inherit pkgs; }) moduleList;
+      mergeList = attr: pkgs.lib.flatten (map (m: m.${attr} or [ ]) imported);
     in
     {
-      packages = pkgs.lib.flatten (map (m: m.packages or [ ]) imported);
-      nativeBuildInputs = pkgs.lib.flatten (map (m: m.nativeBuildInputs or [ ]) imported);
-      propagatedBuildInputs = pkgs.lib.flatten (map (m: m.propagatedBuildInputs or [ ]) imported);
-      propagatedNativeBuildInputs = pkgs.lib.flatten (
-        map (m: m.propagatedNativeBuildInputs or [ ]) imported
-      );
-      inputsFrom = pkgs.lib.flatten (map (m: m.inputsFrom or [ ]) imported);
+      packages = mergeList "packages";
+      nativeBuildInputs = mergeList "nativeBuildInputs";
+      propagatedBuildInputs = mergeList "propagatedBuildInputs";
+      propagatedNativeBuildInputs = mergeList "propagatedNativeBuildInputs";
+      inputsFrom = mergeList "inputsFrom";
       env = builtins.foldl' (acc: m: acc // (m.env or { })) { } imported;
       shellHook = builtins.concatStringsSep "\n" (map (m: m.shellHook or "") imported);
     };
 
+  # 调用 loadModules 生成每个分类的属性集
   shells = builtins.mapAttrs (_name: mods: loadModules mods) modules;
 
 in
+
 builtins.mapAttrs (
   name: s:
   pkgs.mkShell {
@@ -55,11 +56,11 @@ builtins.mapAttrs (
     shellHook = ''
       ${s.shellHook}
 
-      # 保留旧值：让所有 env 变量追加到现有的环境中
+      # 将 env 变量追加到现有环境
       ${builtins.concatStringsSep "\n" (
         map (k: ''
-          if [ -n "${"$" + k}" ]; then
-            export ${k}="${s.env.${k}}:${"$" + k}"
+          if [ -n "''${${k}}" ]; then
+            export ${k}="${s.env.${k}}:''${${k}}"
           else
             export ${k}="${s.env.${k}}"
           fi

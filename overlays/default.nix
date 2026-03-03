@@ -1,22 +1,29 @@
 {
-  nixpkgs.overlays = [
-    # forever
-    (import ./code-cursor-wrapper.nix)
-    (import ./vscodium-wrapper.nix)
-    (import ./spotify-wrapper.nix)
-    (import ./obsidian-wrapper.nix)
-    (import ./sparkle-wrapper.nix)
-    (import ./mpv.nix)
-    (import ./atuin)
-    (import ./lib.nix)
-    (import ./niri)
+  nixpkgs.overlays =
+    let
+      permanent = [
+        "code-cursor-wrapper.nix"
+        "vscodium-wrapper.nix"
+        "spotify-wrapper.nix"
+        "obsidian-wrapper.nix"
+        "sparkle-wrapper.nix"
+        "mpv.nix"
+        "atuin"
+        "lib.nix"
+        "niri"
+      ];
 
-    # temporary
-    (import ./pamixer.nix)
-    (import ./conan.nix)
-    (import ./pygobject-stubs.nix)
-    (import ./node2nix.nix)
-    (import ./ncmpcpp.nix)
-    (import ./libreoffice.nix)
-  ];
+      temporary = [
+        "pamixer.nix"
+        "conan.nix"
+        "pygobject-stubs.nix"
+        "node2nix.nix"
+        "ncmpcpp.nix"
+        "libreoffice.nix"
+      ];
+
+      overlayImport = files: map (f: import (./. + "/${f}")) files;
+
+    in
+    overlayImport permanent ++ overlayImport temporary;
 }

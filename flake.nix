@@ -74,7 +74,6 @@
         "aarch64-linux"
       ];
       lib = nixpkgs.lib;
-      mylib = import ./lib { inherit lib; }; # for flake-parts
       # TODO: 分离成 hosts.nix
       hosts = {
         loneros = {
@@ -108,16 +107,12 @@
           ...
         }:
         {
-          _module.args.mylib = mylib;
+          _module.args.mylib = import ./lib { inherit lib pkgs; }; # for flake-parts module
           devShells = import ./devShell/default.nix { inherit pkgs; };
           checks = { } // inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy;
           packages =
             import ./pkgs/default.nix {
-              inherit
-                pkgs
-                lib
-                mylib
-                ;
+              inherit pkgs lib;
             }
             // {
               iso =
