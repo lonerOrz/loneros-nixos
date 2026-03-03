@@ -22,7 +22,7 @@ in
   imports = [
     ./hardware.nix
     ./users.nix
-    ./home.nix
+    # ./home.nix
     ./dev.nix
 
     ../../system
