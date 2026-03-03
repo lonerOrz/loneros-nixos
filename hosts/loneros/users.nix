@@ -111,6 +111,7 @@ in
       blanket
       keypunch
       gapless
+      osu-lazer-bin
 
       # electron wrapper
       obsidian-wrapper
