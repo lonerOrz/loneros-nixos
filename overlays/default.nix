@@ -16,10 +16,7 @@
       temporary = [
         "pamixer.nix"
         "conan.nix"
-        "pygobject-stubs.nix"
         "node2nix.nix"
-        "ncmpcpp.nix"
-        "libreoffice.nix"
       ];
 
       overlayImport = files: map (f: import (./. + "/${f}")) files;
