@@ -20,6 +20,7 @@ let
     fontDirectories = with pkgs; [
       material-symbols
       nerd-fonts.caskaydia-mono
+      google-fonts
     ];
   };
 
