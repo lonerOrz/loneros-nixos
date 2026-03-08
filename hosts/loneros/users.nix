@@ -72,6 +72,7 @@ in
       unixtools.xxd
       dmenu
       wtype
+      protobuf
 
       # tui
       lazygit
