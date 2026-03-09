@@ -15,7 +15,6 @@
 
       temporary = [
         "pamixer.nix"
-        "node2nix.nix"
       ];
 
       overlayImport = files: map (f: import (./. + "/${f}")) files;

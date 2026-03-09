@@ -4,9 +4,6 @@ pkgs.mkShell {
     # --- Node.js/JS ---
     (with pkgs; [
       nodejs_22
-      node2nix
-    ])
-    ++ (with pkgs.nodePackages; [
       yarn
       pnpm
       eslint_d

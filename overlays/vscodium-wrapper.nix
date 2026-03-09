@@ -24,7 +24,7 @@ in
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
       super.jq
       super.makeWrapper
-      super.nodePackages.asar
+      super.asar
       super.coreutils # 确保有 base64
       super.perl
     ];
