@@ -15,7 +15,6 @@
 
       temporary = [
         "pamixer.nix"
-        "conan.nix"
         "node2nix.nix"
       ];
 
