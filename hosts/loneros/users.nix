@@ -9,6 +9,8 @@
 let
   system = pkgs.stdenv.hostPlatform.system;
   inherit (import ./variables.nix) gitUsername shell;
+
+  defaultShell = pkgs.${shell};
 in
 {
   users = {
@@ -34,7 +36,7 @@ in
       ];
       packages = with stable; [ tree ];
     };
-    defaultUserShell = if shell == "fish" then pkgs.nur.repos.lonerOrz.fish else pkgs.${shell};
+    defaultUserShell = defaultShell;
   };
 
   # 允许过期不维护的包
@@ -164,7 +166,7 @@ in
     };
     ${shell} = {
       enable = true;
-      package = if shell == "fish" then pkgs.nur.repos.lonerOrz.fish else pkgs.${shell};
+      package = defaultShell;
     };
     starship.enable = true;
   };
