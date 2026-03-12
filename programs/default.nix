@@ -13,7 +13,6 @@ in
       "nvf"
       "virtualbox"
       "fabric"
-      "nix-index"
     ];
   };
 }
