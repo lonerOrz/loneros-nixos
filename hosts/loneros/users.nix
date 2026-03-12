@@ -93,7 +93,7 @@ in
       qbittorrent-enhanced # qbee
       motrix
       localsend
-      ghostty
+      ghostty_git
       foot
       zed-editor
       telegram-desktop
