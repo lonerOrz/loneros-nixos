@@ -62,7 +62,11 @@ def iter_files():
 
 
 def github_get(url):
-    r = requests.get(url, headers={"Accept": "application/vnd.github+json"})
+    headers = {"Accept": "application/vnd.github+json"}
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    r = requests.get(url, headers=headers)
     r.raise_for_status()
     return r.json()
 
