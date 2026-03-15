@@ -33,7 +33,7 @@ in
       ];
       packages = with stable; [ tree ];
     };
-    defaultUserShell = if shell == "fish" then pkgs.nur.repos.lonerOrz.fish else pkgs.${shell};
+    defaultUserShell = pkgs.${shell};
   };
 
   # 允许过期不维护的包
@@ -124,7 +124,7 @@ in
     };
     ${shell} = {
       enable = true;
-      package = if shell == "fish" then pkgs.nur.repos.lonerOrz.fish else pkgs.${shell};
+      package = pkgs.${shell};
     };
     starship.enable = true;
   };
