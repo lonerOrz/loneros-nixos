@@ -75,6 +75,7 @@ in
       dmenu
       wtype
       protobuf
+      neowall
 
       # tui
       lazygit
@@ -129,7 +130,7 @@ in
       figlet # ascii <font>
       bb
       cmatrix
-      # hollywood # https://github.com/NixOS/nixpkgs/issues/461499
+      hollywood
       lolcat
       nitch
       xeyes
@@ -147,7 +148,6 @@ in
       gitfetch
       nsearch-tv
       nmgui
-      neowall
       chameleos
       gremlin
       folo
