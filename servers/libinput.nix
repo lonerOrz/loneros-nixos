@@ -1,4 +1,13 @@
 {
+  pkgs,
+  ...
+}:
+{
+  environment.systemPackages = with pkgs; [
+    libinput
+    libinput-gestures
+  ];
+
   services.libinput = {
     enable = true;
 

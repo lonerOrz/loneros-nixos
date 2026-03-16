@@ -6,7 +6,7 @@
   ...
 }:
 let
-  autoLogin = false;
+  autoLogin = true;
 
   hypr-command = "${lib.getExe' config.programs.hyprland.package "Hyprland"}";
   niri-command = "${lib.getExe' config.programs.niri.package "niri-session"}";
