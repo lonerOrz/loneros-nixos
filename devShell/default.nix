@@ -47,16 +47,16 @@ let
     moduleList: pkgs':
     let
       imported = map (name: import ./${name}.nix { pkgs = pkgs'; }) moduleList;
-      mergeList = attr: pkgs.lib.flatten (map (m: m.${attr} or [ ]) imported);
+      mergeList = attr:
+        pkgs.lib.unique (pkgs.lib.flatten (map (m: m.${attr} or [ ]) imported));
     in
     {
       packages = mergeList "packages";
       nativeBuildInputs = mergeList "nativeBuildInputs";
-      propagatedBuildInputs = mergeList "propagatedBuildInputs";
-      propagatedNativeBuildInputs = mergeList "propagatedNativeBuildInputs";
-      inputsFrom = mergeList "inputsFrom";
       env = builtins.foldl' (acc: m: acc // (m.env or { })) { } imported;
-      shellHook = builtins.concatStringsSep "\n" (map (m: m.shellHook or "") imported);
+      shellHook = builtins.concatStringsSep "\n" (
+        pkgs.lib.filter (h: h != "") (map (m: m.shellHook or "") imported)
+      );
     };
 
   # Build shells, using pkgs-unfree for modules that need it
@@ -71,9 +71,6 @@ builtins.mapAttrs (
   pkgs.mkShell {
     buildInputs = s.packages;
     nativeBuildInputs = s.nativeBuildInputs;
-    propagatedBuildInputs = s.propagatedBuildInputs;
-    propagatedNativeBuildInputs = s.propagatedNativeBuildInputs;
-    inputsFrom = s.inputsFrom;
 
     shellHook = ''
       ${s.shellHook}
@@ -82,9 +79,9 @@ builtins.mapAttrs (
       ${builtins.concatStringsSep "\n" (
         map (k: ''
           if [ -n "''${${k}}" ]; then
-            export ${k}="${s.env.${k}}:''${${k}}"
+            export ${k}="${pkgs.lib.escapeShellArg s.env.${k}}:''${${k}}"
           else
-            export ${k}="${s.env.${k}}"
+            export ${k}="${pkgs.lib.escapeShellArg s.env.${k}}"
           fi
         '') (builtins.attrNames s.env)
       )}
