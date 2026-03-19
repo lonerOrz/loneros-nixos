@@ -8,10 +8,12 @@ let
   loadModulesForSystem =
     moduleList:
     let
-      imported = map (name: import ./${name}.nix { inherit pkgs; }) moduleList;
+      # Modules now return mkShell derivations, extract packages and env from them
+      imported = map (name: (import ./${name}.nix { inherit pkgs; })) moduleList;
     in
     {
-      packages = pkgs.lib.flatten (map (m: m.packages or [ ]) imported);
+      # mkShell returns buildInputs + nativeBuildInputs, both should be included
+      packages = pkgs.lib.flatten (map (m: (m.buildInputs or [ ]) ++ (m.nativeBuildInputs or [ ])) imported);
       env = builtins.foldl' (acc: m: acc // (m.env or { })) { } imported;
     };
   systemModules = loadModulesForSystem modulesList;
