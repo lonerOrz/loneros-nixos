@@ -7,8 +7,6 @@
 {
   environment.systemPackages = with pkgs; [
     gpu-screen-recorder
-    wl-clipboard
-    libnotify
     slurp
   ];
 

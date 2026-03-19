@@ -65,7 +65,6 @@ in
       yq # yaml 文件解析
       bintools
       udiskie # auto mount
-      satty # Screenshot Annotation
       gum
       terminaltexteffects # 终端管道标准文本的视觉特效
       csound

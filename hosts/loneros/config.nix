@@ -88,27 +88,6 @@ in
       xdg-user-dirs # 创建标准的用户目录结构
       xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
 
-      # grimblast # grim + slurp
-      grim # 截图
-      slurp # 选择
-      swappy # 截图注释
-
-      # audio
-      pamixer # 命令行音量控制工具
-      pavucontrol # 图形化音频控制工具
-      playerctl # 控制支持 MPRIS 协议的音频和视频播放器的播放行为
-
-      cliphist # 管理和查看剪贴板历史记录
-      wl-clipboard # 命令行工具，操作剪贴板
-
-      brightnessctl # 控制显示器亮度的命令行工具
-      ddcutil # 外置屏幕亮度调节
-
-      swww # 设置和管理背景壁纸
-      mpvpaper # 动态壁纸
-      wallust # 图片取色
-      imagemagick # 图像处理工具
-
       xarchiver # 文件归档管理器
       yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
 
