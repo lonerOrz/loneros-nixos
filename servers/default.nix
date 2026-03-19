@@ -11,6 +11,7 @@ in
     exclude = [
       "aria2"
       "docker"
+      "ollama" # local llm deploy on podman
     ];
   };
 }
