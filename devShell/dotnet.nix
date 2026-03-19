@@ -18,12 +18,12 @@ let
       coreutils # ls, cat, mv, etc.
     ]);
 in
-{
-  packages = allPackages;
+
+pkgs.mkShell {
+  buildInputs = allPackages;
 
   env = {
     DOTNET_ROOT = "${dotnetPkg}/share/dotnet";
-    PATH = pkgs.lib.makeBinPath allPackages;
     DOTNET_CLI_TELEMETRY_OPTOUT = "1";
     DOTNET_WORKLOAD_AUTO_INSTALL = "0";
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "1";

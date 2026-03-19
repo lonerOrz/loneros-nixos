@@ -5,9 +5,9 @@ let
   cudaToolkit = pkgs.cudatoolkit;
 in
 
-{
+pkgs.mkShell {
   # Build toolchain
-  packages = with pkgs; [
+  buildInputs = with pkgs; [
     # CUDA core
     cudatoolkit
 
@@ -46,8 +46,6 @@ in
   env = {
     EXTRA_LDFLAGS = "-L/lib";
     EXTRA_CCFLAGS = "-I/usr/include";
-    CMAKE_PREFIX_PATH = "";
-    PKG_CONFIG_PATH = "";
   };
 
   shellHook = ''

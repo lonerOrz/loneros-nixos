@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
-{
-  packages = (
+pkgs.mkShell {
+  buildInputs = (
     with pkgs;
     [
       go_1_25
@@ -11,11 +11,11 @@
   );
 
   env = {
-    GOPATH = "$HOME/.config/go:$GOPATH";
-    PATH = "$GOPATH/bin:$PATH";
+    GOPATH = "$HOME/.config/go";
   };
 
   shellHook = ''
+    export PATH="$GOPATH/bin:$PATH"
     echo "🐹 Go environment loaded"
   '';
 }

@@ -1,6 +1,7 @@
-{ pkgs, ... }:
-{
-  packages = (
+{ pkgs }:
+
+pkgs.mkShell {
+  buildInputs = (
     with pkgs;
     [
       nodejs_22
@@ -9,11 +10,13 @@
       eslint_d
     ]
   );
+
   env = {
     NPM_CONFIG_PREFIX = "$HOME/.npm";
-    PATH = "$NPM_CONFIG_PREFIX/bin:$PATH";
   };
+
   shellHook = ''
+    export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
     echo "📦 Node.js environment loaded"
   '';
 }

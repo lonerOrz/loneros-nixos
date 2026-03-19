@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
-{
-  packages = (
+pkgs.mkShell {
+  buildInputs = (
     with pkgs;
     [
       rustc
@@ -14,10 +14,10 @@
 
   env = {
     CARGO_HOME = "$HOME/.cargo";
-    PATH = "$CARGO_HOME/bin:$PATH";
   };
 
   shellHook = ''
+    export PATH="$CARGO_HOME/bin:$PATH"
     echo "🦀 Rust environment loaded"
   '';
 }

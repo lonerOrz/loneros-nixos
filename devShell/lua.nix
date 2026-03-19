@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
-{
-  packages = (
+pkgs.mkShell {
+  buildInputs = (
     with pkgs;
     [
       lua5_4_compat
