@@ -1,6 +1,18 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 let
+  # Modules requiring unfree support
+  unfreeModules = [ "cuda" ];
+
+  # pkgs instance with unfree packages allowed
+  pkgs-unfree = import pkgs.path {
+    inherit (pkgs.stdenv.hostPlatform) system;
+    config.allowUnfree = true;
+  };
+
   modules = {
     default = [
       "node"
@@ -21,12 +33,20 @@ let
     go = [ "go" ];
     c = [ "c" ];
     dotnet = [ "dotnet" ];
+    cuda = [ "cuda" ];
+    python-cuda = [
+      "python"
+      "cuda"
+    ];
   };
 
+  # Check if module list contains any unfree modules
+  needsUnfree = modList: builtins.any (m: builtins.elem m modList) unfreeModules;
+
   loadModules =
-    moduleList:
+    moduleList: pkgs':
     let
-      imported = map (name: import ./${name}.nix { inherit pkgs; }) moduleList;
+      imported = map (name: import ./${name}.nix { pkgs = pkgs'; }) moduleList;
       mergeList = attr: pkgs.lib.flatten (map (m: m.${attr} or [ ]) imported);
     in
     {
@@ -39,8 +59,10 @@ let
       shellHook = builtins.concatStringsSep "\n" (map (m: m.shellHook or "") imported);
     };
 
-  # 调用 loadModules 生成每个分类的属性集
-  shells = builtins.mapAttrs (_name: mods: loadModules mods) modules;
+  # Build shells, using pkgs-unfree for modules that need it
+  shells = builtins.mapAttrs (
+    name: mods: loadModules mods (if needsUnfree mods then pkgs-unfree else pkgs)
+  ) modules;
 
 in
 
@@ -56,7 +78,7 @@ builtins.mapAttrs (
     shellHook = ''
       ${s.shellHook}
 
-      # 将 env 变量追加到现有环境
+      # Append env variables
       ${builtins.concatStringsSep "\n" (
         map (k: ''
           if [ -n "''${${k}}" ]; then
