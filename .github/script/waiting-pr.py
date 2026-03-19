@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Scan both # waiting-pr comments and hotfixes.nix to show PR merge status.
+
+Usage:
+  - Stage 2: Add `# waiting-pr 123456` comment in overlay files
+  - Stage 3: Add `package-name = "123456";` in overlays/hotfixes.nix
+"""
 
 import os
 import re
@@ -11,9 +18,11 @@ OWNER = "NixOS"
 REPO = "nixpkgs"
 BRANCH = "nixpkgs-unstable"
 
-PR_PATTERN = re.compile(
-    r"#\s*waiting-pr\s+(https://github\.com/NixOS/nixpkgs/pull/\d+)"
-)
+# 匹配模式：# waiting-pr 123456 或 # waiting-pr: 123456
+PR_PATTERN = re.compile(r"#\s*waiting-pr[:\s]+(\d+)")
+
+# 匹配 pr-fixes.nix: package-name = "123456";
+PR_FIXES_PATTERN = re.compile(r'^\s*([\w+-]+)\s*=\s*"(\d+)"\s*;\s*(?:#.*)?$')
 
 # ANSI colors
 RESET = "\033[0m"
@@ -71,8 +80,7 @@ def github_get(url):
     return r.json()
 
 
-def pr_status(pr_url):
-    pr_number = pr_url.rsplit("/", 1)[-1]
+def pr_status(pr_number):
     pr = github_get(f"{GITHUB_API}/repos/{OWNER}/{REPO}/pulls/{pr_number}")
 
     if not pr["merged"]:
@@ -115,6 +123,7 @@ def print_block(status, fields):
 def main():
     results = []
 
+    # Scan # waiting-pr comments in all files
     for path in iter_files():
         try:
             lines = path.read_text(errors="ignore").splitlines()
@@ -126,8 +135,9 @@ def main():
             if not m:
                 continue
 
-            pr_url = m.group(1)
-            info = pr_status(pr_url)
+            pr_number = m.group(1)
+            info = pr_status(pr_number)
+            pr_url = f"https://github.com/{OWNER}/{REPO}/pull/{pr_number}"
 
             results.append({
                 "status": info["status"],
@@ -136,15 +146,40 @@ def main():
                 "merged_at": info["merged_at"],
             })
 
+    # Scan hotfixes.nix
+    hotfixes_path = Path("overlays/hotfixes.nix")
+    if hotfixes_path.exists():
+        try:
+            lines = hotfixes_path.read_text().splitlines()
+            for idx, line in enumerate(lines, 1):
+                m = PR_FIXES_PATTERN.match(line)
+                if not m:
+                    continue
+
+                pkg_name = m.group(1)
+                pr_number = m.group(2)
+                info = pr_status(pr_number)
+                pr_url = f"https://github.com/{OWNER}/{REPO}/pull/{pr_number}"
+
+                results.append({
+                    "status": info["status"],
+                    "file": f"{hotfixes_path}:{idx}",
+                    "pr": pr_url,
+                    "merged_at": info["merged_at"],
+                    "package": pkg_name,
+                })
+        except Exception:
+            pass
+
     for item in results:
-        print_block(
-            item["status"],
-            {
-                "file": item["file"],
-                "pr": item["pr"],
-                "merged_at": item["merged_at"],
-            }
-        )
+        fields = {
+            "file": item["file"],
+            "pr": item["pr"],
+            "merged_at": item["merged_at"],
+        }
+        if "package" in item:
+            fields["package"] = item["package"]
+        print_block(item["status"], fields)
 
 
 if __name__ == "__main__":

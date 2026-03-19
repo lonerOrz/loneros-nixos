@@ -1237,17 +1237,17 @@
         "type": "github"
       }
     },
-    "nixpkgs-loner": {
+    "nixpkgs-master": {
       "locked": {
-        "lastModified": 1773512313,
-        "narHash": "sha256-iXuxw8v53jPV6Z6EwQfuO6damvsVWmdYKbZQRowXwpU=",
-        "owner": "lonerOrz",
+        "lastModified": 1773882542,
+        "narHash": "sha256-k2zeRM+nFgnA3rMc8mRGJhgcslTOxnI38vfLEXq8jcM=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bed43b07c458d4bb1d6dc7f7c45802bc3f275314",
+        "rev": "79240a28a89217aa52b0baa6fe605b88d72cdde1",
         "type": "github"
       },
       "original": {
-        "owner": "lonerOrz",
+        "owner": "NixOS",
         "ref": "master",
         "repo": "nixpkgs",
         "type": "github"
@@ -1631,7 +1631,7 @@
         "nix-index-database": "nix-index-database",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_9",
-        "nixpkgs-loner": "nixpkgs-loner",
+        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
         "nur": "nur",
         "nvf": "nvf",

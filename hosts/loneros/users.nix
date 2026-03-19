@@ -2,7 +2,6 @@
   pkgs,
   config,
   stable,
-  loner,
   inputs,
   username,
   ...
@@ -106,7 +105,7 @@ in
       element-desktop
       libreoffice-fresh
       foliate # epub reader
-      loner.bitwarden-desktop # 密码管理器
+      bitwarden-desktop # 密码管理器
       kazumi # 番剧
       turntable # 音乐盒子
       librecad # CAD

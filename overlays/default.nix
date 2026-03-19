@@ -1,4 +1,4 @@
-{
+inputs: {
   nixpkgs.overlays =
     let
       permanent = [
@@ -19,5 +19,9 @@
       overlayImport = files: map (f: import (./. + "/${f}")) files;
 
     in
-    overlayImport permanent ++ overlayImport temporary;
+    overlayImport permanent
+    ++ overlayImport temporary
+    ++ [
+      (import ./hotfixes.nix inputs)
+    ];
 }
