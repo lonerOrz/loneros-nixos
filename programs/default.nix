@@ -12,6 +12,7 @@ in
       "clash"
       "nvf"
       "virtualbox"
+      "virt-manager"
       "fabric"
     ];
   };
