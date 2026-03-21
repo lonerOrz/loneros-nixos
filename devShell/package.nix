@@ -13,7 +13,9 @@ let
     in
     {
       # mkShell returns buildInputs + nativeBuildInputs, both should be included
-      packages = pkgs.lib.flatten (map (m: (m.buildInputs or [ ]) ++ (m.nativeBuildInputs or [ ])) imported);
+      packages = pkgs.lib.flatten (
+        map (m: (m.buildInputs or [ ]) ++ (m.nativeBuildInputs or [ ])) imported
+      );
       env = builtins.foldl' (acc: m: acc // (m.env or { })) { } imported;
     };
   systemModules = loadModulesForSystem modulesList;

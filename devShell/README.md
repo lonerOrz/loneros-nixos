@@ -3,6 +3,7 @@
 模块化开发环境配置。
 
 **两个使用场景**：
+
 1. **交互式开发环境** (`nix develop`)：使用 `inputsFrom` 继承
 2. **系统环境** (`environment.systemPackages`)：提取 `buildInputs` + `env` 安装到系统
 
@@ -143,16 +144,16 @@ environment.variables = packagesForSystem.environmentVariables;
 
 ## 两个流程对比
 
-| 特性 | 流程一：`nix develop` | 流程二：系统环境 |
-|------|----------------------|-----------------|
-| 入口 | `default.nix` | `package.nix` |
-| 使用方式 | `nix develop .#...` | `environment.systemPackages` |
-| 模块返回值 | `mkShell` 整体被 `inputsFrom` 引用 | 提取 `buildInputs`, `env` |
-| `shellHook` | ✅ 生效 | ❌ 忽略 |
-| `env` | ✅ 通过 `inputsFrom` 继承 | ✅ 提取到 `environmentVariables` |
-| `buildInputs` | ✅ 通过 `inputsFrom` 继承 | ✅ 提取到 `systemPackages` |
-| 作用域 | 当前 shell 会话 | 全局系统 |
-| 生命周期 | shell 退出后消失 | 永久安装 |
+| 特性          | 流程一：`nix develop`              | 流程二：系统环境                 |
+| ------------- | ---------------------------------- | -------------------------------- |
+| 入口          | `default.nix`                      | `package.nix`                    |
+| 使用方式      | `nix develop .#...`                | `environment.systemPackages`     |
+| 模块返回值    | `mkShell` 整体被 `inputsFrom` 引用 | 提取 `buildInputs`, `env`        |
+| `shellHook`   | ✅ 生效                            | ❌ 忽略                          |
+| `env`         | ✅ 通过 `inputsFrom` 继承          | ✅ 提取到 `environmentVariables` |
+| `buildInputs` | ✅ 通过 `inputsFrom` 继承          | ✅ 提取到 `systemPackages`       |
+| 作用域        | 当前 shell 会话                    | 全局系统                         |
+| 生命周期      | shell 退出后消失                   | 永久安装                         |
 
 ---
 
