@@ -2005,11 +2005,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1774257227,
-        "narHash": "sha256-MOZIXuAmZilfTQ9MgMZwE/7Frjwpmdd/PV0OEDwYqFo=",
+        "lastModified": 1774292911,
+        "narHash": "sha256-YNAeNIqyEN1gjGr24fhd2EZ3Tf1etOV/JNE1eG0VwaQ=",
         "owner": "lonerOrz",
         "repo": "tuckr-nix",
-        "rev": "f8c059ae2c858cbe18d70b93b3546c92bdbb1a99",
+        "rev": "5ee03e0cec56f4b836c3d12ba4062363a1f90aa4",
         "type": "github"
       },
       "original": {
