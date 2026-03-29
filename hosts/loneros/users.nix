@@ -151,6 +151,7 @@ in
       folo
       biu
       fluxer
+      drift
     ]);
 
   programs = {
