@@ -51,6 +51,7 @@
       "subvol=@nix"
       "compress=zstd"
       "noatime"
+      "space_cache=v2"
     ];
   };
 
