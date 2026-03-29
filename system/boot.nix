@@ -141,7 +141,8 @@ in
   # cachyOS kernel 调度规则
   services.scx = {
     enable = true;
-    scheduler = "scx_rusty";
+    scheduler = "scx_lavd";
+    extraArgs = [ "--performance" ]; # 性能模式
     package = pkgs.scx.full;
   };
 }

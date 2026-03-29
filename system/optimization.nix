@@ -34,7 +34,7 @@
 
   powerManagement = {
     enable = true; # 启用电源管理
-    cpuFreqGovernor = "schedutil"; # - `schedutil`：基于 CPU 任务负载动态调整频率
+    cpuFreqGovernor = "schedutil"; # - 基于 CPU 任务负载动态调整频率 配合我的boot.nix: scx_lavd
     # - 通常比 `performance` 和 `powersave` 更智能，适合大多数场景
   };
 
@@ -45,5 +45,10 @@
     memoryPercent = 30; # 使用总内存的 30% 作为 ZRAM 交换空间
     swapDevices = 1; # 仅创建一个 ZRAM 交换设备
     algorithm = "zstd"; # 使用 `zstd` 压缩算法（高压缩比 & 低 CPU 负担）
+  };
+
+  # 可选值：none（极致性能）、kyber（NVMe 推荐）、mq-deadline（通用）、bfq（公平优先）
+  hardware.block.scheduler = {
+    "nvme[0-9]*" = "kyber";
   };
 }
