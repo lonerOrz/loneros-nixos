@@ -72,27 +72,7 @@
         "aarch64-linux"
       ];
       lib = nixpkgs.lib;
-      # TODO: 分离成 hosts.nix
-      hosts = {
-        loneros = {
-          system = "x86_64-linux";
-          username = "loner";
-        };
-        loneros-wsl = {
-          system = "x86_64-linux";
-          username = "nixos";
-        };
-        # 快速安装远程 nixos 配置
-        remote-vm = {
-          system = "x86_64-linux";
-          username = "loner";
-        };
-        # root on tmpfs
-        bootstrap = {
-          system = "x86_64-linux";
-          username = "loner";
-        };
-      };
+      hosts = import ./hosts.nix;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = systems;

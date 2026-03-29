@@ -75,6 +75,7 @@
 This repository is organized as follows:
 
 - `flake.nix`: The entry point for the entire configuration, defining all inputs and outputs.
+- `hosts.nix`: Defines all host configurations (system, username) in a single file.
 - `hosts/`: Contains system-level configurations for specific machines.
   - `loneros/`: Main desktop system with NVIDIA GPU support, Hyprland/Niri window managers, and comprehensive application suite.
   - `loneros-wsl/`: WSL-specific configuration for Windows Subsystem for Linux with optimized packages for development.
@@ -90,7 +91,7 @@ This repository is organized as follows:
 - `themes/`: Manages themes and visual styles for the system and applications.
 - `devShell/`: Provides development environments for different programming languages.
 - `iso/`: Configuration for building a bootable NixOS ISO image.
-- `deploy/`: Contains configurations related to remote deployment.
+- `deploy/`: Contains deploy-rs configurations for remote deployment.
 - `cluster/`: Kubernetes cluster configurations (k3s, kubeconfig).
 - `lib/`: Contains custom Nix helper functions.
 - `secrets/`: Manages encrypted files using `sops-nix`.
