@@ -148,9 +148,7 @@ in
       nmgui
       chameleos
       gremlin
-      folo
       biu
-      fluxer
       drift
     ]);
 
