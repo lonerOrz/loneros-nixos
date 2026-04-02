@@ -10,7 +10,6 @@
     containers = {
       enable = true;
       registries.search = [
-        "docker.1panel.live"
         "docker.1ms.run"
         "docker.io"
       ]; # 镜像的仓库列表
