@@ -150,6 +150,7 @@ in
       gremlin
       biu
       drift
+      helium
     ]);
 
   programs = {
