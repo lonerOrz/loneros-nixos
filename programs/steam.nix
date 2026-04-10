@@ -42,7 +42,7 @@
         privateTmp = true;
       };
       fontPackages = [ pkgs.wqy_zenhei ];
-      extraCompatPackages = [ pkgs.proton-ge-bin ];
+      extraCompatPackages = [ pkgs.proton-cachyos_x86_64_v3 ];
       gamescopeSession.enable = true;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
