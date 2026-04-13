@@ -109,7 +109,7 @@ in
   services = {
     # 禁用 X Server
     xserver = {
-      enable = false;
+      enable = true;
       xkb = {
         layout = "${keyboardLayout}";
         variant = "";
