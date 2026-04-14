@@ -47,7 +47,10 @@ in
 
   programs = {
     xwayland.enable = true; # 兼容层
-    fuse.userAllowOther = true; # 用户空间文件系统
+    fuse = {
+      enable = true;
+      userAllowOther = true; # 用户空间文件系统
+    };
   };
 
   environment.systemPackages = (

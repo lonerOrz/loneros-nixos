@@ -14,6 +14,7 @@
     file-roller # GNOME 风格的归档管理器
     eog # GNOME 桌面环境中的一个图像查看器
     baobab # GNOME 桌面环境的一个磁盘使用情况分析工具
+    nautilus
 
     sound-theme-freedesktop
   ];

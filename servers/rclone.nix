@@ -4,6 +4,9 @@
   username,
   ...
 }:
+let
+  mountPoint = "/mnt/webdav/";
+in
 {
   environment.systemPackages = with pkgs; [ rclone ];
   users.users.${username}.extraGroups = [ "fuse" ]; # 将用户添加到 fuse 组
@@ -27,24 +30,31 @@
       RestartSec = "10s";
 
       ExecStart = ''
-        ${pkgs.rclone}/bin/rclone mount alist:/ /home/loner/Videos/webdav \
-                --copy-links \
-                --no-gzip-encoding \
-                --no-check-certificate \
-                --allow-other \
-                --allow-non-empty \
-                --umask 000 \
-                --header 'Referer:https://ww.aliyundrive.com/' \
-                --config /home/loner/.config/rclone/rclone.conf \
-                --use-mmap \
-                --dir-cache-time 24h \
-                --buffer-size 512M \
-                --vfs-cache-mode full \
-                --vfs-read-ahead 16M \
-                --vfs-read-chunk-size 100M \
-                --vfs-read-chunk-size-limit 0 \
-                --vfs-cache-max-size 20G
+        ${pkgs.rclone}/bin/rclone mount alist:/ ${mountPoint} \
+          --vfs-links \
+          --no-check-certificate \
+          --allow-other \
+          --umask 000 \
+          --header 'Referer:https://ww.aliyundrive.com/' \
+          --config /home/loner/.config/rclone/rclone.conf \
+          --vfs-cache-mode full \
+          --vfs-cache-max-size 50G \
+          --vfs-cache-max-age 72h \
+          --dir-cache-time 72h \
+          --attr-timeout 30s \
+          --poll-interval 0 \
+          --vfs-read-chunk-size 128M \
+          --vfs-read-chunk-size-limit 1G \
+          --vfs-read-ahead 256M \
+          --no-modtime \
+          --transfers 4 \
+          --timeout 1h
       '';
+      ExecStop = "${pkgs.util-linux}/bin/umount -l ${mountPoint}";
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d ${mountPoint} 0755 ${username} users -"
+  ];
 }

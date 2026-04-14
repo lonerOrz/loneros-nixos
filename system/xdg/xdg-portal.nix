@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
+
 {
   # Extra Portal Configuration
   xdg.portal = {
