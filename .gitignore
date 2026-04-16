@@ -9,3 +9,8 @@ result.json
 .envrc
 .direnv/
 *.bak
+
+
+# AI
+.sediment/
+AGENTS.md

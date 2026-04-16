@@ -54,7 +54,7 @@ in
       unified-delay: true # 统一延迟：统一显示节点延迟
       allow-lan: true # 局域网连接：允许其他设备经过本机代理
       bind-address: "*" # 监听地址：*表示绑定所有IP地址
-      find-process-mode: strict # 进程匹配模式：strict严格,off关闭,always总是
+      find-process-mode: always # 进程匹配模式：strict严格,off关闭,always总是
       ipv6: true # IPv6开关：是否启用IPv6支持
 
       # 运行模式(任选其一):
@@ -122,6 +122,7 @@ in
         dns-hijack:
           - any:53
           - tcp://any:53
+        strict-route: false
 
       #------------------------DNS 配置------------------------#
       dns:
@@ -129,7 +130,7 @@ in
         prefer-h3: true # 优先使用HTTP/3查询
         ipv6: false # DNS解析IPv6
         listen: 0.0.0.0:53 # DNS监听地址
-        enhanced-mode: redir-host # DNS模式: fake-ip或redir-host
+        enhanced-mode: redir-host # DNS模式: redir-host (no fake-ip needed)
         use-hosts: true # 使用hosts文件
 
         # 默认DNS服务器(用于解析其他DNS服务器的域名)
@@ -156,7 +157,7 @@ in
           "geosite:netflix": https://cloudflare-dns.com/dns-query
           "geosite:youtube": https://dns.google/dns-query
 
-        # Fake-IP配置
+        # Fake-IP配置 - DISABLED for better process matching
         fake-ip-range: 198.18.0.1/16 # Fake-IP地址段
         fake-ip-filter: # Fake-IP过滤清单
           - "*.lan" # 本地域名
@@ -190,6 +191,10 @@ in
           - accounts.google.com
           - oauth2.googleapis.com
           - www.googleapis.com
+          # 禁用 fake-ip 模式，使用纯 direct 模式避免冲突
+          - "*.torrent"
+          - "*.announce"
+          - "*.tracker"
 
         # 主要DNS服务器
         nameserver:
@@ -657,7 +662,8 @@ in
         - PROCESS-NAME,leaf,DIRECT
         - PROCESS-NAME,Thunder,DIRECT
         - PROCESS-NAME,DownloadService,DIRECT
-        - PROCESS-NAME,qBittorrent,DIRECT
+        - PROCESS-NAME-REGEX,.*qbittorrent.*,DIRECT
+        - PROCESS-NAME,.qbittorrent-wr,DIRECT
         - PROCESS-NAME,Transmission,DIRECT
         - PROCESS-NAME,fdm,DIRECT
         - PROCESS-NAME,aria2c,DIRECT
@@ -665,6 +671,8 @@ in
         - PROCESS-NAME,NetTransport,DIRECT
         - PROCESS-NAME,uTorrent,DIRECT
         - PROCESS-NAME,WebTorrent,DIRECT
+        - PROCESS-NAME,motrix,DIRECT
+        - PROCESS-NAME,clash-verge,DIRECT
 
         # 地域规则
         - GEOIP,LAN,DIRECT,no-resolve
@@ -676,6 +684,12 @@ in
         - GEOIP,JP,PROXY
         - GEOIP,CN,DIRECT
         - DST-PORT,80/8080/443/8443,PROXY
+
+        # Torrent trackers - 直连
+        - DOMAIN-SUFFIX,bz.tc,DIRECT
+        - DOMAIN-SUFFIX,tracker.opentrackr.org,DIRECT
+        - DOMAIN-SUFFIX,nyaa.si,DIRECT
+        - DOMAIN-SUFFIX,tracker.torrent.to,DIRECT
 
         # 兜底规则
         - MATCH,🚀 节点选择
