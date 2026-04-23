@@ -15,6 +15,7 @@ in
 
     ./wsl.nix
     ./users.nix
+    ./dev.nix
 
     ../../programs/git.nix
     ../../programs/direnv.nix

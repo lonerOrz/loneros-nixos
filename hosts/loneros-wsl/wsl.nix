@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   host,
   username,
@@ -62,10 +63,6 @@
     };
   };
 
-  boot.binfmt.registrations.WSLInterop = {
-    magicOrExtension = "MZ";
-    interpreter = "/init";
-    fixBinary = false;
-    wrapInterpreterInShell = false;
-  };
+  # Explicitly register the binfmt_misc handler for Windows executables
+  wsl.interop.register = true;
 }
