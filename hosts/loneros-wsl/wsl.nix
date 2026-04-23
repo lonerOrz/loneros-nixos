@@ -61,4 +61,11 @@
       default = "${username}";
     };
   };
+
+  boot.binfmt.registrations.WSLInterop = {
+    magicOrExtension = "MZ";
+    interpreter = "/init";
+    fixBinary = false;
+    wrapInterpreterInShell = false;
+  };
 }
