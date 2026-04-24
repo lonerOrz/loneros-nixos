@@ -17,9 +17,18 @@ in
     ./users.nix
     ./dev.nix
 
+    # system
+    ../../system/timezone.nix
+    ../../system/fonts.nix
+    ../../system/doc.nix
+    ../../system/security.nix
+
+    # programs
     ../../programs/git.nix
     ../../programs/direnv.nix
     ../../programs/nvim.nix
+
+    # servers
     ../../servers/atuin.nix
   ];
 
