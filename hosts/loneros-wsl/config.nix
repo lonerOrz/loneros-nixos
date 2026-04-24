@@ -19,6 +19,7 @@ in
 
     ../../programs/git.nix
     ../../programs/direnv.nix
+    ../../programs/nvim.nix
     ../../servers/atuin.nix
   ];
 
