@@ -27,6 +27,7 @@ in
     ../../programs/git.nix
     ../../programs/direnv.nix
     ../../programs/nvim.nix
+    ../../programs/nh.nix
 
     # servers
     ../../servers/atuin.nix
