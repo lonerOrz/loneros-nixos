@@ -16,6 +16,7 @@ in
     ./wsl.nix
     ./users.nix
     ./dev.nix
+    ./docker.nix
 
     # system
     ../../system/timezone.nix

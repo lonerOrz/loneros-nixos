@@ -5,15 +5,45 @@
   username,
   ...
 }:
+
+let
+  wsl-lib = pkgs.runCommand "wsl-lib" { } ''
+    mkdir -p $out/lib
+
+    # WSL GPU runtime libraries (symlink bridge)
+    ln -s /usr/lib/wsl/lib/libcuda.so $out/lib/
+    ln -s /usr/lib/wsl/lib/libcuda.so.1 $out/lib/
+    ln -s /usr/lib/wsl/lib/libcuda.so.1.1 $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libcudadebugger.so.1 $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libd3d12.so $out/lib/
+    ln -s /usr/lib/wsl/lib/libd3d12core.so $out/lib/
+    ln -s /usr/lib/wsl/lib/libdxcore.so $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libnvcuvid.so $out/lib/
+    ln -s /usr/lib/wsl/lib/libnvcuvid.so.1 $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libnvidia-encode.so $out/lib/
+    ln -s /usr/lib/wsl/lib/libnvidia-encode.so.1 $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libnvidia-ml.so.1 $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libnvidia-opticalflow.so $out/lib/
+    ln -s /usr/lib/wsl/lib/libnvidia-opticalflow.so.1 $out/lib/
+
+    ln -s /usr/lib/wsl/lib/libnvoptix.so.1 $out/lib/
+    ln -s /usr/lib/wsl/lib/libnvwgf2umx.so $out/lib/
+
+    # NOTE: nvidia-smi is NOT a library, so do NOT symlink it here
+  '';
+in
 {
   # 是否启用 WSL 支持，让 NixOS 可以作为 WSL 发行版运行
   wsl.enable = true;
 
   # 默认登录用户
   wsl.defaultUser = "${username}";
-
-  # 是否启用 Docker Desktop 集成
-  wsl.docker-desktop.enable = true;
 
   wsl.wslConf = {
     # 自动挂载 Windows 驱动器
@@ -65,4 +95,9 @@
 
   # Explicitly register the binfmt_misc handler for Windows executables
   wsl.interop.register = true;
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = [ wsl-lib ];
+  };
 }
