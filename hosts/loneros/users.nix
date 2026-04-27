@@ -151,6 +151,7 @@ in
       biu
       drift
       helium
+      wayclick
     ]);
 
   programs = {

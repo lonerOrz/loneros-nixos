@@ -14,6 +14,7 @@ inputs: {
       ];
 
       temporary = [
+        "pygame-ce"
       ];
 
       overlayImport = files: map (f: import (./. + "/${f}")) files;
