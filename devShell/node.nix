@@ -4,10 +4,8 @@ pkgs.mkShell {
   buildInputs = (
     with pkgs;
     [
-      nodejs_22
-      yarn
-      pnpm
-      eslint_d
+      nodejs
+      bun
     ]
   );
 
