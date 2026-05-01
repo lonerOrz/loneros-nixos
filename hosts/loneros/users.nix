@@ -42,6 +42,7 @@ in
   # 允许过期不维护的包
   nixpkgs.config.permittedInsecurePackages = [
     "electron-11.5.0" # NUR baidunetdisk needed
+    "minio-2025-10-15T17-29-55Z"
   ];
 
   # 我自己喜欢全局安装

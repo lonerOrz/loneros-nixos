@@ -1,4 +1,4 @@
-# wating-pr: https://github.com/NixOS/nixpkgs/pull/513890
+# done https://github.com/NixOS/nixpkgs/pull/513890
 self: super: {
   pythonPackagesExtensions = super.pythonPackagesExtensions ++ [
     (python-self: python-super: {
