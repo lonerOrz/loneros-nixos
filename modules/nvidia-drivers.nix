@@ -21,7 +21,7 @@ let
     extraPrefix = "kernel/";
   };
 
-  nvType = "latest"; # latest beta stable
+  nvType = "cachyos"; # latest beta stable
   nvidiaDrivers = {
     "570.153.02" = {
       version = "575.57.08";
@@ -45,10 +45,10 @@ let
     "595.45.04" = {
       version = "595.71.05";
       sha256_64bit = "sha256-NiA7iWC35JyKQva6H1hjzeNKBek9KyS3mK8G3YRva4I=";
-      sha256_aarch64 = "sha256-EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE=";
-      openSha256 = "sha256-DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD=";
+      sha256_aarch64 = "sha256-XzKloS00dFKTd4ATWkTIhm9eG/OzR/Sim6MboNZWPu8=";
+      openSha256 = "sha256-yyYRTJfvJWg3en61Xvl+VZxC8baGI4tNCdem+r0MrVA=";
       settingsSha256 = "sha256-mXnf3jyvznfB3OfKd657rxv0rYHQb/dX/Riw/+N9EKU=";
-      persistencedSha256 = "sha256-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=";
+      persistencedSha256 = "sha256-6CGwMd+Zc2kZNkMVUBpin1/P4/c3Mz1PaC8EzF2yjfc=";
     };
   };
 
