@@ -8,7 +8,12 @@
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  inherit (import ./variables.nix) gitUsername shell;
+  inherit (import ./variables.nix)
+    gitUsername
+    shell
+    lto
+    native
+    ;
 
   defaultShell = pkgs.${shell};
 in
@@ -153,6 +158,10 @@ in
       drift
       helium
       wayclick
+      (noctalia.override {
+        withNative = native;
+        withLto = lto;
+      })
     ]);
 
   programs = {
