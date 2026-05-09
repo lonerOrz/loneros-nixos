@@ -12,7 +12,7 @@ in
       "aria2"
       "docker"
       "ollama"
-      "flatpak"
+      # "flatpak"
       "jellyfin"
     ];
   };

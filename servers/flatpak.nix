@@ -52,7 +52,8 @@
       # { appId = "com.brave.Browser"; origin = "flathub"; }
       # "com.obsproject.Studio"
       # "im.riot.Riot"
-      "com.tencent.wemeet"
+      # "com.tencent.wemeet"
+      "com.jeffser.Nocturne"
     ];
     overrides = {
       # "com.brave.Browser".Context.filesystems = [ "home" ]; # 允许 Brave 访问主目录
