@@ -22,6 +22,11 @@ CACHES = [
     "https://hyprland.cachix.org",
 ]
 
+HEAVY_BUILD_RULES = {
+    "linux_kernel": r"-linux(-\w+)?-\d+\.\d+",
+    "electron": r"electron(\b|-|_|$)",
+}
+
 CACHIX_NAME = "loneros"
 FLAKE_TARGET = ".#nixosConfigurations.loneros.config.system.build.toplevel"
 PACKAGE_TARGET = ".#nixosConfigurations.loneros.config.environment.systemPackages"
@@ -275,10 +280,12 @@ def is_in_cache(path: str) -> str | None:
 # ---------------- Build + Push ----------------
 def is_heavy_build(drv_path: str) -> bool:
     """
-    判断是否为耗时构建包，目前只跳过 Linux 内核。
-    后续可扩展其他大包，例如大型桌面环境或数据库。
+    判断是否为耗时构建包
     """
-    return bool(re.search(r"-linux(-\w+)?-\d+\.\d+", drv_path))
+    return any(
+        re.search(pattern, drv_path, re.IGNORECASE)
+        for pattern in HEAVY_BUILD_RULES.values()
+    )
 
 
 def build_drv(drv_path: str) -> None:
