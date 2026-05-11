@@ -15,12 +15,7 @@ let
 
   shells = {
     default = [
-      "node"
-      "python"
       "c"
-      "rust"
-      "lua"
-      "go"
     ];
     dev = [
       "node"
