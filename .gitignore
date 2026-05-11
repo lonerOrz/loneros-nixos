@@ -5,6 +5,7 @@ result/
 result
 result-*
 result.json
+.pre-commit-config.yaml
 .vscode/
 .envrc
 .direnv/

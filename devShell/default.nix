@@ -1,5 +1,7 @@
 {
+
   pkgs,
+  gitHooks ? null,
   ...
 }:
 
@@ -52,10 +54,18 @@ let
     in
     pkgs.mkShell {
       inputsFrom = modules ++ (custom.inputsFrom or [ ]);
-      buildInputs = custom.packages or [ ];
-      nativeBuildInputs = custom.nativeBuildInputs or [ ];
+
+      buildInputs = (custom.packages or [ ]);
+
+      nativeBuildInputs =
+        (custom.nativeBuildInputs or [ ]) ++ (if gitHooks != null then gitHooks.enabledPackages else [ ]);
+
       env = custom.env or { };
-      shellHook = custom.shellHook or "";
+
+      shellHook = ''
+        ${if gitHooks != null then gitHooks.shellHook else ""}
+        ${custom.shellHook or ""}
+      '';
     };
 
 in

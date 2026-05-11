@@ -25,6 +25,10 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     disko.url = "github:nix-community/disko";
     sops-nix.url = "github:Mic92/sops-nix";
@@ -75,19 +79,46 @@
       hosts = import ./hosts.nix;
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = systems;
-      imports = [ ] ++ inputs.nixpkgs.lib.optional (inputs.treefmt-nix ? flakeModule) ./treefmt.nix;
+      inherit systems;
+
+      imports = [
+        inputs.treefmt-nix.flakeModule
+      ]
+      ++ lib.optional (builtins.pathExists ./treefmt.nix) ./treefmt.nix;
 
       perSystem =
         {
           pkgs,
           lib,
+          config,
+          system,
           ...
         }:
+        let
+          pre-commit-check = inputs.git-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              treefmt = {
+                enable = true;
+                package = config.treefmt.build.wrapper;
+              };
+              # statix.enable = true;
+            };
+          };
+        in
         {
-          _module.args.mylib = import ./lib { inherit lib pkgs; }; # for flake-parts module
-          devShells = import ./devShell/default.nix { inherit pkgs; };
-          checks = { } // inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy;
+          _module.args.mylib = import ./lib { inherit lib pkgs; };
+
+          devShells = import ./devShell/default.nix {
+            inherit pkgs;
+            gitHooks = pre-commit-check;
+          };
+
+          checks = {
+            inherit pre-commit-check;
+          }
+          // inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
+
           packages =
             import ./pkgs/default.nix {
               inherit pkgs lib;
@@ -96,10 +127,8 @@
               iso =
                 let
                   iso-nixos = nixpkgs.lib.nixosSystem {
-                    system = pkgs.stdenv.hostPlatform.system;
-                    specialArgs = {
-                      inherit inputs;
-                    };
+                    inherit system;
+                    specialArgs = { inherit inputs; };
                     modules = [
                       ./iso/config.nix
                       "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
@@ -125,8 +154,7 @@
             nixpkgs.lib.nixosSystem {
               system = cfg.system;
               specialArgs = {
-                inherit inputs;
-                inherit host;
+                inherit inputs host;
                 username = cfg.username;
                 system = cfg.system;
                 stable = mkPkgs inputs.nixpkgs-stable cfg.system;
@@ -159,6 +187,7 @@
             name: type: type == "regular" && lib.hasSuffix ".nix" name
           ) nodeFiles;
           nodeNames = map (name: lib.removeSuffix ".nix" name) (lib.attrNames validNixFiles);
+
           nodes = lib.genAttrs nodeNames (
             nodeName:
             import (deployDir + "/${nodeName}.nix") {
