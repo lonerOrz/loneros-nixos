@@ -106,6 +106,10 @@ in
           fwsetup
         }
       '';
+
+      theme = pkgs.nur.repos.lonerOrz.minegrub-theme.override {
+        splash = "Hello NixOS";
+      };
     };
 
     ## -end of BOOTLOADERS----- ##
@@ -135,7 +139,7 @@ in
     theme = "nixos"; # arch-liunx debain deppin gentoo fedora ...
   };
   honkai-railway-grub-theme = {
-    enable = true;
+    enable = false;
     theme = "Huohuo"; # Kafka Huohuo March7th-TheHunt
   };
   # cachyOS kernel 调度规则
