@@ -162,6 +162,7 @@ in
         withNative = native;
         withLto = lto;
       })
+      duolingo-desktop
     ]);
 
   programs = {
