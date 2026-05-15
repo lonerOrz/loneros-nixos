@@ -16,6 +16,7 @@ in
     ./wsl.nix
     ./users.nix
     ./dev.nix
+    ./system.nix
 
     ./podman.nix
     # ./docker.nix
@@ -28,6 +29,7 @@ in
 
     # programs
     ../../programs/git.nix
+    ../../programs/fcitx5.nix
     ../../programs/direnv.nix
     ../../programs/nvim.nix
     ../../programs/nh.nix
@@ -150,6 +152,7 @@ in
       nvtopPackages.full # 显卡监控
       cava # 音乐可视化
       kitty # teminal
+      rofi # 应用启动
     ]
   );
 
