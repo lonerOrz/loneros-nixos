@@ -25,27 +25,33 @@
     mesa-demos # Mesa 官方演示工具
   ];
 
-  systemd.user = {
-    services.wslg-wayland = {
-      description = "WSLg Wayland 套接字自动链接";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = [
-          "/run/current-system/sw/bin/mkdir -p /run/user/%U"
-          "/run/current-system/sw/bin/chmod 700 /run/user/%U"
-          "/run/current-system/sw/bin/ln -sf /mnt/wslg/runtime-dir/wayland-0* /run/user/%U/"
-        ];
-      };
-    };
+  systemd.user.services.wslg-wayland-fix = {
+    description = "Keep WSLg wayland symlink alive";
 
-    # 路径监控：事件驱动（目录变化 → 自动修复）
-    paths.wslg-wayland-watch = {
-      description = "WSLg Wayland 目录监控";
-      wantedBy = [ "default.target" ];
-      pathConfig = {
-        PathChanged = "/run/user/%U";
-        Unit = "wslg-wayland.service";
-      };
+    wantedBy = [ "default.target" ];
+
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = 2;
+
+      ExecStart = "${pkgs.writeShellScript "wslg-wayland-fix" ''
+        #!${pkgs.bash}/bin/bash
+        set -eu
+
+        while true; do
+          if [ ! -L /run/user/1000/wayland-0 ]; then
+            ln -sfn /mnt/wslg/runtime-dir/wayland-0 \
+              /run/user/1000/wayland-0
+          fi
+
+          if [ ! -L /run/user/1000/wayland-0.lock ]; then
+            ln -sfn /mnt/wslg/runtime-dir/wayland-0.lock \
+              /run/user/1000/wayland-0.lock
+          fi
+
+          sleep 5
+        done
+      ''}";
     };
   };
 }
