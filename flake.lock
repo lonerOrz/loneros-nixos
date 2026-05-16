@@ -1114,6 +1114,26 @@
         "type": "github"
       }
     },
+    "ncm-desktop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778922191,
+        "narHash": "sha256-1tMQG1obLPK8CX0A9lgKH5JPJVY+zLh6ubxC7urt9/c=",
+        "owner": "lonerOrz",
+        "repo": "ncm-desktop",
+        "rev": "fb0da4342b489b7bbe670c0767397491af2dc82e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lonerOrz",
+        "repo": "ncm-desktop",
+        "type": "github"
+      }
+    },
     "ndg": {
       "inputs": {
         "nixpkgs": [
@@ -1405,11 +1425,11 @@
     },
     "nixpkgs_14": {
       "locked": {
-        "lastModified": 1755186698,
-        "narHash": "sha256-wNO3+Ks2jZJ4nTHMuks+cxAiVBGNuEBXsT29Bz6HASo=",
+        "lastModified": 1778443072,
+        "narHash": "sha256-zi7/fsqM/kFdNuED//4WOCUtezGtKKqRNORjMvfwjnA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fbcf476f790d8a217c3eab4e12033dc4a0f6d23c",
+        "rev": "da5ad661ba4e5ef59ba743f0d112cbc30e474f32",
         "type": "github"
       },
       "original": {
@@ -1553,11 +1573,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778870675,
-        "narHash": "sha256-SX5maeSsVW9vuIMCTFwVA9Dw7ntTP6yNG4e0JgeYGmE=",
+        "lastModified": 1778919190,
+        "narHash": "sha256-SyCYGstp9nhjHfQ5cfOazRazEMp3An1KCoK5EHesK54=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "92263e11f194e564552809ff89a5e09e80749639",
+        "rev": "b0ae92a0f85c7c119104ff87a779375ddff99db9",
         "type": "github"
       },
       "original": {
@@ -1685,6 +1705,7 @@
         "home-manager": "home-manager_2",
         "honkai-railway-grub-theme": "honkai-railway-grub-theme",
         "hyprland": "hyprland",
+        "ncm-desktop": "ncm-desktop",
         "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",
         "nixos-wsl": "nixos-wsl",

@@ -61,6 +61,10 @@
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     tuckr-nix.url = "github:lonerOrz/tuckr-nix";
+    ncm-desktop = {
+      url = "github:lonerOrz/ncm-desktop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

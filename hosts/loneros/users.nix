@@ -120,6 +120,7 @@ in
       keypunch
       gapless
       osu-lazer-bin
+      inputs.ncm-desktop.packages.${system}.ncm-desktop
 
       # electron wrapper
       obsidian-wrapper
