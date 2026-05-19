@@ -72,6 +72,10 @@ in
       dmenu
       wtype
 
+      # dev package
+      appimage-run
+      dpkg
+
       # tui
       lazygit
       bottom
