@@ -36,6 +36,7 @@ in
 
     # servers
     ../../servers/atuin.nix
+    ../../servers/ollama.nix
   ];
 
   nixpkgs = {
