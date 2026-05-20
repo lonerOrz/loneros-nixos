@@ -13,7 +13,7 @@
     # enableConfig = false;
 
     devices = {
-      disk.disk1 = {
+      disk.mian = {
         device = lib.mkDefault "/dev/sda";
         type = "disk";
         content = {
@@ -47,20 +47,33 @@
               };
             };
 
-            # # 存放 NixOS 系统的分区，使用剩下的所有空间
-            nix = {
+            # 存放 NixOS 系统的分区，使用剩下的所有空间
+            root = {
               size = "100%";
-              # 格式化成 Btrfs，可以按需修改
               content = {
-                type = "filesystem";
-                format = "btrfs";
-                # 用作 Nix 分区，Disko 生成磁盘镜像时根据此处配置挂载分区，需要和 fileSystems.* 一致
-                mountpoint = "/nix";
-                mountOptions = [
-                  "compress-force=zstd"
-                  "nosuid"
-                  "nodev"
-                ];
+                type = "btrfs";
+                extraArgs = [ "-f" ];
+
+                subvolumes = {
+                  "/persist" = {
+                    mountOptions = [
+                      "subvol=persist"
+                      "noatime"
+                    ];
+                    mountpoint = "/persist";
+                  };
+
+                  "/nix" = {
+                    mountOptions = [
+                      "compress-force=zstd"
+                      "nosuid"
+                      "nodev"
+                      "subvol=nix"
+                      "noatime"
+                    ];
+                    mountpoint = "/nix";
+                  };
+                };
               };
             };
           };

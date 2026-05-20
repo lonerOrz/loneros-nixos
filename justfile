@@ -5,6 +5,10 @@
 
 @install-remote target ip:
     nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- \
+      --build-on local \
+      --no-disko-deps \
+      --no-use-machine-substituters \
+      --debug \
       -i ~/.ssh/id_ed25519 \
       --generate-hardware-config nixos-generate-config ./hosts/{{ target }}/hardware.nix \
       --flake .#{{ target }} \

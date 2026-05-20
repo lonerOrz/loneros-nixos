@@ -21,10 +21,11 @@
   preservation = {
     enable = true;
 
-    preserveAt."/persistent" = {
+    preserveAt."/persist" = {
       # 系统级目录持久化
       directories = [
-        "/etc/ssh"
+        # https://github.com/nix-community/impermanence/issues/192
+        # "/etc/ssh"
         "/etc/NetworkManager/system-connections"
 
         # "/etc/secureboot" # lanzaboote - 安全启动
@@ -122,11 +123,11 @@
   systemd.services.systemd-machine-id-commit = {
     unitConfig.ConditionPathIsMountPoint = [
       ""
-      "/persistent/etc/machine-id"
+      "/persist/etc/machine-id"
     ];
     serviceConfig.ExecStart = [
       ""
-      "systemd-machine-id-setup --commit --root /persistent"
+      "systemd-machine-id-setup --commit --root /persist"
     ];
   };
 }
