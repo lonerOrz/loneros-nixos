@@ -52,17 +52,30 @@ jobs:
           NEW_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw)
           echo "NEW_DRV=$NEW_DRV" >> $GITHUB_ENV
 
-      - name: Build PR report (PR body)
+      - name: Build PR report
         run: |
           echo "### Flake Inputs Update" > /tmp/pr_report.txt
           echo "${SCRIPT_OUTPUT}" >> /tmp/pr_report.txt
 
-      - name: Build PR comment (nvd diff)
+      - name: Build PR comment
         run: |
           if [ "$OLD_DRV" != "$NEW_DRV" ]; then
-            nix run nixpkgs#nvd -- diff "$OLD_DRV" "$NEW_DRV" > /tmp/pr_comment.txt
+            nix run nixpkgs#nvd -- diff "$OLD_DRV" "$NEW_DRV" > /tmp/nvd_raw.txt
           else
-            echo "No system-level package changes detected." > /tmp/pr_comment.txt
+            echo "No system-level package changes detected." > /tmp/nvd_raw.txt
+          fi
+
+          SIZE=$(wc -c < /tmp/nvd_raw.txt)
+
+          if [ "$SIZE" -gt 60000 ]; then
+            echo "⚠️ nvd diff too large ($SIZE bytes), full output printed to CI log."
+            echo "---- BEGIN NVD DIFF (FULL) ----"
+            cat /tmp/nvd_raw.txt
+            echo "---- END NVD DIFF ----"
+
+            echo "⚠️ nvd diff too large, see GitHub Actions log for full output." > /tmp/pr_comment.txt
+          else
+            cp /tmp/nvd_raw.txt /tmp/pr_comment.txt
           fi
 
       - name: Check if flake.lock changed
