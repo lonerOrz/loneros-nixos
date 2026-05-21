@@ -40,7 +40,7 @@ jobs:
           OLD_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw)
           echo "OLD_DRV=$OLD_DRV" >> $GITHUB_ENV
 
-      - name: Run flake update script and generate report
+      - name: Run flake update script
         run: |
           SCRIPT_OUTPUT=$(python3 .github/script/flake_update.py)
           echo "SCRIPT_OUTPUT<<EOF" >> $GITHUB_ENV
@@ -52,23 +52,17 @@ jobs:
           NEW_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw)
           echo "NEW_DRV=$NEW_DRV" >> $GITHUB_ENV
 
-      - name: Build PR report
+      - name: Build PR report (PR body)
         run: |
-          echo "PR_REPORT_FILE=/tmp/pr_report.txt" >> $GITHUB_ENV
-
           echo "### Flake Inputs Update" > /tmp/pr_report.txt
           echo "${SCRIPT_OUTPUT}" >> /tmp/pr_report.txt
 
+      - name: Build PR comment (nvd diff)
+        run: |
           if [ "$OLD_DRV" != "$NEW_DRV" ]; then
-            echo "" >> /tmp/pr_report.txt
-            echo "### 📦 System Package Changes" >> /tmp/pr_report.txt
-            echo '```text' >> /tmp/pr_report.txt
-            nix run nixpkgs#nvd -- diff "$OLD_DRV" "$NEW_DRV" > /tmp/nvd_diff.txt
-            cat /tmp/nvd_diff.txt >> /tmp/pr_report.txt
-            echo '```' >> /tmp/pr_report.txt
+            nix run nixpkgs#nvd -- diff "$OLD_DRV" "$NEW_DRV" > /tmp/pr_comment.txt
           else
-            echo "" >> /tmp/pr_report.txt
-            echo "*(No system-level package changes detected)*" >> /tmp/pr_report.txt
+            echo "No system-level package changes detected." > /tmp/pr_comment.txt
           fi
 
       - name: Check if flake.lock changed
@@ -117,6 +111,10 @@ jobs:
             --body-file /tmp/pr_report.txt \
             --base main \
             --head "update-flake-lock-${{ env.DATE }}"
+
+          PR_URL=$(gh pr view "update-flake-lock-${{ env.DATE }}" --json url -q .url)
+
+          gh pr comment "$PR_URL" --body-file /tmp/pr_comment.txt
 
           gh pr edit "update-flake-lock-${{ env.DATE }}" \
             --add-label auto_update_flake \
