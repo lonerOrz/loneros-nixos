@@ -14,6 +14,7 @@ inputs: {
       ];
 
       temporary = [
+        "ruby.nix"
       ];
 
       overlayImport = files: map (f: import (./. + "/${f}")) files;
