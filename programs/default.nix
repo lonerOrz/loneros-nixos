@@ -14,6 +14,8 @@ in
       "virtualbox"
       "virt-manager"
       "fabric"
+
+      "vxwm"
     ];
   };
 }
