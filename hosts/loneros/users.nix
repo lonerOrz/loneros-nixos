@@ -79,19 +79,15 @@ in
       dmenu
       wtype
       protobuf
-      neowall
 
       # tui
       lazygit
-      bottom
       neovim
       yazi
-      rmpc # music cli
       rsclock # colock
       asciinema # rec demo.cast
       asciinema-agg # cast -> gif
       fuzzel
-      networkmanager_dmenu
       posting # postman tui
       isd # systemd TUI
       kmon # 内核编译和管理TUI
@@ -107,37 +103,31 @@ in
       stable.rustdesk-flutter
       evil-helix_git # introduces Vim keybindings and more
       element-desktop
-      libreoffice-fresh
       foliate # epub reader
       bitwarden-desktop # 密码管理器
       kazumi # 番剧
-      turntable # 音乐盒子
-      librecad # CAD
+      libreoffice-fresh
+      # librecad # CAD
       # (dbeaver-bin.override { override_xmx = "1024m"; }) # 数据库管理
       door-knocker # protal check
       feishu
-      blanket
+      blanket # 白噪音
       keypunch
-      gapless
       osu-lazer-bin
       inputs.ncm-desktop.packages.${system}.ncm-desktop
 
       # electron wrapper
       obsidian-wrapper
       vscodium-wrapper
-      code-cursor-wrapper
 
       # cli tool
       neo-cowsay # fortune | cowsay --random --rainbow
       fortune
       pipes # grep
-      sl
       figlet # ascii <font>
-      bb
       cmatrix
       hollywood
       lolcat
-      nitch
       xeyes
       ascii-image-converter
     ]
@@ -149,14 +139,9 @@ in
       # NUR packages
       mpv-handler
       go-musicfox
-      pear-desktop # youtube music
-      gitfetch
       nsearch-tv
-      nmgui
       chameleos
-      gremlin
       biu
-      drift
       helium
       wayclick
       (noctalia.override {
