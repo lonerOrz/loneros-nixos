@@ -5,6 +5,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+
+    # core infrastructure
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+    # https://github.com/DeterminateSystems/nix-src/releases
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,10 +23,8 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # https://github.com/DeterminateSystems/nix-src/releases
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    # formatting / tooling
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,42 +33,53 @@
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    disko.url = "github:nix-community/disko";
-    sops-nix.url = "github:Mic92/sops-nix";
-    deploy-rs.url = "github:serokell/deploy-rs";
-    chaotic.url = "github:lonerOrz/nyx-loner";
-    stylix.url = "github:danth/stylix";
-    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
-    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
-    preservation.url = "github:nix-community/preservation";
-
-    firefox.url = "github:nix-community/flake-firefox-nightly";
-    hyprland.url = "github:hyprwm/Hyprland";
-    silentSDDM = {
-      url = "github:uiriansan/SilentSDDM";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    nvf.url = "github:notashelf/nvf";
-    quickshell = {
-      url = "github:quickshell-mirror/quickshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
+
+    # system / persistence / secrets
+    disko.url = "github:nix-community/disko";
+    sops-nix.url = "github:Mic92/sops-nix";
+    preservation.url = "github:nix-community/preservation";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-    tuckr-nix.url = "github:lonerOrz/tuckr-nix";
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+
+    # theming / appearance
+    stylix.url = "github:danth/stylix";
+    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # desktop / wm
+    hyprland.url = "github:hyprwm/Hyprland";
+    quickshell = {
+      url = "github:quickshell-mirror/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # browsers
+    firefox.url = "github:nix-community/flake-firefox-nightly";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # applications
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    nvf.url = "github:notashelf/nvf";
     ncm-desktop = {
       url = "github:lonerOrz/ncm-desktop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # personal / custom
+    chaotic.url = "github:lonerOrz/nyx-loner";
+    tuckr-nix.url = "github:lonerOrz/tuckr-nix";
   };
 
   outputs =

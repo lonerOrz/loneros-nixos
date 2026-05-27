@@ -26,6 +26,7 @@ in
     mutableUsers = true;
     users."${username}" = {
       homeMode = "755";
+      uid = 1000;
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."loneros/loner/password".path;
       description = "${gitUsername}";
