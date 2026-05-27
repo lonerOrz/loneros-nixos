@@ -30,6 +30,7 @@ in
     ../../servers
     ../../modules
     ../../themes
+    ../../virtualisation
   ]
   ++ importsFromCluster;
 

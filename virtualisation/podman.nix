@@ -5,6 +5,10 @@
   ...
 }:
 {
+  imports = [
+    ./quadlet
+  ];
+
   # Enable common container config files in /etc/containers
   virtualisation = {
     containers = {
@@ -38,7 +42,7 @@
           "--force"
           "--volumes"
         ];
-        dates = "0 3 * * 0"; # 每周日凌晨3点
+        dates = "Sun *-*-* 03:00:00"; # 每周日凌晨3点
       };
     };
   };
@@ -55,27 +59,6 @@
 
   # done https://github.com/NixOS/nixpkgs/pull/463702
   hardware.nvidia-container-toolkit.enable = true; # 直通 NVIDIA GPU
-
-  # 开启 Podman 自动更新定时器（用户级 systemd）
-  systemd.user.timers.podman-auto-update = {
-    description = "Podman auto-update timer";
-    wantedBy = [ "default.target" ];
-    upheldBy = [ "default.target" ];
-    timerConfig = {
-      OnCalendar = "daily";
-      Persistent = true;
-    };
-    unitConfig = {
-      ConditionUser = username;
-    };
-  };
-
-  systemd.user.services.podman-auto-update = {
-    description = "Podman auto-update service";
-    serviceConfig = {
-      ExecStart = "${pkgs.podman}/bin/podman auto-update";
-    };
-  };
 
   # systemd 容器管理示例（可选）
   # virtualisation.oci-containers = {
