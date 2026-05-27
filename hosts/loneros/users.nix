@@ -141,9 +141,11 @@ in
       go-musicfox
       nsearch-tv
       chameleos
+      wayclick
+      sonar
+
       biu
       helium
-      wayclick
       (noctalia.override {
         withNative = native;
         withLto = lto;
