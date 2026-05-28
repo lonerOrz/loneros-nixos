@@ -84,18 +84,90 @@ jobs:
 
       - name: Build Path
         id: build
+        continue-on-error: true
         run: |
           echo "Building ${{ matrix.package.name }}..."
           nix build --no-link --impure --expr 'let flake = builtins.getFlake (toString ./.); pkgs = flake.nixosConfigurations.loneros.config.environment.systemPackages; target = builtins.filter (p: p ? drvPath && p.drvPath == "${{ matrix.package.drv }}") pkgs; in if target == [] then throw "Package not found" else builtins.head target' --print-build-logs
 
-      - name: Log success to summary
-        if: success()
+      - name: Generate status report
+        if: always()
         run: |
-          echo "✅ **Successfully built and pushed**: \`${{ matrix.package.name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "Store path deriver: \`${{ matrix.package.drv }}\`" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.build.outcome }}" == "success" ]; then
+            SUCCESSFUL="true"
+          else
+            SUCCESSFUL="false"
+          fi
 
-      - name: Log failure to summary
-        if: failure()
+          jq -n \
+            --arg name "${{ matrix.package.name }}" \
+            --arg drv "${{ matrix.package.drv }}" \
+            --arg successful "$SUCCESSFUL" \
+            '{"name": $name, "drv": $drv, "successful": ($successful | test("true"))}' > "report_${{ matrix.package.name }}.json"
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-report-${{ matrix.package.name }}
+          path: report_${{ matrix.package.name }}.json
+
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [build-matrix]
+    if: always()
+    steps:
+      - name: Download all reports
+        uses: actions/download-artifact@v6
+        with:
+          pattern: build-report-*
+          merge-multiple: true
+
+      - name: Generate combined step summary
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          echo "❌ **Failed to build**: \`${{ matrix.package.name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "Please check the log of job: **Build ${{ matrix.package.name }}**" >> $GITHUB_STEP_SUMMARY
+          gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs \
+            --jq '.jobs[] | select(.name != null) | {
+              key: .name,
+              value: (
+                .html_url + (
+                  [ .steps[] | select(.name == "Build Path") | .number ] | first | if . != null then "#step:" + (. | toString) + ":1" else "" end
+                )
+              )
+            }' | jq -s 'from_entries' > job_urls.json
+
+          {
+            echo "### Cachix Build Results"
+            echo ""
+            echo "| Package | Status | Derivation |"
+            echo "| :--- | :--- | :--- |"
+
+            for f in report_*.json; do
+              if [ ! -f "$f" ]; then continue; fi
+              NAME=$(jq -r '.name' "$f")
+              DRV=$(jq -r '.drv' "$f")
+              SUCCESS=$(jq -r '.successful' "$f")
+
+              JOB_NAME="Build $NAME"
+              JOB_URL=$(jq -r --arg key "$JOB_NAME" '.[$key] // empty' job_urls.json)
+              if [ -z "$JOB_URL" ]; then
+                JOB_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              fi
+
+              if [ "$SUCCESS" = "true" ]; then
+                STATUS="[Success]($JOB_URL)"
+              else
+                STATUS="[Failed]($JOB_URL)"
+              fi
+
+              echo "| \`$NAME\` | $STATUS | \`$DRV\` |"
+            done
+          } > summary_report.md
+
+          cat summary_report.md >> $GITHUB_STEP_SUMMARY
+
+          if grep -q '"successful": false' report_*.json 2>/dev/null; then
+            echo "Error: Some packages failed to build." >&2
+            exit 1
+          fi
