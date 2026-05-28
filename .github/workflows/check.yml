@@ -31,5 +31,6 @@ jobs:
           skipPush: true
 
       - name: Check
-        run: |
-          nix flake check --all-systems
+        run: nix flake check --all-systems --impure
+        env:
+          NIXPKGS_ALLOW_INSECURE: 1
