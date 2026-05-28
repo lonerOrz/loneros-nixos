@@ -20,7 +20,7 @@ let
     ];
 
     loneros-wsl = [
-      ./uptime.nix
+      ./hermes.nix
     ];
   };
 
