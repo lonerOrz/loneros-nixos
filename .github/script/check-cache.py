@@ -45,7 +45,12 @@ def is_heavy_build(drv_path: str) -> bool:
     return any(re.search(pattern, drv_path, re.IGNORECASE) for pattern in HEAVY_BUILD_RULES.values())
 
 def cache_timeout(max_workers: int, num_caches: int) -> float:
-    return round(0.5 + 0.35 * math.log2(max_workers) + 0.25 * max(0, num_caches - 1), 2)
+    base = 1.5
+    alpha = 0.5
+    beta = 0.3
+    return round(
+        base + alpha * math.log2(max_workers) + beta * max(0, num_caches - 1), 2
+    )
 
 def log_progress(current: int, total: int, name: str, status: str) -> None:
     with log_lock:
@@ -55,13 +60,14 @@ def log_progress(current: int, total: int, name: str, status: str) -> None:
 def check_path_in_caches(path: str) -> str | None:
     env = os.environ.copy()
     env["NIXPKGS_ALLOW_INSECURE"] = "1"
+    timeout = cache_timeout(MAX_WORKERS, len(CACHES))
     for cache in CACHES:
         try:
             subprocess.run(
                 ["nix", "path-info", "--store", cache, path],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
-                timeout=cache_timeout(MAX_WORKERS, len(CACHES)),
+                timeout=timeout,
                 check=True,
                 env=env,
             )
@@ -82,7 +88,7 @@ def main() -> None:
 
     eval_cmd = [
         "nix", "eval", "--json", "--impure", "--apply",
-        "x: map (pkg: if builtins.isAttrs pkg && pkg.drvPath != null then pkg.drvPath else null) x",
+        "x: map (pkg: if builtins.isAttrs pkg && pkg.drvPath != null && pkg.outPath != null then { name = pkg.name or \"\"; drv = pkg.drvPath; out = pkg.outPath; } else null) x",
         PACKAGE_TARGET
     ]
 
@@ -91,24 +97,29 @@ def main() -> None:
 
     try:
         raw_output = subprocess.check_output(eval_cmd, env=env).decode("utf-8")
-        drv_paths = [p for p in json.loads(raw_output) if p]
+        raw_packages = [p for p in json.loads(raw_output) if p]
     except Exception as e:
         print(f"Error during nix eval: {e}", file=sys.stderr)
         sys.exit(1)
 
-    unique_drvs = list(set(drv_paths))
-    total_paths = len(unique_drvs)
+    unique_packages = {}
+    for p in raw_packages:
+        if "drv" in p:
+            unique_packages[p["drv"]] = p
+
+    unique_list = list(unique_packages.values())
+    total_paths = len(unique_list)
     print(f"Total unique paths to check: {total_paths}", file=sys.stderr)
 
     missing_packages = []
     start_time = time.time()
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_drv = {executor.submit(check_path_in_caches, drv): drv for drv in unique_drvs}
+        future_to_pkg = {executor.submit(check_path_in_caches, p["out"]): p for p in unique_list}
 
-        for future in as_completed(future_to_drv):
-            drv = future_to_drv[future]
-            name = nix_name_version(drv)
+        for future in as_completed(future_to_pkg):
+            pkg = future_to_pkg[future]
+            name = pkg["name"] if pkg["name"] else nix_name_version(pkg["drv"])
 
             with progress_lock:
                 progress_counter += 1
@@ -119,11 +130,11 @@ def main() -> None:
                 if cache_hit_name:
                     log_progress(current, total_paths, name, f"Cached ({cache_hit_name})")
                 else:
-                    if is_heavy_build(drv):
+                    if is_heavy_build(pkg["drv"]):
                         log_progress(current, total_paths, name, "Missing (Skipped: Heavy Build)")
                     else:
                         log_progress(current, total_paths, name, "Missing (Added to queue)")
-                        missing_packages.append({"name": name, "drv": drv})
+                        missing_packages.append({"name": name, "drv": pkg["drv"]})
             except Exception as e:
                 log_progress(current, total_paths, name, f"Error: {e}")
 
