@@ -1,26 +1,36 @@
 {
-  lib,
-  pkgs,
   inputs,
   username,
+  host,
   ...
 }:
 
 let
-  mylib = import ../../lib/default.nix {
-    inherit lib pkgs;
+  containerMap = {
+    loneros = [
+      ./aria2.nix
+      ./filegator.nix
+      ./glance.nix
+      ./mysql8.nix
+      ./peerbanhelper.nix
+      ./qinglong.nix
+      ./reader.nix
+      ./redis.nix
+      ./uptime.nix
+    ];
+
+    loneros-wsl = [
+      ./uptime.nix
+    ];
   };
+
+  targetContainers = containerMap.${host} or [ ];
 in
 {
   imports = [
     inputs.quadlet-nix.nixosModules.quadlet
   ]
-  ++ mylib.autoImport {
-    dir = ./.;
-    exclude = [
-      ""
-    ];
-  };
+  ++ targetContainers;
 
   # user 需要显示设置 uid
   users.users.${username} = {
