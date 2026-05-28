@@ -61,7 +61,6 @@ in
       starship
       stow # dotfiles needed
       tuckr # better than stow
-      chezmoi
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
       nixfmt # 官方 nixfmt 风格
