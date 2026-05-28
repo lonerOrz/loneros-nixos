@@ -18,8 +18,8 @@ in
     ./dev.nix
     ./system.nix
 
-    ./podman.nix
-    # ./docker.nix
+    # virtualisation
+    ../../virtualisation
 
     # system
     ../../system/timezone.nix
