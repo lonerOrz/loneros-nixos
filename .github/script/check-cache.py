@@ -59,6 +59,8 @@ def log_progress(current: int, total: int, name: str, status: str) -> None:
 # ---------------- Cache Lookup ----------------
 def check_path_in_caches(path: str) -> str | None:
     """返回命中缓存的域名，若未命中返回 None"""
+    env = os.environ.copy()
+    env["NIXPKGS_ALLOW_INSECURE"] = "1"
     for cache in CACHES:
         try:
             subprocess.run(
@@ -67,6 +69,7 @@ def check_path_in_caches(path: str) -> str | None:
                 stderr=subprocess.DEVNULL,
                 timeout=cache_timeout(MAX_WORKERS, len(CACHES)),
                 check=True,
+                env=env,
             )
             with cache_lock:
                 cache_hits[cache] += 1
@@ -85,13 +88,16 @@ def main() -> None:
     print("Evaluating store paths from flake...", file=sys.stderr)
 
     eval_cmd = [
-        "nix", "eval", "--json", "--apply",
+        "nix", "eval", "--json", "--impure", "--apply",
         "x: map (pkg: if builtins.isAttrs pkg && pkg.drvPath != null then pkg.drvPath else null) x",
         PACKAGE_TARGET
     ]
 
+    env = os.environ.copy()
+    env["NIXPKGS_ALLOW_INSECURE"] = "1"
+
     try:
-        raw_output = subprocess.check_output(eval_cmd).decode("utf-8")
+        raw_output = subprocess.check_output(eval_cmd, env=env).decode("utf-8")
         drv_paths = [p for p in json.loads(raw_output) if p]
     except Exception as e:
         print(f"Error during nix eval: {e}", file=sys.stderr)

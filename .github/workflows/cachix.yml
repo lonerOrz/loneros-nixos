@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+env:
+  NIXPKGS_ALLOW_INSECURE: "1"
+
 jobs:
   detect-missing:
     name: Detect Missing Packages
@@ -83,7 +86,7 @@ jobs:
         id: build
         run: |
           echo "Building ${{ matrix.package.name }}..."
-          nix build --no-link "${{ matrix.package.drv }}^*" --print-build-logs
+          nix build --no-link --impure "${{ matrix.package.drv }}^*" --print-build-logs
 
       - name: Log success to summary
         if: success()
