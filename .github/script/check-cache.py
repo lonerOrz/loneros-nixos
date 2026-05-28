@@ -10,7 +10,6 @@ import time
 from typing import List, Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# ---------------- Configuration ----------------
 CACHES = [
     "https://cache.nixos.org",
     "https://nix-community.cachix.org",
@@ -27,14 +26,12 @@ HEAVY_BUILD_RULES = {
 PACKAGE_TARGET = ".#nixosConfigurations.loneros.config.environment.systemPackages"
 MAX_WORKERS = 6
 
-# ---------------- Globals & Locks ----------------
 cache_hits: Dict[str, int] = {cache: 0 for cache in CACHES}
 cache_lock = threading.Lock()
 log_lock = threading.Lock()
 progress_lock = threading.Lock()
 progress_counter = 0
 
-# ---------------- Helper Functions ----------------
 def nix_name_version(path: str) -> str:
     if not path.startswith("/nix/store/"):
         return path
@@ -50,15 +47,12 @@ def is_heavy_build(drv_path: str) -> bool:
 def cache_timeout(max_workers: int, num_caches: int) -> float:
     return round(0.5 + 0.35 * math.log2(max_workers) + 0.25 * max(0, num_caches - 1), 2)
 
-# ---------------- Thread-safe Log ----------------
 def log_progress(current: int, total: int, name: str, status: str) -> None:
     with log_lock:
         sys.stderr.write(f"[{current}/{total}] {name} -> {status}\n")
         sys.stderr.flush()
 
-# ---------------- Cache Lookup ----------------
 def check_path_in_caches(path: str) -> str | None:
-    """返回命中缓存的域名，若未命中返回 None"""
     env = os.environ.copy()
     env["NIXPKGS_ALLOW_INSECURE"] = "1"
     for cache in CACHES:
@@ -82,7 +76,6 @@ def urlparse(url: str):
     from urllib.parse import urlparse as up
     return up(url)
 
-# ---------------- Main Logic ----------------
 def main() -> None:
     global progress_counter
     print("Evaluating store paths from flake...", file=sys.stderr)
@@ -110,7 +103,6 @@ def main() -> None:
     missing_packages = []
     start_time = time.time()
 
-    # 并发检测缓存
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_drv = {executor.submit(check_path_in_caches, drv): drv for drv in unique_drvs}
 
@@ -141,14 +133,12 @@ def main() -> None:
     for cache, hits in cache_hits.items():
         print(f"  {urlparse(cache).netloc}: {hits} hits", file=sys.stderr)
 
-    # 写入 GITHUB_OUTPUT
     output_json = json.dumps(missing_packages)
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
             f.write(f"missing={output_json}\n")
     else:
-        # 本地终端运行时，在最后单独输出最终 JSON
         print("\n[Final Output JSON]:")
         print(output_json)
 

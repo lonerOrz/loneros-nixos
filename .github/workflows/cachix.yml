@@ -86,7 +86,10 @@ jobs:
         id: build
         run: |
           echo "Building ${{ matrix.package.name }}..."
-          nix build --no-link --impure "${{ matrix.package.drv }}^*" --print-build-logs
+          nix build --no-link --impure \
+            ".#nixosConfigurations.loneros.config.environment.systemPackages" \
+            --apply 'pkgs: builtins.head (builtins.filter (p: p ? drvPath && p.drvPath == "${{ matrix.package.drv }}") pkgs)' \
+            --print-build-logs
 
       - name: Log success to summary
         if: success()
