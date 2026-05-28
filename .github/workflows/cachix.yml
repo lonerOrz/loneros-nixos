@@ -86,10 +86,7 @@ jobs:
         id: build
         run: |
           echo "Building ${{ matrix.package.name }}..."
-          nix build --no-link --impure \
-            ".#nixosConfigurations.loneros.config.environment.systemPackages" \
-            --apply 'pkgs: builtins.head (builtins.filter (p: p ? drvPath && p.drvPath == "${{ matrix.package.drv }}") pkgs)' \
-            --print-build-logs
+          nix build --no-link --impure --expr 'let flake = builtins.getFlake (toString ./.); pkgs = flake.nixosConfigurations.loneros.config.environment.systemPackages; target = builtins.filter (p: p ? drvPath && p.drvPath == "${{ matrix.package.drv }}") pkgs; in if target == [] then throw "Package not found" else builtins.head target' --print-build-logs
 
       - name: Log success to summary
         if: success()
