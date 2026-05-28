@@ -36,8 +36,10 @@ jobs:
           echo "PR_TITLE=Update flake.lock - $DATE" >> $GITHUB_ENV
 
       - name: Eval current system (before)
+        env:
+          NIXPKGS_ALLOW_INSECURE: "1"
         run: |
-          OLD_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw)
+          OLD_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw --impure)
           echo "OLD_DRV=$OLD_DRV" >> $GITHUB_ENV
 
       - name: Run flake update script
@@ -48,8 +50,10 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Eval current system (after)
+        env:
+          NIXPKGS_ALLOW_INSECURE: "1"
         run: |
-          NEW_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw)
+          NEW_DRV=$(nix eval .#nixosConfigurations.loneros.config.system.build.toplevel.drvPath --raw --impure)
           echo "NEW_DRV=$NEW_DRV" >> $GITHUB_ENV
 
       - name: Build PR report
