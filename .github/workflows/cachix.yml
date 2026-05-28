@@ -1,4 +1,4 @@
-name: cachix
+name: cachix-matrix
 
 on:
   workflow_dispatch:
@@ -10,16 +10,52 @@ on:
       - main
 
 jobs:
-  build-nixos:
-    name: build nixos & push to cachix
+  detect-missing:
+    name: Detect Missing Packages
     runs-on: ubuntu-latest
+    outputs:
+      missing_packages: ${{ steps.check.outputs.missing }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            sandbox = true
+
+      - name: Setup Nix environment
+        run: |
+          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+          nix-channel --update
+
+      - name: Check Cache and Output Matrix
+        id: check
+        run: |
+          chmod +x .github/script/check-cache.py
+          python .github/script/check-cache.py
+
+  build-matrix:
+    name: Build ${{ matrix.package.name }}
+    needs: detect-missing
+    if: ${{ needs.detect-missing.outputs.missing_packages != '[]' && needs.detect-missing.outputs.missing_packages != '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.detect-missing.outputs.missing_packages) }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0 # 禁用浅克隆
-          submodules: recursive # 确保拉取子模块
+          fetch-depth: 0
+          submodules: recursive
 
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
@@ -30,52 +66,11 @@ jobs:
           swap-size-gb: 20
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             sandbox = true
-            max-jobs = auto
-            trusted-users = root runner
-
-      - name: Check nix config
-        run: nix config show
-
-      # - name: upgrade to Lix
-      #   run: |
-      #     nix --version
-      #     whereis nix
-      #     sudo --preserve-env=PATH /nix/var/nix/profiles/default/bin/nix run \
-      #       --experimental-features "nix-command flakes" \
-      #       --extra-substituters https://cache.lix.systems \
-      #       --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=" \
-      #       'git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.93.3' -- \
-      #       upgrade-nix \
-      #       --extra-substituters https://cache.lix.systems \
-      #       --extra-trusted-public-keys "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
-      #     # Verify Lix installation
-      #     nix --version
-
-      - name: Setup Nix build env
-        run: |
-          sudo mkdir -p /nix-cache /nix-tmp
-          sudo chown -R runner:runner /nix-cache /nix-tmp
-          echo "XDG_CACHE_HOME=/nix-cache" >> $GITHUB_ENV
-          echo "NIX_BUILD_TMPDIR=/nix-tmp" >> $GITHUB_ENV
-          echo "TMPDIR=/nix-tmp" >> $GITHUB_ENV
-
-      - name: Install script env
-        run: |
-          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-          nix-channel --update
-          nix-env -iA nixpkgs.jq
-
-      - name: Check disk usage before build
-        run: |
-          df -h /
-          df -ih /
-          du -sh /nix-cache || true
-          du -sh /nix-tmp || true
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v17
@@ -84,9 +79,20 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: nix-community
 
-      - name: Build and push if not cached
+      - name: Build Path
+        id: build
         run: |
-          echo "🔍 Running check-cache.sh to build and push missing paths..."
-          chmod +x .github/script/check-cache.py
-          python .github/script/check-cache.py
-        shell: bash
+          echo "Building ${{ matrix.package.name }}..."
+          nix build --no-link "${{ matrix.package.drv }}^*" --print-build-logs
+
+      - name: Log success to summary
+        if: success()
+        run: |
+          echo "✅ **Successfully built and pushed**: \`${{ matrix.package.name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "Store path deriver: \`${{ matrix.package.drv }}\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Log failure to summary
+        if: failure()
+        run: |
+          echo "❌ **Failed to build**: \`${{ matrix.package.name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the log of job: **Build ${{ matrix.package.name }}**" >> $GITHUB_STEP_SUMMARY
