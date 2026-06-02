@@ -78,7 +78,7 @@
     };
 
     # personal / custom
-    chaotic.url = "github:lonerOrz/nyx-loner";
+    chaotic.url = "github:chaotic-cx/nyx";
     tuckr-nix.url = "github:lonerOrz/tuckr-nix";
   };
 

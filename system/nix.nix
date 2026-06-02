@@ -53,5 +53,5 @@ in
       options = "--delete-older-than 7d";
     };
   };
-  chaotic.nyx.cache.enable = false;
+  chaotic.nyx.cache.enable = true;
 }
