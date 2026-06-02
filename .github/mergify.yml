@@ -20,7 +20,7 @@ pull_request_rules:
           - label=auto_update_flake
           - label=github_actions
           - check-success=flake check
-          - "check-success~=^cachix-matrix/Build.*"
+          - "check-success~=^Build .*"
     actions:
       merge:
         method: squash
