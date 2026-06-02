@@ -117,6 +117,7 @@ in
       keypunch
       osu-lazer-bin
       inputs.ncm-desktop.packages.${system}.ncm-desktop
+      decibels # music
 
       # electron wrapper
       obsidian-wrapper
