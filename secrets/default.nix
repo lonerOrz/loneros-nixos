@@ -77,6 +77,10 @@ in
               mode = "0600";
               format = "yaml";
             };
+            subscription2 = {
+              mode = "0600";
+              format = "yaml";
+            };
             secret = {
               mode = "0600";
             };
