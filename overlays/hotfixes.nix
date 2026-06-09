@@ -14,7 +14,7 @@ let
   };
 
   hotfixes = {
-    bitwarden-desktop = "500223";
+    # bitwarden-desktop = "500223";
   };
 
 in
