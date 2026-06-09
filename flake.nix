@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     # core infrastructure
@@ -76,7 +76,10 @@
       url = "github:lonerOrz/ncm-desktop";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # personal / custom
     chaotic.url = "github:chaotic-cx/nyx";
     tuckr-nix.url = "github:lonerOrz/tuckr-nix";
