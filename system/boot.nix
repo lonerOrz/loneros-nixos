@@ -31,12 +31,16 @@ in
     # kernelPackages = pkgs.linuxPackages_zen;
     # https://github.com/chaotic-cx/nyx/pull/1176
     kernelPackages =
-      (if lto then pkgs.linuxPackages_cachyos-lto else pkgs.linuxPackages_cachyos-gcc).cachyOverride
-        (
-          lib.optionalAttrs native {
-            mArch = "NATIVE";
-          }
-        );
+      let
+        kp = if lto then pkgs.linuxPackages_cachyos-lto else pkgs.linuxPackages_cachyos-gcc;
+      in
+      kp.cachyOverride (
+        lib.optionalAttrs native {
+          cachyVars = kp.kernel.cachyConfig.cachyVars // {
+            "_processor_opt" = "GENERIC_V3";
+          };
+        }
+      );
     # if nvidia driver broken, try this:
     # .extend (
     #   lpself: lpsuper: {
