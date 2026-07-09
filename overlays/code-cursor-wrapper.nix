@@ -9,7 +9,7 @@ let
   fixedCursor = super.${sftname}.override {
     fetchurl =
       args:
-      if args ? url && builtins.match "\.*/Cursor-${version}-x86_64\\\.AppImage" args.url != null then
+      if args ? url && builtins.match ".*/Cursor-${version}-x86_64\\.AppImage" args.url != null then
         super.fetchurl (
           args
           // {
