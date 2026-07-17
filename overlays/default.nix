@@ -8,7 +8,6 @@ inputs: {
         "obsidian-wrapper.nix"
         "sparkle-wrapper.nix"
         "mpv.nix"
-        "atuin"
         "lib.nix"
         "niri"
       ];
