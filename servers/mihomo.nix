@@ -8,6 +8,54 @@
 let
   proxy-port = "7890";
   ui-port = "9090";
+
+  # 手动直连规则
+  myDirectRules = [
+    # 本地局域网与回环网络
+    "DOMAIN-SUFFIX,local,DIRECT"
+    "DOMAIN-SUFFIX,localhost,DIRECT"
+    "IP-CIDR,127.0.0.0/8,DIRECT"
+    "IP-CIDR,172.16.0.0/12,DIRECT"
+    "IP-CIDR,192.168.0.0/16,DIRECT"
+    "IP-CIDR,10.0.0.0/8,DIRECT"
+    "IP-CIDR,17.0.0.0/8,DIRECT"
+    "IP-CIDR,100.64.0.0/10,DIRECT"
+    "IP-CIDR,224.0.0.0/4,DIRECT"
+    "IP-CIDR6,fe80::/10,DIRECT"
+
+    # 特殊下载进程直连（作为第一层防线。注：TUN system stack 下进程名偶发识别失效，需配合下方的 Tracker MRS 域名规则）
+    "PROCESS-NAME,clash,DIRECT"
+    "PROCESS-NAME,v2ray,DIRECT"
+    "PROCESS-NAME,xray,DIRECT"
+    "PROCESS-NAME,naive,DIRECT"
+    "PROCESS-NAME,trojan,DIRECT"
+    "PROCESS-NAME,trojan-go,DIRECT"
+    "PROCESS-NAME,ss-local,DIRECT"
+    "PROCESS-NAME,privoxy,DIRECT"
+    "PROCESS-NAME,leaf,DIRECT"
+    "PROCESS-NAME,Thunder,DIRECT"
+    "PROCESS-NAME,DownloadService,DIRECT"
+    "PROCESS-NAME-REGEX,.*qbittorrent.*,DIRECT"
+    "PROCESS-NAME,.qbittorrent-wr,DIRECT"
+    "PROCESS-NAME,Transmission,DIRECT"
+    "PROCESS-NAME,fdm,DIRECT"
+    "PROCESS-NAME,aria2c,DIRECT"
+    "PROCESS-NAME,Folx,DIRECT"
+    "PROCESS-NAME,NetTransport,DIRECT"
+    "PROCESS-NAME,uTorrent,DIRECT"
+    "PROCESS-NAME,WebTorrent,DIRECT"
+    "PROCESS-NAME,motrix,DIRECT"
+    "PROCESS-NAME,clash-verge,DIRECT"
+
+    # 特定 BT 追踪站和常用发布站
+    "DOMAIN-SUFFIX,bz.tc,DIRECT"
+    "DOMAIN-SUFFIX,nyaa.si,DIRECT"
+  ];
+
+  # 强制代理规则
+  myProxyRules = [
+    # "DOMAIN-SUFFIX,force-proxy-example.com,🚀 节点选择"
+  ];
 in
 {
   environment.systemPackages = with pkgs; [
@@ -71,6 +119,39 @@ in
         "connection-pool-size" = 256;
         "idle-timeout" = 60;
 
+        #------------------------域名嗅探------------------------#
+        sniffer = {
+          enable = true;
+          "force-dns-mapping" = true;
+          "parse-pure-ip" = true;
+          "override-destination" = true;
+          sniff = {
+            HTTP = {
+              ports = [
+                80
+                "8080-8880"
+              ];
+              "override-destination" = true;
+            };
+            TLS = {
+              ports = [
+                443
+                8443
+              ];
+            };
+            QUIC = {
+              ports = [
+                443
+                8443
+              ];
+            };
+          };
+          "skip-domain" = [
+            "Mijia Cloud"
+            "+.push.apple.com"
+          ];
+        };
+
         #------------------------TUN 配置------------------------#
         tun = {
           enable = true;
@@ -92,6 +173,7 @@ in
           listen = "127.0.0.1:1053";
           "enhanced-mode" = "fake-ip";
           "use-hosts" = true;
+          "respect-rules" = true; # 必须启用，允许 Sniffer 解析出的真实域名重新走一轮分流校验
 
           "default-nameserver" = [
             "223.5.5.5"
@@ -173,7 +255,7 @@ in
           };
         };
 
-        # 代理提供商配置
+        #------------------------订阅提供商配置------------------------#
         "proxy-providers" = {
           "订阅1" = {
             type = "http";
@@ -184,6 +266,10 @@ in
               enable = true;
               url = "https://cp.cloudflare.com/generate_204";
               interval = 1800;
+            };
+            override = {
+              udp = true;
+              "additional-prefix" = "「订阅1」";
             };
           };
           "订阅2" = {
@@ -196,10 +282,14 @@ in
               url = "https://cp.cloudflare.com/generate_204";
               interval = 1800;
             };
+            override = {
+              udp = true;
+              "additional-prefix" = "「订阅2」";
+            };
           };
         };
 
-        # 代理分组
+        #------------------------策略分组------------------------#
         "proxy-groups" = [
           #------------------------基础分组------------------------#
           {
@@ -554,144 +644,133 @@ in
           }
         ];
 
-        # 规则提供商配置
+        #------------------------公共规则提供商 (MRS 标准)------------------------#
         "rule-providers" = {
+          # Meta 官方维护的 Tracker MRS 规则集
+          "public-tracker" = {
+            type = "http";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tracker.mrs";
+            path = "./ruleset/tracker.mrs";
+            interval = 86400;
+          };
           reject = {
             type = "http";
             behavior = "domain";
-            url = "https://testingcf.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt";
-            path = "./ruleset/reject.yaml";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs";
+            path = "./ruleset/reject.mrs";
             interval = 86400;
           };
           privacy = {
             type = "http";
             behavior = "domain";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/Privacy/Privacy.yaml";
-            path = "./ruleset/privacy.yaml";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/privacy.mrs";
+            path = "./ruleset/privacy.mrs";
             interval = 86400;
           };
           "reject-extra" = {
             type = "http";
             behavior = "domain";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/AdvertisingLite/AdvertisingLite.yaml";
-            path = "./ruleset/reject-extra.yaml";
+            format = "mrs";
+            url = "https://github.com/MiHomoer/MiHomo-Hagezi/raw/release/HageziUltimate.mrs";
+            path = "./ruleset/reject-extra.mrs";
             interval = 86400;
           };
           "ai-platforms" = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/OpenAI/OpenAI.yaml";
-            path = "./ruleset/ai-platforms.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs";
+            path = "./ruleset/ai-platforms.mrs";
             interval = 86400;
           };
           streaming = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/GlobalMedia/GlobalMedia.yaml";
-            path = "./ruleset/streaming.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gflow.mrs";
+            path = "./ruleset/streaming.mrs";
             interval = 86400;
           };
           social = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/Telegram/Telegram.yaml";
-            path = "./ruleset/social.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs";
+            path = "./ruleset/social.mrs";
             interval = 86400;
           };
           microsoft = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/Microsoft/Microsoft.yaml";
-            path = "./ruleset/microsoft.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs";
+            path = "./ruleset/microsoft.mrs";
             interval = 86400;
           };
           apple = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/Apple/Apple.yaml";
-            path = "./ruleset/apple.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs";
+            path = "./ruleset/apple.mrs";
             interval = 86400;
           };
           games = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/Game/Game.yaml";
-            path = "./ruleset/games.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games.mrs";
+            path = "./ruleset/games.mrs";
             interval = 86400;
           };
           "dev-platforms" = {
             type = "http";
-            behavior = "classical";
-            url = "https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script/rule/Clash/GitHub/GitHub.yaml";
-            path = "./ruleset/dev-platforms.yaml";
+            behavior = "domain";
+            format = "mrs";
+            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs";
+            path = "./ruleset/dev-platforms.mrs";
             interval = 86400;
           };
         };
 
-        # 规则配置
-        rules = [
-          "RULE-SET,reject,🛑 广告拦截,no-resolve"
-          "RULE-SET,privacy,🛡️ 隐私防护,no-resolve"
-          "RULE-SET,reject-extra,🆎 AdBlock,no-resolve"
+        #------------------------集成路由规则链------------------------#
+        rules =
+          myDirectRules
+          ++ myProxyRules
+          ++ [
+            # 将自动化追踪器规则库置顶直连，用域名匹配保障 TUN 无法溯源进程时的 BT 纯净分流
+            "RULE-SET,public-tracker,DIRECT,no-resolve"
 
-          "DOMAIN-SUFFIX,local,DIRECT"
-          "DOMAIN-SUFFIX,localhost,DIRECT"
-          "IP-CIDR,127.0.0.0/8,DIRECT"
-          "IP-CIDR,172.16.0.0/12,DIRECT"
-          "IP-CIDR,192.168.0.0/16,DIRECT"
-          "IP-CIDR,10.0.0.0/8,DIRECT"
-          "IP-CIDR,17.0.0.0/8,DIRECT"
-          "IP-CIDR,100.64.0.0/10,DIRECT"
-          "IP-CIDR,224.0.0.0/4,DIRECT"
-          "IP-CIDR6,fe80::/10,DIRECT"
+            # 广告、广告变体及隐私屏蔽规则
+            "RULE-SET,reject,🛑 广告拦截,no-resolve"
+            "RULE-SET,privacy,🛡️ 隐私防护,no-resolve"
+            "RULE-SET,reject-extra,🆎 AdBlock,no-resolve"
 
-          "RULE-SET,ai-platforms,🤖 AI平台,no-resolve"
-          "RULE-SET,streaming,🎬 国外媒体,no-resolve"
-          "RULE-SET,social,📱 即时通讯,no-resolve"
-          "RULE-SET,microsoft,Ⓜ️ 微软服务,no-resolve"
-          "RULE-SET,apple,🍎 苹果服务,no-resolve"
-          "RULE-SET,games,🎮 游戏平台,no-resolve"
-          "RULE-SET,dev-platforms,🔧 GitHub,no-resolve"
+            # 各种常用场景及应用公共分流
+            "RULE-SET,ai-platforms,🤖 AI平台,no-resolve"
+            "RULE-SET,streaming,🎬 国外媒体,no-resolve"
+            "RULE-SET,social,📱 即时通讯,no-resolve"
+            "RULE-SET,microsoft,Ⓜ️ 微软服务,no-resolve"
+            "RULE-SET,apple,🍎 苹果服务,no-resolve"
+            "RULE-SET,games,🎮 游戏平台,no-resolve"
+            "RULE-SET,dev-platforms,🔧 GitHub,no-resolve"
 
-          "PROCESS-NAME,clash,DIRECT"
-          "PROCESS-NAME,v2ray,DIRECT"
-          "PROCESS-NAME,xray,DIRECT"
-          "PROCESS-NAME,naive,DIRECT"
-          "PROCESS-NAME,trojan,DIRECT"
-          "PROCESS-NAME,trojan-go,DIRECT"
-          "PROCESS-NAME,ss-local,DIRECT"
-          "PROCESS-NAME,privoxy,DIRECT"
-          "PROCESS-NAME,leaf,DIRECT"
-          "PROCESS-NAME,Thunder,DIRECT"
-          "PROCESS-NAME,DownloadService,DIRECT"
-          "PROCESS-NAME-REGEX,.*qbittorrent.*,DIRECT"
-          "PROCESS-NAME,.qbittorrent-wr,DIRECT"
-          "PROCESS-NAME,Transmission,DIRECT"
-          "PROCESS-NAME,fdm,DIRECT"
-          "PROCESS-NAME,aria2c,DIRECT"
-          "PROCESS-NAME,Folx,DIRECT"
-          "PROCESS-NAME,NetTransport,DIRECT"
-          "PROCESS-NAME,uTorrent,DIRECT"
-          "PROCESS-NAME,WebTorrent,DIRECT"
-          "PROCESS-NAME,motrix,DIRECT"
-          "PROCESS-NAME,clash-verge,DIRECT"
+            # 地理数据库及 IP 段直连规则 (依赖本地数据库，不请求外部 DNS)
+            "GEOIP,LAN,DIRECT,no-resolve"
+            "GEOIP,CN,DIRECT,no-resolve"
+            "GEOIP,private,DIRECT,no-resolve"
+            "GEOIP,telegram,PROXY"
+            "GEOIP,JP,PROXY"
+            "GEOIP,CN,DIRECT"
+            "DST-PORT,80/8080/443/8443,PROXY"
 
-          "GEOIP,LAN,DIRECT,no-resolve"
-          "GEOIP,CN,DIRECT,no-resolve"
-
-          "GEOIP,private,DIRECT,no-resolve"
-          "GEOIP,telegram,PROXY"
-          "GEOIP,JP,PROXY"
-          "GEOIP,CN,DIRECT"
-          "DST-PORT,80/8080/443/8443,PROXY"
-
-          "DOMAIN-SUFFIX,bz.tc,DIRECT"
-          "DOMAIN-SUFFIX,tracker.opentrackr.org,DIRECT"
-          "DOMAIN-SUFFIX,nyaa.si,DIRECT"
-          "DOMAIN-SUFFIX,tracker.torrent.to,DIRECT"
-
-          "MATCH,🚀 节点选择"
-        ];
+            # 兜底规则
+            "MATCH,🚀 节点选择"
+          ];
       }
     );
   };
