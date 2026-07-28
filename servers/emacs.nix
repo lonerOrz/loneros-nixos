@@ -9,6 +9,7 @@
   ];
   services.emacs = {
     enable = true;
+    package = pkgs.emacs-pgtk;
     startWithGraphical = false;
     # defaultEditor = true;
   };
