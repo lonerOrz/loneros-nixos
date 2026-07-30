@@ -174,6 +174,8 @@ in
           "enhanced-mode" = "fake-ip";
           "use-hosts" = true;
           "respect-rules" = true; # 必须启用，允许 Sniffer 解析出的真实域名重新走一轮分流校验
+          "skip-intruder" = true; # 必须与 respect-rules 同时启用
+          "proxy-server-nameserver" = [ "127.0.0.1:1053" ]; # respect-rules 需要指定代理服务器名称服务器
 
           "default-nameserver" = [
             "223.5.5.5"
