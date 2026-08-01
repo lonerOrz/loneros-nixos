@@ -2,7 +2,6 @@
   imports = [
     # ./fuzzel.nix
     # ./ghostty.nix
-    # ./hyprpanel
     # ./hypr
     # ./git.nix
     # ./nvf.nix
