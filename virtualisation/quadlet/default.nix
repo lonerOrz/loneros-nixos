@@ -20,7 +20,7 @@ let
     ];
 
     loneros-wsl = [
-      ./hermes.nix
+      ./forgejo.nix
     ];
   };
 

@@ -56,6 +56,7 @@ in
       mkMihomo = args: mkSecretFile ./${host}/mihomo.yaml args;
       mkCloudflared = args: mkSecretFile ./${host}/cloudflared.yaml args;
       mkK3s = args: mkSecretFile ./${host}/k3s.yaml args;
+      mkForgejo = args: mkSecretFile ./${host}/forgejo.yaml args;
 
       # 批量处理：将 { name = { mode = "..."; }; ... } 转为 { name = mkXxx { mode = "..."; }; ... }
       mkBatch = fn: lib.mapAttrs (_: fn);
@@ -98,6 +99,16 @@ in
               mode = "0600";
             };
             client-key-data = {
+              mode = "0600";
+            };
+          };
+        }
+        // lib.optionalAttrs (config.virtualisation.quadlet.containers or { } ? forgejo) {
+          forgejo = mkBatch mkForgejo {
+            token = {
+              mode = "0400";
+            };
+            uuid = {
               mode = "0600";
             };
           };
