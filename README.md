@@ -80,7 +80,6 @@ This repository is organized as follows:
   - `loneros/`: Main desktop system with NVIDIA GPU support, Hyprland/Niri window managers, and comprehensive application suite.
   - `loneros-wsl/`: WSL-specific configuration for Windows Subsystem for Linux with optimized packages for development.
   - `bootstrap/`: Minimal installation environment with impermanence support, used for system installation and recovery.
-  - `remote-vm/`: Remote virtual machine configuration with secure boot support.
 - `home/`: Manages user-level application configurations and dotfiles.
 - `system/`: Holds global, cross-host system modules.
 - `programs/`: Declaratively manages configurations for various applications.

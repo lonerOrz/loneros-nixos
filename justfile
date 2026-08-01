@@ -36,7 +36,7 @@
 @build-remote target ip:
     nixos-rebuild switch --flake .#{{ target }} --target-host "root@{{ ip }}"
 
-@deploy target="remote-vm":
+@deploy target="bootstrap":
     nix shell github:serokell/deploy-rs --command deploy .#{{ target }} --ssh-user root --profile-user root --skip-checks
 
 @cachix-system target="loneros":
