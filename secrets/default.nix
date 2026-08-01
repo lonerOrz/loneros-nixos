@@ -9,7 +9,65 @@
 }:
 
 let
-  mylib = import ../lib/default.nix { inherit lib pkgs; };
+  providers = [
+    ./modules/cloudflared.nix
+    ./modules/forgejo.nix
+    ./modules/k3s.nix
+    ./modules/mihomo.nix
+  ];
+
+  # 解析 Provider 并注入 host 路径及默认属性
+  loadProvider =
+    providerFile:
+    let
+      providerFn = import providerFile;
+      provider =
+        if builtins.isFunction providerFn then
+          providerFn {
+            inherit
+              config
+              lib
+              pkgs
+              host
+              username
+              ;
+          }
+        else
+          providerFn;
+
+      sopsPath = ./${host} + "/${provider.name}.yaml";
+      hasSopsFile = builtins.pathExists sopsPath;
+
+      shouldEnable = (provider.enable or true) && hasSopsFile;
+    in
+    lib.optionalAttrs shouldEnable (
+      lib.mapAttrs (
+        _: secretOpts:
+        {
+          sopsFile = sopsPath;
+          mode = secretOpts.mode or "0600";
+          owner = secretOpts.owner or "root";
+          group = secretOpts.group or "root";
+        }
+        // (removeAttrs secretOpts [
+          "mode"
+          "owner"
+          "group"
+        ])
+      ) provider.secrets
+    );
+
+  # 主机基础密码 (${host}/secrets.yaml)
+  hostBaseSecretPath = ./${host}/secrets.yaml;
+  hostBaseSecrets = lib.optionalAttrs (builtins.pathExists hostBaseSecretPath) {
+    "${host}/${username}/password" = {
+      sopsFile = hostBaseSecretPath;
+      mode = "0600";
+      owner = config.users.users.${username}.name;
+      group = "root";
+    };
+  };
+
 in
 {
   imports = [
@@ -35,95 +93,5 @@ in
     age.generateKey = true;
   };
 
-  # This is the actual specification of the secrets.
-  sops.secrets =
-    let
-      # 基础构造函数
-      # args@{ mode, owner ? "root", group ? "root", ... } 允许额外字段自动透传
-      mkSecretFile =
-        file:
-        args@{
-          mode,
-          owner ? "root",
-          group ? "root",
-          ...
-        }:
-        {
-          sopsFile = file;
-          inherit mode owner group;
-        };
-
-      mkMihomo = args: mkSecretFile ./${host}/mihomo.yaml args;
-      mkCloudflared = args: mkSecretFile ./${host}/cloudflared.yaml args;
-      mkK3s = args: mkSecretFile ./${host}/k3s.yaml args;
-      mkForgejo = args: mkSecretFile ./${host}/forgejo.yaml args;
-
-      # 批量处理：将 { name = { mode = "..."; }; ... } 转为 { name = mkXxx { mode = "..."; }; ... }
-      mkBatch = fn: lib.mapAttrs (_: fn);
-
-      secretsNested =
-        lib.optionalAttrs (config.services.cloudflared.enable or false) {
-          cloudflared = mkBatch mkCloudflared {
-            cert_pem = {
-              mode = "0600";
-            };
-            tunnel_json = {
-              mode = "0600";
-            };
-          };
-        }
-        // lib.optionalAttrs (config.services.mihomo.enable or false) {
-          mihomo = mkBatch mkMihomo {
-            subscription1 = {
-              mode = "0600";
-              format = "yaml";
-            };
-            subscription2 = {
-              mode = "0600";
-              format = "yaml";
-            };
-            secret = {
-              mode = "0600";
-            };
-          };
-        }
-        // lib.optionalAttrs (config.cluster.k3s.enable or false) {
-          k3s = mkBatch mkK3s {
-            token = {
-              mode = "0400";
-            };
-            certificate-authority-data = {
-              mode = "0600";
-            };
-            client-certificate-data = {
-              mode = "0600";
-            };
-            client-key-data = {
-              mode = "0600";
-            };
-          };
-        }
-        // lib.optionalAttrs (config.virtualisation.quadlet.containers or { } ? forgejo) {
-          forgejo = mkBatch mkForgejo {
-            token = {
-              mode = "0400";
-            };
-            uuid = {
-              mode = "0600";
-            };
-          };
-        }
-        // {
-          ${host} = {
-            ${username} = {
-              password = {
-                mode = "0600";
-                owner = config.users.users.${username}.name;
-              };
-            };
-          };
-        };
-
-    in
-    mylib.flattenAttrset "/" secretsNested;
+  sops.secrets = lib.mkMerge ([ hostBaseSecrets ] ++ (map loadProvider providers));
 }
