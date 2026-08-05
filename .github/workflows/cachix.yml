@@ -132,7 +132,7 @@ jobs:
               key: .name,
               value: (
                 .html_url + (
-                  [ .steps[] | select(.name == "Build Path") | .number ] | first | if . != null then "#step:" + (. | toString) + ":1" else "" end
+                  [ .steps[] | select(.name == "Build Path") | .number ] | first | if . != null then "#step:" + (tostring) + ":1" else "" end
                 )
               )
             }' | jq -s 'from_entries' > job_urls.json
