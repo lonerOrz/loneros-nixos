@@ -43,4 +43,17 @@
     yazi
   ];
 
+  programs = {
+    # 在此添加缺失的动态库
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        glibc
+        icu
+      ];
+    };
+    fish.enable = true;
+    starship.enable = true;
+  };
+
 }

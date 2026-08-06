@@ -5,7 +5,7 @@
   nodeName,
 }:
 {
-  hostname = "192.168.125.130";
+  hostname = "192.168.221.128";
   sshUser = hostConfig.username;
   # This is an optional list of arguments that will be passed to SSH.
   sshOpts = [
