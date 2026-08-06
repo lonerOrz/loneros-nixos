@@ -1,77 +1,97 @@
 {
   inputs,
-  lib,
   ...
 }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
 
-  disko = {
-    # 不要让 Disko 直接管理 NixOS 的 fileSystems.* 配置。
-    # 原因是 Disko 默认通过 GPT 分区表的分区名挂载分区，但分区名很容易被 fdisk 等工具覆盖掉。
-    # 导致一旦新配置部署失败，磁盘镜像自带的旧配置也无法正常启动。
-    # enableConfig = false;
+  disko.devices = {
+    nodev."/" = {
+      fsType = "tmpfs";
+      mountOptions = [
+        "relatime"
+        "mode=755"
+        "nosuid"
+        "nodev"
+      ];
+    };
 
-    devices = {
-      disk.mian = {
-        device = lib.mkDefault "/dev/sda";
-        type = "disk";
-        content = {
-          type = "gpt";
-          partitions = {
-            # GPT 分区表不存在 MBR 格式分区表预留给 MBR 主启动记录的空间，因此这里需要预留
-            # 硬盘开头的 1MB 空间给 MBR 主启动记录，以便后续 Grub 启动器安装到这块空间。
-            boot = {
-              size = "1M";
-              type = "EF02"; # for grub MBR
-              # 优先级设置为最高，保证这块空间在硬盘开头
-              priority = 0;
+    disk.main = {
+      type = "disk";
+      device = "/dev/sda"; # CHANGE-ME
+      content = {
+        type = "gpt";
+        partitions = {
+          ESP = {
+            label = "boot";
+            name = "ESP";
+            size = "1G";
+            type = "EF00";
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+              mountOptions = [
+                "defaults"
+                "umask=0077"
+              ];
             };
+          };
 
-            # ESP 分区，或者说是 boot 分区。这套配置理论上同时支持 EFI 模式和 BIOS 模式启动的
-            esp = {
-              name = "ESP";
-              size = "1G";
-              type = "EF00";
-              # 优先级设置成第二高，保证在剩余空间的前面
-              priority = 1;
-              # 格式化成 FAT32 格式
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [
-                  "fmask=0077"
-                  "dmask=0077"
-                ];
-              };
-            };
-
-            # 存放 NixOS 系统的分区，使用剩下的所有空间
-            root = {
-              size = "100%";
+          luks = {
+            size = "100%";
+            label = "luks";
+            content = {
+              type = "luks";
+              name = "cryptroot";
+              extraOpenArgs = [
+                "--allow-discards"
+                "--perf-no_read_workqueue"
+                "--perf-no_write_workqueue"
+              ];
               content = {
                 type = "btrfs";
-                extraArgs = [ "-f" ];
-
+                extraArgs = [
+                  "-L"
+                  "nixos"
+                  "-f"
+                ];
                 subvolumes = {
-                  "/persist" = {
+                  "@home" = {
+                    mountpoint = "/home";
                     mountOptions = [
-                      "subvol=persist"
+                      "subvol=@home"
+                      "compress=zstd"
                       "noatime"
                     ];
-                    mountpoint = "/persist";
                   };
-
-                  "/nix" = {
+                  "@nix" = {
+                    mountpoint = "/nix";
                     mountOptions = [
-                      "compress-force=zstd"
-                      "nosuid"
-                      "nodev"
-                      "subvol=nix"
+                      "subvol=@nix"
+                      "compress=zstd:1"
                       "noatime"
                     ];
-                    mountpoint = "/nix";
+                  };
+                  "@persist" = {
+                    mountpoint = "/persist";
+                    mountOptions = [
+                      "subvol=@persist"
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                  };
+                  "@log" = {
+                    mountpoint = "/var/log";
+                    mountOptions = [
+                      "subvol=@log"
+                      "compress=zstd"
+                      "noatime"
+                    ];
+                  };
+                  "@swap" = {
+                    mountpoint = "/swap";
+                    swap.swapfile.size = "16G";
                   };
                 };
               };
@@ -79,23 +99,10 @@
           };
         };
       };
-
-      # 由于我开了 Impermanence，需要声明一下根分区是 tmpfs，以便 Disko 生成磁盘镜像时挂载分区
-      nodev."/" = {
-        fsType = "tmpfs";
-        mountOptions = [
-          "relatime"
-          "mode=755"
-          "nosuid"
-          "nodev"
-        ];
-      };
     };
   };
 
-  #Failed assertions:
-  # - environment.persistence:
-  #   All filesystems used for persistent storage must
-  #   have the flag neededForBoot set to true.
-  fileSystems."/nix".neededForBoot = true;
+  # 保证持久化卷与日志卷在系统启动早期被挂载
+  fileSystems."/persist".neededForBoot = true;
+  fileSystems."/var/log".neededForBoot = true;
 }

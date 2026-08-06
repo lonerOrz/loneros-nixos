@@ -1,14 +1,14 @@
 {
-  inputs,
   pkgs,
   modulesPath,
   host,
   username,
   ...
-}@args:
+}:
+
 {
   imports = [
-    (modulesPath + "/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix")
+    # (modulesPath + "/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix")
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
@@ -20,11 +20,18 @@
   ];
 
   boot = {
+    # Resume target for hibernation
+    resumeDevice = "/dev/disk/by-label/nixos";
+
     kernelParams = [
-      # 关闭内核的操作审计功能
+      # Disable kernel audit logging
       "audit=0"
-      # 不要根据 PCIe 地址生成网卡名（例如 enp1s0，对 VPS 没用），而是直接根据顺序生成（例如 eth0）
+
+      # Predictable interface names (e.g. eth0 instead of enp1s0)
       # "net.ifnames=0"
+
+      # Hibernation offset (get via: sudo btrfs inspect-internal map-swapfile /swap/swapfile)
+      "resume_offset=533760"
     ];
 
     initrd = {
@@ -47,8 +54,8 @@
     noto-fonts-cjk-sans
     nerd-fonts.jetbrains-mono # unstable
     nerd-fonts.fira-code # unstable
-    lxgw-wenkai # wenkai mono
-    maple-mono.NF-CN # 开源等宽中文
+    lxgw-wenkai
+    maple-mono.NF-CN
   ];
 
   # Set your time zone.
@@ -57,7 +64,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # 基础网络 + SSH
+  # Networking & SSH
   networking.hostName = "${host}";
   services.openssh = {
     enable = true;
@@ -84,6 +91,7 @@
 
     # Performance tuning
     extraConfig = ''
+
       ClientAliveInterval 60
       ClientAliveCountMax 3
       MaxAuthTries 3
@@ -96,8 +104,8 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.enable = false; # disable firewall
 
-  # security
-  # 允许 wheel 组成员用 sudo
+  # Security
+  # Allow passwordless sudo for user
   security.sudo = {
     enable = true;
     package = pkgs.sudo;
