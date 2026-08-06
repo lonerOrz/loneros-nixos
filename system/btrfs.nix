@@ -1,7 +1,16 @@
 {
+  pkgs,
+  ...
+}:
+
+{
   imports = [
     ../modules/btrfs-auto-scrub.nix
     ../modules/btrfs-auto-balance.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    btrfs-progs
   ];
 
   services.btrfs.autoScrub = {

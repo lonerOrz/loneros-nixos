@@ -56,8 +56,16 @@
         }
 
         # SSH host keys
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_rsa_key"
+        {
+          file = "/etc/ssh/ssh_host_ed25519_key";
+          mode = "0600";
+          configureParent = true;
+        }
+        {
+          file = "/etc/ssh/ssh_host_rsa_key";
+          mode = "0600";
+          configureParent = true;
+        }
       ];
     };
   };

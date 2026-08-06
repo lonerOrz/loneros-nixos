@@ -4,6 +4,7 @@
   username,
   ...
 }:
+
 {
   users = {
     mutableUsers = true;
@@ -31,17 +32,42 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID8G+7o2ha+96GH3l/7c6IYGtUtuQHZCyXlZX8ZYPUhr lonerOrz@qq.com"
       ];
     };
+    defaultUserShell = pkgs.fish;
   };
 
-  environment.systemPackages = with pkgs; [
-    fastfetch
-    git
-    neovim
-    firefox
-    curl
-    wget
-    yazi
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      curl
+      wget
+      eza
+      bat
+      jq
+      yq
+      fd
+      zoxide
+      ripgrep
+      file
+      just
+      nixd
+      dos2unix
+      ffmpeg
+      yt-dlp
+      unzip
+      fzf
+      chafa
+
+      fastfetch
+      neovim
+      yazi
+      tuckr
+      btop
+      cava
+    ]
+    ++ (with pkgs.nur.repos.lonerOrz; [
+      mpv-handler
+      nsearch-tv
+    ]);
 
   programs = {
     # 在此添加缺失的动态库

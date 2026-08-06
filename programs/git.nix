@@ -1,5 +1,5 @@
 {
-  username,
+  pkgs,
   host,
   ...
 }:
@@ -27,4 +27,9 @@ in
       };
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    lazygit
+    gh
+  ];
 }
