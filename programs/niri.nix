@@ -6,7 +6,7 @@
 let
   inherit (import ../hosts/${host}/variables.nix) lto native;
 
-  niri = pkgs.nur.repos.lonerOrz.niri-git.override {
+  niri = pkgs.niri-git.override {
     withDbus = true;
     withSystemd = true;
     withScreencastSupport = true;
