@@ -20,10 +20,8 @@ in
   # users.users.${username}.extraGroups = [ "seat" ];
 
   # Extra Logitech Support
-  hardware.logitech.wireless = {
-    enable = true;
-    enableGraphical = true;
-  };
+  hardware.logitech.wireless.enable = true;
+  programs.solaar.enable = true;
 
   # 扫描仪驱动程序
   #hardware.sane = {
