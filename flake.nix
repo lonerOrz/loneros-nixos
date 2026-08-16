@@ -1,62 +1,113 @@
 {
   description = "loner's NixOS-Hyprland";
 
-  inputs =
-    let
-      followsNixpkgs = url: {
-        inherit url;
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    in
-    {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-      nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
-      nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
-      # core infrastructure
-      flake-parts = followsNixpkgs "github:hercules-ci/flake-parts";
+    # core infrastructure
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
-      # https://github.com/DeterminateSystems/nix-src/releases
-      determinate = followsNixpkgs "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
-      nur = followsNixpkgs "github:nix-community/NUR";
-      home-manager = followsNixpkgs "github:nix-community/home-manager/master";
-      nixos-wsl = followsNixpkgs "github:nix-community/NixOS-WSL/main";
-
-      # formatting / tooling
-      treefmt-nix = followsNixpkgs "github:numtide/treefmt-nix";
-      git-hooks = followsNixpkgs "github:cachix/git-hooks.nix";
-      nix-index-database = followsNixpkgs "github:nix-community/nix-index-database";
-      deploy-rs = followsNixpkgs "github:serokell/deploy-rs";
-
-      # system / persistence / secrets
-      disko = followsNixpkgs "github:nix-community/disko";
-      sops-nix = followsNixpkgs "github:Mic92/sops-nix";
-      preservation = followsNixpkgs "github:nix-community/preservation";
-      nix-flatpak = followsNixpkgs "github:gmodena/nix-flatpak/?ref=latest";
-      quadlet-nix = followsNixpkgs "github:SEIAROTg/quadlet-nix";
-
-      # theming / appearance
-      stylix = followsNixpkgs "github:danth/stylix";
-      distro-grub-themes = followsNixpkgs "github:AdisonCavani/distro-grub-themes";
-      honkai-railway-grub-theme = followsNixpkgs "github:voidlhf/StarRailGrubThemes";
-      silentSDDM = followsNixpkgs "github:uiriansan/SilentSDDM";
-
-      # desktop / wm
-      hyprland = followsNixpkgs "github:hyprwm/Hyprland";
-      quickshell = followsNixpkgs "github:quickshell-mirror/quickshell";
-
-      # browsers
-      firefox = followsNixpkgs "github:nix-community/flake-firefox-nightly";
-      zen-browser = followsNixpkgs "github:0xc000022070/zen-browser-flake";
-
-      # applications
-      spicetify-nix = followsNixpkgs "github:Gerg-L/spicetify-nix";
-      nvf = followsNixpkgs "github:notashelf/nvf";
-      ncm-desktop = followsNixpkgs "github:lonerOrz/ncm-desktop";
-      aagl = followsNixpkgs "github:ezKEa/aagl-gtk-on-nix";
-      # personal / custom
-      chaotic = followsNixpkgs "github:chaotic-cx/nyx";
+    # https://github.com/DeterminateSystems/nix-src/releases
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # formatting / tooling
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    deploy-rs.url = "github:serokell/deploy-rs";
+
+    # system / persistence / secrets
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    preservation.url = "github:nix-community/preservation";
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+
+    # theming / appearance
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # desktop / wm
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    quickshell = {
+      url = "github:quickshell-mirror/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # browsers
+    firefox = {
+      url = "github:nix-community/flake-firefox-nightly";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # applications
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ncm-desktop = {
+      url = "github:lonerOrz/ncm-desktop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # personal / custom
+    chaotic = {
+      url = "github:chaotic-cx/nyx";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
 
   outputs =
     inputs@{
