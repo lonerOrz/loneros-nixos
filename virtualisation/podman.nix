@@ -17,12 +17,14 @@
         virtualisation = {
           containers = {
             enable = true;
-            registries.search = [
-              "docker.1ms.run"
-              "docker.io"
-            ]; # 镜像的仓库列表
-            registries.insecure = [ ]; # 仓库不支持 TLS
-            registries.block = [ ]; # 屏蔽的仓库
+            registries.settings = {
+              search = [
+                "docker.1ms.run"
+                "docker.io"
+              ]; # 镜像的仓库列表
+              insecure = [ ]; # 仓库不支持 TLS
+              block = [ ]; # 屏蔽的仓库
+            };
           };
 
           podman = {
