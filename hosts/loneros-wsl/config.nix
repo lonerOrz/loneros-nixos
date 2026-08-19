@@ -143,7 +143,7 @@ in
     gvfs.enable = true; # 提供虚拟文件系统，允许你通过统一的接口访问网络和远程文件系统
     tumbler.enable = true; # 生成文件缩略图的后台服务
     # https://github.com/nix-community/NixOS-WSL/issues/846
-    envfs.enable = true; # 许通过 /env 路径访问环境变量
+    envfs.enable = false; # 许通过 /env 路径访问环境变量
     dbus.enable = true; # 进程间通信（IPC）的系统总线
 
     # 清理 SSD 上无用数据块的工具
