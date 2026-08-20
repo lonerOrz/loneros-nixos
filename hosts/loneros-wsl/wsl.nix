@@ -100,4 +100,9 @@ in
     enable = true;
     libraries = [ wsl-lib ];
   };
+
+  services.fstrim = {
+    enable = true;
+    interval = lib.mkForce "daily";
+  };
 }
