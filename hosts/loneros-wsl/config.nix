@@ -37,7 +37,7 @@ in
 
     # servers
     ../../servers/atuin.nix
-    ../../servers/emacs.nix
+    # ../../servers/emacs.nix
     # ../../servers/ollama.nix
   ];
 
