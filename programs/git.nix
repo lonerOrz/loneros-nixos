@@ -31,5 +31,6 @@ in
   environment.systemPackages = with pkgs; [
     lazygit
     gh
+    jujutsu
   ];
 }

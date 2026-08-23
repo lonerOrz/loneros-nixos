@@ -78,16 +78,10 @@ in
       file
       dos2unix
       just
-      git
-      yazi
 
       libappindicator # 创建桌面应用程序指示器（即系统托盘图标）的库
       libnotify # 发送桌面通知的库
-      pciutils # 查看和操作 PCI（外设组件互联）设备的命令行工具
-      cpufrequtils # 控制和管理 Linux 系统中 CPU 频率的工具
       btrfs-progs # 提供了创建、管理和修复 Btrfs 文件系统的命令行工具
-      xdg-user-dirs # 创建标准的用户目录结构
-      xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
 
       # grimblast # grim + slurp
       grim # 截图
@@ -96,30 +90,18 @@ in
 
       # audio
       pamixer # 命令行音量控制工具
-      pavucontrol # 图形化音频控制工具
       playerctl # 控制支持 MPRIS 协议的音频和视频播放器的播放行为
 
       cliphist # 管理和查看剪贴板历史记录
       wl-clipboard # 命令行工具，操作剪贴板
 
-      brightnessctl # 控制显示器亮度的命令行工具
-      ddcutil # 外置屏幕亮度调节
-
-      awww # 设置和管理背景壁纸
-      mpvpaper # 动态壁纸
-      wallust # 图片取色
       imagemagick # 图像处理工具
-
-      xarchiver # 文件归档管理器
-      yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
 
       fastfetch
       mpv
       btop
-      nvtopPackages.full # 显卡监控
       cava # 音乐可视化
       kitty # teminal
-      rofi # 应用启动
     ]
   );
 

@@ -48,29 +48,15 @@ in
       # base cli
       net-tools # 网络工具
       translate-shell # 命令行翻译
-      starship
-      stow # dotfiles needed
       tuckr # better than stow
       libcaca # img2txt
       tectonic-unwrapped # TeX/LaTeX 公式渲染
       nixfmt # 官方 nixfmt 风格
       nixd # Nix lsp
-      gh # github cli
-      jujutsu # better than git
-      aircrack-ng # wifi hack
       socat # ipc
       yq # yaml 文件解析
       bintools
-      udiskie # auto mount
-      gpu-screen-recorder # record video
-      satty # Screenshot Annotation
-      gum
-      terminaltexteffects # 终端管道标准文本的视觉特效
-      csound
-      terraform # infrastructure as code
       unixtools.xxd
-      dmenu
-      wtype
 
       # dev package
       appimage-run
@@ -78,30 +64,13 @@ in
 
       # tui
       lazygit
-      bottom
       neovim
       yazi
-      rmpc # music cli
-      rsclock # colock
       asciinema # rec demo.cast
       asciinema-agg # cast -> gif
-      fuzzel
-      networkmanager_dmenu
-      posting # postman tui
-      isd # systemd TUI
-      kmon # 内核编译和管理TUI
 
       # cli tool
-      neo-cowsay # fortune | cowsay --random --rainbow
-      fortune
-      pipes # grep
-      sl
-      figlet # ascii <font>
-      bb
       cmatrix
-      # hollywood # https://github.com/NixOS/nixpkgs/issues/461499
-      lolcat
-      nitch
       xeyes
       ascii-image-converter
     ]
@@ -111,8 +80,6 @@ in
     ]
     ++ (with pkgs.nur.repos.lonerOrz; [
       # NUR packages
-      mpv-handler
-      go-musicfox
       gitfetch
       nsearch-tv
     ]);
