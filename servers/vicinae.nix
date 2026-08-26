@@ -4,7 +4,7 @@
   ...
 }:
 let
-  vicinaePkg = pkgs.nur.repos.lonerOrz.vicinae;
+  vicinaePkg = pkgs.vicinae;
 in
 {
   environment.systemPackages = [
