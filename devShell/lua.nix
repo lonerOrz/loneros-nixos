@@ -4,7 +4,7 @@ pkgs.mkShell {
   buildInputs = (
     with pkgs;
     [
-      lua5_4_compat
+      lua5_5_compat
       luarocks
     ]
   );

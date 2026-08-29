@@ -1,28 +1,31 @@
 { pkgs, ... }:
 
 pkgs.mkShell {
-  buildInputs =
-    with pkgs;
-    [
-      gcc
-      clang-tools
-      cmake
-      codespell
-      conan
-      cppcheck
-      doxygen
-      gtest
-      lcov
-      vcpkg
-      vcpkg-tool
-    ]
-    ++ (if pkgs.stdenv.hostPlatform.system == "aarch64-darwin" then [ ] else [ gdb ]);
+  nativeBuildInputs = with pkgs; [
+    gcc
+    clang-tools
+    cmake
+    ninja
+    gdb
+    codespell
+    conan
+    cppcheck
+    doxygen
+    gtest
+    lcov
+    vcpkg
+    vcpkg-tool
+    pkg-config
+  ];
 
-  nativeBuildInputs = [ pkgs.pkg-config ];
+  buildInputs = with pkgs; [
+    zlib
+    openssl
+  ];
 
   env = {
-    LIBRARY_PATH = "${pkgs.zlib}/lib";
-    CPATH = "${pkgs.zlib.dev}/include";
+    LIBRARY_PATH = "${pkgs.zlib}/lib:${pkgs.openssl}/lib";
+    CPATH = "${pkgs.zlib.dev}/include:${pkgs.openssl.dev}/include";
   };
 
   shellHook = ''

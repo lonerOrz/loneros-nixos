@@ -1,31 +1,33 @@
 {
-
   pkgs,
   gitHooks ? null,
   ...
 }:
 
 let
-  unfreeModules = [ "cuda" ];
+  unfreeModules = [
+    "cuda"
+    "python-cuda"
+  ];
 
-  pkgs-unfree = import pkgs.path {
+  pkgsUnfree = import pkgs.path {
     inherit (pkgs.stdenv.hostPlatform) system;
     config.allowUnfree = true;
   };
 
   shells = {
-    default = [
-      "c"
-    ];
+    default = [ "c" ];
     dev = [
       "node"
       "python"
+      "c"
     ];
     node = [ "node" ];
     python = [ "python" ];
     rust = [ "rust" ];
     lua = [ "lua" ];
     go = [ "go" ];
+    zig = [ "zig" ];
     c = [ "c" ];
     dotnet = [ "dotnet" ];
     cuda = [ "cuda" ];
@@ -44,13 +46,17 @@ let
     let
       customFile = ./${name}.nix;
       hasCustom = builtins.pathExists customFile;
-      modules = map (m: loadModule m pkgs') modList;
-      custom = if hasCustom then import customFile { pkgs = pkgs'; } else { };
+      filteredModList = builtins.filter (m: m != name) modList;
+      modules = map (m: loadModule m pkgs') filteredModList;
+      custom = if hasCustom then loadModule name pkgs' else { };
     in
-    pkgs.mkShell {
-      inputsFrom = modules ++ (custom.inputsFrom or [ ]);
+    pkgs'.mkShell {
+      inputsFrom =
+        modules
+        ++ (custom.inputsFrom or [ ])
+        ++ (if hasCustom && custom ? drvPath then [ custom ] else [ ]);
 
-      buildInputs = (custom.packages or [ ]);
+      buildInputs = custom.packages or (custom.buildInputs or [ ]);
 
       nativeBuildInputs =
         (custom.nativeBuildInputs or [ ]) ++ (if gitHooks != null then gitHooks.enabledPackages else [ ]);
@@ -64,7 +70,6 @@ let
     };
 
 in
-
 builtins.mapAttrs (
-  name: mods: buildShell name mods (if needsUnfree mods then pkgs-unfree else pkgs)
+  name: mods: buildShell name mods (if needsUnfree mods then pkgsUnfree else pkgs)
 ) shells

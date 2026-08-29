@@ -1,14 +1,11 @@
 { pkgs, ... }:
 
 pkgs.mkShell {
-  buildInputs = (
-    with pkgs;
-    [
-      go_1_25
-      gotools # goimports, godoc, etc.
-      golangci-lint # https://github.com/golangci/golangci-lint
-    ]
-  );
+  nativeBuildInputs = with pkgs; [
+    go
+    gotools
+    golangci-lint
+  ];
 
   env = {
     GOPATH = "$HOME/.config/go";

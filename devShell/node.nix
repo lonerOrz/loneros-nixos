@@ -1,13 +1,11 @@
-{ pkgs }:
+{ pkgs, ... }:
 
 pkgs.mkShell {
-  buildInputs = (
-    with pkgs;
-    [
-      nodejs
-      bun
-    ]
-  );
+  nativeBuildInputs = with pkgs; [
+    nodejs
+    corepack
+    bun
+  ];
 
   env = {
     NPM_CONFIG_PREFIX = "$HOME/.npm";

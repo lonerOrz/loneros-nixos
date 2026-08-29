@@ -54,61 +54,6 @@ in
     };
   };
 
-  environment.systemPackages = (
-    with pkgs;
-    [
-      # System Packages
-      curl
-      wget
-      duf # 查看系统磁盘的空间使用情况 better df
-      eza # better ls
-      killall # better kill
-      ntfs3g # mount ntfs 格式磁盘
-      openssl # SSL/TLS 安全通信、证书管理和加密。
-      inxi # 查看和展示系统硬件和软件信息的命令行工具
-      jq # 处理 JSON 数据
-      ffmpeg
-      yt-dlp
-      unzip
-      fzf
-      chafa
-      loupe # rust编译的图片查看器
-      bat # better cat
-      fd # better find
-      zoxide
-      bc
-      duf # better du
-      ripgrep # better grep
-      file
-      dos2unix
-      just
-      git
-
-      libappindicator # 创建桌面应用程序指示器（即系统托盘图标）的库
-      libnotify # 发送桌面通知的库
-      pciutils # 查看和操作 PCI（外设组件互联）设备的命令行工具
-      cpufrequtils # 控制和管理 Linux 系统中 CPU 频率的工具
-      btrfs-progs # 提供了创建、管理和修复 Btrfs 文件系统的命令行工具
-      xdg-user-dirs # 创建标准的用户目录结构
-      xdg-utils # 用于桌面环境集成的工具，提供对桌面环境设置和操作的统一接口
-
-      xarchiver # 文件归档管理器
-      yad # 创建 图形化对话框和窗口 的工具，通常用于 shell 脚本中
-
-      wlogout # Wayland 环境下的注销工具
-      fastfetch
-      mpv
-      btop
-      nvtopPackages.full # 显卡监控
-      cava # 音乐可视化
-      kitty # teminal
-      polkit_gnome # GNOME 风格授权图形界面
-      rofi # 程序启动器
-      swaynotificationcenter # swaync 用于通知
-      waybar # 任务栏
-    ]
-  );
-
   # Services to start
   services = {
     # 禁用 X Server

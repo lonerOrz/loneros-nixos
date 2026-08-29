@@ -10,13 +10,13 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    btrfs-progs
+    btrfs-progs # Btrfs 文件系统工具
   ];
 
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [
-      "/" # 只需要根挂载点,是同一个 Btrfs FS
+      "/"
     ];
     interval = "monthly";
     limit = "25M";

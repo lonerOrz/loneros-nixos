@@ -52,87 +52,85 @@ in
     "minio-2025-10-15T17-29-55Z"
   ];
 
-  # 我自己喜欢全局安装
   environment.systemPackages =
     with pkgs;
     [
-      # base cli
-      net-tools # 网络工具
+      # System Base
+      libappindicator # 系统托盘图标库
+      libnotify # 桌面通知库
+      pciutils # PCI 设备查看
+      cpufrequtils # CPU 频率管理
+      socat # 双向数据流中继
+
+      # CLI
+      curl # HTTP 客户端
+      wget # 文件下载器
+      git # 版本控制
+      jq # JSON 处理
+      yq # YAML 处理
+      eza # better ls
+      bat # better cat
+      fd # better find
+      ripgrep # better grep
+      duf # better df/du
+      killall # 按名杀进程
+      zoxide # 智能目录跳转
+      fzf # 模糊搜索
+      inxi # 硬件信息概览
+      fastfetch # 系统信息展示
+      file # 文件类型识别
+      bc # 命令行计算器
+      dos2unix # 换行符转换
+      unzip # 解压 zip
+      ffmpeg # 音视频处理
+      yt-dlp # 视频下载
+      chafa # 终端图片渲染
+      ascii-image-converter # 图片转 ASCII
+      libcaca # 图片转彩色字符
       translate-shell # 命令行翻译
-      starship
-      stow # dotfiles needed
-      tuckr # better than stow
-      libcaca # img2txt
-      tectonic-unwrapped # TeX/LaTeX 公式渲染
-      nixfmt # 官方 nixfmt 风格
-      nixd # Nix lsp
-      gh # github cli
-      jujutsu # better than git
-      aircrack-ng # wifi hack
-      socat # ipc
-      yq # yaml 文件解析
-      bintools
-      udiskie # auto mount
-      gum
-      terminaltexteffects # 终端管道标准文本的视觉特效
-      csound
-      terraform # infrastructure as code
-      unixtools.xxd
-      dmenu
-      wtype
-      protobuf
+      tuckr # dotfile 管理
+      wtype # Wayland 模拟键入
+      net-tools # 经典网络工具
+      gum # Shell 脚本交互组件
+      terminaltexteffects # 终端文本特效
+      xeyes # X11 窗口测试
 
-      # tui
-      lazygit
-      neovim
-      yazi
-      rsclock # colock
-      asciinema # rec demo.cast
-      asciinema-agg # cast -> gif
-      fuzzel
-      posting # postman tui
-      isd # systemd TUI
-      kmon # 内核编译和管理TUI
+      # TUI
+      btop # 系统资源监控
+      nvtopPackages.full # GPU 监控
+      cava # 音频可视化
+      yazi # 文件管理器
+      evil-helix_git # Helix + Vim 键位
+      rsclock # 终端时钟
+      asciinema # 终端录制
+      asciinema-agg # cast 转 gif
+      isd # systemd 管理
+      kmon # 内核模块管理
 
-      #gui
-      qbittorrent-enhanced # qbee
-      motrix
-      localsend
-      ghostty_git
-      foot
-      zed-editor
-      telegram-desktop
-      stable.rustdesk-flutter
-      evil-helix_git # introduces Vim keybindings and more
-      element-desktop
-      foliate # epub reader
-      bitwarden-desktop # 密码管理器
-      kazumi # 番剧
-      libreoffice-fresh
-      # librecad # CAD
-      # (dbeaver-bin.override { override_xmx = "1024m"; }) # 数据库管理
-      door-knocker # protal check
-      feishu
-      blanket # 白噪音
-      keypunch
-      osu-lazer-bin
-      inputs.ncm-desktop.packages.${system}.ncm-desktop
-      decibels # music
-
-      # electron wrapper
-      obsidian-wrapper
-      vscodium-wrapper
-
-      # cli tool
-      neo-cowsay # fortune | cowsay --random --rainbow
-      fortune
-      pipes # grep
-      figlet # ascii <font>
-      cmatrix
-      hollywood
-      lolcat
-      xeyes
-      ascii-image-converter
+      # GUI
+      kitty # 终端模拟器
+      ghostty # 终端模拟器
+      rofi # 应用启动器
+      dmenu # 极简菜单启动器
+      waybar # 状态栏
+      swaynotificationcenter # 通知中心
+      wlogout # 注销菜单
+      yad # Shell 图形对话框
+      mpv # 视频播放器
+      loupe # 图片查看器
+      xarchiver # 归档管理器
+      zed-editor # 代码编辑器
+      vscodium-wrapper # VS Code 开源版
+      obsidian-wrapper # 笔记工具
+      telegram-desktop # 即时通讯
+      element-desktop # Matrix 客户端
+      qbittorrent-enhanced # BT 下载
+      localsend # 局域网文件传输
+      libreoffice-stable # 办公套件
+      door-knocker # XDG Portal 检测
+      keypunch # 打字练习
+      osu-lazer-bin # 音游
+      inputs.ncm-desktop.packages.${system}.ncm-desktop # 网易云音乐
     ]
     ++ [
       # custom packages
@@ -140,14 +138,11 @@ in
     ]
     ++ (with pkgs.nur.repos.lonerOrz; [
       # NUR packages
-      mpv-handler
       go-musicfox
       nsearch-tv
       chameleos
       wayclick
       sonar
-
-      biu
       helium
       (noctalia.override {
         withNative = native;
