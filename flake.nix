@@ -60,8 +60,14 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
-    honkai-railway-grub-theme.url = "github:voidlhf/StarRailGrubThemes";
+    distro-grub-themes = {
+      url = "github:AdisonCavani/distro-grub-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    honkai-railway-grub-theme = {
+      url = "github:voidlhf/StarRailGrubThemes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
