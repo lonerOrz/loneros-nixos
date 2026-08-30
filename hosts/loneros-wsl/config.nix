@@ -41,70 +41,6 @@ in
     # ../../servers/ollama.nix
   ];
 
-  # 管理 GPG 密钥
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  # ssh
-  services.openssh.enable = true;
-
-  environment.systemPackages = (
-    with pkgs;
-    [
-      # System Packages
-      curl
-      wget
-      duf # 查看系统磁盘的空间使用情况 better df
-      eza # better ls
-      killall # better kill
-      ntfs3g # mount ntfs 格式磁盘
-      openssl # SSL/TLS 安全通信、证书管理和加密。
-      inxi # 查看和展示系统硬件和软件信息的命令行工具
-      jq # 处理 JSON 数据
-      ffmpeg
-      yt-dlp
-      unzip
-      fzf
-      chafa
-      loupe # rust编译的图片查看器
-      bat # better cat
-      fd # better find
-      zoxide
-      bc
-      duf # better du
-      ripgrep # better grep
-      file
-      dos2unix
-      just
-
-      libappindicator # 创建桌面应用程序指示器（即系统托盘图标）的库
-      libnotify # 发送桌面通知的库
-      btrfs-progs # 提供了创建、管理和修复 Btrfs 文件系统的命令行工具
-
-      # grimblast # grim + slurp
-      grim # 截图
-      slurp # 选择
-      swappy # 截图注释
-
-      # audio
-      pamixer # 命令行音量控制工具
-      playerctl # 控制支持 MPRIS 协议的音频和视频播放器的播放行为
-
-      cliphist # 管理和查看剪贴板历史记录
-      wl-clipboard # 命令行工具，操作剪贴板
-
-      imagemagick # 图像处理工具
-
-      fastfetch
-      mpv
-      btop
-      cava # 音乐可视化
-      kitty # teminal
-    ]
-  );
-
   # Services to start
   services = {
     # 禁用 X Server
@@ -116,23 +52,11 @@ in
       };
     };
 
-    # 监控硬盘健康的工具
-    smartd = {
-      enable = false;
-      autodetect = true;
-    };
-
     gvfs.enable = true; # 提供虚拟文件系统，允许你通过统一的接口访问网络和远程文件系统
     tumbler.enable = true; # 生成文件缩略图的后台服务
     # https://github.com/nix-community/NixOS-WSL/issues/846
     envfs.enable = false; # 许通过 /env 路径访问环境变量
     dbus.enable = true; # 进程间通信（IPC）的系统总线
-
-    # 清理 SSD 上无用数据块的工具
-    fstrim = {
-      enable = true;
-      interval = "weekly";
-    };
 
     libinput.enable = true; # 输入设备驱动
     fwupd.enable = true; # 管理和更新硬件固件

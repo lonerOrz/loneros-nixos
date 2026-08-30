@@ -9,7 +9,7 @@
   ];
   services.emacs = {
     enable = true;
-    package = pkgs.emacs-pgtk;
+    package = pkgs.emacs31-nox;
     startWithGraphical = false;
     # defaultEditor = true;
   };
