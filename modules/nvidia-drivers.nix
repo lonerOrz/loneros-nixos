@@ -53,11 +53,37 @@ let
   };
 
   currentVersion = config.boot.kernelPackages.nvidiaPackages.${nvType}.version;
-  nvidiaPackage =
+
+  rawPackage =
     if builtins.hasAttr currentVersion nvidiaDrivers then
       config.boot.kernelPackages.nvidiaPackages.mkDriver (nvidiaDrivers.${currentVersion})
     else
       config.boot.kernelPackages.nvidiaPackages.${nvType};
+
+  # 对闭源内核模块包清除引用限制
+  patchKernelModule =
+    pkg:
+    if pkg != null && lib.isDerivation pkg then
+      pkg.overrideAttrs (_: {
+        allowedReferences = null;
+        allowedRequisites = null;
+        disallowedReferences = [ ];
+        disallowedRequisites = [ ];
+      })
+    else
+      pkg;
+
+  nvidiaPackage =
+    (rawPackage.overrideAttrs (_: {
+      allowedReferences = null;
+      allowedRequisites = null;
+      disallowedReferences = [ ];
+      disallowedRequisites = [ ];
+    }))
+    // {
+      mod = patchKernelModule rawPackage.mod;
+      open = patchKernelModule rawPackage.open;
+    };
 in
 {
   options.drivers.nvidia = {
