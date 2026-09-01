@@ -37,8 +37,8 @@ in
 
     # servers
     ../../servers/atuin.nix
-    # ../../servers/emacs.nix
     # ../../servers/ollama.nix
+    # ../../servers/emacs.nix
   ];
 
   # Services to start
