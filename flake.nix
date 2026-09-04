@@ -73,13 +73,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # desktop / wm
+    # wm
     hyprland = {
       url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    quickshell = {
-      url = "github:quickshell-mirror/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

@@ -14,13 +14,6 @@
       --flake .#{{ target }} \
       root@{{ ip }}
 
-@test-install-remote target ip:
-    nix --experimental-features "nix-command flakes" run github:nix-community/nixos-anywhere -- \
-      -i ~/.ssh/id_ed25519 \
-      --vm-test \
-      --flake .#{{ target }} \
-      root@{{ ip }}
-
 @update:
     nix flake update
 

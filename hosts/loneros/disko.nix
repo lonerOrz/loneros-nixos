@@ -18,7 +18,7 @@
 
     disk.main = {
       type = "disk";
-      device = "/dev/sda"; # /dev/sda 或 /dev/nvme0n1
+      device = "/dev/nvme0n1"; # /dev/sda 或 /dev/nvme0n1
       content = {
         type = "gpt";
         partitions = {

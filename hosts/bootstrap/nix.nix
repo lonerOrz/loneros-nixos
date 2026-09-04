@@ -6,6 +6,7 @@
 {
   nixpkgs.config = {
     allowUnfree = true;
+    allowBroken = true;
   };
 
   nix = {
@@ -34,9 +35,5 @@
       options = "--delete-older-than 7d";
     };
   };
-
-  # 禁用远程机器的签名验证,(懒得给本地构建路径签名)
-  # nix.settings.require-sigs = false;
-  # 强制使用本地 cahe
-  # nix.settings.substituters = lib.mkForce [ "http://192.168.2.6:5000" ];
+  chaotic.nyx.cache.enable = false;
 }

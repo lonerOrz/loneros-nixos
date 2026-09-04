@@ -8,14 +8,14 @@
 let
   containerMap = {
     loneros = [
-      ./aria2.nix
+      # ./aria2.nix
       ./filegator.nix
-      ./glance.nix
-      ./mysql8.nix
+      # ./glance.nix
+      # ./mysql8.nix
       ./peerbanhelper.nix
       ./qinglong.nix
-      ./reader.nix
-      ./redis.nix
+      # ./reader.nix
+      # ./redis.nix
       ./uptime.nix
     ];
 

@@ -1,11 +1,9 @@
 {
   lib,
   pkgs,
-  inputs,
   ...
 }:
 let
-  system = pkgs.stdenv.hostPlatform.system;
   extraQmlPath = lib.makeSearchPath "lib/qt-6/qml" (
     with pkgs;
     [
@@ -24,13 +22,7 @@ let
     ];
   };
 
-  # baseQuickshell = inputs.quickshell.packages.${system}.default.override {
-  #   withX11 = false;
-  # };
-
-  baseQuickshell = pkgs.nur.repos.lonerOrz.noctalia-qs; # for noctalia
-
-  # baseQuickshell = pkgs.quickshell; # realease version
+  baseQuickshell = pkgs.quickshell; # realease version
 
   quickshellWrapped =
     pkgs.runCommand "quickshell-wrapped"

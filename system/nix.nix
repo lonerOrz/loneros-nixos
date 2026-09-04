@@ -18,7 +18,7 @@ in
     # package = inputs.determinate.packages.${system}.default;
     package = pkgs.lix;
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-    channel.enable = true;
+    channel.enable = false;
     extraOptions = ''
       warn-dirty = false
     '';

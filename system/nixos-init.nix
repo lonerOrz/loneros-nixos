@@ -1,4 +1,5 @@
 {
+  # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ni/nixos-init/README.md
   # 先决条件
   # 1. systemd initrd — nixos-init 基于 systemd service 机制
   # 2. etc overlay — nixos-init 依赖 bootspec 提供的 etc 路径信息

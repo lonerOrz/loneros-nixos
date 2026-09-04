@@ -14,6 +14,9 @@ in
       "ollama"
       # "flatpak"
       "jellyfin"
+      "mpd"
+      "sunshine"
+      "vicinae"
     ];
   };
 }

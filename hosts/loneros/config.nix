@@ -1,13 +1,9 @@
 {
   lib,
   host,
-  pkgs,
-  inputs,
-  stable,
   ...
 }:
 let
-  system = pkgs.stdenv.hostPlatform.system;
   inherit (import ./variables.nix) keyboardLayout;
 
   clusterDir = ../../cluster;
@@ -20,7 +16,9 @@ let
 in
 {
   imports = [
-    ./hardware.nix
+    (if builtins.pathExists ./hardware.nix then ./hardware.nix else { })
+    ./disko.nix
+    ./persist.nix
     ./users.nix
     # ./home.nix
     ./dev.nix

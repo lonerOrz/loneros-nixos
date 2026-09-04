@@ -7,7 +7,6 @@
 {
   environment.systemPackages = with pkgs; [
     gpu-screen-recorder
-    slurp
   ];
 
   security.wrappers = {
