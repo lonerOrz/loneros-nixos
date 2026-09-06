@@ -23,7 +23,6 @@
     preserveAt."/persist" = {
       directories = [
         "/etc/NetworkManager/system-connections"
-        "/etc/ssh"
         "/etc/nix/inputs"
         # "/etc/agenix" # age 密钥
 
@@ -63,6 +62,17 @@
         {
           file = "/etc/machine-id";
           inInitrd = true;
+        }
+        # https://nix-community.github.io/preservation/impermanence-migration.html#handling-of-existing-state
+        {
+          file = "/etc/ssh/ssh_host_rsa_key";
+          how = "symlink";
+          configureParent = true;
+        }
+        {
+          file = "/etc/ssh/ssh_host_ed25519_key";
+          how = "symlink";
+          configureParent = true;
         }
       ];
 
