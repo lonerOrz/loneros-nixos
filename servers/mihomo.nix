@@ -2,29 +2,63 @@
   lib,
   pkgs,
   config,
-  username,
   ...
 }:
-let
-  proxy-port = "7890";
-  ui-port = "9090";
 
-  # 手动直连规则
-  myDirectRules = [
-    # 本地局域网与回环网络
+let
+  # ============================================================
+  # 基础参数
+  # ============================================================
+
+  proxy-port = 7890;
+  ui-port = 9090;
+
+  # ============================================================
+  # MRS helpers
+  # ============================================================
+
+  mrsDomain = name: url: {
+    type = "http";
+    behavior = "domain";
+    format = "mrs";
+    path = "./ruleset/${name}.mrs";
+    interval = 86400;
+    inherit url;
+  };
+
+  mrsIP = name: url: {
+    type = "http";
+    behavior = "ipcidr";
+    format = "mrs";
+    path = "./ruleset/${name}.mrs";
+    interval = 86400;
+    inherit url;
+  };
+
+  # ============================================================
+  # 直连规则
+  # ============================================================
+
+  directRules = [
+    # LAN
     "DOMAIN-SUFFIX,local,DIRECT"
     "DOMAIN-SUFFIX,localhost,DIRECT"
-    "IP-CIDR,127.0.0.0/8,DIRECT"
-    "IP-CIDR,172.16.0.0/12,DIRECT"
-    "IP-CIDR,192.168.0.0/16,DIRECT"
-    "IP-CIDR,10.0.0.0/8,DIRECT"
-    "IP-CIDR,17.0.0.0/8,DIRECT"
-    "IP-CIDR,100.64.0.0/10,DIRECT"
-    "IP-CIDR,224.0.0.0/4,DIRECT"
-    "IP-CIDR6,fe80::/10,DIRECT"
+    "DOMAIN-SUFFIX,lan,DIRECT"
+    "DOMAIN-SUFFIX,home.arpa,DIRECT"
 
-    # 特殊下载进程直连（作为第一层防线。注：TUN system stack 下进程名偶发识别失效，需配合下方的 Tracker MRS 域名规则）
+    "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve"
+    "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve"
+    "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve"
+    "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve"
+    "IP-CIDR,100.64.0.0/10,DIRECT,no-resolve"
+    "IP-CIDR,169.254.0.0/16,DIRECT,no-resolve"
+
+    "IP-CIDR6,::1/128,DIRECT,no-resolve"
+    "IP-CIDR6,fe80::/10,DIRECT,no-resolve"
+
+    # Proxy
     "PROCESS-NAME,clash,DIRECT"
+    "PROCESS-NAME,mihomo,DIRECT"
     "PROCESS-NAME,v2ray,DIRECT"
     "PROCESS-NAME,xray,DIRECT"
     "PROCESS-NAME,naive,DIRECT"
@@ -33,112 +67,219 @@ let
     "PROCESS-NAME,ss-local,DIRECT"
     "PROCESS-NAME,privoxy,DIRECT"
     "PROCESS-NAME,leaf,DIRECT"
-    "PROCESS-NAME,Thunder,DIRECT"
-    "PROCESS-NAME,DownloadService,DIRECT"
-    "PROCESS-NAME-REGEX,.*qbittorrent.*,DIRECT"
-    "PROCESS-NAME,.qbittorrent-wr,DIRECT"
-    "PROCESS-NAME,Transmission,DIRECT"
-    "PROCESS-NAME,fdm,DIRECT"
+
+    # Download
     "PROCESS-NAME,aria2c,DIRECT"
+    "PROCESS-NAME,Transmission,DIRECT"
+    "PROCESS-NAME,uTorrent,DIRECT"
+    "PROCESS-NAME,qbittorrent,DIRECT"
+    "PROCESS-NAME,fdm,DIRECT"
     "PROCESS-NAME,Folx,DIRECT"
     "PROCESS-NAME,NetTransport,DIRECT"
-    "PROCESS-NAME,uTorrent,DIRECT"
     "PROCESS-NAME,WebTorrent,DIRECT"
     "PROCESS-NAME,motrix,DIRECT"
+    "PROCESS-NAME,Thunder,DIRECT"
+    "PROCESS-NAME,DownloadService,DIRECT"
     "PROCESS-NAME,clash-verge,DIRECT"
+    "PROCESS-NAME-REGEX,.*qbittorrent.*,DIRECT"
 
-    # 特定 BT 追踪站和常用发布站
+    # Tracker
     "DOMAIN-SUFFIX,bz.tc,DIRECT"
     "DOMAIN-SUFFIX,nyaa.si,DIRECT"
   ];
 
-  # 强制代理规则
-  myProxyRules = [
-    # "DOMAIN-SUFFIX,force-proxy-example.com,🚀 节点选择"
+  # ============================================================
+  # 强制代理
+  # ============================================================
+
+  proxyRules = [
+    # "DOMAIN-SUFFIX,example.com,节点选择"
   ];
+
+  # ============================================================
+  # AI 补充规则
+  # ============================================================
+
+  aiExtra = {
+    type = "inline";
+    behavior = "classical";
+    format = "yaml";
+
+    payload = [
+      "DOMAIN-SUFFIX,claude.ai"
+      "DOMAIN-SUFFIX,anthropic.com"
+
+      "DOMAIN-SUFFIX,gemini.google.com"
+      "DOMAIN-SUFFIX,aistudio.google.com"
+      "DOMAIN-SUFFIX,ai.google.dev"
+      "DOMAIN-SUFFIX,generativelanguage.googleapis.com"
+
+      "DOMAIN-SUFFIX,copilot.microsoft.com"
+      "DOMAIN-SUFFIX,copilot.cloud.microsoft"
+
+      "DOMAIN-SUFFIX,perplexity.ai"
+
+      "DOMAIN-SUFFIX,grok.com"
+      "DOMAIN-SUFFIX,x.ai"
+
+      "DOMAIN-SUFFIX,huggingface.co"
+      "DOMAIN-SUFFIX,character.ai"
+
+      "DOMAIN-SUFFIX,mistral.ai"
+      "DOMAIN-SUFFIX,cohere.com"
+
+      "DOMAIN-SUFFIX,meta.ai"
+    ];
+  };
+
 in
 {
+  # ============================================================
+  # Packages
+  # ============================================================
+
   environment.systemPackages = with pkgs; [
     sparkle-wrapper
   ];
 
+  # ============================================================
+  # sparkle
+  # ============================================================
+
   security.wrappers.sparkle = {
     owner = "root";
     group = "root";
+
     capabilities = "cap_net_bind_service,cap_net_raw,cap_net_admin=+ep";
+
     source = "${lib.getExe pkgs.sparkle}";
   };
+
+  # ============================================================
+  # Mihomo
+  # ============================================================
 
   services.mihomo = {
     enable = true;
     package = pkgs.mihomo;
+
     configFile = config.sops.templates."mihomo.yaml".path;
-    webui = pkgs.metacubexd; # clash-dashboard yacd metacubexd
+
+    webui = pkgs.metacubexd;
+
     tunMode = true;
+
     extraOpts = "-m";
   };
 
+  # 非 TUN 模式使用
   networking.proxy.default = lib.mkIf (
     config.services.mihomo.enable && !config.services.mihomo.tunMode
-  ) "http://127.0.0.1:${proxy-port}";
+  ) "http://127.0.0.1:${toString proxy-port}";
+
+  # ============================================================
+  # Mihomo config
+  # ============================================================
 
   sops.templates."mihomo.yaml" = {
     owner = "root";
     mode = "0600";
+
     content = builtins.readFile (
       (pkgs.formats.yaml { }).generate "mihomo-raw.yaml" {
-        #------------------------基础配置------------------------#
-        "mixed-port" = lib.toInt proxy-port; # 端口
-        "geodata-mode" = true;
-        "geo-auto-update" = true;
-        "geo-update-interval" = 24;
-        "geox-url" = {
-          geosite = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat";
-          geoip = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat";
-          mmdb = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb";
-          asn = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb";
-        };
-        "tcp-concurrent" = true;
-        "unified-delay" = true;
-        "allow-lan" = true;
-        "bind-address" = "*";
-        "find-process-mode" = "strict";
-        ipv6 = true;
+
+        # ======================================================
+        # Basic
+        # ======================================================
+
+        "mixed-port" = proxy-port;
+
         mode = "rule";
         "log-level" = "info";
 
-        # 外部控制设置
-        "external-controller" = "0.0.0.0:${ui-port}";
-        secret = config.sops.placeholder."mihomo/secret";
+        ipv6 = true;
 
-        #------------------------性能调优------------------------#
-        "tcp-concurrent-users" = 64;
+        "allow-lan" = true;
+        "bind-address" = "*";
+
+        "find-process-mode" = "strict";
+
+        "tcp-concurrent" = true;
+        "unified-delay" = true;
+
         "keep-alive-interval" = 15;
+
         "inbound-tfo" = true;
         "outbound-tfo" = true;
+
         "connection-pool-size" = 256;
         "idle-timeout" = 60;
 
-        #------------------------域名嗅探------------------------#
+        "tcp-concurrent-users" = 64;
+
+        # ======================================================
+        # Profile
+        # ======================================================
+
+        profile = {
+          "store-selected" = true;
+          "store-fake-ip" = true;
+        };
+
+        # ======================================================
+        # GeoData
+        # ======================================================
+
+        "geodata-mode" = true;
+        "geo-auto-update" = true;
+        "geo-update-interval" = 24;
+
+        "geox-url" = {
+          geosite = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat";
+
+          geoip = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat";
+
+          mmdb = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb";
+
+          asn = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb";
+        };
+
+        # ======================================================
+        # Controller
+        # ======================================================
+
+        "external-controller" = "0.0.0.0:${toString ui-port}";
+
+        secret = config.sops.placeholder."mihomo/secret";
+
+        # ======================================================
+        # Sniffer
+        # ======================================================
+
         sniffer = {
           enable = true;
+
           "force-dns-mapping" = true;
           "parse-pure-ip" = true;
           "override-destination" = true;
+
           sniff = {
             HTTP = {
               ports = [
                 80
                 "8080-8880"
               ];
+
               "override-destination" = true;
             };
+
             TLS = {
               ports = [
                 443
                 8443
               ];
             };
+
             QUIC = {
               ports = [
                 443
@@ -146,84 +287,148 @@ in
               ];
             };
           };
+
           "skip-domain" = [
             "Mijia Cloud"
             "+.push.apple.com"
           ];
         };
 
-        #------------------------TUN 配置------------------------#
+        # ======================================================
+        # TUN
+        # ======================================================
+
         tun = {
           enable = true;
+
           stack = "system";
+
           "auto-route" = true;
           "auto-detect-interface" = true;
+
           "dns-hijack" = [
             "any:53"
             "tcp://any:53"
           ];
+
           "strict-route" = false;
         };
 
-        #------------------------DNS 配置------------------------#
+        # ======================================================
+        # DNS
+        # ======================================================
+
         dns = {
           enable = true;
-          "prefer-h3" = true;
+
+          "prefer-h3" = false;
+
           ipv6 = false;
+
           listen = "127.0.0.1:1053";
+
           "enhanced-mode" = "fake-ip";
+
+          "fake-ip-range" = "198.18.0.1/16";
+
+          "fake-ip-filter-mode" = "blacklist";
+
           "use-hosts" = true;
-          "respect-rules" = true; # 必须启用，允许 Sniffer 解析出的真实域名重新走一轮分流校验
-          "skip-intruder" = true; # 必须与 respect-rules 同时启用
-          "proxy-server-nameserver" = [ "127.0.0.1:1053" ]; # respect-rules 需要指定代理服务器名称服务器
+          "use-system-hosts" = true;
+
+          "respect-rules" = true;
+
+          "skip-intruder" = true;
+
+          # 节点域名解析
+          "proxy-server-nameserver" = [
+            "223.5.5.5"
+            "119.29.29.29"
+          ];
 
           "default-nameserver" = [
             "223.5.5.5"
             "119.29.29.29"
           ];
 
+          # DNS policy
           "nameserver-policy" = {
-            "geosite:cn" = "https://dns.alidns.com/dns-query";
-            "geosite:google" = "https://dns.google/dns-query";
-            "geosite:github" = "https://dns.google/dns-query";
-            "geosite:telegram" = "https://cloudflare-dns.com/dns-query";
-            "geosite:twitter" = "https://cloudflare-dns.com/dns-query";
-            "geosite:netflix" = "https://cloudflare-dns.com/dns-query";
-            "geosite:youtube" = "https://dns.google/dns-query";
+            "rule-set:cn_domain" = [
+              "https://dns.alidns.com/dns-query"
+              "https://doh.pub/dns-query"
+            ];
+
+            "rule-set:google_domain" = [
+              "https://dns.google/dns-query"
+            ];
+
+            "rule-set:github_domain" = [
+              "https://dns.google/dns-query"
+            ];
+
+            "rule-set:telegram_domain" = [
+              "https://cloudflare-dns.com/dns-query"
+            ];
+
+            "rule-set:twitter_domain" = [
+              "https://cloudflare-dns.com/dns-query"
+            ];
+
+            "rule-set:netflix_domain" = [
+              "https://cloudflare-dns.com/dns-query"
+            ];
+
+            "rule-set:youtube_domain" = [
+              "https://dns.google/dns-query"
+            ];
           };
 
-          "fake-ip-range" = "198.18.0.1/16";
+          # Fake-IP
           "fake-ip-filter" = [
             "*.lan"
-            "localhost.ptlogin2.qq.com"
-            "+.m2m"
-            "injections.adguard.org"
-            "local.adguard.org"
-            "+.bogon"
+
             "+.local"
             "+.internal"
             "+.localdomain"
-            "home.arpa"
+            "+.home.arpa"
+
+            "+.m2m"
+            "+.bogon"
+
+            "localhost.ptlogin2.qq.com"
+
+            "injections.adguard.org"
+            "local.adguard.org"
+
             "127.0.0.1.sslip.io"
             "127.atlas.skk.moe"
+
             "dns.msftncsi.com"
+
             "*.srv.nintendo.net"
             "*.stun.playstation.net"
+
             "xbox.*.microsoft.com"
             "*.xboxlive.com"
+
             "*.turn.twilio.com"
             "*.stun.twilio.com"
+
             "stun.syncthing.net"
             "stun.*"
+
             "*.sslip.io"
             "*.nip.io"
+
             "imap.gmail.com"
             "smtp.gmail.com"
             "pop.gmail.com"
             "mail.google.com"
+
             "accounts.google.com"
             "oauth2.googleapis.com"
             "www.googleapis.com"
+
             "*.torrent"
             "*.announce"
             "*.tracker"
@@ -232,546 +437,567 @@ in
           nameserver = [
             "223.5.5.5"
             "119.29.29.29"
-            "https://doh.pub/dns-query#h3=true"
-            "https://dns.alidns.com/dns-query#h3=true"
-            "tls://223.5.5.5:853"
+
+            "https://doh.pub/dns-query"
+            "https://dns.alidns.com/dns-query"
+
             "8.8.8.8"
             "1.1.1.1"
-            "https://dns.google/dns-query#h3=true"
-            "https://cloudflare-dns.com/dns-query#h3=true"
+
+            "https://dns.google/dns-query"
+            "https://cloudflare-dns.com/dns-query"
+
             "quic://dns.adguard.com:784"
           ];
 
           fallback = [
             "8.8.8.8"
             "1.1.1.1"
-            "https://dns.google/dns-query#h3=true"
-            "https://1.1.1.1/dns-query#h3=true"
+
+            "https://dns.google/dns-query"
+            "https://1.1.1.1/dns-query"
+
             "tls://8.8.8.8:853"
           ];
 
           "fallback-filter" = {
             geoip = true;
+
             "geoip-code" = "CN";
-            ipcidr = [ "240.0.0.0/4" ];
+
+            ipcidr = [
+              "240.0.0.0/4"
+              "0.0.0.0/32"
+              "127.0.0.1/32"
+              "100.64.0.0/10"
+            ];
           };
         };
 
-        #------------------------订阅提供商配置------------------------#
+        # ======================================================
+        # Proxy Providers
+        # ======================================================
+
         "proxy-providers" = {
+
           "订阅1" = {
             type = "http";
+
             url = config.sops.placeholder."mihomo/subscription1";
+
             interval = 21600;
+
             path = "./proxy_providers/sub1.yaml";
+
             "health-check" = {
               enable = true;
+
               url = "https://cp.cloudflare.com/generate_204";
+
               interval = 1800;
             };
+
             override = {
               udp = true;
+
               "additional-prefix" = "「订阅1」";
             };
           };
+
           "订阅2" = {
             type = "http";
+
             url = config.sops.placeholder."mihomo/subscription2";
+
             interval = 21600;
+
             path = "./proxy_providers/sub2.yaml";
+
             "health-check" = {
               enable = true;
+
               url = "https://cp.cloudflare.com/generate_204";
+
               interval = 1800;
             };
+
             override = {
               udp = true;
+
               "additional-prefix" = "「订阅2」";
             };
           };
         };
 
-        #------------------------策略分组------------------------#
+        # ======================================================
+        # Proxy Groups
+        # ======================================================
+
         "proxy-groups" = [
-          #------------------------基础分组------------------------#
+
+          # --------------------------------------------------
+          # Main
+          # --------------------------------------------------
+
           {
             name = "PROXY";
             type = "select";
-            proxies = [ "🚀 节点选择" ];
-          }
-          {
-            name = "🚀 节点选择";
-            type = "select";
+
             proxies = [
-              "♻️ 自动选择"
-              "🔯 故障转移"
-              "🔮 负载均衡"
-              "🇭🇰 香港节点"
-              "🇲🇴 澳门节点"
-              "🇨🇳 台湾节点"
-              "🇯🇵 日本节点"
-              "🇰🇷 韩国节点"
-              "🇺🇲 美国节点"
-              "🇬🇧 英国节点"
-              "🇩🇪 德国节点"
-              "🇫🇷 法国节点"
-              "🇮🇳 印度节点"
-              "🇸🇬 狮城节点"
-              "🇮🇩 印尼节点"
-              "🇻🇳 越南节点"
-              "🇹🇭 泰国节点"
-              "🇦🇺 澳洲节点"
-              "🇧🇷 巴西节点"
-              "🌍 其他节点"
+              "节点选择"
+            ];
+          }
+
+          {
+            name = "节点选择";
+            type = "select";
+
+            proxies = [
+              "自动选择"
+              "故障转移"
+              "负载均衡"
+
+              "香港"
+              "台湾"
+              "日本"
+              "韩国"
+              "美国"
+              "新加坡"
+
               "DIRECT"
             ];
           }
+
+          # --------------------------------------------------
+          # Auto
+          # --------------------------------------------------
+
           {
-            name = "♻️ 自动选择";
+            name = "自动选择";
             type = "url-test";
-            "include-all-providers" = true;
+
+            include-all = true;
+            "exclude-type" = "direct";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
           {
-            name = "🔯 故障转移";
+            name = "故障转移";
             type = "fallback";
-            "include-all-providers" = true;
+
+            include-all = true;
+            "exclude-type" = "direct";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
           }
+
           {
-            name = "🔮 负载均衡";
+            name = "负载均衡";
             type = "load-balance";
+
             strategy = "consistent-hashing";
-            "include-all-providers" = true;
+
+            include-all = true;
+            "exclude-type" = "direct";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
           }
-          #------------------------地区分组------------------------#
+
+          # --------------------------------------------------
+          # Region
+          # --------------------------------------------------
+
           {
-            name = "🇭🇰 香港节点";
+            name = "香港";
             type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)港|hk|hongkong|hong kong";
+
+            include-all = true;
+            "exclude-type" = "direct";
+
+            filter = "(?i)(香港|港|hk|hong.?kong)";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
           {
-            name = "🇲🇴 澳门节点";
+            name = "台湾";
             type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)澳门|门|mo|macao";
+
+            include-all = true;
+            "exclude-type" = "direct";
+
+            filter = "(?i)(台湾|台|tw|taiwan|taipei)";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
           {
-            name = "🇨🇳 台湾节点";
+            name = "日本";
             type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)台|tw|taiwan|taipei";
+
+            include-all = true;
+            "exclude-type" = "direct";
+
+            filter = "(?i)(日本|日|jp|japan|tokyo|osaka)";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
           {
-            name = "🇯🇵 日本节点";
+            name = "韩国";
             type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)日本|jp|japan|tokyo|osaka";
+
+            include-all = true;
+            "exclude-type" = "direct";
+
+            filter = "(?i)(韩国|韩|kr|korea|seoul)";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
           {
-            name = "🇰🇷 韩国节点";
+            name = "美国";
             type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)韩|kr|korea|seoul";
+
+            include-all = true;
+            "exclude-type" = "direct";
+
+            filter = "(?i)(美国|美|us|usa|united.?states|america|los.?angeles|san.?jose)";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
           {
-            name = "🇺🇲 美国节点";
+            name = "新加坡";
             type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)美|us|united states|america|los angeles|san jose|silicon valley";
+
+            include-all = true;
+            "exclude-type" = "direct";
+
+            filter = "(?i)(新加坡|新|sg|singapore)";
+
             url = "http://www.gstatic.com/generate_204";
+
             interval = 300;
             tolerance = 100;
           }
+
+          # --------------------------------------------------
+          # Services
+          # --------------------------------------------------
+
           {
-            name = "🇬🇧 英国节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)英|uk|united kingdom|london";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇩🇪 德国节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)德|de|germany|frankfurt";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇫🇷 法国节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)法|fr|france|paris";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇮🇳 印度节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)印度|in|india|mumbai";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇸🇬 狮城节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)新|sg|singapore";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇮🇩 印尼节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)印尼|印度尼西亚|id|indonesia|jakarta";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇻🇳 越南节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)越南|vn|vietnam";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇹🇭 泰国节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)泰国|th|thailand|bangkok";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇦🇺 澳洲节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)澳大利亚|au|australia|sydney";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🇧🇷 巴西节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)巴西|br|brazil";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          {
-            name = "🌍 其他节点";
-            type = "url-test";
-            "include-all-providers" = true;
-            filter = "(?i)^(?!.*(香港|台湾|日本|韩国|新加坡|美国|英国|德国|法国|印度|泰国|越南|印尼|澳大利亚|巴西|港|台|日|韩|新|美|英|德|法|印|泰|越|尼|澳|巴|hk|tw|jp|kr|sg|us|uk|de|fr|in|th|vn|id|au|br)).*";
-            url = "http://www.gstatic.com/generate_204";
-            interval = 300;
-            tolerance = 100;
-          }
-          #------------------------场景分组------------------------#
-          {
-            name = "🎬 国外媒体";
+            name = "AI";
             type = "select";
+
             proxies = [
-              "🚀 节点选择"
-              "🇭🇰 香港节点"
-              "🇨🇳 台湾节点"
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
+              "美国"
+              "日本"
+              "新加坡"
+              "韩国"
+              "节点选择"
+              "故障转移"
             ];
           }
+
           {
-            name = "🎮 游戏平台";
+            name = "媒体";
             type = "select";
+
             proxies = [
-              "🚀 节点选择"
-              "🔯 故障转移"
-              "🇭🇰 香港节点"
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
+              "节点选择"
+              "香港"
+              "台湾"
+              "日本"
+              "美国"
+              "新加坡"
+            ];
+          }
+
+          {
+            name = "通讯";
+            type = "select";
+
+            proxies = [
+              "节点选择"
+              "故障转移"
+              "香港"
+              "日本"
+              "美国"
+              "新加坡"
+            ];
+          }
+
+          {
+            name = "游戏";
+            type = "select";
+
+            proxies = [
+              "节点选择"
+              "故障转移"
+              "香港"
+              "台湾"
+              "日本"
+              "美国"
+              "新加坡"
               "DIRECT"
             ];
           }
+
           {
-            name = "📱 即时通讯";
+            name = "GitHub";
             type = "select";
+
             proxies = [
-              "🚀 节点选择"
-              "🔯 故障转移"
-              "🇭🇰 香港节点"
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
-            ];
-          }
-          {
-            name = "🤖 AI平台";
-            type = "select";
-            proxies = [
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
-              "🇰🇷 韩国节点"
-              "🚀 节点选择"
-              "🔯 故障转移"
-            ];
-          }
-          {
-            name = "🔧 GitHub";
-            type = "select";
-            proxies = [
-              "🚀 节点选择"
-              "🔯 故障转移"
-              "🇭🇰 香港节点"
-              "🇨🇳 台湾节点"
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
+              "节点选择"
+              "故障转移"
+              "香港"
+              "台湾"
+              "日本"
+              "美国"
+              "新加坡"
               "DIRECT"
             ];
           }
+
           {
-            name = "Ⓜ️ 微软服务";
+            name = "Microsoft";
             type = "select";
+
             proxies = [
-              "🚀 节点选择"
-              "🇭🇰 香港节点"
-              "🇨🇳 台湾节点"
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
+              "节点选择"
+              "香港"
+              "台湾"
+              "日本"
+              "美国"
+              "新加坡"
               "DIRECT"
             ];
           }
+
           {
-            name = "🍎 苹果服务";
+            name = "Apple";
             type = "select";
+
             proxies = [
-              "🚀 节点选择"
-              "🇭🇰 香港节点"
-              "🇨🇳 台湾节点"
-              "🇯🇵 日本节点"
-              "🇺🇲 美国节点"
-              "🇸🇬 狮城节点"
+              "节点选择"
+              "香港"
+              "台湾"
+              "日本"
+              "美国"
+              "新加坡"
               "DIRECT"
             ];
           }
-          #------------------------特殊分组------------------------#
+
+          # --------------------------------------------------
+          # Special
+          # --------------------------------------------------
+
           {
-            name = "🎯 全球直连";
+            name = "广告";
             type = "select";
-            proxies = [
-              "DIRECT"
-              "🚀 节点选择"
-            ];
-          }
-          {
-            name = "🛑 广告拦截";
-            type = "select";
+
             proxies = [
               "REJECT"
               "DIRECT"
             ];
           }
+
           {
-            name = "🍃 应用净化";
+            name = "隐私";
             type = "select";
+
             proxies = [
               "REJECT"
               "DIRECT"
             ];
           }
+
           {
-            name = "🆎 AdBlock";
+            name = "AdBlock";
             type = "select";
+
             proxies = [
               "REJECT"
               "DIRECT"
             ];
           }
+
           {
-            name = "🛡️ 隐私防护";
+            name = "直连";
             type = "select";
+
             proxies = [
-              "REJECT"
               "DIRECT"
+              "节点选择"
             ];
           }
+
           {
-            name = "🐟 漏网之鱼";
+            name = "漏网";
             type = "select";
+
             proxies = [
-              "🚀 节点选择"
-              "🎯 全球直连"
-              "♻️ 自动选择"
-              "🔯 故障转移"
+              "节点选择"
+              "直连"
+              "自动选择"
+              "故障转移"
             ];
           }
         ];
 
-        #------------------------公共规则提供商 (MRS 标准)------------------------#
+        # ======================================================
+        # Rule Providers
+        # ======================================================
+
         "rule-providers" = {
-          # Meta 官方维护的 Tracker MRS 规则集
-          "public-tracker" = {
+
+          # Private
+          private_domain = mrsDomain "private_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs";
+
+          private_ip = mrsIP "private_ip" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs";
+
+          # CN
+          cn_domain = mrsDomain "cn_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs";
+
+          cn_ip = mrsIP "cn_ip" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs";
+
+          # Tracker
+          tracker = mrsDomain "tracker" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tracker.mrs";
+
+          # Ads
+          reject = mrsDomain "reject" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs";
+
+          privacy = mrsDomain "privacy" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/privacy.mrs";
+
+          reject-extra = {
             type = "http";
             behavior = "domain";
             format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tracker.mrs";
-            path = "./ruleset/tracker.mrs";
-            interval = 86400;
-          };
-          reject = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs";
-            path = "./ruleset/reject.mrs";
-            interval = 86400;
-          };
-          privacy = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/privacy.mrs";
-            path = "./ruleset/privacy.mrs";
-            interval = 86400;
-          };
-          "reject-extra" = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://github.com/MiHomoer/MiHomo-Hagezi/raw/release/HageziUltimate.mrs";
             path = "./ruleset/reject-extra.mrs";
             interval = 86400;
+
+            url = "https://github.com/MiHomoer/MiHomo-Hagezi/raw/release/HageziUltimate.mrs";
           };
-          "ai-platforms" = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs";
-            path = "./ruleset/ai-platforms.mrs";
-            interval = 86400;
-          };
-          streaming = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gflow.mrs";
-            path = "./ruleset/streaming.mrs";
-            interval = 86400;
-          };
-          social = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs";
-            path = "./ruleset/social.mrs";
-            interval = 86400;
-          };
-          microsoft = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs";
-            path = "./ruleset/microsoft.mrs";
-            interval = 86400;
-          };
-          apple = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs";
-            path = "./ruleset/apple.mrs";
-            interval = 86400;
-          };
-          games = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games.mrs";
-            path = "./ruleset/games.mrs";
-            interval = 86400;
-          };
-          "dev-platforms" = {
-            type = "http";
-            behavior = "domain";
-            format = "mrs";
-            url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs";
-            path = "./ruleset/dev-platforms.mrs";
-            interval = 86400;
-          };
+
+          # AI
+          ai = mrsDomain "ai" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs";
+
+          ai-extra = aiExtra;
+
+          # Media
+          streaming = mrsDomain "streaming" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gflow.mrs";
+
+          netflix_domain = mrsDomain "netflix_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs";
+
+          youtube_domain = mrsDomain "youtube_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs";
+
+          # Communication
+          telegram_domain = mrsDomain "telegram_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs";
+
+          twitter_domain = mrsDomain "twitter_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs";
+
+          # Google
+          google_domain = mrsDomain "google_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs";
+
+          # GitHub
+          github_domain = mrsDomain "github_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs";
+
+          # Microsoft
+          microsoft_domain = mrsDomain "microsoft_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs";
+
+          # Apple
+          apple_domain = mrsDomain "apple_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs";
+
+          # Games
+          games_domain = mrsDomain "games_domain" "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games.mrs";
         };
 
-        #------------------------集成路由规则链------------------------#
+        # ======================================================
+        # Rules
+        # ======================================================
+
         rules =
-          myDirectRules
-          ++ myProxyRules
+          directRules
+          ++ proxyRules
           ++ [
-            # 将自动化追踪器规则库置顶直连，用域名匹配保障 TUN 无法溯源进程时的 BT 纯净分流
-            "RULE-SET,public-tracker,DIRECT,no-resolve"
 
-            # 广告、广告变体及隐私屏蔽规则
-            "RULE-SET,reject,🛑 广告拦截,no-resolve"
-            "RULE-SET,privacy,🛡️ 隐私防护,no-resolve"
-            "RULE-SET,reject-extra,🆎 AdBlock,no-resolve"
+            # Tracker
+            "RULE-SET,tracker,DIRECT,no-resolve"
 
-            # 各种常用场景及应用公共分流
-            "RULE-SET,ai-platforms,🤖 AI平台,no-resolve"
-            "RULE-SET,streaming,🎬 国外媒体,no-resolve"
-            "RULE-SET,social,📱 即时通讯,no-resolve"
-            "RULE-SET,microsoft,Ⓜ️ 微软服务,no-resolve"
-            "RULE-SET,apple,🍎 苹果服务,no-resolve"
-            "RULE-SET,games,🎮 游戏平台,no-resolve"
-            "RULE-SET,dev-platforms,🔧 GitHub,no-resolve"
+            # Ads
+            "RULE-SET,reject,广告,no-resolve"
+            "RULE-SET,privacy,隐私,no-resolve"
+            "RULE-SET,reject-extra,AdBlock,no-resolve"
 
-            # 地理数据库及 IP 段直连规则 (依赖本地数据库，不请求外部 DNS)
-            "GEOIP,LAN,DIRECT,no-resolve"
-            "GEOIP,CN,DIRECT,no-resolve"
-            "GEOIP,private,DIRECT,no-resolve"
-            "GEOIP,telegram,PROXY"
-            "GEOIP,JP,PROXY"
-            "GEOIP,CN,DIRECT"
-            "DST-PORT,80/8080/443/8443,PROXY"
+            # AI
+            "RULE-SET,ai,AI,no-resolve"
+            "RULE-SET,ai-extra,AI,no-resolve"
 
-            # 兜底规则
-            "MATCH,🚀 节点选择"
+            # Media
+            "RULE-SET,streaming,媒体,no-resolve"
+            "RULE-SET,netflix_domain,媒体,no-resolve"
+            "RULE-SET,youtube_domain,媒体,no-resolve"
+
+            # Communication
+            "RULE-SET,telegram_domain,通讯,no-resolve"
+            "RULE-SET,twitter_domain,通讯,no-resolve"
+
+            # Google
+            "RULE-SET,google_domain,节点选择,no-resolve"
+
+            # Microsoft
+            "RULE-SET,microsoft_domain,Microsoft,no-resolve"
+
+            # Apple
+            "RULE-SET,apple_domain,Apple,no-resolve"
+
+            # GitHub
+            "RULE-SET,github_domain,GitHub,no-resolve"
+
+            # Games
+            "RULE-SET,games_domain,游戏,no-resolve"
+
+            # Private
+            "RULE-SET,private_domain,DIRECT,no-resolve"
+            "RULE-SET,private_ip,DIRECT,no-resolve"
+
+            # CN
+            "RULE-SET,cn_domain,DIRECT,no-resolve"
+            "RULE-SET,cn_ip,DIRECT,no-resolve"
+
+            # Telegram IP
+            "GEOIP,telegram,通讯,no-resolve"
+
+            # Japan IP
+            "GEOIP,JP,PROXY,no-resolve"
+
+            # Final
+            "MATCH,漏网"
           ];
       }
     );
