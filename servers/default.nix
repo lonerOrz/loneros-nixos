@@ -11,6 +11,7 @@ in
     exclude = [
       "aria2"
       "docker"
+      "emacs"
       "ollama"
       # "flatpak"
       "jellyfin"
