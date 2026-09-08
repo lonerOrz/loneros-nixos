@@ -104,6 +104,8 @@ in
       gum # Shell 脚本交互组件
       terminaltexteffects # 终端文本特效
       xeyes # X11 窗口测试
+      chameleos
+      sonar
 
       # TUI
       btop # 系统资源监控
@@ -150,9 +152,7 @@ in
       # NUR packages
       go-musicfox
       nsearch-tv
-      chameleos
       wayclick
-      sonar
       helium
       (noctalia.override {
         withNative = native;
