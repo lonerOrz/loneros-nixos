@@ -53,6 +53,7 @@
         "/var/lib/NetworkManager"
         "/var/lib/iwd"
         "/var/lib/tailscale"
+        "/var/lib/nfs"
       ];
 
       files = [
@@ -79,15 +80,15 @@
   # 抑制默认的 machine-id 提交服务
   systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
-  # 将生成的 machine-id 提交至持久化位置 /persistent
+  # 将生成的 machine-id 提交至持久化位置 /persist
   systemd.services.systemd-machine-id-commit = {
     unitConfig.ConditionPathIsMountPoint = [
       ""
-      "/persistent/etc/machine-id"
+      "/persist/etc/machine-id"
     ];
     serviceConfig.ExecStart = [
       ""
-      "systemd-machine-id-setup --commit --root /persistent"
+      "systemd-machine-id-setup --commit --root /persist"
     ];
   };
 
