@@ -38,7 +38,7 @@
         "/var/lib/containers"
 
         # flatpak
-        # "/var/lib/flatpak"
+        # "/var/lib/flatpak" # 强制使用用户级别的 flatpak
 
         # 虚拟化
         "/var/lib/incus"

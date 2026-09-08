@@ -52,7 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     preservation.url = "github:nix-community/preservation";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     # theming / appearance
