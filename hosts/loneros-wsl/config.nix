@@ -34,6 +34,7 @@ in
     ../../programs/direnv.nix
     ../../programs/nvim.nix
     ../../programs/nh.nix
+    ../../programs/nix-index.nix
 
     # servers
     ../../servers/atuin.nix
