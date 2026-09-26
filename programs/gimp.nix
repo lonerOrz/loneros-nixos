@@ -3,9 +3,9 @@
   environment.systemPackages =
     with pkgs;
     [
-      gimp3-with-plugins
+      gimp
     ]
-    ++ (with pkgs.gimp3Plugins; [
+    ++ (with pkgs.gimpPlugins; [
       gmic
       # fourier
     ]);
