@@ -11,7 +11,8 @@ pkgs.mkShell {
 
   env = {
     CARGO_HOME = "$HOME/.cargo";
-    RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
+    RUST_BACKTRACE = "1";
+    RUST_SRC_PATH = "${pkgs.rustc}/lib/rustlib/src/rust/library";
   };
 
   shellHook = ''
