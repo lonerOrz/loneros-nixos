@@ -18,6 +18,17 @@
           containers = {
             enable = true;
             registries.settings = {
+              # Configure Docker Hub mirrors for China
+              registry = [
+                {
+                  location = "docker.io";
+                  mirror = [
+                    { location = "docker-0.unsee.tech"; }
+                    { location = "registry.cn-hangzhou.aliyuncs.com"; }
+                    { location = "docker.1ms.run"; }
+                  ];
+                }
+              ];
               search = [
                 "docker.1ms.run"
                 "docker.io"

@@ -33,7 +33,7 @@ in
       rootlessConfig.uid = uid;
       containerConfig = {
         name = "reader";
-        image = "docker.io/hectorqin/reader:latest";
+        image = "docker.io/changshengyu/reader:latest";
         pod = "reader-pod.pod";
 
         environments = {
