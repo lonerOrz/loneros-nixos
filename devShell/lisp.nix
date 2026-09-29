@@ -2,7 +2,10 @@
 
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
-    guile
+    guile.out
+    guile-lsp-server
+    schemat
+
     # raco pkg install --auto --no-docs racket-langserver fmt syntax-color-lib compatibility-lib
     racket-minimal
   ];
