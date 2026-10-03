@@ -13,6 +13,7 @@ let
     "lua"
     "go"
     "zig"
+    "lisp"
   ];
 
   packagesForSystem = import ../../devShell/package.nix {
