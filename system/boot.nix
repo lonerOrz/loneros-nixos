@@ -9,19 +9,34 @@ let
   inherit (import ../hosts/${host}/variables.nix) lto native;
 
   v4l2loopbackPackage =
-    if config.boot.kernelPackages.v4l2loopback.version == "0.15.1-6.18.0" then
-      # done https://github.com/NixOS/nixpkgs/pull/467572
-      (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: rec {
-        version = "0.15.3";
-        src = pkgs.fetchFromGitHub {
-          owner = "umlaeute";
-          repo = "v4l2loopback";
-          rev = "v${version}";
-          sha256 = "sha256-KXJgsEJJTr4TG4Ww5HlF42v2F1J+AsHwrllUP1n/7g8=";
-        };
-      }))
-    else
-      config.boot.kernelPackages.v4l2loopback;
+    (
+      if config.boot.kernelPackages.v4l2loopback.version == "0.15.1-6.18.0" then
+        # done https://github.com/NixOS/nixpkgs/pull/467572
+        (config.boot.kernelPackages.v4l2loopback.overrideAttrs (old: rec {
+          version = "0.15.3";
+          src = pkgs.fetchFromGitHub {
+            owner = "umlaeute";
+            repo = "v4l2loopback";
+            rev = "v${version}";
+            sha256 = "sha256-KXJgsEJJTr4TG4Ww5HlF42v2F1J+AsHwrllUP1n/7g8=";
+          };
+        }))
+      else
+        config.boot.kernelPackages.v4l2loopback
+    )
+    # v4l2loopback 安装时会跑 depmod，写出顶层 modules.dep，与基础内核冲突
+    .overrideAttrs
+      (old: {
+        postInstall = ''
+          ${old.postInstall or ""}
+          rm -f $out/lib/modules/*/modules.dep* \
+                $out/lib/modules/*/modules.alias* \
+                $out/lib/modules/*/modules.symbols* \
+                $out/lib/modules/*/modules.builtin* \
+                $out/lib/modules/*/modules.softdep \
+                $out/lib/modules/*/modules.devname
+        '';
+      });
 in
 {
   # BOOT related stuff
