@@ -159,6 +159,7 @@ in
         withLto = lto;
       })
       duolingo-desktop
+      piliplus
     ]);
 
   programs = {
