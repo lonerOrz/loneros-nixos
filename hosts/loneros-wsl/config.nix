@@ -42,6 +42,8 @@ in
     # ../../servers/emacs.nix
   ];
 
+  boot.zfs.forceImportRoot = false;
+
   # Services to start
   services = {
     # 禁用 X Server

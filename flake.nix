@@ -51,7 +51,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    preservation.url = "github:nix-community/preservation";
+    preservation.url = "github:mjm/preservation/push-knrxkotwwtyr";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     # theming / appearance

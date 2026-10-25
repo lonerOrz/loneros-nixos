@@ -56,7 +56,6 @@ in
         "-19"
         "-T0"
       ];
-      systemd.enable = true;
     };
 
     # systemd-boot

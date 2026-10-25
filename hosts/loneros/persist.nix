@@ -9,8 +9,6 @@
     inputs.preservation.nixosModules.default
   ];
 
-  boot.initrd.systemd.enable = true;
-
   environment.systemPackages = [
     pkgs.ncdu
   ];
