@@ -8,6 +8,7 @@
 
     # core infrastructure
     flake-parts.url = "github:hercules-ci/flake-parts";
+    fip.url = "github:lonerOrz/fip";
 
     # https://github.com/DeterminateSystems/nix-src/releases
     determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
@@ -51,7 +52,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    preservation.url = "github:mjm/preservation/push-knrxkotwwtyr";
+    preservation.url = "github:nix-community/preservation";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     # theming / appearance
@@ -114,9 +115,10 @@
   };
 
   outputs =
-    inputs@{
+    unpatchedInputs@{
       self,
       nixpkgs,
+      fip,
       flake-parts,
       ...
     }:
@@ -127,6 +129,19 @@
       ];
       lib = nixpkgs.lib;
       hosts = import ./hosts.nix;
+
+      patchSpec =
+        { pkgs, ... }:
+        {
+          preservation.patches = [
+            (pkgs.fetchpatch {
+              url = "https://github.com/nix-community/preservation/pull/36.diff";
+              hash = "sha256-NqWJNPz8h3kTp1YR9U5TlMGQMpgHJEBbd4hT/0TU+2A=";
+            })
+          ];
+        };
+
+      inputs = fip.patchLib.applyToInputs { inherit unpatchedInputs patchSpec; };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       inherit systems;

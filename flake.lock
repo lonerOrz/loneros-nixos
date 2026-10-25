@@ -247,6 +247,21 @@
         "type": "github"
       }
     },
+    "fip": {
+      "locked": {
+        "lastModified": 1792946283,
+        "narHash": "sha256-/3/IrD855cxMrp/uMjD7CEe97OuOhvPVoeU86mZnSwE=",
+        "owner": "lonerOrz",
+        "repo": "fip",
+        "rev": "433cea383b2ab8920b10c9fe29b19e213a90cd3f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lonerOrz",
+        "repo": "fip",
+        "type": "github"
+      }
+    },
     "firefox": {
       "inputs": {
         "flake-compat": "flake-compat_4",
@@ -1351,16 +1366,15 @@
     },
     "preservation": {
       "locked": {
-        "lastModified": 1792605862,
-        "narHash": "sha256-HmqQ+/PpAkaIUjD+PkPs1FCcZ5N8dK2yC/5HCA9xm90=",
-        "owner": "mjm",
+        "lastModified": 1757436102,
+        "narHash": "sha256-mMI9IanU+Xw+pVogD2oT0I2kTmvz2Un/Apc5+CwUpEY=",
+        "owner": "nix-community",
         "repo": "preservation",
-        "rev": "ed8dbeaac0ad240341259c814cade7163a53fc1f",
+        "rev": "93416f4614ad2dfed5b0dcf12f27e57d27a5ab11",
         "type": "github"
       },
       "original": {
-        "owner": "mjm",
-        "ref": "push-knrxkotwwtyr",
+        "owner": "nix-community",
         "repo": "preservation",
         "type": "github"
       }
@@ -1388,6 +1402,7 @@
         "determinate": "determinate",
         "disko": "disko",
         "distro-grub-themes": "distro-grub-themes",
+        "fip": "fip",
         "firefox": "firefox",
         "flake-parts": "flake-parts_2",
         "git-hooks": "git-hooks",
