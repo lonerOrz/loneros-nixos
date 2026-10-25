@@ -72,3 +72,6 @@
 
 @waiting-pr:
     nix develop .#devShells.x86_64-linux.python -c python .github/script/waiting-pr.py
+
+@pre-commit:
+    nix develop -c pre-commit run -a
