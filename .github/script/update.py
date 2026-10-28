@@ -9,10 +9,6 @@ PKGS_DIR = Path("./pkgs")
 PACKAGES_FILE = PKGS_DIR / "default.nix"
 EXCLUDED_FILES = {
     "default.nix",
-    "quickshell.nix",
-    "xdman7.nix",
-    "astronaut-sddm",
-    "tuckr",
 }
 PACKAGE_FILE_NAME = "package.nix"
 UPDATE_SH_NAME = "update.sh"
