@@ -9,7 +9,10 @@
     fip.url = "github:lonerOrz/fip";
 
     # https://github.com/DeterminateSystems/nix-src/releases
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
