@@ -3,10 +3,11 @@
   modulesPath,
   host,
   username,
+  variables,
   ...
 }:
 let
-  inherit (import ./variables.nix) keyboardLayout;
+  inherit (variables) keyboardLayout;
 in
 {
   imports = [

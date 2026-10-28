@@ -1,10 +1,11 @@
 {
   pkgs,
   host,
+  variables,
   ...
 }:
 let
-  inherit (import ../hosts/${host}/variables.nix) gitUsername gitEmail;
+  inherit (variables) gitUsername gitEmail;
 in
 {
   programs = {

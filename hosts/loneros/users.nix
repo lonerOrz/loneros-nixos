@@ -3,11 +3,12 @@
   config,
   inputs,
   username,
+  variables,
   ...
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  inherit (import ./variables.nix)
+  inherit (variables)
     gitUsername
     shell
     lto

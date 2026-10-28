@@ -2,11 +2,12 @@
   pkgs,
   inputs,
   username,
+  variables,
   ...
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  inherit (import ./variables.nix) keyboardLayout;
+  inherit (variables) keyboardLayout;
 in
 {
   imports = [

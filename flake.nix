@@ -215,6 +215,7 @@
               inherit inputs host;
               username = cfg.username;
               system = cfg.system;
+              variables = import ./hosts/${host}/variables.nix;
               pkgsv3 = inputs.chaotic.legacyPackages.${cfg.system}.pkgsx86_64_v3 or null;
             };
             modules = [
