@@ -11,7 +11,11 @@ let
   isExcluded =
     name:
     let
-      base = builtins.head (builtins.match "([^\\.]+).*" name);
+      # `builtins.match` returns null when there is no match (e.g. a dotfile
+      # like `.envrc.nix` whose first char is a dot). Fall back to the raw
+      # name so we never hand `builtins.head` a null and crash the eval.
+      matched = builtins.match "([^\\.]+).*" name;
+      base = if matched == null then name else builtins.head matched;
     in
     builtins.elem base fullExclude;
 

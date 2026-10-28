@@ -30,7 +30,6 @@ self: super: {
   });
 
   buf = super.buf.overrideAttrs (old: {
-    # 跳过测试
     doCheck = false;
   });
 

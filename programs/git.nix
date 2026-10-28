@@ -8,7 +8,6 @@ let
 in
 {
   programs = {
-    # Configure Git
     git = {
       enable = true;
       lfs.enable = true; # Enable Git Large File Storage

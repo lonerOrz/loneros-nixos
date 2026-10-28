@@ -1,4 +1,4 @@
-# wating-pr https://github.com/NixOS/nixpkgs/pull/523157
+# https://github.com/NixOS/nixpkgs/pull/523157
 final: prev:
 let
   version = "4.3.6";

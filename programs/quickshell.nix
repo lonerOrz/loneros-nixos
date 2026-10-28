@@ -22,7 +22,7 @@ let
     ];
   };
 
-  baseQuickshell = pkgs.quickshell; # realease version
+  baseQuickshell = pkgs.quickshell; # release version
 
   quickshellWrapped =
     pkgs.runCommand "quickshell-wrapped"
