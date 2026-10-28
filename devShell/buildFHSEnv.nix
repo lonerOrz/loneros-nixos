@@ -1,6 +1,6 @@
 # 这只是一个完整的 buildFHSEnv 示例，展示了所有可用选项的使用
 {
-  pkgs ? import <nixpkgs> { },
+  pkgs,
 }:
 
 (pkgs.buildFHSEnv {

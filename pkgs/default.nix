@@ -6,7 +6,6 @@
   pkgFileName ? "package.nix",
   excluded ? [
     "default"
-    "packages"
   ],
 }:
 
