@@ -47,7 +47,6 @@ let
         meta_total=$(echo "$meta_line" | sed -E 's/.*total=([^,]+).*/\1/')
         meta_used=$(echo "$meta_line" | sed -E 's/.*used=([^,]+).*/\1/')
 
-        # 转换为字节
         data_total_b=$(numfmt --from=iec "$data_total")
         data_used_b=$(numfmt --from=iec "$data_used")
 

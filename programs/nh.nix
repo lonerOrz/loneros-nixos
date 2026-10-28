@@ -2,10 +2,11 @@
   pkgs,
   username,
   host,
+  variables,
   ...
 }:
 let
-  inherit (import ../hosts/${host}/variables.nix) autoGarbage;
+  inherit (variables) autoGarbage;
 in
 {
   programs.nh = {

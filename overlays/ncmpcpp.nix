@@ -1,4 +1,4 @@
-# done https://github.com/NixOS/nixpkgs/pull/494110
+# https://github.com/NixOS/nixpkgs/pull/494110
 self: super: {
   ncmpcpp = super.ncmpcpp.overrideAttrs (
     old:

@@ -1,5 +1,5 @@
-# done https://github.com/NixOS/nixpkgs/pull/471047
-# done https://github.com/NixOS/nixpkgs/pull/471043
+# https://github.com/NixOS/nixpkgs/pull/471047
+# https://github.com/NixOS/nixpkgs/pull/471043
 final: prev: {
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
     (pyFinal: pyPrev: {

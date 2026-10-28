@@ -19,9 +19,7 @@ let
   silent-sddm = inputs.silentSDDM.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
     # one of configs/<$theme>.conf
     theme = "rei";
-    # aditional backgrounds
     extraBackgrounds = [ zero-bg ];
-    # overrides config set by <$theme>.conf
     theme-overrides = {
       # Available options: https://github.com/uiriansan/SilentSDDM/wiki/Options
       # "LoginScreen.LoginArea.Avatar" = {

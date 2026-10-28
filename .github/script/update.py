@@ -6,14 +6,9 @@ import argparse
 from pathlib import Path
 
 PKGS_DIR = Path("./pkgs")
-PACKAGES_FILE = PKGS_DIR / "packages.nix"
+PACKAGES_FILE = PKGS_DIR / "default.nix"
 EXCLUDED_FILES = {
-    "packages.nix",
     "default.nix",
-    "quickshell.nix",
-    "xdman7.nix",
-    "astronaut-sddm",
-    "tuckr",
 }
 PACKAGE_FILE_NAME = "package.nix"
 UPDATE_SH_NAME = "update.sh"
@@ -78,7 +73,7 @@ def update_package(package_name: str, package_file: Path, extra_args=None):
             print(f"Failed to update {package_name} using {UPDATE_SH_NAME}: {e}")
         return
 
-    # 使用顶层 packages.nix 统一更新
+    # 使用顶层 default.nix 统一更新
     cmd = ["nix-update", package_name, "-f", str(PACKAGES_FILE)]
     if extra_args:
         cmd.extend(extra_args)

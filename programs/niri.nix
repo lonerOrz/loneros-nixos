@@ -1,10 +1,11 @@
 {
   pkgs,
   host,
+  variables,
   ...
 }:
 let
-  inherit (import ../hosts/${host}/variables.nix) lto native;
+  inherit (variables) lto native;
 
   niri = pkgs.niri-git.override {
     withDbus = true;

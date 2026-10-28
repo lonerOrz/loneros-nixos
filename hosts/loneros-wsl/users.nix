@@ -1,14 +1,14 @@
 {
   pkgs,
   config,
-  stable,
   inputs,
   username,
+  variables,
   ...
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  inherit (import ./variables.nix) gitUsername shell;
+  inherit (variables) gitUsername shell;
 in
 {
   users = {
@@ -31,7 +31,7 @@ in
         "input"
         "audio"
       ];
-      packages = with stable; [ tree ];
+      packages = with pkgs; [ tree ];
     };
     defaultUserShell = pkgs.${shell};
   };

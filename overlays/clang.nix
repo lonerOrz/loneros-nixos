@@ -1,4 +1,3 @@
-# clang
 self: super: {
   audit = super.audit.overrideAttrs (old: {
     configureFlags = (old.configureFlags or [ ]) ++ [ "--disable-python" ];
@@ -12,7 +11,7 @@ self: super: {
   });
 
   coreutils = super.coreutils.overrideAttrs (oldAttrs: rec {
-    # 保留原有编译标志，Clang 下追加 -Wno-error=format-security
+    # Clang 编译时 format-security 告警会被视为错误，故追加该选项
     env.NIX_CFLAGS_COMPILE = toString (
       (oldAttrs.NIX_CFLAGS_COMPILE or [ ])
       ++ super.lib.optional super.stdenv.cc.isClang [ "-Wno-error=format-security" ]

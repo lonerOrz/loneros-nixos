@@ -1,9 +1,9 @@
 {
   config,
-  stable,
+  pkgs,
   ...
 }:
 {
-  environment.systemPackages = with stable; [ wshowkeys ];
+  environment.systemPackages = with pkgs; [ wshowkeys ];
   programs.wshowkeys.enable = true;
 }

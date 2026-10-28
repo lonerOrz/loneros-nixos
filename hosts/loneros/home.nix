@@ -4,7 +4,6 @@
   pkgs,
   username,
   host,
-  stable,
   ...
 }:
 let
@@ -22,7 +21,6 @@ in
         username
         system
         host
-        stable
         ;
     };
     users.${username} = {

@@ -3,10 +3,11 @@
   host,
   pkgs,
   config,
+  variables,
   ...
 }:
 let
-  inherit (import ../hosts/${host}/variables.nix) lto native;
+  inherit (variables) lto native;
 
   v4l2loopbackPackage =
     (

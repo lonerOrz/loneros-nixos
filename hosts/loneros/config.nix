@@ -1,10 +1,11 @@
 {
   lib,
   host,
+  variables,
   ...
 }:
 let
-  inherit (import ./variables.nix) keyboardLayout;
+  inherit (variables) keyboardLayout;
 
   clusterDir = ../../cluster;
   clusterFiles = builtins.attrNames (builtins.readDir clusterDir);

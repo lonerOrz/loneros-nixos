@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  # 定义 Base16 颜色变量
+  # Stylix 主题色变量
   base00 = "#${config.lib.stylix.colors.base00}";
   base01 = "#${config.lib.stylix.colors.base01}";
   base02 = "#${config.lib.stylix.colors.base02}";

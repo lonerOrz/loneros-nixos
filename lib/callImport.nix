@@ -26,7 +26,11 @@ let
 
       fargs = if builtins.isFunction f then builtins.functionArgs f else { };
 
-      injected = builtins.intersectAttrs fargs pkgs;
+      # Only inject the `pkgs` argument itself. Intersecting the whole `pkgs`
+      # set would also expose `pkgs.config`/`pkgs.lib`/`pkgs.system`, which
+      # collide with and shadow the real NixOS `config`/`lib`/`system` module
+      # arguments passed by the module system.
+      injected = if fargs ? pkgs then { pkgs = pkgs; } else { };
       allArgs = injected // userArgs;
 
       missingArgs =

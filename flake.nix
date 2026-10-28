@@ -3,15 +3,16 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     # core infrastructure
     flake-parts.url = "github:hercules-ci/flake-parts";
     fip.url = "github:lonerOrz/fip";
 
     # https://github.com/DeterminateSystems/nix-src/releases
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/nix-src/3.14.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -130,19 +131,10 @@
       lib = nixpkgs.lib;
       hosts = import ./hosts.nix;
 
-      patchSpec =
-        { pkgs, ... }:
-        {
-          # merged #36
-          # preservation.patches = [
-          #   (pkgs.fetchpatch {
-          #     url = "https://github.com/nix-community/preservation/pull/36.diff";
-          #     hash = "sha256-NqWJNPz8h3kTp1YR9U5TlMGQMpgHJEBbd4hT/0TU+2A=";
-          #   })
-          # ];
-        };
-
-      inputs = fip.patchLib.applyToInputs { inherit unpatchedInputs patchSpec; };
+      inputs = fip.patchLib.patchInputs {
+        inherit unpatchedInputs;
+        patchSpec = ./patchSpec.nix;
+      };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       inherit systems;
@@ -206,42 +198,33 @@
         };
 
       flake = {
-        nixosConfigurations =
-          let
-            mkPkgs =
-              nixpkgsInput: system:
-              import nixpkgsInput {
-                inherit system;
-                config.allowUnfree = true;
-              };
-          in
-          builtins.mapAttrs (
-            host: cfg:
-            nixpkgs.lib.nixosSystem {
+        nixosConfigurations = builtins.mapAttrs (
+          host: cfg:
+          nixpkgs.lib.nixosSystem {
+            system = cfg.system;
+            specialArgs = {
+              inherit inputs host;
+              username = cfg.username;
               system = cfg.system;
-              specialArgs = {
-                inherit inputs host;
-                username = cfg.username;
-                system = cfg.system;
-                stable = mkPkgs inputs.nixpkgs-stable cfg.system;
-                pkgsv3 = inputs.chaotic.legacyPackages.${cfg.system}.pkgsx86_64_v3 or null;
-              };
-              modules = [
-                ./hosts/${host}/config.nix
-                (import ./overlays inputs)
-                ./secrets
-                {
-                  nixpkgs.overlays = [
-                    inputs.nur.overlays.default
-                  ];
-                }
-                inputs.distro-grub-themes.nixosModules.${cfg.system}.default
-                inputs.honkai-railway-grub-theme.nixosModules.${cfg.system}.default
-                inputs.stylix.nixosModules.stylix
-                inputs.chaotic.nixosModules.default
-              ];
-            }
-          ) hosts;
+              variables = import ./hosts/${host}/variables.nix;
+              pkgsv3 = inputs.chaotic.legacyPackages.${cfg.system}.pkgsx86_64_v3 or null;
+            };
+            modules = [
+              ./hosts/${host}/config.nix
+              (import ./overlays inputs)
+              ./secrets
+              {
+                nixpkgs.overlays = [
+                  inputs.nur.overlays.default
+                ];
+              }
+              inputs.distro-grub-themes.nixosModules.${cfg.system}.default
+              inputs.honkai-railway-grub-theme.nixosModules.${cfg.system}.default
+              inputs.stylix.nixosModules.stylix
+              inputs.chaotic.nixosModules.default
+            ];
+          }
+        ) hosts;
       };
     }
     // {

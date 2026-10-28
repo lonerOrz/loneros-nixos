@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 import re
 
-EXCLUDED_INPUTS = {"lix", "lix-module"}
+EXCLUDED_INPUTS = {"determinate"}
 
 
 def main():

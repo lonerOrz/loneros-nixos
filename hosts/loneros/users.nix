@@ -1,14 +1,14 @@
 {
   pkgs,
   config,
-  stable,
   inputs,
   username,
+  variables,
   ...
 }:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  inherit (import ./variables.nix)
+  inherit (variables)
     gitUsername
     shell
     lto
@@ -44,7 +44,7 @@ in
         "input"
         "audio"
       ];
-      packages = with stable; [ tree ];
+      packages = with pkgs; [ tree ];
     };
     users.root = {
       hashedPasswordFile = config.sops.secrets."loneros/loner/password".path;

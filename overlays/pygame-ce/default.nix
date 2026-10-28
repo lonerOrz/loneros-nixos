@@ -1,4 +1,4 @@
-# done https://github.com/NixOS/nixpkgs/pull/513890
+# https://github.com/NixOS/nixpkgs/pull/513890
 self: super: {
   pythonPackagesExtensions = super.pythonPackagesExtensions ++ [
     (python-self: python-super: {

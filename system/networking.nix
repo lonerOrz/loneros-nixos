@@ -1,11 +1,11 @@
 {
   host,
-  stable,
   options,
+  pkgs,
   ...
 }:
 {
-  environment.systemPackages = with stable; [
+  environment.systemPackages = with pkgs; [
     networkmanagerapplet # GNOME 桌面环境的 NetworkManager 图形化客户端
     dig # 域名服务器
   ];

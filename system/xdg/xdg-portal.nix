@@ -4,7 +4,6 @@
 }:
 
 {
-  # Extra Portal Configuration
   xdg.portal = {
     enable = true;
     # wlr.enable = true; # use wlr_git
@@ -14,7 +13,6 @@
       xdg-desktop-portal-wlr_git # includes RemoteDesktop patch
     ];
     config = {
-      # 默认 fallback 配置
       common = {
         default = [
           "gtk"

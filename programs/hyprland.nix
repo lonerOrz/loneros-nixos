@@ -2,10 +2,11 @@
   inputs,
   host,
   pkgs,
+  variables,
   ...
 }:
 let
-  inherit (import ../hosts/${host}/variables.nix) lto native;
+  inherit (variables) lto native;
   system = pkgs.stdenv.hostPlatform.system;
   hyprland-git = inputs.hyprland.packages.${system}.hyprland.overrideAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.cmake ];
