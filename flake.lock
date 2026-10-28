@@ -251,11 +251,11 @@
     },
     "fip": {
       "locked": {
-        "lastModified": 1792946283,
-        "narHash": "sha256-/3/IrD855cxMrp/uMjD7CEe97OuOhvPVoeU86mZnSwE=",
+        "lastModified": 1793220220,
+        "narHash": "sha256-DO21B0SWBQkV7dyYl3lrhMuu8M5Kn0Oy0b7g8AZkUWo=",
         "owner": "lonerOrz",
         "repo": "fip",
-        "rev": "433cea383b2ab8920b10c9fe29b19e213a90cd3f",
+        "rev": "ee7b3d7e84d73e1c2e2acc4e0cb21000bde28814",
         "type": "github"
       },
       "original": {
