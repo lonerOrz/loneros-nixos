@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  stable,
   inputs,
   username,
   ...
@@ -44,7 +43,7 @@ in
         "input"
         "audio"
       ];
-      packages = with stable; [ tree ];
+      packages = with pkgs; [ tree ];
     };
     users.root = {
       hashedPasswordFile = config.sops.secrets."loneros/loner/password".path;

@@ -20,9 +20,5 @@ inputs: {
       overlayImport = files: map (f: import (./. + "/${f}")) files;
 
     in
-    overlayImport permanent
-    ++ overlayImport temporary
-    ++ [
-      (import ./hotfixes.nix inputs)
-    ];
+    overlayImport permanent ++ overlayImport temporary;
 }

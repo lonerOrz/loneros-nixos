@@ -1,6 +1,6 @@
 {
   config,
-  stable,
+  pkgs,
   ...
 }:
 {
@@ -28,7 +28,7 @@
     };
   };
 
-  environment.systemPackages = with stable; [
+  environment.systemPackages = with pkgs; [
     # lenovo-legion # Lenovo Legion 系列笔记本的额外支持工具
   ];
 

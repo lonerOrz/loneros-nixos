@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  stable,
   inputs,
   username,
   ...
@@ -31,7 +30,7 @@ in
         "input"
         "audio"
       ];
-      packages = with stable; [ tree ];
+      packages = with pkgs; [ tree ];
     };
     defaultUserShell = pkgs.${shell};
   };
