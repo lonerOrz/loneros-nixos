@@ -1,4 +1,4 @@
-# done https://github.com/NixOS/nixpkgs/pull/495124
+# https://github.com/NixOS/nixpkgs/pull/495124
 final: prev:
 
 let

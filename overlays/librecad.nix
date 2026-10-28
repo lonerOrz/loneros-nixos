@@ -1,4 +1,4 @@
-# done https://github.com/NixOS/nixpkgs/pull/479433
+# https://github.com/NixOS/nixpkgs/pull/479433
 self: super: {
   librecad = super.librecad.overrideAttrs (oldAttrs: {
     src = oldAttrs.src.overrideAttrs (oldSrc: {
