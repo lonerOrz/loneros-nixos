@@ -1,5 +1,5 @@
 {
-  pkgs,
+  lib,
   config,
   username,
   ...
@@ -20,49 +20,41 @@ in
   sops.templates."forgejo-runner-config.yaml" = {
     owner = "${username}";
     mode = "0600";
-    content = builtins.readFile (
-      (pkgs.formats.yaml { }).generate "forgejo-runner-raw.yaml" {
-        log = {
-          level = "info";
-        };
+    content = lib.generators.toYAML { } {
+      log.level = "info";
 
-        server = {
-          connections = {
-            forgejo = {
-              url = "http://forgejo:3000";
-              uuid = config.sops.placeholder."forgejo/uuid";
-              token = config.sops.placeholder."forgejo/token";
-            };
-          };
-        };
+      server.connections.forgejo = {
+        url = "http://forgejo:3000";
+        uuid = config.sops.placeholder."forgejo/uuid";
+        token = config.sops.placeholder."forgejo/token";
+      };
 
-        runner = {
-          capacity = 1;
-          timeout = "6h";
-          envs = {
-            DOCKER_HOST = "unix:///var/run/docker.sock";
-            GIT_CONFIG_COUNT = "1";
-            GIT_CONFIG_KEY_0 = "http.version";
-            GIT_CONFIG_VALUE_0 = "HTTP/1.1";
-          };
-          labels = [
-            "docker:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
-            "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
-          ];
+      runner = {
+        capacity = 1;
+        timeout = "6h";
+        envs = {
+          DOCKER_HOST = "unix:///var/run/docker.sock";
+          GIT_CONFIG_COUNT = "1";
+          GIT_CONFIG_KEY_0 = "http.version";
+          GIT_CONFIG_VALUE_0 = "HTTP/1.1";
         };
+        labels = [
+          "docker:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
+          "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
+        ];
+      };
 
-        cache = {
-          enabled = true;
-          dir = "/data/cache";
-        };
+      cache = {
+        enabled = true;
+        dir = "/data/cache";
+      };
 
-        container = {
-          network = "forgejo-net";
-          docker_host = "-";
-          privileged = true;
-        };
-      }
-    );
+      container = {
+        network = "forgejo-net";
+        docker_host = "-";
+        privileged = true;
+      };
+    };
   };
 
   # Quadlet containers
