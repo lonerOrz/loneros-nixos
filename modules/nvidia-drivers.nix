@@ -21,7 +21,7 @@ let
     extraPrefix = "kernel/";
   };
 
-  nvType = "cachyos"; # latest beta stable
+  nvType = "latest"; # latest beta stable
   nvidiaDrivers = {
     "570.153.02" = {
       version = "575.57.08";
