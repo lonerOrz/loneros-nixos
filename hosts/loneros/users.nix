@@ -160,6 +160,7 @@ in
       })
       duolingo-desktop
       piliplus
+      magpie
     ]);
 
   programs = {
