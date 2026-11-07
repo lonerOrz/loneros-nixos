@@ -163,11 +163,14 @@ in
     enable = false;
     theme = "Huohuo"; # Kafka Huohuo March7th-TheHunt
   };
-  # cachyOS kernel 调度规则
-  services.scx = {
+  # kernel 调度规则
+  services.scx-loader = {
     enable = true;
-    scheduler = "scx_lavd";
-    extraArgs = [ "--performance" ]; # 性能模式
-    package = pkgs.scx.full;
+    schedsPackages = [ pkgs.scx.full ];
+    config = {
+      default_sched = "scx_lavd";
+      default_mode = "Gaming";
+      scheds.scx_lavd.gaming_mode = [ "--performance" ];
+    };
   };
 }
