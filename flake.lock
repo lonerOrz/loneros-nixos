@@ -1374,6 +1374,7 @@
         "silentSDDM": "silentSDDM",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
+        "strata": "strata",
         "stylix": "stylix",
         "treefmt-nix": "treefmt-nix",
         "zen-browser": "zen-browser"
@@ -1458,6 +1459,26 @@
       "original": {
         "owner": "Gerg-L",
         "repo": "spicetify-nix",
+        "type": "github"
+      }
+    },
+    "strata": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794234883,
+        "narHash": "sha256-T7VRlEXC+WRQR0A6FEv/B+5hQsUBITQbTUQ11rr/t3I=",
+        "owner": "lgse",
+        "repo": "strata",
+        "rev": "fb7eb0c4ee8bcb681651e56e91031ed95422e8ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lgse",
+        "repo": "strata",
         "type": "github"
       }
     },

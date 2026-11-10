@@ -131,6 +131,7 @@ in
       mpv # 视频播放器
       loupe # 图片查看器
       xarchiver # 归档管理器
+      inputs.strata.packages.${system}.strata # file manage
       zed-editor # 代码编辑器
       vscodium-wrapper # VS Code 开源版
       obsidian-wrapper # 笔记工具
