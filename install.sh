@@ -13,37 +13,37 @@ RESET=$(tput sgr0)
 
 # NixOS
 if [ -n "$(grep -i nixos </etc/os-release)" ]; then
-  echo "Verified this is NixOS."
-  echo "-----"
+	echo "Verified this is NixOS."
+	echo "-----"
 else
-  echo "$ERROR This is not NixOS or the distribution information is not available."
-  exit 1
+	echo "$ERROR This is not NixOS or the distribution information is not available."
+	exit 1
 fi
 
 # git
 if command -v git &>/dev/null; then
-  echo "$OK Git is installed, continuing with installation."
-  echo "-----"
+	echo "$OK Git is installed, continuing with installation."
+	echo "-----"
 else
-  echo "$ERROR Git is not installed. Please install Git and try again."
-  echo "Example: nix-shell -p git"
-  exit 1
+	echo "$ERROR Git is not installed. Please install Git and try again."
+	echo "Example: nix-shell -p git"
+	exit 1
 fi
 
 # Checking if running on a VM and enable in default config.nix
 if hostnamectl | grep -q 'Chassis: vm'; then
-  echo "${NOTE} Your system is running on a VM. Enabling guest services.."
-  echo "${WARN} A Kind reminder to enable 3D acceleration.."
-  sed -i '/vm\.guest-services\.enable = false;/s/vm\.guest-services\.enable = false;/ vm.guest-services.enable = true;/' hosts/default/config.nix
+	echo "${NOTE} Your system is running on a VM. Enabling guest services.."
+	echo "${WARN} A Kind reminder to enable 3D acceleration.."
+	sed -i '/vm\.guest-services\.enable = false;/s/vm\.guest-services\.enable = false;/ vm.guest-services.enable = true;/' hosts/default/config.nix
 fi
 
 # Checking if system has nvidia gpu and enable in default config.nix
 if command -v lspci >/dev/null 2>&1; then
-  # lspci is available, proceed with checking for Nvidia GPU
-  if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq nvidia; then
-    echo "${NOTE} Nvidia GPU detected. Setting up for nvidia..."
-    sed -i '/drivers\.nvidia\.enable = false;/s/drivers\.nvidia\.enable = false;/ drivers.nvidia.enable = true;/' hosts/default/config.nix
-  fi
+	# lspci is available, proceed with checking for Nvidia GPU
+	if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq nvidia; then
+		echo "${NOTE} Nvidia GPU detected. Setting up for nvidia..."
+		sed -i '/drivers\.nvidia\.enable = false;/s/drivers\.nvidia\.enable = false;/ drivers.nvidia.enable = true;/' hosts/default/config.nix
+	fi
 fi
 
 echo "-----"
@@ -57,22 +57,22 @@ echo "-----"
 # hostname
 read -rp "$CAT Enter Your New Hostname: [ default ] " hostName
 if [ -z "$hostName" ]; then
-  hostName="default"
+	hostName="default"
 fi
 # Create directory for the new hostname, unless the default is selected
 if [ "$hostName" != "default" ]; then
-  mkdir -p hosts/"$hostName"
-  cp hosts/default/*.nix hosts/"$hostName"
-  git add .
+	mkdir -p hosts/"$hostName"
+	cp hosts/default/*.nix hosts/"$hostName"
+	git add .
 else
-  echo "Default hostname selected, no extra hosts directory created."
+	echo "Default hostname selected, no extra hosts directory created."
 fi
 echo "-----"
 
 # keyboard layout
 read -rp "$CAT Enter your keyboard layout: [ us ] " keyboardLayout
 if [ -z "$keyboardLayout" ]; then
-  keyboardLayout="us"
+	keyboardLayout="us"
 fi
 sed -i 's/keyboardLayout\s*=\s*"\([^"]*\)"/keyboardLayout = "'"$keyboardLayout"'"/' ./hosts/$hostName/variables.nix
 echo "-----"
@@ -87,21 +87,21 @@ attempts=0
 max_attempts=3
 hardware_file="./hosts/$hostName/hardware.nix"
 while [ $attempts -lt $max_attempts ]; do
-  sudo nixos-generate-config --show-hardware-config >"$hardware_file" 2>/dev/null
+	sudo nixos-generate-config --show-hardware-config >"$hardware_file" 2>/dev/null
 
-  if [ -f "$hardware_file" ]; then
-    echo "${OK} Hardware configuration successfully generated."
-    break
-  else
-    echo "${WARN} Failed to generate hardware configuration. Attempt $((attempts + 1)) of $max_attempts."
-    attempts=$((attempts + 1))
+	if [ -f "$hardware_file" ]; then
+		echo "${OK} Hardware configuration successfully generated."
+		break
+	else
+		echo "${WARN} Failed to generate hardware configuration. Attempt $((attempts + 1)) of $max_attempts."
+		attempts=$((attempts + 1))
 
-    # Exit if this was the last attempt
-    if [ $attempts -eq $max_attempts ]; then
-      echo "${ERROR} Unable to generate hardware configuration after $max_attempts attempts."
-      exit 1
-    fi
-  fi
+		# Exit if this was the last attempt
+		if [ $attempts -eq $max_attempts ]; then
+			echo "${ERROR} Unable to generate hardware configuration after $max_attempts attempts."
+			exit 1
+		fi
+	fi
 done
 echo "-----"
 
@@ -133,19 +133,19 @@ printf "\n%.0s" {1..2}
 printf "Installing Themes and Icons..\n"
 
 if [ -d "GTK-themes-icons" ]; then
-  echo "$NOTE GTK themes and Icons folder exist..deleting..."
-  rm -rf "GTK-themes-icons"
+	echo "$NOTE GTK themes and Icons folder exist..deleting..."
+	rm -rf "GTK-themes-icons"
 fi
 
 echo "$NOTE Cloning themes repository..."
 if git clone --depth 1 https://github.com/lonerOrz/GTK-themes-icons.git; then
-  cd GTK-themes-icons
-  chmod +x auto-extract.sh
-  ./auto-extract.sh
-  cd ..
-  echo "$OK Extracted GTK Themes & Icons to ~/.icons & ~/.themes folders"
+	cd GTK-themes-icons
+	chmod +x auto-extract.sh
+	./auto-extract.sh
+	cd ..
+	echo "$OK Extracted GTK Themes & Icons to ~/.icons & ~/.themes folders"
 else
-  echo "$ERROR Download failed for GTK themes and Icons.."
+	echo "$ERROR Download failed for GTK themes and Icons.."
 fi
 echo "$OK Extracted Bibata-Modern-Ice.tar.xz to ~/.icons folder."
 
@@ -154,13 +154,13 @@ printf "\n%.0s" {1..2}
 
 # Setting gtk-3.0 Thunar xfce4 config
 for DIR1 in gtk-3.0 Thunar xfce4; do
-  DIRPATH=~/.config/$DIR1
-  if [ -d "$DIRPATH" ]; then
-    echo -e "${NOTE} Config for $DIR1 found, no need to copy."
-  else
-    echo -e "${NOTE} Config for $DIR1 not found, copying from assets."
-    cp -r assets/$DIR1 ~/.config/ && echo "Copy $DIR1 completed!" || echo "Error: Failed to copy $DIR1 config files."
-  fi
+	DIRPATH=~/.config/$DIR1
+	if [ -d "$DIRPATH" ]; then
+		echo -e "${NOTE} Config for $DIR1 found, no need to copy."
+	else
+		echo -e "${NOTE} Config for $DIR1 not found, copying from assets."
+		cp -r assets/$DIR1 ~/.config/ && echo "Copy $DIR1 completed!" || echo "Error: Failed to copy $DIR1 config files."
+	fi
 done
 
 echo "-----"
@@ -169,37 +169,37 @@ printf "\n%.0s" {1..3}
 # Cloning loneros-dots repo to home folder
 printf "$NOTE Downloading loneros-dots to HOME folder..\n"
 if [ -d ~/loneros-dots ]; then
-  cd ~/loneros-dots
-  # Check if upstream is already set
-  if ! git remote | grep -q "upstream"; then
-    echo -e "${INFO} - Adding upstream remote repository."
-    git remote add upstream https://github.com/JaKooLit/Hyprland-Dots.git
-  fi
-  git fetch upstream
-  #git merge upstream/main
-  echo -e "${INFO} - Rebasing local changes onto upstream/main."
-  git rebase upstream/main
+	cd ~/loneros-dots
+	# Check if upstream is already set
+	if ! git remote | grep -q "upstream"; then
+		echo -e "${INFO} - Adding upstream remote repository."
+		git remote add upstream https://github.com/JaKooLit/Hyprland-Dots.git
+	fi
+	git fetch upstream
+	#git merge upstream/main
+	echo -e "${INFO} - Rebasing local changes onto upstream/main."
+	git rebase upstream/main
 
-  # Stash and apply only if there are local changes
-  if ! git diff-index --quiet HEAD --; then
-    echo -e "${INFO} - Stashing local changes."
-    git stash
-    echo -e "${INFO} - Pulling latest changes."
-    git pull
-    echo -e "${INFO} - Applying stashed changes."
-    git stash apply
-  fi
+	# Stash and apply only if there are local changes
+	if ! git diff-index --quiet HEAD --; then
+		echo -e "${INFO} - Stashing local changes."
+		git stash
+		echo -e "${INFO} - Pulling latest changes."
+		git pull
+		echo -e "${INFO} - Applying stashed changes."
+		git stash apply
+	fi
 
-  chmod +x loneros.sh
-  ./loneros.sh
+	chmod +x loneros.sh
+	./loneros.sh
 else
-  if git clone --depth 1 https://github.com/lonerOrz/loneros-dots.git ~/loneros-dots; then
-    cd ~/loneros-dots || exit 1
-    chmod +x loneros.sh
-    ./loneros.sh
-  else
-    echo -e "$ERROR Can't download loneros-dots"
-  fi
+	if git clone --depth 1 https://github.com/lonerOrz/loneros-dots.git ~/loneros-dots; then
+		cd ~/loneros-dots || exit 1
+		chmod +x loneros.sh
+		./loneros.sh
+	else
+		echo -e "$ERROR Can't download loneros-dots"
+	fi
 fi
 
 #return to loneros-nixos
@@ -213,23 +213,23 @@ printf "\n%.0s" {1..2}
 
 # Completed !
 if command -v Hyprland &>/dev/null; then
-  printf "\n${OK} Yey! Installation Completed.${RESET}\n"
-  sleep 2
-  printf "\n${NOTE} You can start Hyprland by typing Hyprland (note the capital H!).${RESET}\n"
-  printf "\n${NOTE} It is highly recommended to reboot your system.${RESET}\n\n"
+	printf "\n${OK} Yey! Installation Completed.${RESET}\n"
+	sleep 2
+	printf "\n${NOTE} You can start Hyprland by typing Hyprland (note the capital H!).${RESET}\n"
+	printf "\n${NOTE} It is highly recommended to reboot your system.${RESET}\n\n"
 
-  # Prompt user to reboot
-  read -rp "${CAT} Would you like to reboot now? (y/n): ${RESET}" HYP
+	# Prompt user to reboot
+	read -rp "${CAT} Would you like to reboot now? (y/n): ${RESET}" HYP
 
-  if [[ $HYP =~ ^[Yy]$ ]]; then
-    # If user confirms, reboot the system
-    systemctl reboot
-  else
-    # Print a message if the user does not want to reboot
-    echo "Reboot skipped."
-  fi
+	if [[ $HYP =~ ^[Yy]$ ]]; then
+		# If user confirms, reboot the system
+		systemctl reboot
+	else
+		# Print a message if the user does not want to reboot
+		echo "Reboot skipped."
+	fi
 else
-  # Print error message if Hyprland is not installed
-  printf "\n${WARN} Hyprland failed to install. Please check Install-Logs...${RESET}\n\n"
-  exit 1
+	# Print error message if Hyprland is not installed
+	printf "\n${WARN} Hyprland failed to install. Please check Install-Logs...${RESET}\n\n"
+	exit 1
 fi
