@@ -11,8 +11,6 @@ let
   inherit (variables)
     gitUsername
     shell
-    lto
-    native
     ;
 
   defaultShell = pkgs.${shell};
@@ -128,7 +126,6 @@ in
       swaynotificationcenter # 通知中心
       wlogout # 注销菜单
       yad # Shell 图形对话框
-      mpv # 视频播放器
       loupe # 图片查看器
       xarchiver # 归档管理器
       inputs.strata.packages.${system}.strata # file manage
@@ -144,6 +141,7 @@ in
       keypunch # 打字练习
       osu-lazer-bin # 音游
       inputs.ncm-desktop.packages.${system}.ncm-desktop # 网易云音乐
+      noctalia
     ]
     ++ [
       # custom packages
@@ -155,10 +153,6 @@ in
       nsearch-tv
       wayclick
       helium
-      (noctalia.override {
-        withNative = native;
-        withLto = lto;
-      })
       duolingo-desktop
       piliplus
       magpie

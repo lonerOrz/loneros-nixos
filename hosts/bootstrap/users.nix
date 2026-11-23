@@ -65,7 +65,6 @@
       cava
     ]
     ++ (with pkgs.nur.repos.lonerOrz; [
-      mpv-handler
       nsearch-tv
     ]);
 

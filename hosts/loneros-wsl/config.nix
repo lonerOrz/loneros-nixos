@@ -35,6 +35,7 @@ in
     ../../programs/nvim.nix
     ../../programs/nh.nix
     ../../programs/nix-index.nix
+    ../../programs/mpv.nix
 
     # servers
     ../../servers/atuin.nix

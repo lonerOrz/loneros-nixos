@@ -93,7 +93,6 @@ in
       asciinema-agg # 录屏转 GIF
 
       # GUI
-      mpv # 视频播放
       kitty # 终端模拟
     ]
     ++ [
